@@ -41,37 +41,38 @@
 <body class="bg-[#0b132b] text-slate-100 font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-accent selection:text-white bg-grid-pattern relative">
 
     <!-- Header Sederhana -->
-    <header class="w-full max-w-7xl mx-auto px-6 py-6 flex items-center justify-between z-10">
+    <header class="w-full max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-6 flex items-center justify-between z-10">
         <a href="/" class="flex items-center gap-3 group">
-            <div class="w-10 h-10 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-emerald-400 font-bold shadow-md group-hover:border-emerald-500 transition-colors">
-                <span class="material-symbols-outlined text-[22px]">show_chart</span>
+            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-emerald-400 font-bold shadow-md group-hover:border-emerald-500 transition-colors">
+                <span class="material-symbols-outlined text-[20px] sm:text-[22px]">show_chart</span>
             </div>
             <div class="flex flex-col">
-                <span class="font-bold text-white text-base leading-tight tracking-tight">Stock Market</span>
-                <span class="text-xs text-slate-400 font-medium">Recommendation Platform</span>
+                <span class="font-bold text-white text-sm sm:text-base leading-tight tracking-tight">Stock Market</span>
+                <span class="text-[11px] sm:text-xs text-slate-400 font-medium">Recommendation Platform</span>
             </div>
         </a>
 
-        <a href="/" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-slate-300 hover:text-white transition-all">
+        <a href="/" class="inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-slate-300 hover:text-white transition-all">
             <span class="material-symbols-outlined text-[16px]">arrow_back</span>
-            <span>Kembali ke Dashboard</span>
+            <span class="hidden sm:inline">Kembali ke Dashboard</span>
+            <span class="sm:hidden">Dashboard</span>
         </a>
     </header>
 
     <!-- Main Container: Split Card Layout -->
-    <main class="w-full max-w-6xl mx-auto px-4 sm:px-6 py-4 my-auto z-10">
+    <main class="w-full max-w-6xl mx-auto px-3 sm:px-6 py-3 sm:py-6 my-auto z-10">
         <div class="grid grid-cols-1 lg:grid-cols-12 rounded-3xl overflow-hidden border border-slate-700/60 bg-slate-900/80 backdrop-blur-xl shadow-2xl">
             
             <!-- Kolom Kiri: Form Login -->
-            <div class="lg:col-span-7 p-8 sm:p-12 flex flex-col justify-between">
+            <div class="lg:col-span-7 p-5 sm:p-8 lg:p-12 flex flex-col justify-between">
                 <div>
                     <!-- Badge Header -->
-                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold mb-6">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold mb-4 sm:mb-6">
                         <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
                         <span>Portal Analis Riset Pasar Modal BEI</span>
                     </div>
 
-                    <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-tight">
+                    <h1 class="text-xl sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight leading-tight">
                         Masuk ke Akun Anda
                     </h1>
                     <p class="text-xs sm:text-sm text-slate-400 mt-2">
@@ -122,7 +123,7 @@
                         <div class="flex items-center justify-between text-xs text-slate-400 my-1">
                             <label class="flex items-center gap-2 cursor-pointer select-none">
                                 <input type="checkbox" id="rememberMe" checked class="w-4 h-4 rounded bg-slate-800 border-slate-700 text-emerald-500 focus:ring-0 focus:ring-offset-0 cursor-pointer"/>
-                                <span>Ingat sesi saya di perangkat ini</span>
+                                <span>Ingat sesi saya</span>
                             </label>
                             <span class="text-[11px] text-slate-500">Enkripsi SHA-256</span>
                         </div>
@@ -150,7 +151,7 @@
                         <button 
                             type="button" 
                             onclick="quickLogin('Sekar Widhastri', 'Research Analyst', 'sekar.widhastri@stockmarket.id', 'SW')"
-                            class="p-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700/90 border border-slate-700 text-left transition-all group flex flex-col justify-between"
+                            class="p-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700/90 border border-slate-700 text-left transition-all group flex flex-col justify-between active:scale-95"
                         >
                             <div class="flex items-center justify-between">
                                 <span class="w-6 h-6 rounded-lg bg-emerald-500/20 text-emerald-400 font-bold text-[10px] flex items-center justify-center">SW</span>
@@ -165,7 +166,7 @@
                         <button 
                             type="button" 
                             onclick="quickLogin('Portfolio Manager', 'Asset Management', 'portfolio.manager@stockmarket.id', 'PM')"
-                            class="p-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700/90 border border-slate-700 text-left transition-all group flex flex-col justify-between"
+                            class="p-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700/90 border border-slate-700 text-left transition-all group flex flex-col justify-between active:scale-95"
                         >
                             <div class="flex items-center justify-between">
                                 <span class="w-6 h-6 rounded-lg bg-blue-500/20 text-blue-400 font-bold text-[10px] flex items-center justify-center">PM</span>
@@ -180,7 +181,7 @@
                         <button 
                             type="button" 
                             onclick="quickLogin('Tamu Pengunjung', 'Market Explorer', 'guest@stockmarket.id', 'TM')"
-                            class="p-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700/90 border border-slate-700 text-left transition-all group flex flex-col justify-between"
+                            class="p-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700/90 border border-slate-700 text-left transition-all group flex flex-col justify-between active:scale-95"
                         >
                             <div class="flex items-center justify-between">
                                 <span class="w-6 h-6 rounded-lg bg-purple-500/20 text-purple-400 font-bold text-[10px] flex items-center justify-center">TM</span>
@@ -195,21 +196,21 @@
                 </div>
 
                 <div class="mt-8 pt-4 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-500">
-                    <span>Sistem Terenkripsi & Terverifikasi</span>
+                    <span>Sistem Terenkripsi dan Terverifikasi</span>
                     <span>Waktu: Asia/Jakarta (WIB)</span>
                 </div>
             </div>
 
             <!-- Kolom Kanan: Highlight Riset Kuantitatif Institusional -->
-            <div class="lg:col-span-5 p-8 sm:p-10 bg-gradient-to-br from-slate-800/90 via-slate-900 to-slate-950 border-t lg:border-t-0 lg:border-l border-slate-700/60 flex flex-col justify-between">
-                <div class="flex flex-col gap-6">
+            <div class="lg:col-span-5 p-5 sm:p-8 lg:p-10 bg-gradient-to-br from-slate-800/90 via-slate-900 to-slate-950 border-t lg:border-t-0 lg:border-l border-slate-700/60 flex flex-col justify-between">
+                <div class="flex flex-col gap-5 sm:gap-6">
                     <div>
                         <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold mb-3">
                             <span class="material-symbols-outlined text-[16px]">analytics</span>
                             <span>Standard Institutional Platform</span>
                         </div>
-                        <h2 class="text-xl font-bold text-white">
-                            Keunggulan Riset Kuantitatif & Ekonometrika Pasar
+                        <h2 class="text-lg sm:text-xl font-bold text-white">
+                            Keunggulan Riset Kuantitatif dan Ekonometrika Pasar
                         </h2>
                         <p class="text-xs text-slate-400 mt-1 leading-relaxed">
                             Keputusan berbasis matematika dan probabilitas data historis tanpa bias emosional.
@@ -217,8 +218,8 @@
                     </div>
 
                     <!-- 4 Fitur Utama -->
-                    <div class="space-y-3.5">
-                        <div class="p-3.5 rounded-2xl bg-white/5 border border-white/10 flex items-start gap-3">
+                    <div class="space-y-3 sm:space-y-3.5">
+                        <div class="p-3 sm:p-3.5 rounded-2xl bg-white/5 border border-white/10 flex items-start gap-3">
                             <div class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
                                 <span class="material-symbols-outlined text-[18px]">psychology</span>
                             </div>
@@ -230,24 +231,24 @@
                             </div>
                         </div>
 
-                        <div class="p-3.5 rounded-2xl bg-white/5 border border-white/10 flex items-start gap-3">
+                        <div class="p-3 sm:p-3.5 rounded-2xl bg-white/5 border border-white/10 flex items-start gap-3">
                             <div class="w-8 h-8 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center shrink-0 mt-0.5">
                                 <span class="material-symbols-outlined text-[18px]">shield</span>
                             </div>
                             <div>
-                                <h3 class="text-xs font-bold text-white">Student-t GARCH(1,1) & VaR 95%</h3>
+                                <h3 class="text-xs font-bold text-white">Student-t GARCH(1,1) dan VaR 95%</h3>
                                 <p class="text-[11px] text-slate-400 leading-relaxed">
-                                    Pemodelan volatilitas ekor tebal (*fat-tails*) untuk mitigasi risiko penurunan modal ekstrem.
+                                    Pemodelan volatilitas ekor tebal (fat-tails) untuk mitigasi risiko penurunan modal ekstrem.
                                 </p>
                             </div>
                         </div>
 
-                        <div class="p-3.5 rounded-2xl bg-white/5 border border-white/10 flex items-start gap-3">
+                        <div class="p-3 sm:p-3.5 rounded-2xl bg-white/5 border border-white/10 flex items-start gap-3">
                             <div class="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0 mt-0.5">
                                 <span class="material-symbols-outlined text-[18px]">account_balance_wallet</span>
                             </div>
                             <div>
-                                <h3 class="text-xs font-bold text-white">20% Kas Siaga & Pembulatan Lot BEI</h3>
+                                <h3 class="text-xs font-bold text-white">20% Kas Siaga dan Pembulatan Lot BEI</h3>
                                 <p class="text-[11px] text-slate-400 leading-relaxed">
                                     Optimizer portofolio wajib menjaga likuiditas fleksibel dengan fraksi harga resmi BEI.
                                 </p>
