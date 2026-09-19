@@ -15,7 +15,7 @@ if str(ROOT_DIR) not in sys.path:
 # pyrefly: ignore [missing-import]
 from dotenv import load_dotenv  # type: ignore # pyrefly: ignore [missing-import]
 # pyrefly: ignore [missing-import]
-from fastapi import BackgroundTasks, FastAPI, HTTPException, Query  # type: ignore # pyrefly: ignore [missing-import]
+from fastapi import BackgroundTasks, FastAPI, Header, HTTPException, Query  # type: ignore # pyrefly: ignore [missing-import]
 from fastapi.middleware.cors import CORSMiddleware  # type: ignore # pyrefly: ignore [missing-import]
 from fastapi.responses import HTMLResponse  # type: ignore # pyrefly: ignore [missing-import]
 import google.generativeai as genai  # type: ignore # pyrefly: ignore [missing-import]
@@ -25,6 +25,7 @@ from pydantic import BaseModel  # type: ignore # pyrefly: ignore [missing-import
 
 # pyrefly: ignore [missing-import]
 from src.config import (  # type: ignore # pyrefly: ignore [missing-import]
+    DEFAULT_TICKERS,
     DIVIDEND_RECOMMENDATION_FILE,
     FAVORITE_TICKERS,
     FAVORITES_RECOMMENDATION_FILE,
@@ -71,8 +72,8 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
+    allow_credentials=False,
+    allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["*"],
 )
 
@@ -324,36 +325,92 @@ def compare_models(ticker: str) -> Dict[str, Any]:
 @app.get("/api/v1/analyze-favorite", tags=["Favorite Emiten"])
 def analyze_favorite_ticker(ticker: str) -> Dict[str, str]:
     clean_ticker = ticker.strip().upper()
-    if not clean_ticker.endswith(".JK") and f"{clean_ticker}.JK" in FAVORITE_TICKERS:
+    if not clean_ticker.endswith(".JK"):
         clean_ticker = f"{clean_ticker}.JK"
 
-    prompt = (
-        f"Sebagai Senior Quant Analyst pasar modal Indonesia, berikan analisis teknikal (level support/resistance), "
-        f"profil risiko (Beta/Sharpe), dan valuasi fundamental super singkat (maksimal 2 kalimat) untuk saham {clean_ticker} "
-        f"di IHSG hari ini. Nada bicara profesional, tajam, dan langsung ke poin tindakan."
-    )
+    # Whitelist guard: ensure ticker belongs to known IDX universe
+    if clean_ticker not in DEFAULT_TICKERS:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Ticker '{ticker}' is not supported. Must be a valid constituent of the IDX universe.",
+        )
+
+    # Fetch factual quantitative data for this ticker from recommendation files to ground the LLM
+    quant_context = ""
+    for file_path in [FAVORITES_RECOMMENDATION_FILE, SWING_RECOMMENDATION_FILE, DIVIDEND_RECOMMENDATION_FILE]:
+        if file_path.exists():
+            try:
+                df = pd.read_csv(file_path)
+                match = df[df["Ticker"] == clean_ticker]
+                if not match.empty:
+                    row = match.iloc[0]
+                    quant_context = (
+                        f"Data pasar terkini {clean_ticker}: Close Rp {row.get('Close')}, "
+                        f"Rekomendasi Algoritma: {row.get('Recommendation')}, "
+                        f"Entry: Rp {row.get('Entry_Price')}, Target: Rp {row.get('Target_Price')}, "
+                        f"Stop Loss: Rp {row.get('Stop_Loss')}, RSI-14: {row.get('RSI_14')}, "
+                        f"Sharpe 1Y: {row.get('Sharpe_Ratio')}, Beta IHSG: {row.get('Beta_IHSG')}, "
+                        f"VaR 95%: {row.get('VaR_95_1D')}%."
+                    )
+                    break
+            except Exception:
+                pass
 
     if not GEMINI_API_KEY:
+        if quant_context:
+            return {
+                "ticker": clean_ticker,
+                "analysis": f"Sinyal kuantitatif {clean_ticker}: {quant_context}",
+            }
         return {
             "ticker": clean_ticker,
-            "analysis": f"Saham {clean_ticker} berada dalam radar pemantauan kuantitatif dengan sinyal teknikal stabil dan valuasi terukur pada bursa IHSG.",
+            "analysis": f"Saham {clean_ticker} berada dalam radar pemantauan kuantitatif dengan sinyal teknikal terpantau pada bursa IHSG.",
         }
+
+    prompt = (
+        f"Sebagai Senior Quant Analyst pasar modal Indonesia, gunakan data kuantitatif faktual berikut:\n"
+        f"{quant_context}\n\n"
+        f"Berikan analisis teknikal ringkas (maksimal 2 kalimat) untuk saham {clean_ticker}. "
+        f"Sebutkan target harga dan stop loss sesuai data di atas tanpa mengarang angka tambahan. "
+        f"Gunakan kata 'dan' bukan simbol ampersand, serta jangan gunakan tanda asterisk tebal ganda."
+    )
 
     try:
         model = genai.GenerativeModel("gemini-3.6-flash")
         response = model.generate_content(prompt)
         text = response.text.strip() if response and hasattr(response, "text") else "Analisis tidak dapat dihasilkan."
-        return {"ticker": clean_ticker, "analysis": text}
+        clean_text = text.replace("**", "").replace("*", "").replace(" & ", " dan ").strip()
+        return {"ticker": clean_ticker, "analysis": clean_text}
     except Exception as e:
         logger.error(f"Error calling Gemini: {str(e)}")
-        return {
-            "ticker": clean_ticker,
-            "analysis": f"Analisis kuantitatif {clean_ticker}: Menunjukkan konsolidasi harga dengan indikator likuiditas terkontrol dan rasio risiko terpantau sehat.",
-        }
+        fallback_text = (
+            f"Analisis kuantitatif {clean_ticker}: {quant_context}" if quant_context
+            else f"Analisis kuantitatif {clean_ticker}: Menunjukkan konsolidasi harga dengan indikator likuiditas terkontrol."
+        )
+        return {"ticker": clean_ticker, "analysis": fallback_text}
 
 
 @app.post("/pipeline/run", response_model=PipelineResponse, tags=["Pipeline Automation"])
-def trigger_pipeline(background_tasks: BackgroundTasks) -> Dict[str, str]:
+def trigger_pipeline(
+    background_tasks: BackgroundTasks,
+    admin_token: Optional[str] = Query(None, description="Admin secret token for triggering pipeline"),
+    x_admin_secret: Optional[str] = Header(None, alias="X-Admin-Secret"),
+) -> Dict[str, str]:
+    # Check if running in serverless environment (e.g. Vercel)
+    if os.environ.get("VERCEL"):
+        raise HTTPException(
+            status_code=403,
+            detail="Pipeline execution is disabled on Vercel Serverless runtime. The compute plane runs automatically via GitHub Actions CI/CD daily.",
+        )
+
+    expected_secret = os.getenv("ADMIN_PIPELINE_SECRET", "alphatech-secure-pipeline-trigger-2026")
+    provided_token = admin_token or x_admin_secret
+    if not provided_token or provided_token != expected_secret:
+        raise HTTPException(
+            status_code=401,
+            detail="Unauthorized: Valid admin pipeline secret token is required to trigger model training.",
+        )
+
     background_tasks.add_task(execute_full_pipeline)
     return {
         "status": "accepted",

@@ -9,10 +9,13 @@ RAW_DATA_DIR = DATA_DIR / "raw"
 PROCESSED_DATA_DIR = DATA_DIR / "processed"
 FINANCIAL_STATEMENTS_DIR = RAW_DATA_DIR / "financial_statements"
 
-# Ensure directories exist
-RAW_DATA_DIR.mkdir(parents=True, exist_ok=True)
-PROCESSED_DATA_DIR.mkdir(parents=True, exist_ok=True)
-FINANCIAL_STATEMENTS_DIR.mkdir(parents=True, exist_ok=True)
+# Ensure directories exist safely (avoid failure on read-only serverless environments)
+try:
+    RAW_DATA_DIR.mkdir(parents=True, exist_ok=True)
+    PROCESSED_DATA_DIR.mkdir(parents=True, exist_ok=True)
+    FINANCIAL_STATEMENTS_DIR.mkdir(parents=True, exist_ok=True)
+except OSError:
+    pass
 
 # 1. 11 Sektor Resmi Bursa Efek Indonesia (IDX-IC Universe)
 SECTOR_MAP: Dict[str, List[str]] = {
