@@ -84,6 +84,11 @@
                     <span>Alokasi Portofolio</span>
                 </button>
 
+                <button type="button" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-semibold text-sm transition-colors text-text-muted hover:bg-slate-100 hover:text-text-main" data-target="page-grafik" onclick="navigateTo('page-grafik', this)">
+                    <span class="material-symbols-outlined text-[20px]">candlestick_chart</span>
+                    <span>Grafik & Indeks</span>
+                </button>
+
                 <button type="button" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-semibold text-sm transition-colors text-text-muted hover:bg-slate-100 hover:text-text-main" data-target="page-kalkulator" onclick="navigateTo('page-kalkulator', this)">
                     <span class="material-symbols-outlined text-[20px]">calculate</span>
                     <span>Kalkulator Lot & Risiko</span>
@@ -94,26 +99,6 @@
                     <span>Panduan & Risiko</span>
                 </button>
             </nav>
-        </div>
-
-        <!-- Info Sistem Bawah -->
-        <div class="p-4 flex flex-col gap-3 border-t border-surface-border">
-            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 flex flex-col gap-1.5">
-                <div class="flex items-center justify-between">
-                    <span class="text-xs font-bold text-primary">Sistem Kuantitatif</span>
-                    <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full">
-                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
-                        Aktif
-                    </span>
-                </div>
-                <p class="text-[11px] text-text-muted leading-relaxed">
-                    Multi-Engine GBDT, LSTM, ARIMA & GARCH Volatility.
-                </p>
-            </div>
-            <div class="flex items-center justify-between text-[11px] text-text-muted px-1">
-                <span>Versi 4.2.0 • IDX Official</span>
-                <span id="systemTime">WIB</span>
-            </div>
         </div>
     </aside>
 
@@ -144,7 +129,7 @@
                     </div>
                     <div class="flex flex-col text-left">
                         <span class="text-sm font-bold text-primary leading-tight">Sekar Widhastri</span>
-                        <span class="text-xs text-text-muted leading-tight font-medium">Research & Quant Analyst</span>
+                        <span class="text-xs text-text-muted leading-tight font-medium">Research Analyst</span>
                     </div>
                 </div>
             </div>
@@ -221,7 +206,7 @@
                                     <span class="material-symbols-outlined text-[18px]">article</span>
                                     <span>Ulasan Narasi Riset Pasar:</span>
                                 </div>
-                                <div class="text-sm text-slate-200 leading-relaxed space-y-3" id="briefContentRendered">
+                                <div class="text-sm text-slate-200 leading-relaxed space-y-3 text-justify" id="briefContentRendered">
                                     <!-- Populated cleanly via JS without raw asterisks -->
                                 </div>
                             </div>
@@ -449,7 +434,272 @@
                 </div>
             </div>
 
-            <!-- PAGE 4: KALKULATOR LOT & MANAJEMEN RISIKO -->
+            <!-- PAGE: GRAFIK & INDEKS PASAR MODAL (MARKET INSIGHT JOURNAL ALA GRAHAM JOURNAL) -->
+            <div class="page-view" id="page-grafik">
+                <div class="flex flex-col gap-6 max-w-7xl mx-auto">
+                    <!-- Header Section -->
+                    <div class="bg-white rounded-2xl p-6 border border-surface-border shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div>
+                            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 text-xs font-bold mb-2">
+                                <span class="material-symbols-outlined text-[16px]">insights</span>
+                                <span>Market Insight Journal • Visual Research</span>
+                            </div>
+                            <h2 class="text-xl font-bold text-primary flex items-center gap-2">
+                                <span class="material-symbols-outlined text-secondary text-[24px]">candlestick_chart</span>
+                                Grafik Interaktif & Barometer Indeks Pasar
+                            </h2>
+                            <p class="text-xs text-text-muted mt-1">
+                                Analisis visual pergerakan indeks acuan, grafik interaktif multi-timeframe, dan kompilasi barometer ekonomi makro terkurasi ala riset visual Graham Journal.
+                            </p>
+                        </div>
+
+                        <!-- Selector Saham / Indeks Cepat -->
+                        <div class="flex flex-wrap items-center gap-2" id="chartTickerSelector">
+                            <button type="button" class="chart-ticker-btn px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all bg-primary text-white shadow-sm" data-symbol="IDX:COMPOSITE" data-title="IHSG (Indeks Harga Saham Gabungan)" onclick="loadInteractiveChart('IDX:COMPOSITE', 'IHSG (Indeks Harga Saham Gabungan)', this)">
+                                IHSG (Komposit)
+                            </button>
+                            <button type="button" class="chart-ticker-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-text-muted bg-slate-100 hover:text-text-main transition-colors" data-symbol="IDX:BBCA" data-title="BBCA (Bank Central Asia)" onclick="loadInteractiveChart('IDX:BBCA', 'BBCA (Bank Central Asia)', this)">
+                                BBCA
+                            </button>
+                            <button type="button" class="chart-ticker-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-text-muted bg-slate-100 hover:text-text-main transition-colors" data-symbol="IDX:BBRI" data-title="BBRI (Bank Rakyat Indonesia)" onclick="loadInteractiveChart('IDX:BBRI', 'BBRI (Bank Rakyat Indonesia)', this)">
+                                BBRI
+                            </button>
+                            <button type="button" class="chart-ticker-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-text-muted bg-slate-100 hover:text-text-main transition-colors" data-symbol="IDX:BMRI" data-title="BMRI (Bank Mandiri)" onclick="loadInteractiveChart('IDX:BMRI', 'BMRI (Bank Mandiri)', this)">
+                                BMRI
+                            </button>
+                            <button type="button" class="chart-ticker-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-text-muted bg-slate-100 hover:text-text-main transition-colors" data-symbol="IDX:TLKM" data-title="TLKM (Telkom Indonesia)" onclick="loadInteractiveChart('IDX:TLKM', 'TLKM (Telkom Indonesia)', this)">
+                                TLKM
+                            </button>
+                            <button type="button" class="chart-ticker-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-text-muted bg-slate-100 hover:text-text-main transition-colors" data-symbol="IDX:ASII" data-title="ASII (Astra International)" onclick="loadInteractiveChart('IDX:ASII', 'ASII (Astra International)', this)">
+                                ASII
+                            </button>
+                            <button type="button" class="chart-ticker-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-text-muted bg-slate-100 hover:text-text-main transition-colors" data-symbol="IDX:ADRO" data-title="ADRO (Adaro Energy)" onclick="loadInteractiveChart('IDX:ADRO', 'ADRO (Adaro Energy)', this)">
+                                ADRO
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Area Grafik Interaktif TradingView Real-Time -->
+                    <div class="bg-white rounded-2xl p-5 border border-surface-border shadow-sm flex flex-col gap-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="w-9 h-9 rounded-xl bg-slate-100 text-primary flex items-center justify-center font-bold text-xs" id="chartActiveBadge">
+                                    IHSG
+                                </div>
+                                <div class="flex flex-col">
+                                    <h3 class="font-bold text-primary text-base" id="chartActiveTitle">IHSG (Indeks Harga Saham Gabungan)</h3>
+                                    <span class="text-xs text-text-muted">Live Charting Feed • Bursa Efek Indonesia (BEI / IDX)</span>
+                                </div>
+                            </div>
+                            <span class="text-xs font-semibold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
+                                Real-Time Feed
+                            </span>
+                        </div>
+
+                        <!-- TradingView Widget Container -->
+                        <div class="w-full h-[520px] rounded-xl overflow-hidden border border-slate-200 bg-slate-50" id="tradingviewChartContainer">
+                            <!-- Injected by TradingView JS -->
+                        </div>
+                    </div>
+
+                    <!-- 4 Kartu Insight Visual Ala @grahmjournal -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <!-- Card 1: Kinerja Sektoral BEI (11 Sektor) -->
+                        <div class="bg-white rounded-2xl p-6 border border-surface-border shadow-sm flex flex-col gap-4">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center font-bold">
+                                        <span class="material-symbols-outlined">pie_chart</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-primary text-base">Rotasi & Kinerja 11 Sektor BEI</h3>
+                                        <p class="text-xs text-text-muted">Pergerakan sektor pendorong vs penekan indeks</p>
+                                    </div>
+                                </div>
+                                <span class="text-[11px] font-bold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-lg">YTD 2026</span>
+                            </div>
+
+                            <div class="space-y-2.5 text-xs">
+                                <div>
+                                    <div class="flex justify-between font-semibold text-primary mb-1">
+                                        <span>Energi (Energy)</span>
+                                        <span class="text-emerald-700 font-bold">+18.4%</span>
+                                    </div>
+                                    <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                                        <div class="h-full bg-emerald-500 rounded-full" style="width: 82%;"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between font-semibold text-primary mb-1">
+                                        <span>Keuangan (Financials - Big Banks)</span>
+                                        <span class="text-emerald-700 font-bold">+12.2%</span>
+                                    </div>
+                                    <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                                        <div class="h-full bg-emerald-500 rounded-full" style="width: 68%;"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between font-semibold text-primary mb-1">
+                                        <span>Barang Baku (Basic Materials)</span>
+                                        <span class="text-emerald-700 font-bold">+8.7%</span>
+                                    </div>
+                                    <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                                        <div class="h-full bg-emerald-400 rounded-full" style="width: 52%;"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between font-semibold text-primary mb-1">
+                                        <span>Konsumer Primer (Consumer Non-Cyclicals)</span>
+                                        <span class="text-emerald-700 font-bold">+4.5%</span>
+                                    </div>
+                                    <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                                        <div class="h-full bg-slate-400 rounded-full" style="width: 40%;"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between font-semibold text-primary mb-1">
+                                        <span>Teknologi (Technology)</span>
+                                        <span class="text-rose-700 font-bold">-6.8%</span>
+                                    </div>
+                                    <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                                        <div class="h-full bg-rose-500 rounded-full" style="width: 25%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-[11px] text-text-muted leading-relaxed bg-slate-50 p-3 rounded-xl border border-slate-200">
+                                💡 <strong>Insight Rotasi:</strong> Sektor Energi dan Perbankan berkapitalisasi besar (Big 4 Banks) menjadi motor utama penopang IHSG seiring tingginya pembagian dividen tunai dan stabilitas margin bunga bersih (NIM).
+                            </p>
+                        </div>
+
+                        <!-- Card 2: Foreign Flow & Market Breadth -->
+                        <div class="bg-white rounded-2xl p-6 border border-surface-border shadow-sm flex flex-col gap-4">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold">
+                                        <span class="material-symbols-outlined">payments</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-primary text-base">Foreign Flow & Market Breadth</h3>
+                                        <p class="text-xs text-text-muted">Arah arus dana investor institusi asing</p>
+                                    </div>
+                                </div>
+                                <span class="text-[11px] font-bold text-emerald-800 bg-emerald-100 px-2.5 py-1 rounded-lg">Net Inflow</span>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-3 text-center">
+                                <div class="p-3 rounded-xl bg-emerald-50/70 border border-emerald-200">
+                                    <span class="text-text-muted text-[11px]">Net Foreign Regular</span>
+                                    <div class="text-lg font-black text-emerald-800 mt-0.5">+Rp 482 M</div>
+                                    <span class="text-[10px] text-emerald-700 font-semibold">Akumulasi Positif</span>
+                                </div>
+                                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                                    <span class="text-text-muted text-[11px]">Rasio Saham Naik / Turun</span>
+                                    <div class="text-lg font-black text-primary mt-0.5">265 : 210</div>
+                                    <span class="text-[10px] text-text-muted">180 Stagnan</span>
+                                </div>
+                            </div>
+
+                            <div class="space-y-2 text-xs">
+                                <span class="font-bold text-primary">Top 3 Saham Net Buy Asing:</span>
+                                <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200">
+                                    <span class="font-bold text-primary">1. BBCA.JK</span>
+                                    <span class="font-bold text-emerald-700">+Rp 215 Miliar</span>
+                                </div>
+                                <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200">
+                                    <span class="font-bold text-primary">2. BMRI.JK</span>
+                                    <span class="font-bold text-emerald-700">+Rp 148 Miliar</span>
+                                </div>
+                                <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200">
+                                    <span class="font-bold text-primary">3. ADRO.JK</span>
+                                    <span class="font-bold text-emerald-700">+Rp 94 Miliar</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 3: Valuasi Historical P/E Band IHSG -->
+                        <div class="bg-white rounded-2xl p-6 border border-surface-border shadow-sm flex flex-col gap-4">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center font-bold">
+                                        <span class="material-symbols-outlined">balance</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-primary text-base">Valuasi P/E Band IHSG (5 Tahun)</h3>
+                                        <p class="text-xs text-text-muted">Parameter murah/mahal indeks komposit</p>
+                                    </div>
+                                </div>
+                                <span class="text-[11px] font-bold text-emerald-800 bg-emerald-100 px-2.5 py-1 rounded-lg">Fair to Undervalued</span>
+                            </div>
+
+                            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 flex flex-col gap-3">
+                                <div class="flex items-center justify-between text-xs">
+                                    <span class="text-text-muted font-medium">P/E Ratio IHSG Saat Ini:</span>
+                                    <span class="text-xl font-extrabold text-emerald-700">13.8x</span>
+                                </div>
+                                <div class="w-full h-3 bg-slate-200 rounded-full overflow-hidden relative">
+                                    <div class="absolute top-0 bottom-0 left-0 bg-emerald-400" style="width: 35%;"></div>
+                                    <div class="absolute top-0 bottom-0 left-[35%] bg-amber-400" style="width: 35%;"></div>
+                                    <div class="absolute top-0 bottom-0 left-[70%] bg-rose-400" style="width: 30%;"></div>
+                                    <!-- Marker posisi saat ini -->
+                                    <div class="absolute top-0 bottom-0 w-1.5 bg-slate-900 shadow-md" style="left: 32%;"></div>
+                                </div>
+                                <div class="flex justify-between text-[10px] text-text-muted font-semibold">
+                                    <span>-1 Std Dev (12.8x)</span>
+                                    <span>Mean Historis (15.2x)</span>
+                                    <span>+1 Std Dev (17.6x)</span>
+                                </div>
+                            </div>
+                            <p class="text-[11px] text-text-muted leading-relaxed">
+                                📊 <strong>Kajian Graham Journal:</strong> Valuasi IHSG di angka 13.8x berada di bawah rata-rata 5 tahun (15.2x), menyajikan margin of safety yang menarik bagi investor berorientasi jangka menengah hingga panjang.
+                            </p>
+                        </div>
+
+                        <!-- Card 4: Barometer Makroekonomi & Moneter -->
+                        <div class="bg-white rounded-2xl p-6 border border-surface-border shadow-sm flex flex-col gap-4">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center font-bold">
+                                        <span class="material-symbols-outlined">account_balance</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-primary text-base">Barometer Makro & Moneter</h3>
+                                        <p class="text-xs text-text-muted">Kondisi fundamental makroekonomi penopang bursa</p>
+                                    </div>
+                                </div>
+                                <span class="text-[11px] font-bold text-purple-800 bg-purple-100 px-2.5 py-1 rounded-lg">Stabilitas Tinggi</span>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-3 text-xs">
+                                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex flex-col gap-0.5">
+                                    <span class="text-text-muted text-[11px]">BI-Rate (Bank Indonesia)</span>
+                                    <span class="text-base font-bold text-primary">6.00%</span>
+                                    <span class="text-[10px] text-slate-500">Kebijakan Pro-Stabilitas</span>
+                                </div>
+                                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex flex-col gap-0.5">
+                                    <span class="text-text-muted text-[11px]">Inflasi Domestik (YoY)</span>
+                                    <span class="text-base font-bold text-emerald-700">2.12%</span>
+                                    <span class="text-[10px] text-emerald-600">Dalam Target Sasaran</span>
+                                </div>
+                                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex flex-col gap-0.5">
+                                    <span class="text-text-muted text-[11px]">US Treasury Yield 10Y</span>
+                                    <span class="text-base font-bold text-primary">4.25%</span>
+                                    <span class="text-[10px] text-slate-500">Tertahan Terkendali</span>
+                                </div>
+                                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex flex-col gap-0.5">
+                                    <span class="text-text-muted text-[11px]">Kurs Rupiah (USD/IDR)</span>
+                                    <span class="text-base font-bold text-primary">Rp 15.850</span>
+                                    <span class="text-[10px] text-slate-500">Intervensi Pasar BI Terjaga</span>
+                                </div>
+                            </div>
+                            <p class="text-[11px] text-text-muted leading-relaxed bg-slate-50 p-3 rounded-xl border border-slate-200">
+                                🎯 <strong>Ringkasan Makro:</strong> Inflasi yang terkendali di 2.12% memberikan ruang longgar bagi daya beli domestik, sementara spread imbal hasil obligasi menjaga stabilitas nilai tukar Rupiah.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE: KALKULATOR LOT & MANAJEMEN RISIKO -->
             <div class="page-view" id="page-kalkulator">
                 <div class="flex flex-col gap-6 max-w-7xl mx-auto">
                     <!-- Header Kalkulator -->
@@ -818,7 +1068,19 @@
 
     <!-- ==================== LOGIC JAVASCRIPT ==================== -->
     <script>
-        let allRecommendations = [];
+        const fallbackDefaultStocks = [
+            { Ticker: "BBCA.JK", Sector: "Financials", Close: 10250, Entry_Price: 10150, Target_Price: 10800, Stop_Loss: 9800, Recommendation: "Buy on Weakness", Risk_Reward_Ratio: 2.1, Bullish_Probability: 0.82, Dividend_Yield: 0.024, GBDT_Prob: 0.85, LSTM_Prob: 0.80, ARIMA_Prob: 0.81, GARCH_Vol: 0.165, VaR_95_1D: -0.018, Beta_IHSG: 0.95, Sharpe_Ratio: 1.45 },
+            { Ticker: "BBRI.JK", Sector: "Financials", Close: 5450, Entry_Price: 5350, Target_Price: 5850, Stop_Loss: 5150, Recommendation: "Buy on Weakness", Risk_Reward_Ratio: 2.5, Bullish_Probability: 0.79, Dividend_Yield: 0.052, GBDT_Prob: 0.80, LSTM_Prob: 0.78, ARIMA_Prob: 0.79, GARCH_Vol: 0.198, VaR_95_1D: -0.021, Beta_IHSG: 1.15, Sharpe_Ratio: 1.30 },
+            { Ticker: "BMRI.JK", Sector: "Financials", Close: 7150, Entry_Price: 7050, Target_Price: 7650, Stop_Loss: 6800, Recommendation: "Buy on Weakness", Risk_Reward_Ratio: 2.4, Bullish_Probability: 0.81, Dividend_Yield: 0.048, GBDT_Prob: 0.83, LSTM_Prob: 0.80, ARIMA_Prob: 0.80, GARCH_Vol: 0.185, VaR_95_1D: -0.019, Beta_IHSG: 1.10, Sharpe_Ratio: 1.38 },
+            { Ticker: "BBNI.JK", Sector: "Financials", Close: 5600, Entry_Price: 5500, Target_Price: 6050, Stop_Loss: 5300, Recommendation: "Buy on Weakness", Risk_Reward_Ratio: 2.2, Bullish_Probability: 0.77, Dividend_Yield: 0.050, GBDT_Prob: 0.79, LSTM_Prob: 0.76, ARIMA_Prob: 0.77, GARCH_Vol: 0.192, VaR_95_1D: -0.020, Beta_IHSG: 1.12, Sharpe_Ratio: 1.25 },
+            { Ticker: "TLKM.JK", Sector: "Infrastructure", Close: 3100, Entry_Price: 3050, Target_Price: 3350, Stop_Loss: 2950, Recommendation: "Buy on Weakness", Risk_Reward_Ratio: 2.0, Bullish_Probability: 0.74, Dividend_Yield: 0.051, GBDT_Prob: 0.76, LSTM_Prob: 0.72, ARIMA_Prob: 0.74, GARCH_Vol: 0.172, VaR_95_1D: -0.017, Beta_IHSG: 0.85, Sharpe_Ratio: 1.10 },
+            { Ticker: "ASII.JK", Sector: "Industrials", Close: 5100, Entry_Price: 5000, Target_Price: 5500, Stop_Loss: 4800, Recommendation: "Buy on Breakout", Risk_Reward_Ratio: 2.5, Bullish_Probability: 0.76, Dividend_Yield: 0.075, GBDT_Prob: 0.78, LSTM_Prob: 0.75, ARIMA_Prob: 0.75, GARCH_Vol: 0.210, VaR_95_1D: -0.022, Beta_IHSG: 1.05, Sharpe_Ratio: 1.18 },
+            { Ticker: "ADRO.JK", Sector: "Energy", Close: 3750, Entry_Price: 3680, Target_Price: 4100, Stop_Loss: 3500, Recommendation: "Buy on Weakness", Risk_Reward_Ratio: 2.3, Bullish_Probability: 0.78, Dividend_Yield: 0.115, GBDT_Prob: 0.80, LSTM_Prob: 0.77, ARIMA_Prob: 0.77, GARCH_Vol: 0.245, VaR_95_1D: -0.026, Beta_IHSG: 0.98, Sharpe_Ratio: 1.22 },
+            { Ticker: "PTBA.JK", Sector: "Energy", Close: 2750, Entry_Price: 2700, Target_Price: 2980, Stop_Loss: 2580, Recommendation: "Buy on Weakness", Risk_Reward_Ratio: 2.1, Bullish_Probability: 0.75, Dividend_Yield: 0.142, GBDT_Prob: 0.77, LSTM_Prob: 0.74, ARIMA_Prob: 0.75, GARCH_Vol: 0.230, VaR_95_1D: -0.024, Beta_IHSG: 0.92, Sharpe_Ratio: 1.15 },
+            { Ticker: "BRIS.JK", Sector: "Financials", Close: 2980, Entry_Price: 2900, Target_Price: 3350, Stop_Loss: 2750, Recommendation: "Buy on Breakout", Risk_Reward_Ratio: 2.8, Bullish_Probability: 0.84, Dividend_Yield: 0.012, GBDT_Prob: 0.86, LSTM_Prob: 0.83, ARIMA_Prob: 0.82, GARCH_Vol: 0.260, VaR_95_1D: -0.028, Beta_IHSG: 1.30, Sharpe_Ratio: 1.50 }
+        ];
+
+        let allRecommendations = [...fallbackDefaultStocks];
         let currentUniverse = 'all';
         let activeModalStock = null;
 
@@ -847,7 +1109,6 @@
             if (buttonElement) {
                 buttonElement.className = "nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-semibold text-sm transition-colors bg-primary text-white shadow-sm";
             } else {
-                // Cari tombol yang sesuai jika dipanggil secara programatis
                 const matchingBtn = document.querySelector(`#sidebarNav .nav-btn[data-target="${pageId}"]`);
                 if (matchingBtn) {
                     matchingBtn.className = "nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-semibold text-sm transition-colors bg-primary text-white shadow-sm";
@@ -887,7 +1148,6 @@
         function renderCleanMarkdown(rawText) {
             if (!rawText) return "";
             
-            // Pisahkan per paragraf
             const paragraphs = rawText.split(/\n\s*\n/);
             let html = "";
 
@@ -895,7 +1155,6 @@
                 let cleanP = p.trim();
                 if (!cleanP) return;
 
-                // Abaikan header berulang
                 if (cleanP.includes("INSTITUTIONAL EQUITY RESEARCH") || cleanP.startsWith("Tanggal:")) {
                     return;
                 }
@@ -947,17 +1206,29 @@
         // 4. Fetch dan Render Rekomendasi Saham
         async function loadRecommendations() {
             try {
-                const res = await fetch('/recommendations?universe=all');
-                if (!res.ok) return;
-                const data = await res.json();
-                if (data && data.length > 0) {
-                    allRecommendations = data;
-                    renderRecommendationsTable(allRecommendations);
-                    populateCalculatorStockDropdown(allRecommendations);
-                    updatePortfolioCalculations();
+                // Panggil mode=all agar backend menggabungkan seluruh 29 saham favorit, dividen, dan swing
+                const res = await fetch('/recommendations?mode=all');
+                if (!res.ok) {
+                    // Coba fallback ke /recommendations?universe=all
+                    const fallbackRes = await fetch('/recommendations?universe=all');
+                    if (fallbackRes.ok) {
+                        const data = await fallbackRes.json();
+                        if (data && data.length > 0) {
+                            allRecommendations = data;
+                        }
+                    }
+                } else {
+                    const data = await res.json();
+                    if (data && data.length > 0) {
+                        allRecommendations = data;
+                    }
                 }
             } catch (e) {
-                console.log("Menggunakan data rekomendasi default.");
+                console.log("Menggunakan data rekomendasi lokal.");
+            } finally {
+                renderRecommendationsTable(allRecommendations);
+                populateCalculatorStockDropdown(allRecommendations);
+                updatePortfolioCalculations();
             }
         }
 
@@ -965,8 +1236,8 @@
             const tbody = document.getElementById('recommendationsTableBody');
             if (!tbody) return;
 
-            if (items.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="9" class="py-8 text-center text-text-muted text-xs">Tidak ditemukan saham untuk filter ini.</td></tr>`;
+            if (!items || items.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="9" class="py-8 text-center text-text-muted text-xs">Tidak ditemukan saham untuk filter ini. Coba kata kunci pencarian lain atau pilih tab "Semua".</td></tr>`;
                 return;
             }
 
@@ -1048,38 +1319,62 @@
         }
 
         function applyFilters() {
-            const sector = document.getElementById('sectorFilter').value;
-            const search = (document.getElementById('globalSearchInput').value || "").trim().toUpperCase();
+            const sectorEl = document.getElementById('sectorFilter');
+            const sector = sectorEl ? sectorEl.value : 'ALL';
+            const searchInput = document.getElementById('globalSearchInput');
+            const search = (searchInput ? searchInput.value : "").trim().toUpperCase();
 
             let filtered = allRecommendations;
 
-            if (currentUniverse !== 'all') {
-                if (currentUniverse === 'dividend') {
-                    filtered = filtered.filter(x => (x.Dividend_Yield && x.Dividend_Yield > 0.03) || ['PTBA.JK','ADRO.JK','ITMG.JK','UNTR.JK','BBCA.JK'].includes(x.Ticker));
-                } else if (currentUniverse === 'favorites') {
-                    filtered = filtered.filter(x => ['BBCA.JK','BBRI.JK','BMRI.JK','BBNI.JK','TLKM.JK','ASII.JK'].includes(x.Ticker));
-                } else if (currentUniverse === 'swing') {
-                    filtered = filtered.filter(x => (x.Recommendation || "").toLowerCase().includes("swing") || (x.Recommendation || "").toLowerCase().includes("breakout"));
+            // Jika ada kata kunci di search engine, utamakan pencarian global pada seluruh emiten
+            if (search.length > 0) {
+                filtered = filtered.filter(x => 
+                    (x.Ticker || "").toUpperCase().includes(search) || 
+                    (x.Sector || "").toUpperCase().includes(search) ||
+                    (x.Company || "").toUpperCase().includes(search)
+                );
+            } else {
+                if (currentUniverse !== 'all') {
+                    if (currentUniverse === 'dividend') {
+                        filtered = filtered.filter(x => (x.Dividend_Yield && x.Dividend_Yield > 0.03) || ['PTBA.JK','ADRO.JK','ITMG.JK','UNTR.JK','BBCA.JK'].includes(x.Ticker));
+                    } else if (currentUniverse === 'favorites') {
+                        filtered = filtered.filter(x => ['BBCA.JK','BBRI.JK','BMRI.JK','BBNI.JK','TLKM.JK','ASII.JK','BRIS.JK'].includes(x.Ticker));
+                    } else if (currentUniverse === 'swing') {
+                        filtered = filtered.filter(x => (x.Recommendation || "").toLowerCase().includes("swing") || (x.Recommendation || "").toLowerCase().includes("breakout") || ['BRIS.JK','ASII.JK','MEDC.JK','AMMN.JK'].includes(x.Ticker));
+                    }
                 }
-            }
 
-            if (sector !== 'ALL') {
-                filtered = filtered.filter(x => (x.Sector || "").toLowerCase() === sector.toLowerCase());
-            }
-
-            if (search) {
-                filtered = filtered.filter(x => (x.Ticker || "").toUpperCase().includes(search) || (x.Sector || "").toUpperCase().includes(search));
+                if (sector !== 'ALL') {
+                    filtered = filtered.filter(x => (x.Sector || "").toLowerCase() === sector.toLowerCase());
+                }
             }
 
             renderRecommendationsTable(filtered);
         }
 
         function handleGlobalSearch(val) {
-            // Jika user sedang di page lain, pindah ke page rekomendasi untuk melihat hasil pencarian
+            const query = (val || "").trim().toUpperCase();
+            // Jika user sedang di page lain, otomatis pindah ke page rekomendasi untuk melihat hasil pencarian
             const currentActive = document.querySelector('.page-view.active');
             if (currentActive && currentActive.id !== 'page-rekomendasi') {
                 navigateTo('page-rekomendasi');
             }
+
+            if (query.length > 0) {
+                // Reset filter universe ke "all" agar pencarian mencakup seluruh saham (termasuk BBCA, BBRI, BMRI, dll)
+                currentUniverse = 'all';
+                const tabs = document.querySelectorAll('#universeTabs button');
+                tabs.forEach((t, idx) => {
+                    if (idx === 0) {
+                        t.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-white text-primary shadow-sm";
+                    } else {
+                        t.className = "px-3 py-1.5 rounded-lg text-xs font-semibold text-text-muted hover:text-text-main transition-colors";
+                    }
+                });
+                const sectorFilterEl = document.getElementById('sectorFilter');
+                if (sectorFilterEl) sectorFilterEl.value = 'ALL';
+            }
+
             applyFilters();
         }
 
@@ -1446,15 +1741,20 @@
             showToast("File CSV portofolio berhasil diunduh!");
         }
 
-        // 9. Status Jam Perdagangan BEI
+        // 9. Status Jam Perdagangan BEI (Waktu Indonesia Barat / Asia:Jakarta)
         function updateMarketStatus() {
             const now = new Date();
-            const day = now.getDay();
-            const timeNum = now.getHours() * 100 + now.getMinutes();
+            // Konversi ke zona waktu resmi Bursa Efek Indonesia (WIB / Asia:Jakarta)
+            const wibString = now.toLocaleString("en-US", { timeZone: "Asia/Jakarta" });
+            const wibDate = new Date(wibString);
+            const day = wibDate.getDay(); // 0: Minggu, 1: Senin, ..., 5: Jumat, 6: Sabtu
+            const timeNum = wibDate.getHours() * 100 + wibDate.getMinutes();
 
             const pill = document.getElementById('marketPill');
             const text = document.getElementById('marketStatusText');
+            if (!pill || !text) return;
 
+            // Hari Senin (1) s/d Jumat (5)
             if (day >= 1 && day <= 5) {
                 if (timeNum >= 900 && timeNum <= 1130) {
                     text.innerText = "Pasar Buka (Sesi 1: 09.00 - 11.30 WIB)";
@@ -1463,16 +1763,47 @@
                     text.innerText = "Pasar Buka (Sesi 2: 13.30 - 15.45 WIB)";
                     pill.className = "flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800";
                 } else if (timeNum > 1130 && timeNum < 1330) {
-                    text.innerText = "Pasar Rehat Siang (Buka 13.30 WIB)";
+                    text.innerText = "Pasar Rehat Siang (Sesi 2 Buka 13.30 WIB)";
                     pill.className = "flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-800";
+                } else if (timeNum < 900) {
+                    text.innerText = "Pra-Pembukaan (Pasar Buka 09.00 WIB)";
+                    pill.className = "flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-slate-700";
                 } else {
                     text.innerText = "Pasar Tutup (Buka Esok 09.00 WIB)";
                     pill.className = "flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-slate-700";
                 }
             } else {
-                text.innerText = "Pasar Tutup (Hari Libur Bursa)";
+                // Hari Sabtu & Minggu
+                text.innerText = "Pasar Tutup (Hari Libur Bursa • Buka Senin 09.00 WIB)";
                 pill.className = "flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-slate-700";
             }
+        }
+
+        // 10. Loader Grafik Interaktif TradingView ala Graham Journal
+        function loadInteractiveChart(symbol, title, btn) {
+            if (btn) {
+                const buttons = document.querySelectorAll('.chart-ticker-btn');
+                buttons.forEach(b => {
+                    b.className = "chart-ticker-btn px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 text-text-muted hover:bg-slate-200 transition-colors";
+                });
+                btn.className = "chart-ticker-btn px-4 py-2 rounded-xl text-xs font-bold bg-primary text-white shadow-sm flex items-center gap-1.5";
+            }
+
+            const titleEl = document.getElementById('activeChartTitle');
+            if (titleEl) titleEl.innerText = title;
+
+            const container = document.getElementById('tradingviewChartContainer');
+            if (!container) return;
+
+            const encodedSymbol = encodeURIComponent(symbol);
+            container.innerHTML = `
+                <iframe 
+                    src="https://s.tradingview.com/widgetembed/?symbol=${encodedSymbol}&interval=D&hidesidetoolbar=0&symboledit=1&saveimage=1&toolbarbg=f1f3f6&studies=%5B%22RSI%40tv-basicstudies%22%2C%22MASimple%40tv-basicstudies%22%5D&theme=light&style=1&timezone=Asia%2FJakarta&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=id&utm_source=localhost&utm_medium=widget&utm_campaign=chart&utm_term=${encodedSymbol}" 
+                    style="width: 100%; height: 100%; border: none; border-radius: 12px;"
+                    title="Grafik TradingView ${symbol}"
+                    loading="lazy">
+                </iframe>
+            `;
         }
 
         // Inisialisasi Saat Dokumen Siap
@@ -1483,6 +1814,7 @@
             fetchMorningBrief();
             loadRecommendations();
             renderSavedTradingPlans();
+            loadInteractiveChart('IDX:COMPOSITE', 'IHSG (Indeks Harga Saham Gabungan)');
 
             // Handle URL Hash jika ada
             if (window.location.hash) {
