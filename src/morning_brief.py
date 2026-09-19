@@ -165,7 +165,7 @@ PANDUAN PENULISAN:
             response = model.generate_content(prompt)
             brief_body = response.text.strip()
             
-            # Clean up any remaining repetitive headers
+            # Clean up any remaining repetitive headers, asterisks, and ampersands
             lines = brief_body.split("\n")
             cleaned_lines = []
             for line in lines:
@@ -173,11 +173,11 @@ PANDUAN PENULISAN:
                 if l_strip.startswith("**INSTITUTIONAL") or l_strip.startswith("INSTITUTIONAL") or l_strip.startswith("**Tanggal"):
                     continue
                 cleaned_lines.append(line)
-            brief_body = "\n".join(cleaned_lines).strip()
+            brief_body = "\n".join(cleaned_lines).replace("**", "").replace("*", "").replace(" & ", " dan ").strip()
 
             return {
                 "date": snapshot["date"],
-                "headline": title,
+                "headline": title.replace("&", "dan"),
                 "brief_content": brief_body,
                 "snapshot": snapshot,
             }
