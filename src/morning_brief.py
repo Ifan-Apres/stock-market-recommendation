@@ -3,13 +3,21 @@ import logging
 import os
 from datetime import datetime
 from pathlib import Path
+import sys
 from typing import Any, Dict
 
-from dotenv import load_dotenv
-import google.generativeai as genai
-import pandas as pd
+# Ensure project root is in sys.path
+ROOT_DIR = Path(__file__).resolve().parent.parent
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
 
-from src.config import (
+# pyrefly: ignore [missing-import]
+from dotenv import load_dotenv  # type: ignore # pyrefly: ignore [missing-import]
+import google.generativeai as genai  # type: ignore # pyrefly: ignore [missing-import]
+import pandas as pd  # type: ignore # pyrefly: ignore [missing-import]
+
+# pyrefly: ignore [missing-import]
+from src.config import (  # type: ignore # pyrefly: ignore [missing-import]
     ADVANCED_METRICS_FILE,
     BENCHMARK_DATA_FILE,
     GLOBAL_MACRO_FILE,

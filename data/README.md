@@ -1,4 +1,4 @@
-# 🗄️ AlphaTech Data Architecture & Pipeline
+# 🗄️ Stock Market Recommendation - Data Architecture & Pipeline
 
 Direktori ini menampung seluruh siklus hidup data kuantitatif, mulai dari data mentah (*raw data*) hasil penarikan publik hingga data matang (*processed features & models*) yang siap digunakan oleh mesin rekomendasi dan antarmuka web.
 

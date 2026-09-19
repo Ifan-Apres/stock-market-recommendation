@@ -1,8 +1,8 @@
 @echo off
-title AlphaTech Quantitative Pipeline Engine
+title Stock Market Recommendation Pipeline Engine
 color 0A
 echo ======================================================================
-echo [AlphaTech] Starting Daily Quantitative Pipeline Execution...
+echo [Stock Market Recommendation] Starting Daily Quantitative Pipeline Execution...
 echo ======================================================================
 powershell -ExecutionPolicy Bypass -File "%~dp0run_daily.ps1"
 echo.

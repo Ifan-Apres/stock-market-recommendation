@@ -1,20 +1,28 @@
 import logging
 import os
-import warnings
 from pathlib import Path
+import sys
 from typing import Any, Dict, List, Optional, Tuple
+import warnings
 
-import joblib
-import numpy as np
-import pandas as pd
-from sklearn.ensemble import HistGradientBoostingClassifier
-from sklearn.metrics import accuracy_score, precision_score, roc_auc_score
-from statsmodels.tsa.arima.model import ARIMA
-import torch
-import torch.nn as nn
-from torch.utils.data import DataLoader, TensorDataset
+# Ensure project root is in sys.path
+ROOT_DIR = Path(__file__).resolve().parent.parent
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
 
-from src.config import (
+# pyrefly: ignore [missing-import]
+import joblib  # type: ignore # pyrefly: ignore [missing-import]
+import numpy as np  # type: ignore # pyrefly: ignore [missing-import]
+import pandas as pd  # type: ignore # pyrefly: ignore [missing-import]
+from sklearn.ensemble import HistGradientBoostingClassifier  # type: ignore # pyrefly: ignore [missing-import]
+from sklearn.metrics import accuracy_score, precision_score, roc_auc_score  # type: ignore # pyrefly: ignore [missing-import]
+from statsmodels.tsa.arima.model import ARIMA  # type: ignore # pyrefly: ignore [missing-import]
+import torch  # type: ignore # pyrefly: ignore [missing-import]
+import torch.nn as nn  # type: ignore # pyrefly: ignore [missing-import]
+from torch.utils.data import DataLoader, TensorDataset  # type: ignore # pyrefly: ignore [missing-import]
+
+# pyrefly: ignore [missing-import]
+from src.config import (  # type: ignore # pyrefly: ignore [missing-import]
     ARIMA_FORECAST_STEPS,
     DATA_DIR,
     DEFAULT_TICKERS,
