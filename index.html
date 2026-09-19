@@ -3,19 +3,21 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Stock Market Recommendation - AI & Quant Platform</title>
+    <title>Stock Market Recommendation - Institutional Equity Research</title>
     <meta content="web_dashboard" name="shell-type"/>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
     <style>
         @layer base {
             html, body { margin: 0; padding: 0; }
             body { overscroll-behavior: none; }
-            main > :first-child { margin-top: 0 !important; }
-            main > :last-child { margin-bottom: 0 !important; }
         }
-        ::-webkit-scrollbar { display: none; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .page-view { display: none; }
+        .page-view.active { display: block; }
     </style>
     <script src="https://cdn.tailwindcss.com"></script>
     <script id="tailwind-config">
@@ -24,943 +26,891 @@
             theme: {
                 extend: {
                     colors: {
-                        "on-error-container": "#93000a",
-                        "tertiary-fixed": "#ffdad7",
-                        "on-tertiary": "#ffffff",
-                        "primary": "#091426",
-                        "on-secondary": "#ffffff",
-                        "error-container": "#ffdad6",
-                        "secondary-fixed-dim": "#4edea3",
-                        "on-secondary-fixed": "#002113",
-                        "on-error": "#ffffff",
-                        "surface-container-high": "#dce9ff",
-                        "error": "#ba1a1a",
-                        "surface-dim": "#cbdbf5",
-                        "on-primary-fixed": "#111c2d",
-                        "outline": "#75777d",
-                        "on-surface": "#0b1c30",
-                        "tertiary": "#330002",
-                        "on-primary-fixed-variant": "#3c475a",
-                        "on-surface-variant": "#45474c",
-                        "inverse-on-surface": "#eaf1ff",
-                        "primary-fixed": "#d8e3fb",
-                        "secondary-container": "#6cf8bb",
-                        "secondary-fixed": "#6ffbbe",
+                        "primary": "#0f172a",
                         "primary-container": "#1e293b",
-                        "surface-container-highest": "#d3e4fe",
-                        "surface-container-lowest": "#ffffff",
-                        "surface-container": "#e5eeff",
-                        "on-tertiary-fixed-variant": "#930013",
-                        "background": "#f8f9ff",
-                        "tertiary-fixed-dim": "#ffb3ad",
-                        "surface-tint": "#545f73",
-                        "inverse-primary": "#bcc7de",
-                        "secondary": "#006c49",
-                        "on-primary-container": "#8590a6",
-                        "on-tertiary-fixed": "#410004",
-                        "surface-bright": "#f8f9ff",
-                        "surface": "#f8f9ff",
-                        "on-secondary-container": "#00714d",
-                        "tertiary-container": "#5a0008",
-                        "outline-variant": "#c5c6cd",
-                        "surface-container-low": "#eff4ff",
-                        "primary-fixed-dim": "#bcc7de",
-                        "inverse-surface": "#213145",
-                        "on-tertiary-container": "#ff5250",
-                        "on-background": "#0b1c30",
-                        "on-primary": "#ffffff",
-                        "on-secondary-fixed-variant": "#005236",
-                        "surface-variant": "#d3e4fe"
-                    },
-                    borderRadius: {
-                        "DEFAULT": "0.25rem",
-                        "lg": "0.5rem",
-                        "xl": "0.75rem",
-                        "full": "9999px"
-                    },
-                    spacing: {
-                        "space-md": "1rem",
-                        "gutter": "1.5rem",
-                        "space-xs": "0.25rem",
-                        "space-lg": "1.5rem",
-                        "margin": "2rem",
-                        "space-sm": "0.5rem",
-                        "space-xl": "2.5rem"
+                        "secondary": "#047857",
+                        "secondary-container": "#d1fae5",
+                        "on-secondary-container": "#065f46",
+                        "accent": "#2563eb",
+                        "surface": "#ffffff",
+                        "surface-low": "#f8fafc",
+                        "surface-border": "#e2e8f0",
+                        "text-main": "#0f172a",
+                        "text-muted": "#64748b",
+                        "danger": "#b91c1c",
+                        "danger-container": "#fee2e2",
                     },
                     fontFamily: {
-                        "headline-md": ["Plus Jakarta Sans"],
-                        "body-lg": ["Plus Jakarta Sans"],
-                        "display-lg": ["Plus Jakarta Sans"],
-                        "label-md": ["Plus Jakarta Sans"],
-                        "headline-lg": ["Plus Jakarta Sans"],
-                        "label-sm": ["Plus Jakarta Sans"],
-                        "headline-sm": ["Plus Jakarta Sans"],
-                        "label-lg": ["Plus Jakarta Sans"],
-                        "body-md": ["Plus Jakarta Sans"],
-                        "body-sm": ["Plus Jakarta Sans"],
-                        "display-lg-mobile": ["Plus Jakarta Sans"],
-                        "currency-display": ["Plus Jakarta Sans"]
-                    },
-                    fontSize: {
-                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
-                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
-                        "display-lg": ["36px", { "lineHeight": "44px", "fontWeight": "700" }],
-                        "label-md": ["12px", { "lineHeight": "16px", "fontWeight": "600" }],
-                        "headline-lg": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
-                        "label-sm": ["11px", { "lineHeight": "14px", "fontWeight": "600" }],
-                        "headline-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
-                        "label-lg": ["14px", { "lineHeight": "20px", "fontWeight": "600" }],
-                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
-                        "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
-                        "display-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "700" }],
-                        "currency-display": ["32px", { "lineHeight": "40px", "fontWeight": "700" }]
+                        sans: ["Plus Jakarta Sans", "sans-serif"],
                     }
                 }
             }
         };
     </script>
 </head>
-<body class="bg-background font-body-md text-on-surface antialiased">
-    <!-- Sidebar Kiri -->
-    <aside class="fixed left-0 top-0 h-full w-72 bg-surface-container-lowest z-50 flex flex-col justify-between shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
+<body class="bg-[#f8fafc] font-sans text-text-main antialiased min-h-screen">
+
+    <!-- ==================== SIDEBAR NAVIGATION ==================== -->
+    <aside class="fixed left-0 top-0 h-full w-64 bg-white z-50 flex flex-col justify-between border-r border-surface-border shadow-sm">
         <div class="flex flex-col">
             <!-- Brand Logo -->
-            <div class="h-20 px-space-lg flex items-center gap-space-sm bg-surface-container-lowest">
-                <div class="w-10 h-10 rounded-xl bg-secondary-container flex items-center justify-center text-on-secondary-container font-bold text-xl shadow-sm">
-                    <span class="material-symbols-outlined text-[24px]">trending_up</span>
+            <div class="h-20 px-6 flex items-center gap-3 border-b border-surface-border">
+                <div class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-white font-bold shadow-sm">
+                    <span class="material-symbols-outlined text-[22px]">show_chart</span>
                 </div>
                 <div class="flex flex-col">
-                    <span class="font-headline-sm text-headline-sm text-primary leading-none tracking-tight">Stock Market Recommendation</span>
-                    <span class="font-label-sm text-label-sm text-on-surface-variant mt-1">AI & Quant Stock Recommendations</span>
+                    <span class="font-bold text-primary text-base leading-tight tracking-tight">Stock Market</span>
+                    <span class="text-xs text-text-muted font-medium">Recommendation Platform</span>
                 </div>
             </div>
-            <!-- Navigation Links -->
-            <nav class="flex flex-col gap-1 px-space-md mt-space-sm" id="mainNav">
-                <a aria-current="page" class="flex items-center gap-space-sm px-space-md py-space-sm transition-colors bg-primary text-on-primary font-label-lg shadow-sm rounded-xl" href="#ringkasan-pasar" onclick="setActiveNav(this)">
+
+            <!-- Navigasi Menu -->
+            <nav class="flex flex-col gap-1.5 p-4" id="sidebarNav">
+                <button type="button" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-semibold text-sm transition-colors bg-primary text-white shadow-sm" data-target="page-ringkasan" onclick="navigateTo('page-ringkasan', this)">
                     <span class="material-symbols-outlined text-[20px]">query_stats</span>
                     <span>Ringkasan Pasar</span>
-                </a>
-                <a class="flex items-center justify-between px-space-md py-space-sm rounded-xl font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" href="#rekomendasi-trading" onclick="setActiveNav(this)">
-                    <div class="flex items-center gap-space-sm">
-                        <span class="material-symbols-outlined text-[20px]">auto_graph</span>
-                        <span>Rekomendasi Trading</span>
+                </button>
+
+                <button type="button" class="nav-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl font-semibold text-sm transition-colors text-text-muted hover:bg-slate-100 hover:text-text-main" data-target="page-rekomendasi" onclick="navigateTo('page-rekomendasi', this)">
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-[20px]">trending_up</span>
+                        <span>Rekomendasi Saham</span>
                     </div>
-                    <span class="font-label-sm text-label-sm px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-semibold">Hari Ini</span>
-                </a>
-                <a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" href="#portofolio-santai" onclick="setActiveNav(this)">
-                    <span class="material-symbols-outlined text-[20px]">account_balance_wallet</span>
-                    <span>Portofolio Kas Siaga</span>
-                </a>
-                <a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" href="#kalkulator-section" onclick="setActiveNav(this)">
+                    <span class="text-[11px] px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold" id="recBadgeCount">Hari Ini</span>
+                </button>
+
+                <button type="button" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-semibold text-sm transition-colors text-text-muted hover:bg-slate-100 hover:text-text-main" data-target="page-portofolio" onclick="navigateTo('page-portofolio', this)">
+                    <span class="material-symbols-outlined text-[20px]">pie_chart</span>
+                    <span>Alokasi Portofolio</span>
+                </button>
+
+                <button type="button" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-semibold text-sm transition-colors text-text-muted hover:bg-slate-100 hover:text-text-main" data-target="page-kalkulator" onclick="navigateTo('page-kalkulator', this)">
                     <span class="material-symbols-outlined text-[20px]">calculate</span>
-                    <span>Kalkulator Lot & Modal</span>
-                </a>
-                <a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" href="/docs" target="_blank">
-                    <span class="material-symbols-outlined text-[20px]">api</span>
-                    <span>Swagger API</span>
-                </a>
+                    <span>Kalkulator Lot & Risiko</span>
+                </button>
+
+                <button type="button" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-semibold text-sm transition-colors text-text-muted hover:bg-slate-100 hover:text-text-main" data-target="page-panduan" onclick="navigateTo('page-panduan', this)">
+                    <span class="material-symbols-outlined text-[20px]">menu_book</span>
+                    <span>Panduan & Risiko</span>
+                </button>
             </nav>
         </div>
-        <!-- Bottom Sidebar Widget -->
-        <div class="p-space-md flex flex-col gap-space-sm">
-            <div class="p-space-md rounded-xl bg-surface-container-low flex flex-col gap-2">
-                <div class="flex items-center gap-2">
-                    <span class="material-symbols-outlined text-secondary text-[20px]">school</span>
-                    <span class="font-label-md text-label-md text-primary">Panduan Pemula (Guide)</span>
+
+        <!-- Info Sistem Bawah -->
+        <div class="p-4 flex flex-col gap-3 border-t border-surface-border">
+            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 flex flex-col gap-1.5">
+                <div class="flex items-center justify-between">
+                    <span class="text-xs font-bold text-primary">Sistem Kuantitatif</span>
+                    <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
+                        Aktif
+                    </span>
                 </div>
-                <p class="font-body-sm text-body-sm text-on-surface-variant">Belajar konsep lot, cut-loss, dan cara pilih saham tanpa pusing.</p>
-                <a class="inline-flex items-center gap-1 font-label-sm text-label-sm text-secondary hover:underline pt-1 font-semibold" href="#edukasi-section">
-                    Baca Panduan <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
-                </a>
+                <p class="text-[11px] text-text-muted leading-relaxed">
+                    Multi-Engine GBDT, LSTM, ARIMA & GARCH Volatility.
+                </p>
             </div>
-            <div class="pt-space-xs flex items-center justify-between text-on-surface-variant px-2">
-                <span class="font-label-sm text-label-sm">Versi 4.2 Multi-Engine</span>
-                <span class="inline-block w-2 h-2 rounded-full bg-secondary"></span>
+            <div class="flex items-center justify-between text-[11px] text-text-muted px-1">
+                <span>Versi 4.2.0 • IDX Official</span>
+                <span id="systemTime">WIB</span>
             </div>
         </div>
     </aside>
 
-    <!-- Content Area -->
-    <div class="pl-72">
-        <!-- Top Header Bar -->
-        <header class="fixed top-0 left-72 right-0 h-20 bg-surface-container-lowest/90 backdrop-blur-xl z-40 shadow-[0_1px_8px_rgba(0,0,0,0.04)] px-gutter flex items-center justify-between gap-space-lg">
-            <div class="flex-1 max-w-xl">
+    <!-- ==================== HEADER ATAS ==================== -->
+    <div class="pl-64">
+        <header class="fixed top-0 left-64 right-0 h-20 bg-white/90 backdrop-blur-md z-40 border-b border-surface-border px-8 flex items-center justify-between gap-6">
+            <!-- Search bar fungsional -->
+            <div class="flex-1 max-w-lg">
                 <div class="relative flex items-center w-full">
-                    <span class="material-symbols-outlined absolute left-space-md text-on-surface-variant text-[20px] pointer-events-none">search</span>
-                    <input class="w-full bg-surface-container-low text-on-surface placeholder:text-on-surface-variant rounded-full pl-11 pr-space-md py-2.5 font-body-sm text-body-sm focus:outline-none focus:ring-2 focus:ring-secondary/30 transition-all" id="searchInput" placeholder="Cari kode saham atau nama perusahaan (cth: BBCA, TLKM, ASII, ADRO)..." type="text" oninput="filterTableBySearch(this.value)"/>
+                    <span class="material-symbols-outlined absolute left-3.5 text-slate-400 text-[20px] pointer-events-none">search</span>
+                    <input class="w-full bg-slate-100 border border-transparent focus:border-slate-300 text-sm text-text-main placeholder:text-slate-400 rounded-xl pl-10 pr-4 py-2.5 focus:outline-none focus:bg-white transition-all" id="globalSearchInput" placeholder="Cari kode saham atau sektor (cth: BBCA, TLKM, Financials)..." type="text" oninput="handleGlobalSearch(this.value)"/>
                 </div>
             </div>
-            <div class="flex items-center gap-space-md shrink-0">
-                <div class="hidden xl:flex items-center gap-2 px-3 py-1.5 rounded-full bg-secondary-container/40 text-on-secondary-container" id="marketStatusPill">
-                    <span class="inline-block w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
-                    <span class="font-label-sm text-label-sm font-semibold" id="marketStatusText">Pasar Buka (Sesi 1: 09.00 - 11.30 WIB)</span>
+
+            <!-- Info Pasar & Profil Analis -->
+            <div class="flex items-center gap-5 shrink-0">
+                <div class="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800" id="marketPill">
+                    <span class="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
+                    <span class="text-xs font-bold" id="marketStatusText">Pasar Buka (Sesi Perdagangan)</span>
                 </div>
-                <button class="p-2.5 rounded-full text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors relative" type="button" onclick="alert('AlphaTech Engine: Semua data pasar & rekomendasi dihitung secara live menggunakan model GBDT, LSTM, ARIMA & GARCH.')" title="Status Notifikasi">
-                    <span class="material-symbols-outlined text-[22px]">notifications</span>
-                    <span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-secondary"></span>
-                </button>
-                <div class="h-8 w-px bg-outline-variant/40"></div>
-                <div class="flex items-center gap-space-sm cursor-pointer pl-1">
-                    <div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-xs">
+
+                <div class="h-8 w-px bg-slate-200"></div>
+
+                <!-- Profil Analis -->
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-full bg-primary text-white flex items-center justify-center font-bold text-xs shadow-sm">
                         SW
                     </div>
                     <div class="flex flex-col text-left">
-                        <span class="font-label-md text-label-md text-on-surface leading-tight">Sekar Widhastri</span>
-                        <span class="font-label-sm text-label-sm text-secondary leading-tight font-medium">Research & Quant Analyst</span>
+                        <span class="text-sm font-bold text-primary leading-tight">Sekar Widhastri</span>
+                        <span class="text-xs text-text-muted leading-tight font-medium">Research & Quant Analyst</span>
                     </div>
                 </div>
             </div>
         </header>
 
-        <!-- Main Workspace -->
-        <main class="relative pt-20 bg-background min-h-screen px-gutter py-space-lg">
-            <div class="flex flex-col w-full gap-space-lg">
-                <!-- Bagian 1: Banner Header 'Ringkasan Pagi Pasar (Morning Brief AI)' -->
-                <section class="w-full relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary via-primary-container to-primary text-on-primary p-space-lg lg:p-space-xl shadow-xl" id="ringkasan-pasar">
-                    <!-- Ambient glowing accents -->
-                    <div class="absolute -right-20 -top-24 w-96 h-96 rounded-full bg-secondary/15 blur-3xl pointer-events-none"></div>
-                    <div class="absolute -left-20 -bottom-24 w-80 h-80 rounded-full bg-primary-fixed/10 blur-3xl pointer-events-none"></div>
-                    
-                    <div class="relative z-10 flex flex-col gap-space-md">
-                        <!-- Header Meta & AI Badge -->
-                        <div class="flex flex-wrap items-center justify-between gap-space-sm">
-                            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container-lowest/10 backdrop-blur-md text-secondary-fixed">
-                                <span class="material-symbols-outlined text-[16px] text-secondary-fixed">smart_toy</span>
-                                <span class="font-label-sm text-label-sm tracking-wide" id="briefBadgeText">Ringkasan Cerdas AI Gemini 3.6 • Diperbarui Hari Ini</span>
+        <!-- ==================== MAIN CONTENT AREA (5 PAGES) ==================== -->
+        <main class="pt-24 px-8 pb-16 min-h-screen">
+
+            <!-- PAGE 1: RINGKASAN PASAR -->
+            <div class="page-view active" id="page-ringkasan">
+                <div class="flex flex-col gap-6 max-w-7xl mx-auto">
+                    <!-- Morning Brief Hero Banner -->
+                    <section class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white p-7 lg:p-9 shadow-lg">
+                        <div class="relative z-10 flex flex-col gap-5">
+                            <div class="flex flex-wrap items-center justify-between gap-3">
+                                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-emerald-300 text-xs font-semibold">
+                                    <span class="material-symbols-outlined text-[16px]">schedule</span>
+                                    <span id="briefDateBadge">Laporan Riset Harian • Sesi 19 September 2026</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-xs text-slate-300">
+                                    <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                                    <span>Konsensus Kuantitatif Terintegrasi</span>
+                                </div>
                             </div>
-                            <div class="flex items-center gap-2 text-on-primary-container font-label-sm text-label-sm">
-                                <span class="inline-block w-2 h-2 rounded-full bg-secondary-fixed animate-pulse"></span>
-                                <span>Multi-Engine Quant Consensus</span>
+
+                            <div class="max-w-4xl">
+                                <h1 class="text-2xl lg:text-3xl font-extrabold text-white tracking-tight leading-tight" id="briefHeadline">
+                                    Morning Market Brief: Analisis Arah IHSG & Katalis Global
+                                </h1>
+                            </div>
+
+                            <!-- 4 Kartu Metrik Pasar -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-2">
+                                <div class="p-4 rounded-xl bg-white/5 border border-white/10 flex flex-col justify-between">
+                                    <span class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Bursa Wall Street</span>
+                                    <div class="my-2">
+                                        <div class="text-lg font-bold text-white">S&P 500 <span class="text-emerald-400 font-extrabold" id="metricSP500">+0.65%</span></div>
+                                        <span class="text-xs text-emerald-300">Katalis Positif</span>
+                                    </div>
+                                    <p class="text-xs text-slate-300">Sentimen bursa AS memberikan dorongan awal bagi IHSG.</p>
+                                </div>
+
+                                <div class="p-4 rounded-xl bg-white/5 border border-white/10 flex flex-col justify-between">
+                                    <span class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Minyak Mentah Brent</span>
+                                    <div class="my-2">
+                                        <div class="text-lg font-bold text-white" id="metricBrent">US$ 78.50 / barel</div>
+                                        <span class="text-xs text-slate-300">Stabil Terkendali</span>
+                                    </div>
+                                    <p class="text-xs text-slate-300">Biaya energi dan inflasi manufaktur domestik terjaga.</p>
+                                </div>
+
+                                <div class="p-4 rounded-xl bg-white/5 border border-white/10 flex flex-col justify-between">
+                                    <span class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Kurs USD / IDR</span>
+                                    <div class="my-2">
+                                        <div class="text-lg font-bold text-white" id="metricUSDIDR">Rp 15.850 / US$</div>
+                                        <span class="text-xs text-emerald-300">Rupiah Terjaga</span>
+                                    </div>
+                                    <p class="text-xs text-slate-300">Stabilitas nilai tukar menopang arus modal asing.</p>
+                                </div>
+
+                                <div class="p-4 rounded-xl bg-white/5 border border-white/10 flex flex-col justify-between">
+                                    <span class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Level Acuan IHSG</span>
+                                    <div class="my-2">
+                                        <div class="text-lg font-bold text-white" id="metricIHSG">6.462,43 <span class="text-emerald-400" id="metricIHSGChange">+0.40%</span></div>
+                                        <span class="text-xs text-slate-300" id="metricRange">Support 6.398 • Resistance 6.540</span>
+                                    </div>
+                                    <p class="text-xs text-slate-300">Fokus akumulasi pada saham likuid berkapitalisasi besar.</p>
+                                </div>
+                            </div>
+
+                            <!-- Editorial Narrative Body (Formatted Clean HTML without **) -->
+                            <div class="p-5 rounded-xl bg-white/10 border border-white/10 flex flex-col gap-3">
+                                <div class="flex items-center gap-2 text-emerald-300 font-bold text-sm">
+                                    <span class="material-symbols-outlined text-[18px]">article</span>
+                                    <span>Ulasan Narasi Riset Pasar:</span>
+                                </div>
+                                <div class="text-sm text-slate-200 leading-relaxed space-y-3" id="briefContentRendered">
+                                    <!-- Populated cleanly via JS without raw asterisks -->
+                                </div>
                             </div>
                         </div>
+                    </section>
 
-                        <!-- Main Heading Brief -->
-                        <div class="max-w-4xl">
-                            <h1 class="font-display-lg text-display-lg font-bold tracking-tight text-on-primary leading-tight" id="briefTitle">
-                                Kabar Pasar Hari Ini: IHSG Berpotensi Menguat Menuju 7.350
-                            </h1>
-                            <p class="font-body-md text-body-md text-on-primary-container mt-2 max-w-3xl leading-relaxed" id="briefSummary">
-                                Sentimen global dan bursa domestik bergerak seirama pagi ini didukung stabilnya nilai tukar serta arus akumulasi modal asing.
+                    <!-- Quick Navigation Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                        <div class="p-5 rounded-2xl bg-white border border-surface-border shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold">
+                                    <span class="material-symbols-outlined">trending_up</span>
+                                </div>
+                                <div class="flex flex-col">
+                                    <h3 class="font-bold text-primary text-base">Rekomendasi Saham</h3>
+                                    <p class="text-xs text-text-muted">Target Entry, TP1, dan Cut-Loss presisi</p>
+                                </div>
+                            </div>
+                            <button type="button" class="mt-4 w-full py-2 px-4 rounded-xl bg-slate-100 hover:bg-primary hover:text-white font-semibold text-xs text-primary transition-colors flex items-center justify-center gap-2" onclick="navigateTo('page-rekomendasi')">
+                                Buka Daftar Rekomendasi
+                                <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                            </button>
+                        </div>
+
+                        <div class="p-5 rounded-2xl bg-white border border-surface-border shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center font-bold">
+                                    <span class="material-symbols-outlined">pie_chart</span>
+                                </div>
+                                <div class="flex flex-col">
+                                    <h3 class="font-bold text-primary text-base">Alokasi Portofolio</h3>
+                                    <p class="text-xs text-text-muted">Optimasi bobot modal & 20% kas siaga</p>
+                                </div>
+                            </div>
+                            <button type="button" class="mt-4 w-full py-2 px-4 rounded-xl bg-slate-100 hover:bg-primary hover:text-white font-semibold text-xs text-primary transition-colors flex items-center justify-center gap-2" onclick="navigateTo('page-portofolio')">
+                                Hitung Alokasi Modal
+                                <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                            </button>
+                        </div>
+
+                        <div class="p-5 rounded-2xl bg-white border border-surface-border shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center font-bold">
+                                    <span class="material-symbols-outlined">calculate</span>
+                                </div>
+                                <div class="flex flex-col">
+                                    <h3 class="font-bold text-primary text-base">Kalkulator Lot BEI</h3>
+                                    <p class="text-xs text-text-muted">Uji rasio Risk:Reward & konversi 100 lembar</p>
+                                </div>
+                            </div>
+                            <button type="button" class="mt-4 w-full py-2 px-4 rounded-xl bg-slate-100 hover:bg-primary hover:text-white font-semibold text-xs text-primary transition-colors flex items-center justify-center gap-2" onclick="navigateTo('page-kalkulator')">
+                                Buka Kalkulator Lot
+                                <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE 2: REKOMENDASI SAHAM -->
+            <div class="page-view" id="page-rekomendasi">
+                <div class="flex flex-col gap-6 max-w-7xl mx-auto">
+                    <!-- Header Section -->
+                    <div class="bg-white rounded-2xl p-6 border border-surface-border shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div>
+                            <h2 class="text-xl font-bold text-primary flex items-center gap-2">
+                                <span class="material-symbols-outlined text-secondary text-[24px]">recommend</span>
+                                Rekomendasi Saham Kuantitatif
+                            </h2>
+                            <p class="text-xs text-text-muted mt-1">
+                                Pilihan saham terkurasi dari konsensus model machine learning (GBDT, LSTM, ARIMA) & metrik risiko volatilitas GARCH.
                             </p>
                         </div>
 
-                        <!-- 4 Poin Metrik Pasar -->
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md mt-2">
-                            <!-- 1. Wall Street -->
-                            <div class="p-space-md rounded-xl bg-surface-container-lowest/5 backdrop-blur-sm flex flex-col justify-between hover:bg-surface-container-lowest/10 transition-colors">
-                                <div class="flex items-center justify-between">
-                                    <span class="font-label-sm text-label-sm text-on-primary-container uppercase tracking-wider">Wall Street</span>
-                                    <span class="material-symbols-outlined text-secondary-fixed text-[18px]">trending_up</span>
-                                </div>
-                                <div class="my-2">
-                                    <div class="font-headline-sm text-headline-sm font-bold text-on-primary">S&P 500 <span class="text-secondary-fixed" id="valSP500">+0.72%</span></div>
-                                    <span class="font-label-xs font-label-sm text-secondary-fixed-dim" id="labelSP500">Menguat Solid</span>
-                                </div>
-                                <p class="font-body-sm text-body-sm text-on-primary-container leading-relaxed">
-                                    Sentimen positif rilis kinerja sektor teknologi & katalis yield US Treasury.
-                                </p>
-                            </div>
-                            <!-- 2. Minyak Dunia -->
-                            <div class="p-space-md rounded-xl bg-surface-container-lowest/5 backdrop-blur-sm flex flex-col justify-between hover:bg-surface-container-lowest/10 transition-colors">
-                                <div class="flex items-center justify-between">
-                                    <span class="font-label-sm text-label-sm text-on-primary-container uppercase tracking-wider">Minyak Dunia</span>
-                                    <span class="material-symbols-outlined text-secondary-fixed text-[18px]">horizontal_rule</span>
-                                </div>
-                                <div class="my-2">
-                                    <div class="font-headline-sm text-headline-sm font-bold text-on-primary">Brent <span class="text-on-primary" id="valBrent">$82.40</span></div>
-                                    <span class="font-label-sm text-label-sm text-secondary-fixed-dim" id="labelBrent">Stabil Terkendali</span>
-                                </div>
-                                <p class="font-body-sm text-body-sm text-on-primary-container leading-relaxed">
-                                    Biaya logistik & inflasi manufaktur domestik relatif terjaga aman.
-                                </p>
-                            </div>
-                            <!-- 3. Kurs Dollar - Rupiah -->
-                            <div class="p-space-md rounded-xl bg-surface-container-lowest/5 backdrop-blur-sm flex flex-col justify-between hover:bg-surface-container-lowest/10 transition-colors">
-                                <div class="flex items-center justify-between">
-                                    <span class="font-label-sm text-label-sm text-on-primary-container uppercase tracking-wider">Kurs USD/IDR</span>
-                                    <span class="material-symbols-outlined text-secondary-fixed text-[18px]">south</span>
-                                </div>
-                                <div class="my-2">
-                                    <div class="font-headline-sm text-headline-sm font-bold text-on-primary" id="valUSDIDR">Rp 15.650</div>
-                                    <span class="font-label-sm text-label-sm text-secondary-fixed" id="labelUSDIDR">Rupiah Menguat Teratur</span>
-                                </div>
-                                <p class="font-body-sm text-body-sm text-on-primary-container leading-relaxed">
-                                    Daya tarik investasi lokal meningkat, membuka peluang arus dana asing (foreign inflow).
-                                </p>
-                            </div>
-                            <!-- 4. Arah IHSG -->
-                            <div class="p-space-md rounded-xl bg-surface-container-lowest/5 backdrop-blur-sm flex flex-col justify-between hover:bg-surface-container-lowest/10 transition-colors">
-                                <div class="flex items-center justify-between">
-                                    <span class="font-label-sm text-label-sm text-on-primary-container uppercase tracking-wider">Laju IHSG</span>
-                                    <span class="material-symbols-outlined text-secondary-fixed text-[18px]">north_east</span>
-                                </div>
-                                <div class="my-2">
-                                    <div class="font-headline-sm text-headline-sm font-bold text-on-primary" id="valIHSG">7.315 <span class="text-secondary-fixed" id="valIHSGChange">+0.48%</span></div>
-                                    <span class="font-label-sm text-label-sm text-secondary-fixed-dim" id="labelIHSG">Rentang Uji Support-Resisten</span>
-                                </div>
-                                <p class="font-body-sm text-body-sm text-on-primary-container leading-relaxed" id="descIHSG">
-                                    Sektor perbankan besar & konsumer primer diperkirakan jadi penopang indeks.
-                                </p>
-                            </div>
-                        </div>
-
-                        <!-- Tips AI Banner Footer -->
-                        <div class="mt-space-xs p-space-md rounded-xl bg-surface-container-lowest/10 backdrop-blur-md flex items-start gap-space-sm">
-                            <span class="material-symbols-outlined text-secondary-fixed text-[22px] shrink-0 mt-0.5">tips_and_updates</span>
-                            <div class="flex flex-col">
-                                <span class="font-label-md text-label-md text-secondary-fixed font-semibold">Tips Riset Pasar Hari Ini:</span>
-                                <p class="font-body-sm text-body-sm text-inverse-on-surface" id="briefTips">
-                                    Kondisi pasar sedang kondusif. Tetap disiplin dengan batas risiko pribadi (Cut-Loss) dan hindari FOMO membeli saham yang grafiknya sudah naik terlalu tajam.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Bagian 2: Grid Utama 2 Kolom (Kiri: Rekomendasi Trading, Kanan: Portofolio & Kalkulator) -->
-                <div class="grid grid-cols-1 xl:grid-cols-12 gap-space-lg w-full items-start">
-                    <!-- KOLOM KIRI (~65% / 8 Kolom) -->
-                    <div class="xl:col-span-8 flex flex-col gap-space-lg">
-                        <!-- Card Rekomendasi Trading -->
-                        <div class="bg-surface-container-lowest rounded-2xl p-space-lg shadow-[0_1px_8px_rgba(0,0,0,0.04)] flex flex-col gap-space-md" id="rekomendasi-trading">
-                            <!-- Header & Filter Tabs -->
-                            <div class="flex flex-col md:flex-row md:items-center justify-between gap-space-md">
-                                <div>
-                                    <div class="flex items-center gap-2">
-                                        <span class="material-symbols-outlined text-secondary text-[24px]">recommend</span>
-                                        <h2 class="font-headline-md text-headline-md text-primary">Rekomendasi Trading Hari Ini</h2>
-                                    </div>
-                                    <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
-                                        Pilihan saham terkurasi dengan risiko terukur & alasan rasional bahasa manusia
-                                    </p>
-                                </div>
-                                <!-- Filter Buttons -->
-                                <div class="flex items-center gap-1.5 p-1 bg-surface-container-low rounded-xl overflow-x-auto text-nowrap" id="filterTabs">
-                                    <button class="px-3 py-1.5 rounded-lg bg-surface-container-lowest text-primary font-label-sm text-label-sm shadow-sm transition-all font-semibold" type="button" onclick="setUniverseFilter('all', this)">Semua Pilihan</button>
-                                    <button class="px-3 py-1.5 rounded-lg text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm transition-colors" type="button" onclick="setUniverseFilter('favorites', this)">Blue Chip Aman</button>
-                                    <button class="px-3 py-1.5 rounded-lg text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm transition-colors" type="button" onclick="setUniverseFilter('dividend', this)">Dividen Rutin</button>
-                                    <button class="px-3 py-1.5 rounded-lg text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm transition-colors" type="button" onclick="setUniverseFilter('swing', this)">Ayunan Cepat (Swing)</button>
-                                </div>
+                        <!-- Filter Controls -->
+                        <div class="flex flex-wrap items-center gap-2.5">
+                            <!-- Filter Universe Tabs -->
+                            <div class="flex items-center bg-slate-100 p-1 rounded-xl" id="universeTabs">
+                                <button type="button" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-white text-primary shadow-sm" onclick="filterByUniverse('all', this)">Semua</button>
+                                <button type="button" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-text-muted hover:text-text-main transition-colors" onclick="filterByUniverse('favorites', this)">Blue Chip</button>
+                                <button type="button" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-text-muted hover:text-text-main transition-colors" onclick="filterByUniverse('dividend', this)">Dividen</button>
+                                <button type="button" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-text-muted hover:text-text-main transition-colors" onclick="filterByUniverse('swing', this)">Swing</button>
                             </div>
 
-                            <!-- Tabel Rekomendasi -->
-                            <div class="overflow-x-auto -mx-space-lg px-space-lg">
-                                <table class="w-full text-left min-w-[700px]">
-                                    <thead>
-                                        <tr class="text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider bg-surface-container-low/60 rounded-lg">
-                                            <th class="py-3 px-4 rounded-l-xl">Saham & Nama</th>
-                                            <th class="py-3 px-3">Aksi Saham</th>
-                                            <th class="py-3 px-3">Area Beli</th>
-                                            <th class="py-3 px-3">Target Untung</th>
-                                            <th class="py-3 px-3">
-                                                <div class="inline-flex items-center gap-1">
-                                                    <span>Batas Rugi</span>
-                                                    <!-- CSS Native Tooltip -->
-                                                    <div class="relative group cursor-pointer inline-flex items-center">
-                                                        <span class="material-symbols-outlined text-[16px] text-outline">help</span>
-                                                        <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:flex flex-col w-52 p-2.5 bg-primary text-on-primary rounded-xl shadow-xl text-center z-50 pointer-events-none">
-                                                            <span class="font-label-xs font-label-sm text-secondary-fixed">Batas Pengaman Risiko (Cut-Loss)</span>
-                                                            <span class="font-body-sm text-body-sm leading-tight text-inverse-on-surface mt-1">Titik jual disiplin untuk melindungi modal utama jika tren pasar berbalik arah.</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </th>
-                                            <th class="py-3 px-4 rounded-r-xl">Alasan Analisis Santai</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="font-body-sm text-body-sm divide-y-0" id="recommendationsTableBody">
-                                        <!-- Fallback / Static Initial Rows (will also be dynamically enriched) -->
-                                        <!-- Row 1: BBCA -->
-                                        <tr class="hover:bg-surface-container-low/50 transition-colors group cursor-pointer" onclick="selectStockForCalc('BBCA', 9900, 10400, 9650)">
-                                            <td class="py-4 px-4 align-top">
-                                                <div class="flex items-center gap-3">
-                                                    <div class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center font-headline-sm text-primary font-bold">
-                                                        B
-                                                    </div>
-                                                    <div class="flex flex-col">
-                                                        <span class="font-headline-sm text-headline-sm font-bold text-primary">BBCA</span>
-                                                        <span class="font-body-sm text-body-sm text-on-surface-variant">Bank Central Asia</span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="py-4 px-3 align-top">
-                                                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm font-bold">
-                                                    <span class="material-symbols-outlined text-[14px]">arrow_upward</span>
-                                                    BELI BERTAHAP
-                                                </span>
-                                            </td>
-                                            <td class="py-4 px-3 align-top">
-                                                <div class="font-label-lg text-label-lg font-bold text-primary">Rp 9.850 - 9.950</div>
-                                                <span class="font-label-sm text-label-sm text-on-surface-variant">Zona pantau santai</span>
-                                            </td>
-                                            <td class="py-4 px-3 align-top">
-                                                <div class="font-label-lg text-label-lg font-bold text-secondary">Rp 10.400</div>
-                                                <span class="font-label-sm text-label-sm text-secondary font-semibold">+5.5% (Tinggi)</span>
-                                            </td>
-                                            <td class="py-4 px-3 align-top">
-                                                <div class="font-label-lg text-label-lg font-bold text-error">Rp 9.650</div>
-                                                <span class="font-label-sm text-label-sm text-error font-medium">-2.5% Cut-Loss</span>
-                                            </td>
-                                            <td class="py-4 px-4 align-top">
-                                                <p class="font-body-sm text-body-sm text-on-surface leading-relaxed max-w-xs">
-                                                    Fundamental kokoh, laba kuartalan konsisten memecahkan rekor, dan pemodal institusi mulai masuk akumulasi bertahap.
-                                                </p>
-                                            </td>
-                                        </tr>
-
-                                        <!-- Row 2: ASII -->
-                                        <tr class="hover:bg-surface-container-low/50 transition-colors group cursor-pointer" onclick="selectStockForCalc('ASII', 5125, 5500, 4950)">
-                                            <td class="py-4 px-4 align-top">
-                                                <div class="flex items-center gap-3">
-                                                    <div class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center font-headline-sm text-primary font-bold">
-                                                        A
-                                                    </div>
-                                                    <div class="flex flex-col">
-                                                        <span class="font-headline-sm text-headline-sm font-bold text-primary">ASII</span>
-                                                        <span class="font-body-sm text-body-sm text-on-surface-variant">Astra International</span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="py-4 px-3 align-top">
-                                                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm font-bold">
-                                                    <span class="material-symbols-outlined text-[14px]">show_chart</span>
-                                                    BELI SWING
-                                                </span>
-                                            </td>
-                                            <td class="py-4 px-3 align-top">
-                                                <div class="font-label-lg text-label-lg font-bold text-primary">Rp 5.100 - 5.175</div>
-                                                <span class="font-label-sm text-label-sm text-on-surface-variant">Area rebound kuat</span>
-                                            </td>
-                                            <td class="py-4 px-3 align-top">
-                                                <div class="font-label-lg text-label-lg font-bold text-secondary">Rp 5.500</div>
-                                                <span class="font-label-sm text-label-sm text-secondary font-semibold">+6.8% Potensi</span>
-                                            </td>
-                                            <td class="py-4 px-3 align-top">
-                                                <div class="font-label-lg text-label-lg font-bold text-error">Rp 4.950</div>
-                                                <span class="font-label-sm text-label-sm text-error font-medium">-3.2% Cut-Loss</span>
-                                            </td>
-                                            <td class="py-4 px-4 align-top">
-                                                <p class="font-body-sm text-body-sm text-on-surface leading-relaxed max-w-xs">
-                                                    Pantulan harga mantap dari area lantai (support), valuasi PE tergolong sangat murah dibanding rata-rata 5 tahun.
-                                                </p>
-                                            </td>
-                                        </tr>
-
-                                        <!-- Row 3: TLKM -->
-                                        <tr class="hover:bg-surface-container-low/50 transition-colors group cursor-pointer" onclick="selectStockForCalc('TLKM', 2850, 3150, 2720)">
-                                            <td class="py-4 px-4 align-top">
-                                                <div class="flex items-center gap-3">
-                                                    <div class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center font-headline-sm text-primary font-bold">
-                                                        T
-                                                    </div>
-                                                    <div class="flex flex-col">
-                                                        <span class="font-headline-sm text-headline-sm font-bold text-primary">TLKM</span>
-                                                        <span class="font-body-sm text-body-sm text-on-surface-variant">Telkom Indonesia</span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="py-4 px-3 align-top">
-                                                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm font-bold">
-                                                    <span class="material-symbols-outlined text-[14px]">pause_circle</span>
-                                                    TAHAN (HOLD)
-                                                </span>
-                                            </td>
-                                            <td class="py-4 px-3 align-top">
-                                                <div class="font-label-lg text-label-lg font-bold text-primary">Rp 2.850</div>
-                                                <span class="font-label-sm text-label-sm text-on-surface-variant">Harga simpan wajar</span>
-                                            </td>
-                                            <td class="py-4 px-3 align-top">
-                                                <div class="font-label-lg text-label-lg font-bold text-secondary">Rp 3.150</div>
-                                                <span class="font-label-sm text-label-sm text-secondary font-semibold">+10.5% Menarik</span>
-                                            </td>
-                                            <td class="py-4 px-3 align-top">
-                                                <div class="font-label-lg text-label-lg font-bold text-error">Rp 2.720</div>
-                                                <span class="font-label-sm text-label-sm text-error font-medium">-4.5% Cut-Loss</span>
-                                            </td>
-                                            <td class="py-4 px-4 align-top">
-                                                <p class="font-body-sm text-body-sm text-on-surface leading-relaxed max-w-xs">
-                                                    Fase konsolidasi sehat, tahan kepemilikan dan tunggu katalis kepastian pembagian dividen interim tahunan.
-                                                </p>
-                                            </td>
-                                        </tr>
-
-                                        <!-- Row 4: GOTO -->
-                                        <tr class="hover:bg-surface-container-low/50 transition-colors group cursor-pointer" onclick="selectStockForCalc('GOTO', 70, 78, 62)">
-                                            <td class="py-4 px-4 align-top">
-                                                <div class="flex items-center gap-3">
-                                                    <div class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center font-headline-sm text-primary font-bold">
-                                                        G
-                                                    </div>
-                                                    <div class="flex flex-col">
-                                                        <span class="font-headline-sm text-headline-sm font-bold text-primary">GOTO</span>
-                                                        <span class="font-body-sm text-body-sm text-on-surface-variant">GoTo Gojek Tokopedia</span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="py-4 px-3 align-top">
-                                                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-error-container text-on-error-container font-label-sm text-label-sm font-bold">
-                                                    <span class="material-symbols-outlined text-[14px]">savings</span>
-                                                    JUAL AMBIL KAS
-                                                </span>
-                                            </td>
-                                            <td class="py-4 px-3 align-top">
-                                                <div class="font-label-lg text-label-lg font-bold text-on-surface-variant">-</div>
-                                                <span class="font-label-sm text-label-sm text-on-surface-variant">Hindari beli baru</span>
-                                            </td>
-                                            <td class="py-4 px-3 align-top">
-                                                <div class="font-label-lg text-label-lg font-bold text-primary">Rp 72</div>
-                                                <span class="font-label-sm text-label-sm text-on-surface-variant">Amankan Modal</span>
-                                            </td>
-                                            <td class="py-4 px-3 align-top">
-                                                <div class="font-label-lg text-label-lg font-bold text-error">Rp 62</div>
-                                                <span class="font-label-sm text-label-sm text-error font-medium">Batas Waspada</span>
-                                            </td>
-                                            <td class="py-4 px-4 align-top">
-                                                <p class="font-body-sm text-body-sm text-on-surface leading-relaxed max-w-xs">
-                                                    Tekanan distribusi jangka pendek masih cukup tinggi. Lebih tenang amankan saldo ke pos kas siaga terlebih dahulu.
-                                                </p>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <!-- Footer Card Edukasi -->
-                            <div class="p-space-md rounded-xl bg-surface-container-low flex items-center justify-between gap-space-sm flex-wrap">
-                                <div class="flex items-center gap-2">
-                                    <span class="material-symbols-outlined text-secondary text-[22px]">lightbulb</span>
-                                    <span class="font-body-sm text-body-sm text-on-surface">
-                                        <strong>Panduan Disiplin Risiko:</strong> Selalu targetkan potensi untung minimal <strong>2x lipat</strong> dari risiko cut loss (<span class="text-secondary font-semibold">Risk:Reward 1:2</span>).
-                                    </span>
-                                </div>
-                                <a class="font-label-sm text-label-sm text-secondary hover:underline font-semibold flex items-center gap-1" href="#edukasi-section">
-                                    Lihat Panduan Risiko Lengkap <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
-                                </a>
-                            </div>
-                        </div>
-
-                        <!-- Edukasi Mini Bar (Biar makin ramah pemula) -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-space-md" id="edukasi-section">
-                            <div class="p-space-md rounded-2xl bg-surface-container-lowest shadow-[0_1px_8px_rgba(0,0,0,0.04)] flex items-start gap-3">
-                                <div class="w-10 h-10 rounded-xl bg-surface-container-high flex items-center justify-center shrink-0">
-                                    <span class="material-symbols-outlined text-primary text-[20px]">psychology</span>
-                                </div>
-                                <div class="flex flex-col">
-                                    <h4 class="font-label-lg text-label-lg text-primary font-bold">Kenapa BBCA Disebut Blue Chip?</h4>
-                                    <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
-                                        Blue chip adalah istilah saham perusahaan raksasa yang bisnisnya stabil, terbukti puluhan tahun, dan jarang terguncang krisis hebat.
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="p-space-md rounded-2xl bg-surface-container-lowest shadow-[0_1px_8px_rgba(0,0,0,0.04)] flex items-start gap-3">
-                                <div class="w-10 h-10 rounded-xl bg-surface-container-high flex items-center justify-center shrink-0">
-                                    <span class="material-symbols-outlined text-secondary text-[20px]">verified_user</span>
-                                </div>
-                                <div class="flex flex-col">
-                                    <h4 class="font-label-lg text-label-lg text-primary font-bold">Fungsi Disiplin Cut-Loss</h4>
-                                    <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
-                                        Cut loss ibarat sabuk pengaman mobil. Bukan tanda kalah, melainkan teknik menjaga modal agar Anda tetap bisa berinvestasi di saham lain.
-                                    </p>
-                                </div>
-                            </div>
+                            <!-- Filter Sektor Dropdown -->
+                            <select class="bg-slate-100 border border-slate-200 text-xs font-semibold text-text-main rounded-xl px-3 py-2 focus:outline-none cursor-pointer" id="sectorFilter" onchange="applyFilters()">
+                                <option value="ALL">Semua Sektor (11 Sektor BEI)</option>
+                                <option value="Financials">Keuangan (Financials)</option>
+                                <option value="Energy">Energi (Energy)</option>
+                                <option value="Basic Materials">Barang Baku (Basic Materials)</option>
+                                <option value="Consumer Non-Cyclicals">Konsumer Primer</option>
+                                <option value="Consumer Cyclicals">Konsumer Non-Primer</option>
+                                <option value="Healthcare">Kesehatan (Healthcare)</option>
+                                <option value="Technology">Teknologi (Technology)</option>
+                                <option value="Infrastructures">Infrastruktur & Telekomunikasi</option>
+                                <option value="Properties & Real Estate">Properti & Real Estat</option>
+                                <option value="Industrials">Perindustrian (Industrials)</option>
+                                <option value="Transportation & Logistics">Transportasi & Logistik</option>
+                            </select>
                         </div>
                     </div>
 
-                    <!-- KOLOM KANAN (~35% / 4 Kolom) -->
-                    <div class="xl:col-span-4 flex flex-col gap-space-lg">
-                        <!-- 1. Card Alokasi Portofolio Sehat -->
-                        <div class="bg-surface-container-lowest rounded-2xl p-space-lg shadow-[0_1px_8px_rgba(0,0,0,0.04)] flex flex-col gap-space-md" id="portofolio-santai">
-                            <div class="flex items-start justify-between">
-                                <div>
-                                    <span class="font-label-sm text-label-sm text-secondary font-bold uppercase tracking-wider">Strategi Alokasi Portofolio</span>
-                                    <h3 class="font-headline-sm text-headline-sm font-bold text-primary mt-0.5">Alokasi Kas Siaga 20%</h3>
-                                </div>
-                                <div class="p-2 rounded-xl bg-surface-container-low text-on-surface-variant">
-                                    <span class="material-symbols-outlined text-[20px]">pie_chart</span>
-                                </div>
-                            </div>
-
-                            <!-- Donut Chart Visualization (Inline SVG) -->
-                            <div class="flex items-center justify-center py-2 relative">
-                                <svg class="w-48 h-48 transform -rotate-90" viewbox="0 0 160 160">
-                                    <!-- Background track -->
-                                    <circle class="text-surface-container-low" cx="80" cy="80" fill="transparent" r="62" stroke="currentColor" stroke-width="16"></circle>
-                                    <!-- Segment 1: Blue Chip (55%) -> circumference ~ 389.5, 55% = 214.2 -->
-                                    <circle cx="80" cy="80" fill="transparent" r="62" stroke="#091426" stroke-dasharray="214.2 389.5" stroke-dashoffset="0" stroke-linecap="round" stroke-width="16"></circle>
-                                    <!-- Segment 2: Mid-Cap (25%) -> 25% = 97.4 -->
-                                    <circle cx="80" cy="80" fill="transparent" r="62" stroke="#4edea3" stroke-dasharray="97.4 389.5" stroke-dashoffset="-214.2" stroke-linecap="round" stroke-width="16"></circle>
-                                    <!-- Segment 3: Kas Siaga (20%) -> 20% = 77.9 -->
-                                    <circle cx="80" cy="80" fill="transparent" r="62" stroke="#006c49" stroke-dasharray="77.9 389.5" stroke-dashoffset="-311.6" stroke-linecap="round" stroke-width="16"></circle>
-                                </svg>
-                                <!-- Center Text Info -->
-                                <div class="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
-                                    <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wide">Total Modal</span>
-                                    <span class="font-headline-md text-headline-md font-bold text-primary" id="portfolioTotalLabel">Rp 10 Jt</span>
-                                    <span class="font-label-sm text-label-sm text-secondary font-semibold">Portofolio Seimbang</span>
-                                </div>
-                            </div>
-
-                            <!-- Detail Breakdown List -->
-                            <div class="flex flex-col gap-2.5">
-                                <!-- Item 1 -->
-                                <div class="flex items-center justify-between p-2.5 rounded-xl bg-surface-container-low/60">
-                                    <div class="flex items-center gap-2.5">
-                                        <span class="w-3 h-3 rounded-full bg-primary shrink-0"></span>
-                                        <div class="flex flex-col">
-                                            <span class="font-label-md text-label-md text-primary font-bold">Saham Unggulan (Blue Chip)</span>
-                                            <span class="font-body-sm text-body-sm text-on-surface-variant">BBCA, BBRI, BMRI, TLKM</span>
-                                        </div>
-                                    </div>
-                                    <div class="text-right">
-                                        <div class="font-label-md text-label-md text-primary font-bold" id="allocBluechipVal">Rp 5.500.000</div>
-                                        <span class="font-label-sm text-label-sm text-on-surface-variant">55%</span>
-                                    </div>
-                                </div>
-                                <!-- Item 2 -->
-                                <div class="flex items-center justify-between p-2.5 rounded-xl bg-surface-container-low/60">
-                                    <div class="flex items-center gap-2.5">
-                                        <span class="w-3 h-3 rounded-full bg-secondary-fixed-dim shrink-0"></span>
-                                        <div class="flex flex-col">
-                                            <span class="font-label-md text-label-md text-primary font-bold">Saham Bertumbuh (Mid-Cap)</span>
-                                            <span class="font-body-sm text-body-sm text-on-surface-variant">ASII, ICBP, ACES</span>
-                                        </div>
-                                    </div>
-                                    <div class="text-right">
-                                        <div class="font-label-md text-label-md text-primary font-bold" id="allocMidcapVal">Rp 2.500.000</div>
-                                        <span class="font-label-sm text-label-sm text-on-surface-variant">25%</span>
-                                    </div>
-                                </div>
-                                <!-- Item 3 (Highlighted Kas Siaga) -->
-                                <div class="flex flex-col p-3 rounded-xl bg-secondary-container/40">
-                                    <div class="flex items-center justify-between">
-                                        <div class="flex items-center gap-2.5">
-                                            <span class="w-3 h-3 rounded-full bg-secondary shrink-0"></span>
-                                            <div class="flex flex-col">
-                                                <span class="font-label-md text-label-md text-on-secondary-container font-bold">Kas Siaga / RDPU</span>
-                                                <span class="font-label-sm text-label-sm text-on-secondary-container">Tabungan Fleksibel Cepat Cair</span>
-                                            </div>
-                                        </div>
-                                        <div class="text-right">
-                                            <div class="font-label-md text-label-md text-on-secondary-container font-bold" id="allocCashVal">Rp 2.000.000</div>
-                                            <span class="font-label-sm text-label-sm text-on-secondary-container font-semibold">20% Modal</span>
-                                        </div>
-                                    </div>
-                                    <div class="mt-2 text-on-secondary-container font-body-sm text-body-sm flex items-center gap-1.5 pt-1">
-                                        <span class="material-symbols-outlined text-[16px] text-secondary">check_circle</span>
-                                        <span>Wajib ada untuk serok diskon bila pasar terkoreksi mendadak.</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Health Status Pill -->
-                            <div class="p-3 rounded-xl bg-surface-container flex items-center gap-2 text-on-surface">
-                                <span class="material-symbols-outlined text-secondary text-[20px]">health_and_safety</span>
-                                <span class="font-body-sm text-body-sm">
-                                    <strong>Kondisi Portofolio:</strong> Sangat Baik. Kas siaga Anda memenuhi batas aman minimal 20%.
-                                </span>
-                            </div>
+                    <!-- Tabel Rekomendasi Komprehensif -->
+                    <div class="bg-white rounded-2xl border border-surface-border shadow-sm overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left min-w-[950px]">
+                                <thead>
+                                    <tr class="bg-slate-50 border-b border-surface-border text-text-muted text-xs uppercase font-bold tracking-wider">
+                                        <th class="py-3.5 px-5">Emiten & Sektor</th>
+                                        <th class="py-3.5 px-4">Aksi Strategi</th>
+                                        <th class="py-3.5 px-4">Harga Terakhir</th>
+                                        <th class="py-3.5 px-4">Area Beli</th>
+                                        <th class="py-3.5 px-4">Target Profit</th>
+                                        <th class="py-3.5 px-4">Batas Stop Loss</th>
+                                        <th class="py-3.5 px-4 text-center">Rasio Risk:Reward</th>
+                                        <th class="py-3.5 px-4 text-center">Probabilitas Bullish</th>
+                                        <th class="py-3.5 px-5 text-right">Tindakan</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-surface-border text-sm" id="recommendationsTableBody">
+                                    <!-- Baris Rekomendasi diisi secara dinamis oleh JavaScript -->
+                                </tbody>
+                            </table>
                         </div>
+                    </div>
+                </div>
+            </div>
 
-                        <!-- 2. Card Kalkulator Modal & Hitung Lot Otomatis -->
-                        <div class="bg-surface-container-lowest rounded-2xl p-space-lg shadow-[0_1px_8px_rgba(0,0,0,0.04)] flex flex-col gap-space-md" id="kalkulator-section">
-                            <div>
-                                <div class="flex items-center gap-2">
-                                    <span class="material-symbols-outlined text-primary text-[22px]">calculate</span>
-                                    <h3 class="font-headline-sm text-headline-sm font-bold text-primary">Kalkulator Modal & Lot</h3>
-                                </div>
-                                <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
-                                    Beli saham tanpa pusing konversi lembar dan risiko modal
-                                </p>
-                            </div>
+            <!-- PAGE 3: PORTOFOLIO & ALOKASI MODAL -->
+            <div class="page-view" id="page-portofolio">
+                <div class="flex flex-col gap-6 max-w-7xl mx-auto">
+                    <!-- Header Alokasi -->
+                    <div class="bg-white rounded-2xl p-6 border border-surface-border shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div>
+                            <h2 class="text-xl font-bold text-primary flex items-center gap-2">
+                                <span class="material-symbols-outlined text-secondary text-[24px]">pie_chart</span>
+                                Optimasi Alokasi Portofolio Modal
+                            </h2>
+                            <p class="text-xs text-text-muted mt-1">
+                                Perhitungan bobot modal investasi optimal berbasis rasio Sharpe dan diversifikasi risiko volatilitas GARCH.
+                            </p>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <button type="button" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-xs font-bold text-primary flex items-center gap-2 transition-colors" onclick="copyPortfolioText()">
+                                <span class="material-symbols-outlined text-[16px]">content_copy</span>
+                                Salin Rencana Alokasi
+                            </button>
+                            <button type="button" class="px-4 py-2 rounded-xl bg-primary hover:bg-slate-800 text-xs font-bold text-white flex items-center gap-2 transition-colors" onclick="downloadPortfolioCSV()">
+                                <span class="material-symbols-outlined text-[16px]">download</span>
+                                Download CSV
+                            </button>
+                        </div>
+                    </div>
 
-                            <!-- Form Inputs -->
-                            <div class="flex flex-col gap-space-sm">
-                                <!-- Dropdown Saham -->
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                        <!-- Kolom Kiri: Pengaturan Modal & Donut Chart -->
+                        <div class="lg:col-span-4 flex flex-col gap-5">
+                            <div class="bg-white rounded-2xl p-6 border border-surface-border shadow-sm flex flex-col gap-4">
+                                <h3 class="text-sm font-bold text-primary">Simulasi Modal Investasi</h3>
+
                                 <div class="flex flex-col gap-1.5">
-                                    <label class="font-label-sm text-label-sm text-on-surface font-semibold flex items-center justify-between">
-                                        <span>Pilihan Saham</span>
-                                        <span class="text-on-surface-variant" id="calcPriceReference">Harga Acuan: Rp 9.900</span>
-                                    </label>
-                                    <div class="relative">
-                                        <select class="w-full bg-surface-container-low text-on-surface font-body-sm text-body-sm rounded-xl px-3.5 py-2.5 appearance-none focus:outline-none focus:bg-surface-container cursor-pointer font-medium" id="stockSelector" onchange="onStockSelectChange()">
-                                            <option value="9900" data-code="BBCA" data-tp="10400" data-sl="9650" selected>BBCA - Bank Central Asia (Rp 9.900 / lembar)</option>
-                                            <option value="5125" data-code="ASII" data-tp="5500" data-sl="4950">ASII - Astra International (Rp 5.125 / lembar)</option>
-                                            <option value="2850" data-code="TLKM" data-tp="3150" data-sl="2720">TLKM - Telkom Indonesia (Rp 2.850 / lembar)</option>
-                                            <option value="3750" data-code="ADRO" data-tp="4050" data-sl="3550">ADRO - Adaro Energy (Rp 3.750 / lembar)</option>
-                                            <option value="5150" data-code="BBRI" data-tp="5450" data-sl="4950">BBRI - Bank Rakyat Indonesia (Rp 5.150 / lembar)</option>
-                                            <option value="7100" data-code="BMRI" data-tp="7500" data-sl="6800">BMRI - Bank Mandiri (Rp 7.100 / lembar)</option>
-                                        </select>
-                                        <span class="material-symbols-outlined absolute right-3 top-2.5 text-on-surface-variant pointer-events-none text-[20px]">expand_more</span>
-                                    </div>
-                                </div>
-
-                                <!-- Input Modal -->
-                                <div class="flex flex-col gap-1.5">
-                                    <label class="font-label-sm text-label-sm text-on-surface font-semibold">
-                                        Modal Yang Ingin Dipakai
-                                    </label>
+                                    <label class="text-xs font-semibold text-text-muted">Total Modal Yang Disiapkan (IDR)</label>
                                     <div class="relative flex items-center">
-                                        <span class="absolute left-3.5 font-label-md text-label-md text-on-surface-variant font-bold">Rp</span>
-                                        <input class="w-full bg-surface-container-low text-on-surface font-headline-sm text-headline-sm rounded-xl pl-10 pr-3.5 py-2 font-bold focus:outline-none focus:bg-surface-container" id="capitalInput" step="500000" type="number" value="10000000"/>
-                                    </div>
-                                    <!-- Quick Add Chips -->
-                                    <div class="flex items-center gap-2 pt-1">
-                                        <button class="px-2.5 py-1 rounded-lg bg-surface-container text-primary font-label-sm text-label-sm hover:bg-surface-container-high transition-colors font-medium" onclick="setCapital(2000000)" type="button">+Rp 2 Juta</button>
-                                        <button class="px-2.5 py-1 rounded-lg bg-surface-container text-primary font-label-sm text-label-sm hover:bg-surface-container-high transition-colors font-medium" onclick="setCapital(5000000)" type="button">+Rp 5 Juta</button>
-                                        <button class="px-2.5 py-1 rounded-lg bg-secondary-container/50 text-on-secondary-container font-label-sm text-label-sm font-semibold" onclick="setCapital(10000000)" type="button">Rp 10 Jt</button>
+                                        <span class="absolute left-3.5 text-xs font-bold text-text-muted">Rp</span>
+                                        <input class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-3.5 py-2.5 text-base font-bold text-primary focus:outline-none focus:bg-white" id="portfolioCapitalInput" type="number" step="1000000" value="50000000" oninput="updatePortfolioCalculations()"/>
                                     </div>
                                 </div>
 
-                                <!-- Pembagi Kas Aman (Batas Risiko) Slider/Select -->
-                                <div class="flex flex-col gap-1 pt-1">
-                                    <div class="flex items-center justify-between font-label-sm text-label-sm">
-                                        <span class="text-on-surface font-semibold">Porsi Penggunaan Kas</span>
-                                        <span class="text-secondary font-bold" id="riskLabel">10% per transaksi (Aman)</span>
-                                    </div>
-                                    <input class="w-full accent-secondary cursor-pointer bg-surface-container h-2 rounded-lg" id="riskSlider" max="30" min="5" oninput="updateRiskLabel(this.value)" step="5" type="range" value="10"/>
-                                    <span class="font-body-sm text-body-sm text-on-surface-variant">Mencegah meletakkan semua telur dalam satu keranjang belanja.</span>
+                                <!-- Tombol Cepat Nominal -->
+                                <div class="grid grid-cols-3 gap-2">
+                                    <button type="button" class="py-1.5 px-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-[11px] font-bold text-text-main" onclick="setPortfolioCapital(10000000)">Rp 10 Jt</button>
+                                    <button type="button" class="py-1.5 px-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-[11px] font-bold text-text-main" onclick="setPortfolioCapital(50000000)">Rp 50 Jt</button>
+                                    <button type="button" class="py-1.5 px-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-[11px] font-bold text-text-main" onclick="setPortfolioCapital(100000000)">Rp 100 Jt</button>
                                 </div>
-                            </div>
 
-                            <!-- Kotak Hasil Kalkulasi Otomatis -->
-                            <div class="p-space-md rounded-xl bg-surface-container-low flex flex-col gap-3">
-                                <div class="flex items-center justify-between pb-2 border-b-0">
-                                    <div class="flex flex-col">
-                                        <span class="font-label-sm text-label-sm text-on-surface-variant">Jumlah Pembelian Saham</span>
-                                        <div class="font-headline-lg text-headline-lg font-bold text-primary" id="resLot">10 Lot</div>
-                                        <span class="font-label-sm text-label-sm text-on-surface-variant" id="resShares">(1.000 lembar saham resmi BEI)</span>
+                                <!-- Aturan Kas Siaga 20% -->
+                                <div class="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200/80 flex flex-col gap-1">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs font-bold text-emerald-900">Kas Siaga (20% Modal)</span>
+                                        <span class="text-xs font-extrabold text-emerald-800" id="portCashAmount">Rp 10.000.000</span>
                                     </div>
-                                    <div class="p-2.5 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center">
-                                        <span class="material-symbols-outlined text-[24px]">shopping_bag</span>
-                                    </div>
+                                    <p class="text-[11px] text-emerald-700 leading-relaxed">
+                                        Dialokasikan untuk fleksibilitas likuiditas saat terjadi koreksi pasar mendadak.
+                                    </p>
                                 </div>
-                                <!-- Detail Nominal Perhitungan -->
-                                <div class="flex flex-col gap-1.5 font-body-sm text-body-sm">
+
+                                <!-- Ringkasan Ekuitas Terbeli -->
+                                <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex flex-col gap-1">
                                     <div class="flex items-center justify-between">
-                                        <span class="text-on-surface-variant">Estimasi Total Beli:</span>
-                                        <span class="font-label-md text-label-md text-primary font-bold" id="resTotal">Rp 9.900.000</span>
-                                    </div>
-                                    <div class="flex items-center justify-between">
-                                        <span class="text-on-surface-variant">Sisa Uang Kembalian Kas:</span>
-                                        <span class="font-label-md text-label-md text-on-surface font-semibold" id="resChange">Rp 100.000</span>
-                                    </div>
-                                </div>
-                                <!-- Proyeksi Profit vs Risiko -->
-                                <div class="pt-2 flex flex-col gap-1.5 bg-surface-container-lowest p-3 rounded-lg">
-                                    <div class="flex items-center justify-between">
-                                        <div class="flex items-center gap-1">
-                                            <span class="material-symbols-outlined text-secondary text-[16px]">arrow_upward</span>
-                                            <span class="font-label-sm text-label-sm text-on-surface-variant">Target Untung (<span id="resTargetPriceLabel">Rp 10.400</span>):</span>
-                                        </div>
-                                        <span class="font-label-md text-label-md text-secondary font-bold" id="resGain">+Rp 500.000 (+5.05%)</span>
-                                    </div>
-                                    <div class="flex items-center justify-between">
-                                        <div class="flex items-center gap-1">
-                                            <span class="material-symbols-outlined text-error text-[16px]">arrow_downward</span>
-                                            <span class="font-label-sm text-label-sm text-on-surface-variant">Batas Rugi (<span id="resStopLossLabel">Rp 9.650</span>):</span>
-                                        </div>
-                                        <span class="font-label-md text-label-md text-error font-medium" id="resLoss">-Rp 250.000 (-2.52%)</span>
+                                        <span class="text-xs font-semibold text-text-muted">Total Beli Saham (80%)</span>
+                                        <span class="text-xs font-bold text-primary" id="portStockAmount">Rp 40.000.000</span>
                                     </div>
                                 </div>
                             </div>
+                        </div>
 
-                            <!-- Tombol Aksi Transaksi -->
-                            <div class="flex flex-col gap-2 pt-1">
-                                <button class="w-full h-12 rounded-full bg-secondary text-on-secondary font-label-lg text-label-lg flex items-center justify-center gap-2 hover:opacity-95 shadow-md transition-all active:scale-[0.99]" id="btnOrder" type="button" onclick="showOrderConfirmation()">
-                                    <span class="material-symbols-outlined text-[20px]">add_shopping_cart</span>
-                                    <span id="btnOrderText">Siapkan Order Beli 10 Lot BBCA</span>
-                                </button>
-                                <button class="w-full py-2 rounded-full text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm transition-colors text-center" onclick="resetCalculator()" type="button">
-                                    Reset Hitungan Modal
-                                </button>
+                        <!-- Kolom Kanan: Tabel Alokasi Tiap Emiten -->
+                        <div class="lg:col-span-8">
+                            <div class="bg-white rounded-2xl border border-surface-border shadow-sm overflow-hidden">
+                                <div class="p-4 border-b border-surface-border flex items-center justify-between">
+                                    <h3 class="text-sm font-bold text-primary">Rincian Pembobotan Emiten & Jumlah Lot Resmi BEI</h3>
+                                    <span class="text-xs text-text-muted font-medium">1 Lot = 100 Lembar Saham</span>
+                                </div>
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-left">
+                                        <thead>
+                                            <tr class="bg-slate-50 border-b border-surface-border text-text-muted text-xs uppercase font-bold tracking-wider">
+                                                <th class="py-3 px-4">Emiten</th>
+                                                <th class="py-3 px-3">Sektor</th>
+                                                <th class="py-3 px-3 text-center">Bobot</th>
+                                                <th class="py-3 px-4">Alokasi Rupiah</th>
+                                                <th class="py-3 px-3 text-center">Jumlah Lot</th>
+                                                <th class="py-3 px-3">Target TP1</th>
+                                                <th class="py-3 px-3">Batas Cut-Loss</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="divide-y divide-surface-border text-sm" id="portfolioAllocationTableBody">
+                                            <!-- Diisi oleh JS -->
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- PAGE 4: KALKULATOR LOT & MANAJEMEN RISIKO -->
+            <div class="page-view" id="page-kalkulator">
+                <div class="flex flex-col gap-6 max-w-7xl mx-auto">
+                    <!-- Header Kalkulator -->
+                    <div class="bg-white rounded-2xl p-6 border border-surface-border shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div>
+                            <h2 class="text-xl font-bold text-primary flex items-center gap-2">
+                                <span class="material-symbols-outlined text-secondary text-[24px]">calculate</span>
+                                Kalkulator Pembelian Lot & Evaluasi Risiko
+                            </h2>
+                            <p class="text-xs text-text-muted mt-1">
+                                Menghitung kuantitas lot resmi bursa (1 lot = 100 lembar), potensi imbal hasil, serta rasio Risk:Reward transaksi.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                        <!-- Form Input Parameter Transaksi -->
+                        <div class="lg:col-span-6 flex flex-col gap-5">
+                            <div class="bg-white rounded-2xl p-6 border border-surface-border shadow-sm flex flex-col gap-4">
+                                <h3 class="text-sm font-bold text-primary">Parameter Rencana Transaksi</h3>
+
+                                <!-- Pilihan Saham -->
+                                <div class="flex flex-col gap-1.5">
+                                    <label class="text-xs font-semibold text-text-muted">Pilih Emiten Rekomendasi</label>
+                                    <select class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm font-bold text-primary focus:outline-none focus:bg-white cursor-pointer" id="calcStockSelect" onchange="loadSelectedStockToCalc()">
+                                        <!-- Diisi secara dinamis -->
+                                    </select>
+                                </div>
+
+                                <div class="grid grid-cols-3 gap-3">
+                                    <div class="flex flex-col gap-1">
+                                        <label class="text-xs font-semibold text-text-muted">Harga Beli (Rp)</label>
+                                        <input class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm font-bold text-primary focus:outline-none" id="calcEntryPrice" type="number" value="9900" oninput="runLotCalculation()"/>
+                                    </div>
+                                    <div class="flex flex-col gap-1">
+                                        <label class="text-xs font-semibold text-emerald-700">Target Jual TP (Rp)</label>
+                                        <input class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm font-bold text-emerald-800 focus:outline-none" id="calcTargetPrice" type="number" value="10400" oninput="runLotCalculation()"/>
+                                    </div>
+                                    <div class="flex flex-col gap-1">
+                                        <label class="text-xs font-semibold text-rose-700">Stop Loss (Rp)</label>
+                                        <input class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm font-bold text-rose-800 focus:outline-none" id="calcStopLoss" type="number" value="9650" oninput="runLotCalculation()"/>
+                                    </div>
+                                </div>
+
+                                <!-- Modal Yang Ingin Dipakai -->
+                                <div class="flex flex-col gap-1.5 pt-2">
+                                    <label class="text-xs font-semibold text-text-muted">Alokasi Modal Untuk Saham Ini (IDR)</label>
+                                    <div class="relative flex items-center">
+                                        <span class="absolute left-3.5 text-xs font-bold text-text-muted">Rp</span>
+                                        <input class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-3.5 py-2.5 text-base font-bold text-primary focus:outline-none focus:bg-white" id="calcCapitalInput" type="number" step="500000" value="10000000" oninput="runLotCalculation()"/>
+                                    </div>
+                                    <div class="flex items-center gap-2 pt-1">
+                                        <button type="button" class="py-1 px-2.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-xs font-bold text-primary" onclick="setCalcCapital(5000000)">Rp 5 Juta</button>
+                                        <button type="button" class="py-1 px-2.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-xs font-bold text-primary" onclick="setCalcCapital(10000000)">Rp 10 Juta</button>
+                                        <button type="button" class="py-1 px-2.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-xs font-bold text-primary" onclick="setCalcCapital(20000000)">Rp 20 Juta</button>
+                                    </div>
+                                </div>
+
+                                <!-- Tombol Simpan Rencana -->
+                                <div class="pt-2 flex flex-col gap-2">
+                                    <button type="button" class="w-full py-3 rounded-xl bg-primary hover:bg-slate-800 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-sm transition-all" onclick="saveTradingPlan()">
+                                        <span class="material-symbols-outlined text-[18px]">bookmark</span>
+                                        Simpan ke Rencana Trading Saya
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Ringkasan Hasil Kalkulasi & Evaluasi RRR -->
+                        <div class="lg:col-span-6 flex flex-col gap-5">
+                            <div class="bg-white rounded-2xl p-6 border border-surface-border shadow-sm flex flex-col gap-5">
+                                <h3 class="text-sm font-bold text-primary">Hasil Kalkulasi Lot & Rasio Risiko</h3>
+
+                                <!-- Big Lot Counter Box -->
+                                <div class="p-5 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
+                                    <div class="flex flex-col">
+                                        <span class="text-xs text-text-muted font-medium">Jumlah Lot Yang Dapat Dibeli</span>
+                                        <div class="text-3xl font-extrabold text-primary mt-1" id="resCalcLots">10 Lot</div>
+                                        <span class="text-xs text-text-muted mt-0.5" id="resCalcShares">(1.000 lembar saham resmi)</span>
+                                    </div>
+                                    <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold">
+                                        <span class="material-symbols-outlined text-[26px]">inventory_2</span>
+                                    </div>
+                                </div>
+
+                                <!-- Detail Nominal Pembelian -->
+                                <div class="grid grid-cols-2 gap-3 text-xs">
+                                    <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex flex-col gap-1">
+                                        <span class="text-text-muted">Total Pembelian Efektif:</span>
+                                        <span class="text-sm font-bold text-primary" id="resCalcTotalBuy">Rp 9.900.000</span>
+                                    </div>
+                                    <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex flex-col gap-1">
+                                        <span class="text-text-muted">Sisa Kembalian Kas:</span>
+                                        <span class="text-sm font-bold text-text-main" id="resCalcChange">Rp 100.000</span>
+                                    </div>
+                                </div>
+
+                                <!-- Proyeksi Profit vs Risiko -->
+                                <div class="grid grid-cols-2 gap-3 text-xs">
+                                    <div class="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 flex flex-col gap-1">
+                                        <div class="flex items-center gap-1 text-emerald-800 font-bold">
+                                            <span class="material-symbols-outlined text-[16px]">north_east</span>
+                                            <span>Target Keuntungan (TP)</span>
+                                        </div>
+                                        <span class="text-sm font-bold text-emerald-800" id="resCalcGain">+Rp 500.000 (+5.05%)</span>
+                                    </div>
+                                    <div class="p-3.5 rounded-xl bg-rose-50 border border-rose-200 flex flex-col gap-1">
+                                        <div class="flex items-center gap-1 text-rose-800 font-bold">
+                                            <span class="material-symbols-outlined text-[16px]">south_east</span>
+                                            <span>Maksimal Kerugian (SL)</span>
+                                        </div>
+                                        <span class="text-sm font-bold text-rose-800" id="resCalcLoss">-Rp 250.000 (-2.52%)</span>
+                                    </div>
+                                </div>
+
+                                <!-- Rasio Risk to Reward Evaluator -->
+                                <div class="p-4 rounded-xl border flex items-start gap-3" id="rrrStatusBox">
+                                    <span class="material-symbols-outlined text-[22px] shrink-0 mt-0.5" id="rrrIcon">verified</span>
+                                    <div class="flex flex-col">
+                                        <span class="text-xs font-bold" id="rrrTitle">Rasio Risk : Reward = 1 : 2.00 (Memenuhi Standar)</span>
+                                        <p class="text-[11px] leading-relaxed mt-0.5" id="rrrDesc">
+                                            Potensi keuntungan setidaknya 2x lebih besar dari risiko penurunan. Transaksi ini layak dieksekusi secara disiplin.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tabel Rencana Trading Tersimpan (LocalStorage) -->
+                    <div class="bg-white rounded-2xl border border-surface-border shadow-sm overflow-hidden">
+                        <div class="p-4 border-b border-surface-border flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary text-[20px]">bookmarks</span>
+                                <h3 class="text-sm font-bold text-primary">Daftar Rencana Trading Saya (Tersimpan Lokal)</h3>
+                            </div>
+                            <button type="button" class="text-xs text-rose-600 hover:underline font-semibold" onclick="clearAllTradingPlans()">
+                                Hapus Semua
+                            </button>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left min-w-[700px]">
+                                <thead>
+                                    <tr class="bg-slate-50 border-b border-surface-border text-text-muted text-xs uppercase font-bold tracking-wider">
+                                        <th class="py-3 px-4">Saham</th>
+                                        <th class="py-3 px-3">Jumlah Lot</th>
+                                        <th class="py-3 px-4">Total Biaya</th>
+                                        <th class="py-3 px-3">Area Beli</th>
+                                        <th class="py-3 px-3">Target TP</th>
+                                        <th class="py-3 px-3">Batas SL</th>
+                                        <th class="py-3 px-3 text-center">Rasio RRR</th>
+                                        <th class="py-3 px-4 text-right">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-surface-border text-sm" id="savedPlansTableBody">
+                                    <!-- Diisi oleh JS dari localStorage -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE 5: PANDUAN & MANAJEMEN RISIKO -->
+            <div class="page-view" id="page-panduan">
+                <div class="flex flex-col gap-6 max-w-5xl mx-auto">
+                    <!-- Header Panduan -->
+                    <div class="bg-white rounded-2xl p-6 border border-surface-border shadow-sm flex flex-col gap-2">
+                        <h2 class="text-xl font-bold text-primary flex items-center gap-2">
+                            <span class="material-symbols-outlined text-secondary text-[24px]">menu_book</span>
+                            Panduan Investasi & Manajemen Risiko Pasar Modal
+                        </h2>
+                        <p class="text-xs text-text-muted leading-relaxed">
+                            Kompilasi prinsip dasar transaksi Bursa Efek Indonesia (BEI), pengelolaan modal, dan pemahaman indikator kuantitatif profesional.
+                        </p>
+                    </div>
+
+                    <!-- Modul 1: Aturan Satuan Lot & Fraksi Harga -->
+                    <div class="bg-white rounded-2xl p-6 border border-surface-border shadow-sm flex flex-col gap-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-lg bg-primary text-white flex items-center justify-center font-bold text-xs">1</div>
+                            <h3 class="text-base font-bold text-primary">Satuan Perdagangan & Mekanisme Fraksi Harga BEI</h3>
+                        </div>
+                        <p class="text-xs text-text-muted leading-relaxed">
+                            Di Bursa Efek Indonesia, perdagangan saham di Pasar Reguler wajib dilakukan dalam kelipatan <strong>1 Lot = 100 Lembar Saham</strong>. Perubahan harga minimum (*tick size*) diatur berdasarkan kelompok harga:
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                            <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                                <span class="font-bold text-primary">&lt; Rp 200</span>
+                                <p class="text-text-muted mt-1">Fraksi Rp 1 per tick. Maksimum auto-rejection 35%.</p>
+                            </div>
+                            <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                                <span class="font-bold text-primary">Rp 500 - Rp 2.000</span>
+                                <p class="text-text-muted mt-1">Fraksi Rp 5 per tick. Maksimum auto-rejection 25%.</p>
+                            </div>
+                            <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                                <span class="font-bold text-primary">&gt; Rp 5.000</span>
+                                <p class="text-text-muted mt-1">Fraksi Rp 25 per tick. Maksimum auto-rejection 20%.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modul 2: Strategi Aksi Trading -->
+                    <div class="bg-white rounded-2xl p-6 border border-surface-border shadow-sm flex flex-col gap-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-lg bg-primary text-white flex items-center justify-center font-bold text-xs">2</div>
+                            <h3 class="text-base font-bold text-primary">Definisi Rekomendasi Taktis</h3>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                            <div class="p-4 rounded-xl bg-emerald-50/60 border border-emerald-200 flex flex-col gap-1.5">
+                                <span class="font-bold text-emerald-900">Buy on Weakness (BoW)</span>
+                                <p class="text-emerald-800 leading-relaxed">
+                                    Membeli saat harga terkoreksi menguji area *support* kuat dalam tren pergerakan yang stabil. Risiko terukur karena dekat dengan batas *cut-loss*.
+                                </p>
+                            </div>
+                            <div class="p-4 rounded-xl bg-blue-50/60 border border-blue-200 flex flex-col gap-1.5">
+                                <span class="font-bold text-blue-900">Buy on Breakout (BoB)</span>
+                                <p class="text-blue-800 leading-relaxed">
+                                    Membeli saat harga berhasil menembus level *resistance* utama yang diiringi oleh lonjakan volume perdagangan, mengindikasikan kelanjutan tren naik.
+                                </p>
+                            </div>
+                            <div class="p-4 rounded-xl bg-amber-50/60 border border-amber-200 flex flex-col gap-1.5">
+                                <span class="font-bold text-amber-900">Hold / Tahan Kepemilikan</span>
+                                <p class="text-amber-800 leading-relaxed">
+                                    Mempertahankan posisi saat emiten berada dalam fase konsolidasi wajar atau sedang mendekati rilis katalis dividen/laba bersih.
+                                </p>
+                            </div>
+                            <div class="p-4 rounded-xl bg-rose-50/60 border border-rose-200 flex flex-col gap-1.5">
+                                <span class="font-bold text-rose-900">Sell on Strength / Amankan Kas</span>
+                                <p class="text-rose-800 leading-relaxed">
+                                    Merealisasikan keuntungan bertahap saat harga telah mencapai target profit atau momentum mulai melandai, guna mengamankan modal ke kas siaga.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modul 3: Konsep Disiplin Cut-Loss & Risk-to-Reward -->
+                    <div class="bg-white rounded-2xl p-6 border border-surface-border shadow-sm flex flex-col gap-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-lg bg-primary text-white flex items-center justify-center font-bold text-xs">3</div>
+                            <h3 class="text-base font-bold text-primary">Prinsip Disiplin Cut-Loss & Rasio Risk : Reward</h3>
+                        </div>
+                        <p class="text-xs text-text-muted leading-relaxed">
+                            *Stop Loss* atau *Cut Loss* adalah mekanisme pengaman modal paling krusial bagi setiap investor dan trader profesional. Batasi potensi kerugian maksimal pada kisaran 2% – 5% per posisi transaksi.
+                        </p>
+                        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-text-main flex flex-col gap-2">
+                            <span class="font-bold text-primary">Standar Rasio Minimal 1 : 2</span>
+                            <p class="text-text-muted leading-relaxed">
+                                Jangan pernah membuka posisi transaksi apabila potensi keuntungan lebih kecil dari dua kali potensi kerugian. Dengan rasio 1:2, bahkan dengan tingkat akurasi (win-rate) 45%, modal portofolio Anda secara statistik tetap bertumbuh positif.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </main>
     </div>
 
-    <!-- Client-side Interactive Logic (Vanilla JS) -->
+    <!-- ==================== MODAL DETAIL EMITEN & MULTI-MODEL ==================== -->
+    <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4" id="stockDetailModal">
+        <div class="bg-white rounded-2xl max-w-xl w-full border border-surface-border shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+            <div class="p-5 border-b border-surface-border flex items-center justify-between bg-slate-50">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-primary text-white flex items-center justify-center font-bold text-base" id="modalStockInitial">
+                        B
+                    </div>
+                    <div class="flex flex-col">
+                        <h3 class="font-bold text-primary text-base" id="modalStockTicker">BBCA</h3>
+                        <span class="text-xs text-text-muted" id="modalStockSector">Financials</span>
+                    </div>
+                </div>
+                <button type="button" class="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-200 flex items-center justify-center transition-colors" onclick="closeStockDetailModal()">
+                    <span class="material-symbols-outlined text-[20px]">close</span>
+                </button>
+            </div>
+
+            <div class="p-6 flex flex-col gap-5 text-xs">
+                <!-- Consensus Summary -->
+                <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-between">
+                    <div class="flex flex-col">
+                        <span class="text-text-muted font-medium">Konsensus Probabilitas Bullish</span>
+                        <div class="text-2xl font-black text-emerald-800 mt-0.5" id="modalConsensusProb">78.5%</div>
+                    </div>
+                    <span class="px-3 py-1 rounded-full bg-emerald-200 text-emerald-900 font-bold" id="modalActionBadge">BUY ON WEAKNESS</span>
+                </div>
+
+                <!-- Multi-Engine Breakdown -->
+                <div class="flex flex-col gap-2">
+                    <span class="font-bold text-primary text-xs uppercase tracking-wider">Breakdown Model Inferensi:</span>
+                    <div class="grid grid-cols-3 gap-2.5 text-center">
+                        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                            <span class="text-text-muted font-semibold">GBDT (Tabular)</span>
+                            <div class="text-sm font-bold text-primary mt-1" id="modalGBDTProb">76.2%</div>
+                            <span class="text-[10px] text-text-muted">Bobot 50%</span>
+                        </div>
+                        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                            <span class="text-text-muted font-semibold">PyTorch LSTM</span>
+                            <div class="text-sm font-bold text-primary mt-1" id="modalLSTMProb">81.0%</div>
+                            <span class="text-[10px] text-text-muted">Bobot 30%</span>
+                        </div>
+                        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                            <span class="text-text-muted font-semibold">ARIMA Waktu</span>
+                            <div class="text-sm font-bold text-primary mt-1" id="modalARIMAProb">79.5%</div>
+                            <span class="text-[10px] text-text-muted">Bobot 20%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Risk & Volatility Metrics -->
+                <div class="flex flex-col gap-2">
+                    <span class="font-bold text-primary text-xs uppercase tracking-wider">Parameter Ekonometrika & Risiko:</span>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-center">
+                        <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200">
+                            <span class="text-text-muted">Volatilitas GARCH</span>
+                            <div class="font-bold text-primary mt-0.5" id="modalGARCHVol">18.4% p.a.</div>
+                        </div>
+                        <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200">
+                            <span class="text-text-muted">1-Day VaR 95%</span>
+                            <div class="font-bold text-rose-700 mt-0.5" id="modalVaR">-1.85%</div>
+                        </div>
+                        <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200">
+                            <span class="text-text-muted">Beta IHSG</span>
+                            <div class="font-bold text-primary mt-0.5" id="modalBeta">0.85</div>
+                        </div>
+                        <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200">
+                            <span class="text-text-muted">Sharpe Ratio</span>
+                            <div class="font-bold text-primary mt-0.5" id="modalSharpe">1.42</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Trading Plan Target Levels -->
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 flex flex-col gap-2">
+                    <span class="font-bold text-primary">Level Trading Terukur:</span>
+                    <div class="grid grid-cols-3 gap-2 text-center text-xs">
+                        <div>
+                            <span class="text-text-muted">Area Entry</span>
+                            <div class="font-bold text-primary mt-0.5" id="modalEntryPrice">Rp 9.900</div>
+                        </div>
+                        <div>
+                            <span class="text-text-muted">Target TP1</span>
+                            <div class="font-bold text-emerald-800 mt-0.5" id="modalTargetPrice">Rp 10.400</div>
+                        </div>
+                        <div>
+                            <span class="text-text-muted">Batas Stop Loss</span>
+                            <div class="font-bold text-rose-800 mt-0.5" id="modalStopLoss">Rp 9.650</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-4 border-t border-surface-border bg-slate-50 flex items-center justify-end gap-3">
+                <button type="button" class="px-4 py-2 rounded-xl text-text-muted hover:text-text-main font-semibold text-xs" onclick="closeStockDetailModal()">
+                    Tutup
+                </button>
+                <button type="button" class="px-5 py-2.5 rounded-xl bg-primary hover:bg-slate-800 text-white font-bold text-xs flex items-center gap-2" id="btnOpenInCalculator" onclick="openStockInCalculator()">
+                    <span class="material-symbols-outlined text-[16px]">calculate</span>
+                    Hitung di Kalkulator Lot
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== TOAST NOTIFICATION CONTAINER ==================== -->
+    <div class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none" id="toastContainer"></div>
+
+    <!-- ==================== LOGIC JAVASCRIPT ==================== -->
     <script>
-        let allRecommendationsData = [];
+        let allRecommendations = [];
+        let currentUniverse = 'all';
+        let activeModalStock = null;
 
         function formatIDR(val) {
             return 'Rp ' + Number(val || 0).toLocaleString('id-ID');
         }
 
-        function recalculate() {
-            const stockSelect = document.getElementById('stockSelector');
-            if (!stockSelect) return;
+        // 1. Navigasi Antar Halaman (SPA Navigation)
+        function navigateTo(pageId, buttonElement) {
+            // Sembunyikan seluruh page-view
+            document.querySelectorAll('.page-view').forEach(page => {
+                page.classList.remove('active');
+            });
 
-            const selectedOption = stockSelect.options[stockSelect.selectedIndex];
-            const price = parseInt(stockSelect.value, 10) || 1000;
-            const capitalInput = document.getElementById('capitalInput');
-            let capital = parseInt(capitalInput.value, 10) || 0;
-
-            // Target price & Stop loss
-            let targetPrice = parseInt(selectedOption.getAttribute('data-tp'), 10) || Math.round(price * 1.05);
-            let stopLossPrice = parseInt(selectedOption.getAttribute('data-sl'), 10) || Math.round(price * 0.96);
-            let stockCode = selectedOption.getAttribute('data-code') || "SAHAM";
-
-            // 1 Lot = 100 lembar
-            const costPerLot = price * 100;
-            let lots = Math.floor(capital / costPerLot);
-            if (lots < 0) lots = 0;
-
-            const totalBuy = lots * costPerLot;
-            const change = capital - totalBuy;
-
-            const potentialGain = (targetPrice - price) * (lots * 100);
-            const potentialGainPct = ((targetPrice - price) / price * 100).toFixed(2);
-
-            const potentialLoss = (price - stopLossPrice) * (lots * 100);
-            const potentialLossPct = ((price - stopLossPrice) / price * 100).toFixed(2);
-
-            // Update UI elements
-            const resLot = document.getElementById('resLot');
-            const resShares = document.getElementById('resShares');
-            const resTotal = document.getElementById('resTotal');
-            const resChange = document.getElementById('resChange');
-            const resGain = document.getElementById('resGain');
-            const resLoss = document.getElementById('resLoss');
-            const btnOrderText = document.getElementById('btnOrderText');
-            const calcPriceRef = document.getElementById('calcPriceReference');
-            const resTargetPriceLabel = document.getElementById('resTargetPriceLabel');
-            const resStopLossLabel = document.getElementById('resStopLossLabel');
-
-            if (calcPriceRef) calcPriceRef.innerText = 'Harga Acuan: ' + formatIDR(price);
-            if (resTargetPriceLabel) resTargetPriceLabel.innerText = formatIDR(targetPrice);
-            if (resStopLossLabel) resStopLossLabel.innerText = formatIDR(stopLossPrice);
-
-            if (resLot) resLot.innerText = lots + ' Lot';
-            if (resShares) resShares.innerText = '(' + (lots * 100).toLocaleString('id-ID') + ' lembar saham resmi BEI)';
-            if (resTotal) resTotal.innerText = formatIDR(totalBuy);
-            if (resChange) resChange.innerText = formatIDR(change >= 0 ? change : 0);
-
-            if (resGain) {
-                resGain.innerText = '+' + formatIDR(potentialGain) + ' (+' + potentialGainPct + '%)';
-            }
-            if (resLoss) {
-                resLoss.innerText = '-' + formatIDR(potentialLoss) + ' (-' + potentialLossPct + '%)';
-            }
-            if (btnOrderText) {
-                btnOrderText.innerText = 'Siapkan Order Beli ' + lots + ' Lot ' + stockCode;
+            // Tampilkan target page
+            const target = document.getElementById(pageId);
+            if (target) {
+                target.classList.add('active');
             }
 
-            // Also update Portfolio Donut Card
-            const portfolioTotalLabel = document.getElementById('portfolioTotalLabel');
-            const allocBluechipVal = document.getElementById('allocBluechipVal');
-            const allocMidcapVal = document.getElementById('allocMidcapVal');
-            const allocCashVal = document.getElementById('allocCashVal');
+            // Update status tombol sidebar aktif
+            document.querySelectorAll('#sidebarNav .nav-btn').forEach(btn => {
+                btn.className = "nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-semibold text-sm transition-colors text-text-muted hover:bg-slate-100 hover:text-text-main";
+            });
 
-            if (portfolioTotalLabel) portfolioTotalLabel.innerText = formatIDR(capital);
-            if (allocBluechipVal) allocBluechipVal.innerText = formatIDR(capital * 0.55);
-            if (allocMidcapVal) allocMidcapVal.innerText = formatIDR(capital * 0.25);
-            if (allocCashVal) allocCashVal.innerText = formatIDR(capital * 0.20);
-        }
-
-        function onStockSelectChange() {
-            recalculate();
-        }
-
-        function setCapital(amount) {
-            const capitalInput = document.getElementById('capitalInput');
-            if (capitalInput) {
-                capitalInput.value = amount;
-                recalculate();
-            }
-        }
-
-        function updateRiskLabel(val) {
-            const label = document.getElementById('riskLabel');
-            if (label) {
-                label.innerText = val + '% per transaksi (Aman)';
-            }
-        }
-
-        function resetCalculator() {
-            const capitalInput = document.getElementById('capitalInput');
-            const stockSelect = document.getElementById('stockSelector');
-            if (capitalInput) capitalInput.value = 10000000;
-            if (stockSelect) stockSelect.selectedIndex = 0;
-            recalculate();
-        }
-
-        function selectStockForCalc(code, price, tp, sl) {
-            const stockSelect = document.getElementById('stockSelector');
-            if (!stockSelect) return;
-
-            let found = false;
-            for (let i = 0; i < stockSelect.options.length; i++) {
-                if (stockSelect.options[i].getAttribute('data-code') === code) {
-                    stockSelect.selectedIndex = i;
-                    found = true;
-                    break;
+            if (buttonElement) {
+                buttonElement.className = "nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-semibold text-sm transition-colors bg-primary text-white shadow-sm";
+            } else {
+                // Cari tombol yang sesuai jika dipanggil secara programatis
+                const matchingBtn = document.querySelector(`#sidebarNav .nav-btn[data-target="${pageId}"]`);
+                if (matchingBtn) {
+                    matchingBtn.className = "nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-semibold text-sm transition-colors bg-primary text-white shadow-sm";
                 }
             }
-            if (!found) {
-                const opt = document.createElement('option');
-                opt.value = price;
-                opt.setAttribute('data-code', code);
-                opt.setAttribute('data-tp', tp);
-                opt.setAttribute('data-sl', sl);
-                opt.innerText = `${code} - Saham Pilihan (Rp ${price.toLocaleString('id-ID')} / lembar)`;
-                stockSelect.appendChild(opt);
-                stockSelect.selectedIndex = stockSelect.options.length - 1;
-            }
-            recalculate();
 
-            const calcSec = document.getElementById('kalkulator-section');
-            if (calcSec) {
-                calcSec.scrollIntoView({ behavior: 'smooth' });
-            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function showOrderConfirmation() {
-            const stockSelect = document.getElementById('stockSelector');
-            const selectedOption = stockSelect.options[stockSelect.selectedIndex];
-            const stockCode = selectedOption.getAttribute('data-code') || "BBCA";
-            const price = parseInt(stockSelect.value, 10);
-            const resLot = document.getElementById('resLot').innerText;
-            const resTotal = document.getElementById('resTotal').innerText;
-            const tp = selectedOption.getAttribute('data-tp');
-            const sl = selectedOption.getAttribute('data-sl');
+        // 2. Tampilkan Notifikasi Toast Modern
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            if (!container) return;
 
-            alert(
-                `📋 Ringkasan Order Saham (Stock Market Recommendation):\n\n` +
-                `• Saham: ${stockCode}\n` +
-                `• Harga Beli: ${formatIDR(price)}\n` +
-                `• Jumlah: ${resLot}\n` +
-                `• Estimasi Nilai: ${resTotal}\n` +
-                `• Target Profit: ${formatIDR(tp)}\n` +
-                `• Cut-Loss Disiplin: ${formatIDR(sl)}\n\n` +
-                `Tips: Buka aplikasi sekuritas Anda (misal Mirae, Indo Premier, BCA Sekuritas, Mandiri Sekuritas) dan masukkan order di atas secara disiplin!`
-            );
+            const toast = document.createElement('div');
+            const bgClass = type === 'success' ? 'bg-slate-900 text-white border-slate-700' : 'bg-rose-900 text-white border-rose-700';
+            const icon = type === 'success' ? 'check_circle' : 'error';
+
+            toast.className = `flex items-center gap-2.5 px-4 py-3 rounded-xl border shadow-xl text-xs font-semibold pointer-events-auto transition-all transform duration-300 translate-y-2 opacity-0 ${bgClass}`;
+            toast.innerHTML = `
+                <span class="material-symbols-outlined text-[18px] text-emerald-400">${icon}</span>
+                <span>${message}</span>
+            `;
+
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
         }
 
-        function setActiveNav(element) {
-            const navLinks = document.querySelectorAll('#mainNav a');
-            navLinks.forEach(link => {
-                link.className = "flex items-center gap-space-sm px-space-md py-space-sm rounded-xl font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors";
-            });
-            element.className = "flex items-center gap-space-sm px-space-md py-space-sm transition-colors bg-primary text-on-primary font-label-lg shadow-sm rounded-xl";
-        }
+        // 3. Render Morning Brief Tanpa Karakter **
+        function renderCleanMarkdown(rawText) {
+            if (!rawText) return "";
+            
+            // Pisahkan per paragraf
+            const paragraphs = rawText.split(/\n\s*\n/);
+            let html = "";
 
-        function filterTableBySearch(query) {
-            const q = query.trim().toUpperCase();
-            const rows = document.querySelectorAll('#recommendationsTableBody tr');
-            rows.forEach(row => {
-                const text = row.innerText.toUpperCase();
-                if (text.includes(q)) {
-                    row.style.display = "";
-                } else {
-                    row.style.display = "none";
+            paragraphs.forEach(p => {
+                let cleanP = p.trim();
+                if (!cleanP) return;
+
+                // Abaikan header berulang
+                if (cleanP.includes("INSTITUTIONAL EQUITY RESEARCH") || cleanP.startsWith("Tanggal:")) {
+                    return;
                 }
+
+                // Ubah **teks** menjadi <strong>teks</strong>
+                cleanP = cleanP.replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-bold">$1</strong>');
+                // Ubah *teks* menjadi <em>teks</em>
+                cleanP = cleanP.replace(/\*(.*?)\*/g, '<em class="text-slate-200 font-medium">$1</em>');
+
+                html += `<p class="text-slate-200 text-xs lg:text-sm leading-relaxed">${cleanP}</p>`;
             });
+
+            return html;
         }
 
-        // Live API Fetchers
         async function fetchMorningBrief() {
             try {
                 const res = await fetch('/morning-brief');
@@ -968,46 +918,46 @@
                 const data = await res.json();
 
                 if (data.headline) {
-                    document.getElementById('briefTitle').innerText = data.headline;
+                    document.getElementById('briefHeadline').innerText = data.headline;
                 }
                 if (data.brief_content) {
-                    document.getElementById('briefSummary').innerText = data.brief_content;
+                    document.getElementById('briefContentRendered').innerHTML = renderCleanMarkdown(data.brief_content);
+                }
+                if (data.date) {
+                    document.getElementById('briefDateBadge').innerText = `Laporan Riset Harian • Sesi ${data.date}`;
                 }
                 if (data.snapshot) {
                     const s = data.snapshot;
-                    if (s.sp500_change) document.getElementById('valSP500').innerText = s.sp500_change;
-                    if (s.brent_oil) document.getElementById('valBrent').innerText = s.brent_oil;
-                    if (s.usd_idr) document.getElementById('valUSDIDR').innerText = s.usd_idr;
+                    if (s.sp500_change) document.getElementById('metricSP500').innerText = s.sp500_change;
+                    if (s.brent_oil) document.getElementById('metricBrent').innerText = s.brent_oil;
+                    if (s.usd_idr) document.getElementById('metricUSDIDR').innerText = s.usd_idr;
                     if (s.ihsg_close) {
                         const sign = s.ihsg_change_pct >= 0 ? "+" : "";
-                        document.getElementById('valIHSG').innerHTML = `${s.ihsg_close} <span class="text-secondary-fixed">${sign}${s.ihsg_change_pct}%</span>`;
+                        document.getElementById('metricIHSG').innerHTML = `${s.ihsg_close} <span class="text-emerald-400 text-sm">${sign}${s.ihsg_change_pct}%</span>`;
                     }
                     if (s.ihsg_support && s.ihsg_resistance) {
-                        document.getElementById('labelIHSG').innerText = `Support: ${s.ihsg_support} | Resisten: ${s.ihsg_resistance}`;
+                        document.getElementById('metricRange').innerText = `Support ${s.ihsg_support} • Resistance ${s.ihsg_resistance}`;
                     }
                 }
-                if (data.date) {
-                    document.getElementById('briefBadgeText').innerText = `Ringkasan Cerdas AI Gemini 3.6 • Sesi ${data.date}`;
-                }
             } catch (e) {
-                console.log("Using cached morning brief display.");
+                console.log("Menggunakan data brief bawaan.");
             }
         }
 
-        async function fetchRecommendations(universe = 'all') {
+        // 4. Fetch dan Render Rekomendasi Saham
+        async function loadRecommendations() {
             try {
-                const url = universe === 'all' ? '/recommendations' : `/recommendations?universe=${universe}`;
-                const res = await fetch(url);
+                const res = await fetch('/recommendations?universe=all');
                 if (!res.ok) return;
                 const data = await res.json();
-
                 if (data && data.length > 0) {
-                    allRecommendationsData = data;
-                    renderRecommendationsTable(data);
-                    populateStockSelector(data);
+                    allRecommendations = data;
+                    renderRecommendationsTable(allRecommendations);
+                    populateCalculatorStockDropdown(allRecommendations);
+                    updatePortfolioCalculations();
                 }
             } catch (e) {
-                console.log("Using default recommendations display.");
+                console.log("Menggunakan data rekomendasi default.");
             }
         }
 
@@ -1015,8 +965,13 @@
             const tbody = document.getElementById('recommendationsTableBody');
             if (!tbody) return;
 
-            let html = '';
-            items.slice(0, 10).forEach(item => {
+            if (items.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="9" class="py-8 text-center text-text-muted text-xs">Tidak ditemukan saham untuk filter ini.</td></tr>`;
+                return;
+            }
+
+            let html = "";
+            items.forEach((item, idx) => {
                 const tickerClean = (item.Ticker || "").replace(".JK", "");
                 const initial = tickerClean.charAt(0) || "S";
                 const closePrice = Math.round(item.Close || 0);
@@ -1025,67 +980,58 @@
                 const stopLoss = Math.round(item.Stop_Loss || (closePrice * 0.96));
                 const rec = item.Recommendation || "Buy on Weakness";
 
-                let badgeColor = "bg-secondary-container text-on-secondary-container";
-                let badgeIcon = "arrow_upward";
-                let actionText = rec.toUpperCase();
-
+                let badgeClass = "bg-emerald-50 text-emerald-800 border-emerald-200";
                 if (rec.toLowerCase().includes("breakout")) {
-                    badgeIcon = "trending_up";
-                    badgeColor = "bg-secondary text-on-secondary";
-                } else if (rec.toLowerCase().includes("trading")) {
-                    badgeIcon = "show_chart";
-                    badgeColor = "bg-secondary-container text-on-secondary-container";
+                    badgeClass = "bg-blue-50 text-blue-800 border-blue-200";
                 } else if (rec.toLowerCase().includes("hold")) {
-                    badgeIcon = "pause_circle";
-                    badgeColor = "bg-surface-container-high text-on-surface";
+                    badgeClass = "bg-slate-100 text-slate-800 border-slate-200";
                 } else if (rec.toLowerCase().includes("sell")) {
-                    badgeIcon = "savings";
-                    badgeColor = "bg-error-container text-on-error-container";
+                    badgeClass = "bg-rose-50 text-rose-800 border-rose-200";
                 }
 
                 const targetPct = (((targetPrice - closePrice) / closePrice) * 100).toFixed(1);
                 const slPct = (((closePrice - stopLoss) / closePrice) * 100).toFixed(1);
-
-                let rationale = `Probabilitas Bullish model ensemble ${(item.Bullish_Probability * 100).toFixed(1)}%. Rasio Sharpe ${item.Sharpe_Ratio || 1.2} dengan batas risiko GARCH terukur.`;
-                if (item.Sector) {
-                    rationale = `Katalis sektor ${item.Sector}. Sinyal teknikal ${rec} dengan probabilitas AI ${(item.Bullish_Probability * 100).toFixed(1)}% dan target terukur.`;
-                }
+                const rrr = item.Risk_Reward_Ratio ? `1 : ${item.Risk_Reward_Ratio.toFixed(1)}` : "1 : 2.0";
+                const prob = Math.round((item.Bullish_Probability || 0.7) * 100);
 
                 html += `
-                <tr class="hover:bg-surface-container-low/50 transition-colors group cursor-pointer" onclick="selectStockForCalc('${tickerClean}', ${closePrice}, ${targetPrice}, ${stopLoss})">
-                    <td class="py-4 px-4 align-top">
+                <tr class="hover:bg-slate-50/80 transition-colors">
+                    <td class="py-3.5 px-5">
                         <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center font-headline-sm text-primary font-bold">
+                            <div class="w-8 h-8 rounded-lg bg-slate-100 border border-slate-200 text-primary flex items-center justify-center font-bold text-xs">
                                 ${initial}
                             </div>
                             <div class="flex flex-col">
-                                <span class="font-headline-sm text-headline-sm font-bold text-primary">${tickerClean}</span>
-                                <span class="font-body-sm text-body-sm text-on-surface-variant">${item.Sector || 'Emiten Pilihan'}</span>
+                                <span class="font-bold text-primary">${tickerClean}</span>
+                                <span class="text-[11px] text-text-muted">${item.Sector || 'General'}</span>
                             </div>
                         </div>
                     </td>
-                    <td class="py-4 px-3 align-top">
-                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full ${badgeColor} font-label-sm text-label-sm font-bold">
-                            <span class="material-symbols-outlined text-[14px]">${badgeIcon}</span>
-                            ${actionText}
+                    <td class="py-3.5 px-4">
+                        <span class="inline-flex px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${badgeClass}">
+                            ${rec.toUpperCase()}
                         </span>
                     </td>
-                    <td class="py-4 px-3 align-top">
-                        <div class="font-label-lg text-label-lg font-bold text-primary">Rp ${entryPrice.toLocaleString('id-ID')}</div>
-                        <span class="font-label-sm text-label-sm text-on-surface-variant">Zona pantau</span>
+                    <td class="py-3.5 px-4 font-bold text-primary">Rp ${closePrice.toLocaleString('id-ID')}</td>
+                    <td class="py-3.5 px-4 font-semibold text-text-main">Rp ${entryPrice.toLocaleString('id-ID')}</td>
+                    <td class="py-3.5 px-4 font-bold text-emerald-700">Rp ${targetPrice.toLocaleString('id-ID')} <span class="text-[11px] font-medium text-emerald-600">(+${targetPct}%)</span></td>
+                    <td class="py-3.5 px-4 font-bold text-rose-700">Rp ${stopLoss.toLocaleString('id-ID')} <span class="text-[11px] font-medium text-rose-600">(-${slPct}%)</span></td>
+                    <td class="py-3.5 px-4 text-center font-bold text-primary text-xs">${rrr}</td>
+                    <td class="py-3.5 px-4 text-center">
+                        <span class="inline-flex items-center px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800 text-xs font-black">
+                            ${prob}%
+                        </span>
                     </td>
-                    <td class="py-4 px-3 align-top">
-                        <div class="font-label-lg text-label-lg font-bold text-secondary">Rp ${targetPrice.toLocaleString('id-ID')}</div>
-                        <span class="font-label-sm text-label-sm text-secondary font-semibold">+${targetPct}% Potensi</span>
-                    </td>
-                    <td class="py-4 px-3 align-top">
-                        <div class="font-label-lg text-label-lg font-bold text-error">Rp ${stopLoss.toLocaleString('id-ID')}</div>
-                        <span class="font-label-sm text-label-sm text-error font-medium">-${slPct}% Cut-Loss</span>
-                    </td>
-                    <td class="py-4 px-4 align-top">
-                        <p class="font-body-sm text-body-sm text-on-surface leading-relaxed max-w-xs">
-                            ${rationale}
-                        </p>
+                    <td class="py-3.5 px-5 text-right">
+                        <div class="flex items-center justify-end gap-1.5">
+                            <button type="button" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-text-main text-xs font-semibold transition-colors" onclick="openStockDetailModal('${tickerClean}')">
+                                Detail
+                            </button>
+                            <button type="button" class="px-2.5 py-1 rounded-lg bg-primary hover:bg-slate-800 text-white text-xs font-semibold transition-colors flex items-center gap-1" onclick="setupLotCalculation('${tickerClean}', ${closePrice}, ${targetPrice}, ${stopLoss})">
+                                <span class="material-symbols-outlined text-[14px]">calculate</span>
+                                Hitung
+                            </button>
+                        </div>
                     </td>
                 </tr>`;
             });
@@ -1093,70 +1039,460 @@
             tbody.innerHTML = html;
         }
 
-        function populateStockSelector(items) {
-            const stockSelect = document.getElementById('stockSelector');
-            if (!stockSelect) return;
-
-            stockSelect.innerHTML = '';
-            items.slice(0, 10).forEach(item => {
-                const tickerClean = (item.Ticker || "").replace(".JK", "");
-                const closePrice = Math.round(item.Close || 0);
-                const targetPrice = Math.round(item.Target_Price || (closePrice * 1.05));
-                const stopLoss = Math.round(item.Stop_Loss || (closePrice * 0.96));
-
-                const opt = document.createElement('option');
-                opt.value = closePrice;
-                opt.setAttribute('data-code', tickerClean);
-                opt.setAttribute('data-tp', targetPrice);
-                opt.setAttribute('data-sl', stopLoss);
-                opt.innerText = `${tickerClean} - ${item.Sector || 'Emiten'} (Rp ${closePrice.toLocaleString('id-ID')} / lembar)`;
-                stockSelect.appendChild(opt);
-            });
-            recalculate();
+        function filterByUniverse(universe, btn) {
+            currentUniverse = universe;
+            const tabs = document.querySelectorAll('#universeTabs button');
+            tabs.forEach(t => t.className = "px-3 py-1.5 rounded-lg text-xs font-semibold text-text-muted hover:text-text-main transition-colors");
+            btn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-white text-primary shadow-sm";
+            applyFilters();
         }
 
-        function setUniverseFilter(universe, button) {
-            const tabs = document.querySelectorAll('#filterTabs button');
-            tabs.forEach(btn => {
-                btn.className = "px-3 py-1.5 rounded-lg text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm transition-colors";
-            });
-            button.className = "px-3 py-1.5 rounded-lg bg-surface-container-lowest text-primary font-label-sm text-label-sm shadow-sm transition-all font-semibold";
-            fetchRecommendations(universe);
-        }
+        function applyFilters() {
+            const sector = document.getElementById('sectorFilter').value;
+            const search = (document.getElementById('globalSearchInput').value || "").trim().toUpperCase();
 
-        function checkMarketHours() {
-            const now = new Date();
-            const day = now.getDay(); // 0 = Sun, 6 = Sat
-            const hour = now.getHours();
-            const min = now.getMinutes();
-            const timeNum = hour * 100 + min;
+            let filtered = allRecommendations;
 
-            const pill = document.getElementById('marketStatusPill');
-            const text = document.getElementById('marketStatusText');
-
-            if (day >= 1 && day <= 5) {
-                // Sesi 1: 09:00 - 11:30, Sesi 2: 13:30 - 15:45 WIB
-                if (timeNum >= 900 && timeNum <= 1130) {
-                    text.innerText = "Pasar Buka (Sesi 1: 09.00 - 11.30 WIB)";
-                } else if (timeNum >= 1330 && timeNum <= 1545) {
-                    text.innerText = "Pasar Buka (Sesi 2: 13.30 - 15.45 WIB)";
-                } else {
-                    text.innerText = "Pasar Rehat / Tutup (Buka 09.00 WIB)";
+            if (currentUniverse !== 'all') {
+                if (currentUniverse === 'dividend') {
+                    filtered = filtered.filter(x => (x.Dividend_Yield && x.Dividend_Yield > 0.03) || ['PTBA.JK','ADRO.JK','ITMG.JK','UNTR.JK','BBCA.JK'].includes(x.Ticker));
+                } else if (currentUniverse === 'favorites') {
+                    filtered = filtered.filter(x => ['BBCA.JK','BBRI.JK','BMRI.JK','BBNI.JK','TLKM.JK','ASII.JK'].includes(x.Ticker));
+                } else if (currentUniverse === 'swing') {
+                    filtered = filtered.filter(x => (x.Recommendation || "").toLowerCase().includes("swing") || (x.Recommendation || "").toLowerCase().includes("breakout"));
                 }
+            }
+
+            if (sector !== 'ALL') {
+                filtered = filtered.filter(x => (x.Sector || "").toLowerCase() === sector.toLowerCase());
+            }
+
+            if (search) {
+                filtered = filtered.filter(x => (x.Ticker || "").toUpperCase().includes(search) || (x.Sector || "").toUpperCase().includes(search));
+            }
+
+            renderRecommendationsTable(filtered);
+        }
+
+        function handleGlobalSearch(val) {
+            // Jika user sedang di page lain, pindah ke page rekomendasi untuk melihat hasil pencarian
+            const currentActive = document.querySelector('.page-view.active');
+            if (currentActive && currentActive.id !== 'page-rekomendasi') {
+                navigateTo('page-rekomendasi');
+            }
+            applyFilters();
+        }
+
+        // 5. Modal Detail Emiten
+        function openStockDetailModal(tickerClean) {
+            const fullTicker = tickerClean.includes('.JK') ? tickerClean : `${tickerClean}.JK`;
+            const stock = allRecommendations.find(x => x.Ticker === fullTicker || x.Ticker === tickerClean);
+            if (!stock) return;
+
+            activeModalStock = stock;
+            const closePrice = Math.round(stock.Close || 0);
+            const entryPrice = Math.round(stock.Entry_Price || closePrice);
+            const targetPrice = Math.round(stock.Target_Price || (closePrice * 1.05));
+            const stopLoss = Math.round(stock.Stop_Loss || (closePrice * 0.96));
+
+            document.getElementById('modalStockInitial').innerText = tickerClean.charAt(0);
+            document.getElementById('modalStockTicker').innerText = tickerClean;
+            document.getElementById('modalStockSector').innerText = stock.Sector || 'General';
+            document.getElementById('modalConsensusProb').innerText = `${Math.round((stock.Bullish_Probability || 0.7) * 100)}%`;
+            document.getElementById('modalActionBadge').innerText = (stock.Recommendation || 'BUY ON WEAKNESS').toUpperCase();
+
+            document.getElementById('modalGBDTProb').innerText = `${Math.round((stock.GBDT_Prob || stock.Bullish_Probability || 0.75) * 100)}%`;
+            document.getElementById('modalLSTMProb').innerText = `${Math.round((stock.LSTM_Prob || stock.Bullish_Probability || 0.78) * 100)}%`;
+            document.getElementById('modalARIMAProb').innerText = `${Math.round((stock.ARIMA_Prob || stock.Bullish_Probability || 0.72) * 100)}%`;
+
+            document.getElementById('modalGARCHVol').innerText = stock.GARCH_Vol ? `${(stock.GARCH_Vol * 100).toFixed(1)}%` : "18.5%";
+            document.getElementById('modalVaR').innerText = stock.VaR_95_1D ? `-${(stock.VaR_95_1D * 100).toFixed(2)}%` : "-1.92%";
+            document.getElementById('modalBeta').innerText = stock.Beta_IHSG ? stock.Beta_IHSG.toFixed(2) : "0.95";
+            document.getElementById('modalSharpe').innerText = stock.Sharpe_Ratio ? stock.Sharpe_Ratio.toFixed(2) : "1.25";
+
+            document.getElementById('modalEntryPrice').innerText = formatIDR(entryPrice);
+            document.getElementById('modalTargetPrice').innerText = formatIDR(targetPrice);
+            document.getElementById('modalStopLoss').innerText = formatIDR(stopLoss);
+
+            const modal = document.getElementById('stockDetailModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeStockDetailModal() {
+            const modal = document.getElementById('stockDetailModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            activeModalStock = null;
+        }
+
+        function openStockInCalculator() {
+            if (!activeModalStock) return;
+            const tickerClean = (activeModalStock.Ticker || "").replace(".JK", "");
+            const closePrice = Math.round(activeModalStock.Close || 0);
+            const targetPrice = Math.round(activeModalStock.Target_Price || (closePrice * 1.05));
+            const stopLoss = Math.round(activeModalStock.Stop_Loss || (closePrice * 0.96));
+
+            closeStockDetailModal();
+            setupLotCalculation(tickerClean, closePrice, targetPrice, stopLoss);
+        }
+
+        // 6. Kalkulator Lot & Risiko
+        function populateCalculatorStockDropdown(items) {
+            const sel = document.getElementById('calcStockSelect');
+            if (!sel) return;
+
+            sel.innerHTML = "";
+            items.slice(0, 15).forEach(item => {
+                const tickerClean = (item.Ticker || "").replace(".JK", "");
+                const opt = document.createElement('option');
+                opt.value = tickerClean;
+                opt.innerText = `${tickerClean} - ${item.Sector || 'IDX'} (Rp ${Math.round(item.Close || 0).toLocaleString('id-ID')})`;
+                sel.appendChild(opt);
+            });
+        }
+
+        function loadSelectedStockToCalc() {
+            const tickerClean = document.getElementById('calcStockSelect').value;
+            const fullTicker = `${tickerClean}.JK`;
+            const stock = allRecommendations.find(x => x.Ticker === fullTicker || x.Ticker === tickerClean);
+            if (!stock) return;
+
+            const closePrice = Math.round(stock.Close || 0);
+            const targetPrice = Math.round(stock.Target_Price || (closePrice * 1.05));
+            const stopLoss = Math.round(stock.Stop_Loss || (closePrice * 0.96));
+
+            document.getElementById('calcEntryPrice').value = closePrice;
+            document.getElementById('calcTargetPrice').value = targetPrice;
+            document.getElementById('calcStopLoss').value = stopLoss;
+
+            runLotCalculation();
+        }
+
+        function setupLotCalculation(tickerClean, entry, tp, sl) {
+            navigateTo('page-kalkulator');
+
+            const sel = document.getElementById('calcStockSelect');
+            if (sel) {
+                let found = false;
+                for (let i = 0; i < sel.options.length; i++) {
+                    if (sel.options[i].value === tickerClean) {
+                        sel.selectedIndex = i;
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    const opt = document.createElement('option');
+                    opt.value = tickerClean;
+                    opt.innerText = `${tickerClean} (Rp ${entry.toLocaleString('id-ID')})`;
+                    sel.appendChild(opt);
+                    sel.selectedIndex = sel.options.length - 1;
+                }
+            }
+
+            document.getElementById('calcEntryPrice').value = entry;
+            document.getElementById('calcTargetPrice').value = tp;
+            document.getElementById('calcStopLoss').value = sl;
+
+            runLotCalculation();
+        }
+
+        function setCalcCapital(val) {
+            document.getElementById('calcCapitalInput').value = val;
+            runLotCalculation();
+        }
+
+        function runLotCalculation() {
+            const entryPrice = parseFloat(document.getElementById('calcEntryPrice').value) || 1000;
+            const targetPrice = parseFloat(document.getElementById('calcTargetPrice').value) || entryPrice * 1.05;
+            const stopLoss = parseFloat(document.getElementById('calcStopLoss').value) || entryPrice * 0.95;
+            const capital = parseFloat(document.getElementById('calcCapitalInput').value) || 0;
+
+            const costPerLot = entryPrice * 100;
+            let lots = Math.floor(capital / costPerLot);
+            if (lots < 0) lots = 0;
+
+            const totalBuy = lots * costPerLot;
+            const change = capital - totalBuy;
+
+            const potentialGain = (targetPrice - entryPrice) * (lots * 100);
+            const gainPct = ((targetPrice - entryPrice) / entryPrice * 100).toFixed(2);
+
+            const potentialLoss = (entryPrice - stopLoss) * (lots * 100);
+            const lossPct = ((entryPrice - stopLoss) / entryPrice * 100).toFixed(2);
+
+            // Risk to Reward Ratio
+            const risk = entryPrice - stopLoss;
+            const reward = targetPrice - entryPrice;
+            const rrr = risk > 0 ? (reward / risk).toFixed(2) : "0.00";
+
+            document.getElementById('resCalcLots').innerText = `${lots} Lot`;
+            document.getElementById('resCalcShares').innerText = `(${(lots * 100).toLocaleString('id-ID')} lembar saham resmi)`;
+            document.getElementById('resCalcTotalBuy').innerText = formatIDR(totalBuy);
+            document.getElementById('resCalcChange').innerText = formatIDR(change >= 0 ? change : 0);
+
+            document.getElementById('resCalcGain').innerText = `+${formatIDR(potentialGain)} (+${gainPct}%)`;
+            document.getElementById('resCalcLoss').innerText = `-${formatIDR(potentialLoss)} (-${lossPct}%)`;
+
+            const box = document.getElementById('rrrStatusBox');
+            const icon = document.getElementById('rrrIcon');
+            const title = document.getElementById('rrrTitle');
+            const desc = document.getElementById('rrrDesc');
+
+            if (parseFloat(rrr) >= 2.0) {
+                box.className = "p-4 rounded-xl border border-emerald-200 bg-emerald-50 text-emerald-900 flex items-start gap-3";
+                icon.innerText = "verified";
+                icon.className = "material-symbols-outlined text-[22px] text-emerald-700 shrink-0 mt-0.5";
+                title.innerText = `Rasio Risk : Reward = 1 : ${rrr} (Sangat Baik / Layak Transaksi)`;
+                desc.innerText = "Potensi keuntungan minimal 2x lipat dari risiko kerugian. Rencana trading ini memenuhi kaidah manajemen risiko modal.";
+            } else if (parseFloat(rrr) >= 1.0) {
+                box.className = "p-4 rounded-xl border border-amber-200 bg-amber-50 text-amber-900 flex items-start gap-3";
+                icon.innerText = "warning";
+                icon.className = "material-symbols-outlined text-[22px] text-amber-700 shrink-0 mt-0.5";
+                title.innerText = `Rasio Risk : Reward = 1 : ${rrr} (Cukup / Berisiko Sedang)`;
+                desc.innerText = "Potensi keuntungan setara atau sedikit di atas risiko. Sebaiknya perketat level stop-loss sebelum mengeksekusi order.";
             } else {
-                text.innerText = "Pasar Tutup (Hari Libur Bursa)";
+                box.className = "p-4 rounded-xl border border-rose-200 bg-rose-50 text-rose-900 flex items-start gap-3";
+                icon.innerText = "dangerous";
+                icon.className = "material-symbols-outlined text-[22px] text-rose-700 shrink-0 mt-0.5";
+                title.innerText = `Rasio Risk : Reward = 1 : ${rrr} (Risiko Tidak Seimbang)`;
+                desc.innerText = "Potensi kerugian lebih besar dari potensi target profit. Transaksi tidak direkomendasikan pada level harga ini.";
             }
         }
 
-        // Initialize on DOM load
-        document.addEventListener('DOMContentLoaded', () => {
-            const capitalInput = document.getElementById('capitalInput');
-            if (capitalInput) capitalInput.addEventListener('input', recalculate);
+        // 7. Simpan Rencana Trading ke LocalStorage
+        function saveTradingPlan() {
+            const stock = document.getElementById('calcStockSelect').value;
+            const entry = parseFloat(document.getElementById('calcEntryPrice').value);
+            const tp = parseFloat(document.getElementById('calcTargetPrice').value);
+            const sl = parseFloat(document.getElementById('calcStopLoss').value);
+            const lots = parseInt(document.getElementById('resCalcLots').innerText, 10) || 0;
+            const totalBuy = document.getElementById('resCalcTotalBuy').innerText;
+            const risk = entry - sl;
+            const reward = tp - entry;
+            const rrr = risk > 0 ? (reward / risk).toFixed(1) : "1.0";
 
-            checkMarketHours();
-            recalculate();
+            if (lots <= 0) {
+                showToast("Modal tidak mencukupi untuk membeli minimal 1 lot saham ini.", "error");
+                return;
+            }
+
+            const newPlan = {
+                id: Date.now(),
+                stock,
+                lots,
+                totalBuy,
+                entry,
+                tp,
+                sl,
+                rrr: `1 : ${rrr}`,
+                date: new Date().toLocaleDateString('id-ID')
+            };
+
+            const existing = JSON.parse(localStorage.getItem('stockTradingPlans') || '[]');
+            existing.unshift(newPlan);
+            localStorage.setItem('stockTradingPlans', JSON.stringify(existing));
+
+            renderSavedTradingPlans();
+            showToast(`Rencana pembelian ${lots} Lot ${stock} berhasil disimpan ke daftar!`);
+        }
+
+        function renderSavedTradingPlans() {
+            const tbody = document.getElementById('savedPlansTableBody');
+            if (!tbody) return;
+
+            const plans = JSON.parse(localStorage.getItem('stockTradingPlans') || '[]');
+            if (plans.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" class="py-6 text-center text-text-muted text-xs">Belum ada rencana trading yang disimpan. Gunakan formulir di atas untuk menyimpan rencana.</td></tr>`;
+                return;
+            }
+
+            let html = "";
+            plans.forEach(p => {
+                html += `
+                <tr class="hover:bg-slate-50 transition-colors">
+                    <td class="py-3 px-4 font-bold text-primary">${p.stock}</td>
+                    <td class="py-3 px-3 font-semibold text-emerald-800">${p.lots} Lot</td>
+                    <td class="py-3 px-4 text-text-main font-semibold">${p.totalBuy}</td>
+                    <td class="py-3 px-3">Rp ${p.entry.toLocaleString('id-ID')}</td>
+                    <td class="py-3 px-3 font-bold text-emerald-700">Rp ${p.tp.toLocaleString('id-ID')}</td>
+                    <td class="py-3 px-3 font-bold text-rose-700">Rp ${p.sl.toLocaleString('id-ID')}</td>
+                    <td class="py-3 px-3 text-center font-bold text-xs">${p.rrr}</td>
+                    <td class="py-3 px-4 text-right">
+                        <div class="flex items-center justify-end gap-2">
+                            <button type="button" class="text-xs text-primary hover:underline font-semibold" onclick="copySinglePlanText('${p.stock}', ${p.lots}, ${p.entry}, ${p.tp}, ${p.sl})">
+                                Salin
+                            </button>
+                            <button type="button" class="text-xs text-rose-600 hover:underline font-semibold" onclick="deleteTradingPlan(${p.id})">
+                                Hapus
+                            </button>
+                        </div>
+                    </td>
+                </tr>`;
+            });
+            tbody.innerHTML = html;
+        }
+
+        function deleteTradingPlan(id) {
+            const existing = JSON.parse(localStorage.getItem('stockTradingPlans') || '[]');
+            const updated = existing.filter(x => x.id !== id);
+            localStorage.setItem('stockTradingPlans', JSON.stringify(updated));
+            renderSavedTradingPlans();
+            showToast("Rencana trading telah dihapus.");
+        }
+
+        function clearAllTradingPlans() {
+            if (confirm("Apakah Anda yakin ingin menghapus seluruh rencana trading tersimpan?")) {
+                localStorage.removeItem('stockTradingPlans');
+                renderSavedTradingPlans();
+                showToast("Semua rencana trading berhasil dibersihkan.");
+            }
+        }
+
+        function copySinglePlanText(stock, lots, entry, tp, sl) {
+            const text = `Order Plan ${stock}:\n- Beli: ${lots} Lot @ Rp ${entry.toLocaleString('id-ID')}\n- Target Profit: Rp ${tp.toLocaleString('id-ID')}\n- Stop Loss: Rp ${sl.toLocaleString('id-ID')}`;
+            navigator.clipboard.writeText(text);
+            showToast(`Teks rencana ${stock} berhasil disalin ke clipboard!`);
+        }
+
+        // 8. Logika Alokasi Portofolio
+        function setPortfolioCapital(val) {
+            document.getElementById('portfolioCapitalInput').value = val;
+            updatePortfolioCalculations();
+        }
+
+        function updatePortfolioCalculations() {
+            const capital = parseFloat(document.getElementById('portfolioCapitalInput').value) || 50000000;
+            const cashReserve = capital * 0.20;
+            const stockCapital = capital * 0.80;
+
+            document.getElementById('portCashAmount').innerText = formatIDR(cashReserve);
+            document.getElementById('portStockAmount').innerText = formatIDR(stockCapital);
+
+            const tbody = document.getElementById('portfolioAllocationTableBody');
+            if (!tbody) return;
+
+            // Ambil top 5 saham untuk diversifikasi
+            const pool = allRecommendations.filter(x => (x.Recommendation || '').toLowerCase().includes('buy')).slice(0, 5);
+            if (pool.length === 0) return;
+
+            // Hitung bobot proporsional (max 20% per emiten agar total 80%)
+            const weightPerStock = 0.80 / pool.length;
+
+            let html = "";
+            pool.forEach(stock => {
+                const tickerClean = (stock.Ticker || "").replace(".JK", "");
+                const allocatedIDR = Math.round(capital * weightPerStock);
+                const closePrice = Math.round(stock.Close || 1000);
+                const targetPrice = Math.round(stock.Target_Price || closePrice * 1.05);
+                const stopLoss = Math.round(stock.Stop_Loss || closePrice * 0.96);
+                const lots = Math.floor(allocatedIDR / (closePrice * 100));
+
+                html += `
+                <tr class="hover:bg-slate-50 transition-colors">
+                    <td class="py-3 px-4 font-bold text-primary">${tickerClean}</td>
+                    <td class="py-3 px-3 text-xs text-text-muted">${stock.Sector || 'General'}</td>
+                    <td class="py-3 px-3 text-center font-bold text-emerald-800 text-xs">${(weightPerStock * 100).toFixed(0)}%</td>
+                    <td class="py-3 px-4 font-semibold text-text-main">${formatIDR(allocatedIDR)}</td>
+                    <td class="py-3 px-3 text-center font-bold text-primary">${lots} Lot</td>
+                    <td class="py-3 px-3 font-bold text-emerald-700">Rp ${targetPrice.toLocaleString('id-ID')}</td>
+                    <td class="py-3 px-3 font-bold text-rose-700">Rp ${stopLoss.toLocaleString('id-ID')}</td>
+                </tr>`;
+            });
+
+            // Tambahkan baris Kas Siaga 20%
+            html += `
+            <tr class="bg-emerald-50/50 font-bold">
+                <td class="py-3 px-4 text-emerald-900">KAS SIAGA / RDPU</td>
+                <td class="py-3 px-3 text-xs text-emerald-800">Likuiditas Fleksibel</td>
+                <td class="py-3 px-3 text-center text-emerald-800 text-xs">20%</td>
+                <td class="py-3 px-4 text-emerald-900">${formatIDR(cashReserve)}</td>
+                <td class="py-3 px-3 text-center text-text-muted">-</td>
+                <td class="py-3 px-3 text-text-muted">-</td>
+                <td class="py-3 px-3 text-text-muted">-</td>
+            </tr>`;
+
+            tbody.innerHTML = html;
+        }
+
+        function copyPortfolioText() {
+            const capital = parseFloat(document.getElementById('portfolioCapitalInput').value) || 50000000;
+            const text = `Rencana Alokasi Portofolio Modal: ${formatIDR(capital)}\n- Kas Siaga (20%): ${formatIDR(capital * 0.2)}\n- Ekuitas Saham (80%): ${formatIDR(capital * 0.8)}\n\nDisusun otomatis oleh Stock Market Recommendation Platform.`;
+            navigator.clipboard.writeText(text);
+            showToast("Ringkasan alokasi portofolio berhasil disalin ke clipboard!");
+        }
+
+        function downloadPortfolioCSV() {
+            const capital = parseFloat(document.getElementById('portfolioCapitalInput').value) || 50000000;
+            let csv = "Ticker,Sektor,Bobot_Persen,Alokasi_IDR,Harga_Acuan,Target_TP,Stop_Loss\n";
+            
+            const pool = allRecommendations.filter(x => (x.Recommendation || '').toLowerCase().includes('buy')).slice(0, 5);
+            const weightPerStock = 0.80 / pool.length;
+
+            pool.forEach(s => {
+                const allocated = Math.round(capital * weightPerStock);
+                csv += `${s.Ticker},${s.Sector || 'General'},${(weightPerStock * 100).toFixed(1)}%,${allocated},${s.Close},${s.Target_Price},${s.Stop_Loss}\n`;
+            });
+            csv += `KAS_SIAGA,Liquidity,20.0%,${capital * 0.2},-,-,-\n`;
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `rencana_alokasi_portofolio_${new Date().toISOString().slice(0,10)}.csv`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast("File CSV portofolio berhasil diunduh!");
+        }
+
+        // 9. Status Jam Perdagangan BEI
+        function updateMarketStatus() {
+            const now = new Date();
+            const day = now.getDay();
+            const timeNum = now.getHours() * 100 + now.getMinutes();
+
+            const pill = document.getElementById('marketPill');
+            const text = document.getElementById('marketStatusText');
+
+            if (day >= 1 && day <= 5) {
+                if (timeNum >= 900 && timeNum <= 1130) {
+                    text.innerText = "Pasar Buka (Sesi 1: 09.00 - 11.30 WIB)";
+                    pill.className = "flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800";
+                } else if (timeNum >= 1330 && timeNum <= 1545) {
+                    text.innerText = "Pasar Buka (Sesi 2: 13.30 - 15.45 WIB)";
+                    pill.className = "flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800";
+                } else if (timeNum > 1130 && timeNum < 1330) {
+                    text.innerText = "Pasar Rehat Siang (Buka 13.30 WIB)";
+                    pill.className = "flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-800";
+                } else {
+                    text.innerText = "Pasar Tutup (Buka Esok 09.00 WIB)";
+                    pill.className = "flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-slate-700";
+                }
+            } else {
+                text.innerText = "Pasar Tutup (Hari Libur Bursa)";
+                pill.className = "flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-slate-700";
+            }
+        }
+
+        // Inisialisasi Saat Dokumen Siap
+        document.addEventListener('DOMContentLoaded', () => {
+            updateMarketStatus();
+            setInterval(updateMarketStatus, 60000);
+
             fetchMorningBrief();
-            fetchRecommendations('all');
+            loadRecommendations();
+            renderSavedTradingPlans();
+
+            // Handle URL Hash jika ada
+            if (window.location.hash) {
+                const hash = window.location.hash.replace('#', '');
+                const targetPage = `page-${hash}`;
+                const targetElement = document.getElementById(targetPage);
+                if (targetElement) {
+                    navigateTo(targetPage);
+                }
+            }
         });
     </script>
 </body>
