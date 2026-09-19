@@ -139,17 +139,20 @@ def execute_full_pipeline():
         logger.error(f"Error during daily pipeline execution: {str(e)}", exc_info=True)
 
 
-def _clean_record(record: Dict[str, Any]) -> Dict[str, Any]:
-    cleaned = {}
+def _clean_record(record: Any) -> Dict[str, Any]:
+    cleaned: Dict[str, Any] = {}
+    if not isinstance(record, dict):
+        return cleaned
     for k, v in record.items():
+        key = str(k)
         if pd.isna(v) or v is None or (isinstance(v, float) and (np.isinf(v) or np.isnan(v))):
-            cleaned[k] = None
+            cleaned[key] = None
         elif isinstance(v, (np.floating, float)):
-            cleaned[k] = round(float(v), 4)
+            cleaned[key] = round(float(v), 4)
         elif isinstance(v, (np.integer, int)):
-            cleaned[k] = int(v)
+            cleaned[key] = int(v)
         else:
-            cleaned[k] = v
+            cleaned[key] = v
     return cleaned
 
 
