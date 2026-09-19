@@ -1,11 +1,11 @@
 #!/bin/bash
 # ==============================================================================
-# AlphaTech Asynchronous Alpha Generation - Daily Pipeline Execution Script
+# Stock Market Recommendation - Daily Pipeline Execution Script
 # ==============================================================================
 set -e
 
 echo "----------------------------------------------------------------------"
-echo "[AlphaTech] Starting Daily Quantitative Pipeline Execution..."
+echo "[Stock Market Recommendation] Starting Daily Quantitative Pipeline Execution..."
 echo "Timestamp: $(date)"
 echo "----------------------------------------------------------------------"
 
@@ -26,5 +26,5 @@ echo "[Step 4/4] Generating Institutional Morning Brief (src/morning_brief.py)..
 python -m src.morning_brief
 
 echo "----------------------------------------------------------------------"
-echo "[AlphaTech] Daily Pipeline Execution Completed Successfully!"
+echo "[Stock Market Recommendation] Daily Pipeline Execution Completed Successfully!"
 echo "----------------------------------------------------------------------"

@@ -1,9 +1,19 @@
 import logging
-import numpy as np
-import pandas as pd
-from arch import arch_model
+from pathlib import Path
+import sys
 
-from src.config import (
+# Ensure project root is in sys.path
+ROOT_DIR = Path(__file__).resolve().parent.parent
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
+
+# pyrefly: ignore [missing-import]
+import numpy as np  # type: ignore # pyrefly: ignore [missing-import]
+import pandas as pd  # type: ignore # pyrefly: ignore [missing-import]
+from arch import arch_model  # type: ignore # pyrefly: ignore [missing-import]
+
+# pyrefly: ignore [missing-import]
+from src.config import (  # type: ignore # pyrefly: ignore [missing-import]
     ADVANCED_METRICS_FILE,
     BENCHMARK_DATA_FILE,
     FUNDAMENTAL_DATA_FILE,

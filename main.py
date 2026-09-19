@@ -1,11 +1,20 @@
 import importlib
 import logging
+from pathlib import Path
+import sys
 import time
-from src.config import LOG_FORMAT
+
+# Ensure project root is in sys.path
+ROOT_DIR = Path(__file__).resolve().parent
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
+
+# pyrefly: ignore [missing-import]
+from src.config import LOG_FORMAT  # type: ignore # pyrefly: ignore [missing-import]
 
 # Configure root logger
 logging.basicConfig(level=logging.INFO, format=LOG_FORMAT)
-logger = logging.getLogger("AlphaTechMain")
+logger = logging.getLogger("StockMarketRecommendationMain")
 
 
 def run_all():
@@ -14,7 +23,7 @@ def run_all():
     """
     start_time = time.time()
     logger.info("=========================================================")
-    logger.info("     ALPHATECH QUANTITATIVE PIPELINE - MASTER RUNNER      ")
+    logger.info("  STOCK MARKET RECOMMENDATION PIPELINE - MASTER RUNNER   ")
     logger.info("=========================================================")
 
     # Dynamic imports for quantitative pipeline modules
@@ -33,7 +42,9 @@ def run_all():
 
     # Step 3: Model Training & Inference
     logger.info("[Step 3/4] Training Multi-Engine Ensemble & Optimizing Portfolio...")
-    metrics, recommendations = model_inference.run_model_inference_pipeline()
+    res = model_inference.run_model_inference_pipeline()
+    metrics: dict = res[0] if isinstance(res, (tuple, list)) and len(res) > 0 and isinstance(res[0], dict) else {}
+    recommendations = res[1] if isinstance(res, (tuple, list)) and len(res) > 1 else None
 
     # Step 4: Morning Market Brief
     logger.info("[Step 4/4] Generating Institutional Daily Morning Brief via Gemini AI...")
@@ -45,10 +56,13 @@ def run_all():
     elapsed = round(time.time() - start_time, 2)
     logger.info("=========================================================")
     logger.info(f"PIPELINE COMPLETED SUCCESSFULLY IN {elapsed} SECONDS!")
-    logger.info(f"GBDT ROC-AUC Score: {metrics.get('GBDT_ROC_AUC', metrics.get('ROC_AUC'))} | Precision@Top5: {metrics.get('Precision_Top5')}")
+    roc_auc = metrics.get('GBDT_ROC_AUC', metrics.get('ROC_AUC', 'N/A'))
+    precision = metrics.get('Precision_Top5', 'N/A')
+    logger.info(f"GBDT ROC-AUC Score: {roc_auc} | Precision@Top5: {precision}")
     logger.info("=========================================================")
-    print("\n--- LATEST ALPHA RECOMMENDATIONS ---")
-    print(recommendations.to_string(index=False))
+    if recommendations is not None and hasattr(recommendations, "to_string"):
+        print("\n--- LATEST ALPHA RECOMMENDATIONS ---")
+        print(recommendations.to_string(index=False))
 
 
 if __name__ == "__main__":

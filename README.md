@@ -21,7 +21,7 @@ Platform ini menyajikan rekomendasi yang actionable dengan level teknikal presis
 
 Platform ini dibangun di bawah protokol ketat **"Clean-Room Engineering"** untuk memastikan kepatuhan penuh terhadap perjanjian kerja (PKWTT) dan peraturan perundangan (UU ITE & HAKI):
 
-| Prinsip Kepatuhan | Implementasi di AlphaTech |
+| Prinsip Kepatuhan | Implementasi di Stock Market Recommendation |
 | :--- | :--- |
 | **Bebas Scraping Ilegal** | **Tidak ada** *web scraping*, injeksi session cookie, ataupun pemanfaatan token rahasia dari portal riset tertutup (*Infovesta, Stockbit, dll.*). |
 | **Sumber Data 100% Terbuka** | Data pasar resmi diperoleh melalui feed publik Yahoo Finance API (`yfinance` dengan sufiks `.JK`), serta data makro resmi Bank Indonesia. |
@@ -38,7 +38,7 @@ Platform ini dibangun di bawah protokol ketat **"Clean-Room Engineering"** untuk
 - **Editorial Bernada Institusional**: Menghasilkan narasi editorial harian otomatis menggunakan **Google Gemini 3.6 Flash** dengan gaya riset analis riset pasar terkemuka.
 
 ### 2. 🧠 Multi-Engine Hybrid Ensemble Modeling
-AlphaTech tidak mengandalkan satu model saja, melainkan menggabungkan tiga mesin inferensi yang saling melengkapi:
+Platform Stock Market Recommendation tidak mengandalkan satu model saja, melainkan menggabungkan tiga mesin inferensi yang saling melengkapi:
 - **Gradient Boosted Decision Trees (GBDT - 50% Bobot)**: Mengekstraksi non-linear interaction antara 60+ faktor teknikal, likuiditas, dan fundamental.
 - **Deep Learning LSTM (PyTorch - 30% Bobot)**: Neural network sekuensial untuk menangkap pola temporal dan memori historis pergerakan harga.
 - **ARIMA (20% Bobot)**: Model deret waktu ekonometrika stasioner untuk mendeteksi *mean-reversion* jangka pendek.

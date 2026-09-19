@@ -1,0 +1,20 @@
+{
+  "include": [
+    ".",
+    "src",
+    "api"
+  ],
+  "extraPaths": [
+    ".",
+    "src",
+    "api"
+  ],
+  "pythonPlatform": "Windows",
+  "pythonVersion": "3.13",
+  "reportMissingImports": "none",
+  "reportMissingTypeStubs": "none",
+  "reportMissingModuleSource": "none",
+  "reportUnknownMemberType": "none",
+  "reportUnknownVariableType": "none",
+  "reportUnknownArgumentType": "none"
+}

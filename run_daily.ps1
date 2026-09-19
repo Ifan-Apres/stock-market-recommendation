@@ -1,10 +1,10 @@
 # ==============================================================================
-# AlphaTech Asynchronous Alpha Generation - Daily Pipeline Execution (PowerShell)
+# Stock Market Recommendation - Daily Pipeline Execution (PowerShell)
 # ==============================================================================
 $ErrorActionPreference = "Stop"
 
 Write-Host "----------------------------------------------------------------------" -ForegroundColor Cyan
-Write-Host "[AlphaTech] Starting Daily Quantitative Pipeline Execution..." -ForegroundColor Cyan
+Write-Host "[Stock Market Recommendation] Starting Daily Quantitative Pipeline Execution..." -ForegroundColor Cyan
 Write-Host "Timestamp: $(Get-Date)" -ForegroundColor Cyan
 Write-Host "----------------------------------------------------------------------" -ForegroundColor Cyan
 
@@ -25,5 +25,5 @@ Write-Host "[Step 4/4] Generating Institutional Daily Morning Brief (src/morning
 python -m src.morning_brief
 
 Write-Host "----------------------------------------------------------------------" -ForegroundColor Green
-Write-Host "[AlphaTech] Daily Pipeline Execution Completed Successfully!" -ForegroundColor Green
+Write-Host "[Stock Market Recommendation] Daily Pipeline Execution Completed Successfully!" -ForegroundColor Green
 Write-Host "----------------------------------------------------------------------" -ForegroundColor Green

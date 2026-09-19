@@ -2,32 +2,35 @@ import importlib
 import json
 import logging
 import os
+import sys
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-# pyrefly: ignore [missing-import]
-from dotenv import load_dotenv
-# pyrefly: ignore [missing-import]
-from fastapi import BackgroundTasks, FastAPI, HTTPException, Query
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse
-import google.generativeai as genai
-import numpy as np
-import pandas as pd
-from pydantic import BaseModel
+# Ensure project root is in sys.path for absolute imports
+ROOT_DIR = Path(__file__).resolve().parent.parent
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
 
-from src.config import (
-    ADVANCED_METRICS_FILE,
-    DATA_DIR,
+# pyrefly: ignore [missing-import]
+from dotenv import load_dotenv  # type: ignore # pyrefly: ignore [missing-import]
+# pyrefly: ignore [missing-import]
+from fastapi import BackgroundTasks, FastAPI, HTTPException, Query  # type: ignore # pyrefly: ignore [missing-import]
+from fastapi.middleware.cors import CORSMiddleware  # type: ignore # pyrefly: ignore [missing-import]
+from fastapi.responses import HTMLResponse  # type: ignore # pyrefly: ignore [missing-import]
+import google.generativeai as genai  # type: ignore # pyrefly: ignore [missing-import]
+import numpy as np  # type: ignore # pyrefly: ignore [missing-import]
+import pandas as pd  # type: ignore # pyrefly: ignore [missing-import]
+from pydantic import BaseModel  # type: ignore # pyrefly: ignore [missing-import]
+
+# pyrefly: ignore [missing-import]
+from src.config import (  # type: ignore # pyrefly: ignore [missing-import]
     DIVIDEND_RECOMMENDATION_FILE,
     FAVORITE_TICKERS,
     FAVORITES_RECOMMENDATION_FILE,
     LOG_FORMAT,
     MORNING_BRIEF_FILE,
     PORTFOLIO_ALLOCATION_FILE,
-    PROCESSED_DATA_FILE,
-    RAW_DATA_FILE,
     SECTOR_MAP,
     SWING_RECOMMENDATION_FILE,
 )
@@ -171,7 +174,7 @@ def web_dashboard():
     index_file = Path(__file__).resolve().parent.parent / "index.html"
     if index_file.exists():
         return HTMLResponse(content=index_file.read_text(encoding="utf-8"))
-    return HTMLResponse(content="<h1>AlphaTech Quantitative Platform is running.</h1>")
+    return HTMLResponse(content="<h1>Stock Market Recommendation Platform is running.</h1>")
 
 
 @app.get("/morning-brief", tags=["Morning Market Brief"])
