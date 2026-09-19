@@ -1,0 +1,47 @@
+name: AlphaTech Automated Daily Quantitative Pipeline
+
+on:
+  schedule:
+    # Run every weekday (Mon-Fri) at 22:00 UTC (05:00 WIB next day)
+    - cron: '0 22 * * 1-5'
+  workflow_dispatch:
+
+jobs:
+  run-pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python Runtime
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+
+      - name: Install Quantitative Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Step 1 - Ingest Market Data
+        run: python -m src.01_data_ingestion
+
+      - name: Step 2 - Feature Engineering & Alpha Extraction
+        run: python -m src.02_feature_eng
+
+      - name: Step 3 - Model Training & Alpha Inference
+        run: python -m src.03_model_inference
+
+      - name: Step 4 - Institutional Morning Market Brief
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python -m src.morning_brief
+
+      - name: Commit & Push Processed Alpha Recommendations & Briefs
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action Bot"
+          git add data/processed/
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update daily alpha recommendations & morning brief [skip ci]" && git push)

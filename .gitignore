@@ -1,0 +1,21 @@
+# Environment variables
+.env
+
+# Python Bytecode & Cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Large intermediate training matrix (reproducible via `python main.py`)
+data/processed/processed_market_features.csv
+
+# Virtual Environments
+.venv/
+env/
+venv/
+ENV/
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
