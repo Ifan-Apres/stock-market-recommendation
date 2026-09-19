@@ -51,22 +51,30 @@
 </head>
 <body class="bg-[#f8fafc] font-sans text-text-main antialiased min-h-screen">
 
-    <!-- ==================== SIDEBAR NAVIGATION ==================== -->
-    <aside class="fixed left-0 top-0 h-full w-64 bg-white z-50 flex flex-col justify-between border-r border-surface-border shadow-sm">
+    <!-- ==================== MOBILE BACKDROP OVERLAY ==================== -->
+    <div class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-40 hidden transition-opacity lg:hidden" id="sidebarBackdrop" onclick="closeSidebar()"></div>
+
+    <!-- ==================== SIDEBAR NAVIGATION (RESPONSIVE DRAWER) ==================== -->
+    <aside class="fixed left-0 top-0 h-full w-64 bg-white z-50 flex flex-col justify-between border-r border-surface-border shadow-2xl lg:shadow-sm transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out" id="mainSidebar">
         <div class="flex flex-col">
-            <!-- Brand Logo -->
-            <div class="h-20 px-6 flex items-center gap-3 border-b border-surface-border">
-                <div class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-white font-bold shadow-sm">
-                    <span class="material-symbols-outlined text-[22px]">show_chart</span>
+            <!-- Brand Logo & Mobile Close Button -->
+            <div class="h-16 lg:h-20 px-5 lg:px-6 flex items-center justify-between border-b border-surface-border">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 lg:w-10 lg:h-10 rounded-xl bg-primary flex items-center justify-center text-white font-bold shadow-sm">
+                        <span class="material-symbols-outlined text-[20px] lg:text-[22px]">show_chart</span>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="font-bold text-primary text-sm lg:text-base leading-tight tracking-tight">Stock Market</span>
+                        <span class="text-[11px] lg:text-xs text-text-muted font-medium">Recommendation Platform</span>
+                    </div>
                 </div>
-                <div class="flex flex-col">
-                    <span class="font-bold text-primary text-base leading-tight tracking-tight">Stock Market</span>
-                    <span class="text-xs text-text-muted font-medium">Recommendation Platform</span>
-                </div>
+                <button type="button" class="lg:hidden p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors" onclick="closeSidebar()" aria-label="Tutup Menu">
+                    <span class="material-symbols-outlined text-[20px]">close</span>
+                </button>
             </div>
 
             <!-- Navigasi Menu -->
-            <nav class="flex flex-col gap-1.5 p-4" id="sidebarNav">
+            <nav class="flex flex-col gap-1.5 p-3 sm:p-4" id="sidebarNav">
                 <button type="button" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-semibold text-sm transition-colors bg-primary text-white shadow-sm" data-target="page-ringkasan" onclick="navigateTo('page-ringkasan', this)">
                     <span class="material-symbols-outlined text-[20px]">query_stats</span>
                     <span>Ringkasan Pasar</span>
@@ -117,41 +125,46 @@
         </div>
     </aside>
 
-    <!-- ==================== HEADER ATAS ==================== -->
-    <div class="pl-64">
-        <header class="fixed top-0 left-64 right-0 h-20 bg-white/90 backdrop-blur-md z-40 border-b border-surface-border px-8 flex items-center justify-between gap-6">
+    <!-- ==================== HEADER ATAS & WRAPPER KONTEN ==================== -->
+    <div class="pl-0 lg:pl-64 min-h-screen flex flex-col">
+        <header class="fixed top-0 left-0 lg:left-64 right-0 h-16 lg:h-20 bg-white/95 backdrop-blur-md z-30 border-b border-surface-border px-3 sm:px-6 lg:px-8 flex items-center justify-between gap-2.5 sm:gap-6">
+            <!-- Hamburger Button untuk Mobile -->
+            <button type="button" class="lg:hidden p-2 rounded-xl text-slate-700 hover:bg-slate-100 active:bg-slate-200 transition-colors flex items-center justify-center shrink-0" onclick="toggleSidebar()" aria-label="Buka Menu Navigasi">
+                <span class="material-symbols-outlined text-[22px]">menu</span>
+            </button>
+
             <!-- Search bar fungsional -->
             <div class="flex-1 max-w-lg">
                 <div class="relative flex items-center w-full">
-                    <span class="material-symbols-outlined absolute left-3.5 text-slate-400 text-[20px] pointer-events-none">search</span>
-                    <input class="w-full bg-slate-100 border border-transparent focus:border-slate-300 text-sm text-text-main placeholder:text-slate-400 rounded-xl pl-10 pr-4 py-2.5 focus:outline-none focus:bg-white transition-all" id="globalSearchInput" placeholder="Cari kode saham atau sektor (cth: BBCA, TLKM, Financials)..." type="text" oninput="handleGlobalSearch(this.value)"/>
+                    <span class="material-symbols-outlined absolute left-3 text-slate-400 text-[18px] lg:text-[20px] pointer-events-none">search</span>
+                    <input class="w-full bg-slate-100 border border-transparent focus:border-slate-300 text-xs sm:text-sm text-text-main placeholder:text-slate-400 rounded-xl pl-9 lg:pl-10 pr-3 sm:pr-4 py-2 sm:py-2.5 focus:outline-none focus:bg-white transition-all" id="globalSearchInput" placeholder="Cari saham / sektor (cth: BBCA)..." type="text" oninput="handleGlobalSearch(this.value)"/>
                 </div>
             </div>
 
             <!-- Info Pasar dan Profil Analis -->
-            <div class="flex items-center gap-5 shrink-0">
-                <div class="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-rose-50 border border-rose-200 text-rose-800" id="marketPill">
-                    <span class="w-2 h-2 rounded-full bg-rose-500" id="marketDot"></span>
-                    <span class="text-xs font-bold" id="marketStatusText">Pasar Tutup</span>
+            <div class="flex items-center gap-2 sm:gap-4 shrink-0">
+                <div class="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full bg-rose-50 border border-rose-200 text-rose-800" id="marketPill">
+                    <span class="w-2 h-2 rounded-full bg-rose-500 shrink-0" id="marketDot"></span>
+                    <span class="text-[11px] sm:text-xs font-bold whitespace-nowrap" id="marketStatusText">Pasar Tutup</span>
                 </div>
 
-                <div class="h-8 w-px bg-slate-200"></div>
+                <div class="hidden sm:block h-7 w-px bg-slate-200"></div>
 
                 <!-- Profil Analis dengan Dropdown Menu Interaktif -->
                 <div class="relative">
-                    <button type="button" class="flex items-center gap-3 p-1.5 rounded-xl hover:bg-slate-100 transition-colors focus:outline-none" onclick="toggleUserDropdown()" id="userProfileBtn">
-                        <div class="w-9 h-9 rounded-full bg-primary text-white flex items-center justify-center font-bold text-xs shadow-sm" id="headerUserAvatar">
+                    <button type="button" class="flex items-center gap-2 p-1 sm:p-1.5 rounded-xl hover:bg-slate-100 transition-colors focus:outline-none" onclick="toggleUserDropdown()" id="userProfileBtn">
+                        <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-primary text-white flex items-center justify-center font-bold text-xs shadow-sm" id="headerUserAvatar">
                             SW
                         </div>
-                        <div class="flex flex-col text-left hidden sm:flex">
+                        <div class="flex flex-col text-left hidden md:flex">
                             <span class="text-sm font-bold text-primary leading-tight" id="headerUserName">Sekar Widhastri</span>
                             <span class="text-xs text-text-muted leading-tight font-medium" id="headerUserRole">Research Analyst</span>
                         </div>
-                        <span class="material-symbols-outlined text-[18px] text-slate-400">expand_more</span>
+                        <span class="material-symbols-outlined text-[16px] sm:text-[18px] text-slate-400 hidden sm:inline-block">expand_more</span>
                     </button>
 
                     <!-- Dropdown Menu Sesi Pengguna -->
-                    <div class="absolute right-0 top-full mt-2 w-64 bg-white rounded-2xl border border-surface-border shadow-xl p-3 hidden flex-col gap-2 z-50 animate-in fade-in zoom-in-95 duration-150" id="userDropdownMenu">
+                    <div class="absolute right-0 top-full mt-2 w-56 sm:w-64 bg-white rounded-2xl border border-surface-border shadow-xl p-3 hidden flex-col gap-2 z-50 animate-in fade-in zoom-in-95 duration-150" id="userDropdownMenu">
                         <div class="p-3 rounded-xl bg-slate-50 border border-slate-100 flex flex-col gap-0.5">
                             <div class="flex items-center gap-2">
                                 <span class="text-xs font-bold text-primary" id="dropdownUserName">Sekar Widhastri</span>
@@ -177,77 +190,77 @@
         </header>
 
         <!-- ==================== MAIN CONTENT AREA (5 PAGES) ==================== -->
-        <main class="pt-24 px-8 pb-16 min-h-screen">
+        <main class="pt-20 lg:pt-24 px-3 sm:px-6 lg:px-8 pb-24 lg:pb-16 flex-1 w-full max-w-7xl mx-auto">
 
             <!-- PAGE 1: RINGKASAN PASAR -->
             <div class="page-view active" id="page-ringkasan">
                 <div class="flex flex-col gap-6 max-w-7xl mx-auto">
                     <!-- Morning Brief Hero Banner -->
-                    <section class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white p-7 lg:p-9 shadow-lg">
-                        <div class="relative z-10 flex flex-col gap-5">
-                            <div class="flex flex-wrap items-center justify-between gap-3">
-                                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-emerald-300 text-xs font-semibold">
-                                    <span class="material-symbols-outlined text-[16px]">schedule</span>
+                    <section class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white p-4 sm:p-7 lg:p-9 shadow-lg">
+                        <div class="relative z-10 flex flex-col gap-4 sm:gap-5">
+                            <div class="flex flex-wrap items-center justify-between gap-2.5 sm:gap-3">
+                                <div class="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-emerald-300 text-[11px] sm:text-xs font-semibold">
+                                    <span class="material-symbols-outlined text-[15px] sm:text-[16px]">schedule</span>
                                     <span id="briefDateBadge">Laporan Riset Harian • Sesi 19 September 2026</span>
                                 </div>
-                                <div class="flex items-center gap-2 text-xs text-slate-300">
+                                <div class="flex items-center gap-2 text-[11px] sm:text-xs text-slate-300">
                                     <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
                                     <span>Konsensus Kuantitatif Terintegrasi</span>
                                 </div>
                             </div>
 
                             <div class="max-w-4xl">
-                                <h1 class="text-2xl lg:text-3xl font-extrabold text-white tracking-tight leading-tight" id="briefHeadline">
+                                <h1 class="text-xl sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight leading-tight" id="briefHeadline">
                                     Morning Market Brief: Analisis Arah IHSG dan Katalis Global
                                 </h1>
                             </div>
 
                             <!-- 4 Kartu Metrik Pasar -->
-                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-2">
-                                <div class="p-4 rounded-xl bg-white/5 border border-white/10 flex flex-col justify-between">
-                                    <span class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Bursa Wall Street</span>
-                                    <div class="my-2">
-                                        <div class="text-lg font-bold text-white">S&P 500 <span class="text-emerald-400 font-extrabold" id="metricSP500">+0.65%</span></div>
-                                        <span class="text-xs text-emerald-300">Katalis Positif</span>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mt-1 sm:mt-2">
+                                <div class="p-3.5 sm:p-4 rounded-xl bg-white/5 border border-white/10 flex flex-col justify-between">
+                                    <span class="text-[11px] sm:text-xs text-slate-400 uppercase tracking-wider font-semibold">Bursa Wall Street</span>
+                                    <div class="my-1.5 sm:my-2">
+                                        <div class="text-base sm:text-lg font-bold text-white">S&P 500 <span class="text-emerald-400 font-extrabold" id="metricSP500">+0.65%</span></div>
+                                        <span class="text-[11px] sm:text-xs text-emerald-300">Katalis Positif</span>
                                     </div>
-                                    <p class="text-xs text-slate-300">Sentimen bursa AS memberikan dorongan awal bagi IHSG.</p>
+                                    <p class="text-[11px] sm:text-xs text-slate-300">Sentimen bursa AS memberikan dorongan awal bagi IHSG.</p>
                                 </div>
 
-                                <div class="p-4 rounded-xl bg-white/5 border border-white/10 flex flex-col justify-between">
-                                    <span class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Minyak Mentah Brent</span>
-                                    <div class="my-2">
-                                        <div class="text-lg font-bold text-white" id="metricBrent">US$ 78.50 / barel</div>
-                                        <span class="text-xs text-slate-300">Stabil Terkendali</span>
+                                <div class="p-3.5 sm:p-4 rounded-xl bg-white/5 border border-white/10 flex flex-col justify-between">
+                                    <span class="text-[11px] sm:text-xs text-slate-400 uppercase tracking-wider font-semibold">Minyak Mentah Brent</span>
+                                    <div class="my-1.5 sm:my-2">
+                                        <div class="text-base sm:text-lg font-bold text-white" id="metricBrent">US$ 78.50 / barel</div>
+                                        <span class="text-[11px] sm:text-xs text-slate-300">Stabil Terkendali</span>
                                     </div>
-                                    <p class="text-xs text-slate-300">Biaya energi dan inflasi manufaktur domestik terjaga.</p>
+                                    <p class="text-[11px] sm:text-xs text-slate-300">Biaya energi dan inflasi manufaktur domestik terjaga.</p>
                                 </div>
 
-                                <div class="p-4 rounded-xl bg-white/5 border border-white/10 flex flex-col justify-between">
-                                    <span class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Kurs USD / IDR</span>
-                                    <div class="my-2">
-                                        <div class="text-lg font-bold text-white" id="metricUSDIDR">Rp 15.850 / US$</div>
-                                        <span class="text-xs text-emerald-300">Rupiah Terjaga</span>
+                                <div class="p-3.5 sm:p-4 rounded-xl bg-white/5 border border-white/10 flex flex-col justify-between">
+                                    <span class="text-[11px] sm:text-xs text-slate-400 uppercase tracking-wider font-semibold">Kurs USD / IDR</span>
+                                    <div class="my-1.5 sm:my-2">
+                                        <div class="text-base sm:text-lg font-bold text-white" id="metricUSDIDR">Rp 15.850 / US$</div>
+                                        <span class="text-[11px] sm:text-xs text-emerald-300">Rupiah Terjaga</span>
                                     </div>
-                                    <p class="text-xs text-slate-300">Stabilitas nilai tukar menopang arus modal asing.</p>
+                                    <p class="text-[11px] sm:text-xs text-slate-300">Stabilitas nilai tukar menopang arus modal asing.</p>
                                 </div>
 
-                                <div class="p-4 rounded-xl bg-white/5 border border-white/10 flex flex-col justify-between">
-                                    <span class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Level Acuan IHSG</span>
-                                    <div class="my-2">
-                                        <div class="text-lg font-bold text-white" id="metricIHSG">6.462,43 <span class="text-emerald-400" id="metricIHSGChange">+0.40%</span></div>
-                                        <span class="text-xs text-slate-300" id="metricRange">Support 6.398 • Resistance 6.540</span>
+                                <div class="p-3.5 sm:p-4 rounded-xl bg-white/5 border border-white/10 flex flex-col justify-between">
+                                    <span class="text-[11px] sm:text-xs text-slate-400 uppercase tracking-wider font-semibold">Level Acuan IHSG</span>
+                                    <div class="my-1.5 sm:my-2">
+                                        <div class="text-base sm:text-lg font-bold text-white" id="metricIHSG">6.462,43 <span class="text-emerald-400" id="metricIHSGChange">+0.40%</span></div>
+                                        <span class="text-[11px] sm:text-xs text-slate-300" id="metricRange">Support 6.398 • Resistance 6.540</span>
                                     </div>
-                                    <p class="text-xs text-slate-300">Fokus akumulasi pada saham likuid berkapitalisasi besar.</p>
+                                    <p class="text-[11px] sm:text-xs text-slate-300">Fokus akumulasi pada saham likuid berkapitalisasi besar.</p>
                                 </div>
                             </div>
 
                             <!-- Editorial Narrative Body (Formatted Clean HTML without asterisks) -->
-                            <div class="p-5 rounded-xl bg-white/10 border border-white/10 flex flex-col gap-3">
-                                <div class="flex items-center gap-2 text-emerald-300 font-bold text-sm">
-                                    <span class="material-symbols-outlined text-[18px]">article</span>
+                            <div class="p-4 sm:p-5 rounded-xl bg-white/10 border border-white/10 flex flex-col gap-2.5 sm:gap-3">
+                                <div class="flex items-center gap-2 text-emerald-300 font-bold text-xs sm:text-sm">
+                                    <span class="material-symbols-outlined text-[17px] sm:text-[18px]">article</span>
                                     <span>Ulasan Narasi Riset Pasar:</span>
                                 </div>
-                                <div class="text-sm text-slate-200 leading-relaxed space-y-3 text-justify" id="briefContentRendered">
+                                <div class="text-xs sm:text-sm text-slate-200 leading-relaxed space-y-3 text-justify" id="briefContentRendered">
                                     <!-- Populated cleanly via JS without raw asterisks -->
                                 </div>
                             </div>
@@ -255,50 +268,50 @@
                     </section>
 
                     <!-- Quick Navigation Cards -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-                        <div class="p-5 rounded-2xl bg-white border border-surface-border shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5 sm:gap-5">
+                        <div class="p-4 sm:p-5 rounded-2xl bg-white border border-surface-border shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
                             <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold">
+                                <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold shrink-0">
                                     <span class="material-symbols-outlined">trending_up</span>
                                 </div>
                                 <div class="flex flex-col">
-                                    <h3 class="font-bold text-primary text-base">Rekomendasi Saham</h3>
+                                    <h3 class="font-bold text-primary text-sm sm:text-base">Rekomendasi Saham</h3>
                                     <p class="text-xs text-text-muted">Target Entry, TP1, dan Cut-Loss presisi</p>
                                 </div>
                             </div>
-                            <button type="button" class="mt-4 w-full py-2 px-4 rounded-xl bg-slate-100 hover:bg-primary hover:text-white font-semibold text-xs text-primary transition-colors flex items-center justify-center gap-2" onclick="navigateTo('page-rekomendasi')">
+                            <button type="button" class="mt-4 w-full py-2.5 sm:py-2 px-4 rounded-xl bg-slate-100 hover:bg-primary hover:text-white font-semibold text-xs text-primary transition-colors flex items-center justify-center gap-2" onclick="navigateTo('page-rekomendasi')">
                                 Buka Daftar Rekomendasi
                                 <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
                             </button>
                         </div>
 
-                        <div class="p-5 rounded-2xl bg-white border border-surface-border shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+                        <div class="p-4 sm:p-5 rounded-2xl bg-white border border-surface-border shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
                             <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center font-bold">
+                                <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center font-bold shrink-0">
                                     <span class="material-symbols-outlined">pie_chart</span>
                                 </div>
                                 <div class="flex flex-col">
-                                    <h3 class="font-bold text-primary text-base">Alokasi Portofolio</h3>
+                                    <h3 class="font-bold text-primary text-sm sm:text-base">Alokasi Portofolio</h3>
                                     <p class="text-xs text-text-muted">Optimasi bobot modal dan 20% kas siaga</p>
                                 </div>
                             </div>
-                            <button type="button" class="mt-4 w-full py-2 px-4 rounded-xl bg-slate-100 hover:bg-primary hover:text-white font-semibold text-xs text-primary transition-colors flex items-center justify-center gap-2" onclick="navigateTo('page-portofolio')">
+                            <button type="button" class="mt-4 w-full py-2.5 sm:py-2 px-4 rounded-xl bg-slate-100 hover:bg-primary hover:text-white font-semibold text-xs text-primary transition-colors flex items-center justify-center gap-2" onclick="navigateTo('page-portofolio')">
                                 Hitung Alokasi Modal
                                 <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
                             </button>
                         </div>
 
-                        <div class="p-5 rounded-2xl bg-white border border-surface-border shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+                        <div class="p-4 sm:p-5 rounded-2xl bg-white border border-surface-border shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
                             <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center font-bold">
+                                <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center font-bold shrink-0">
                                     <span class="material-symbols-outlined">calculate</span>
                                 </div>
                                 <div class="flex flex-col">
-                                    <h3 class="font-bold text-primary text-base">Kalkulator Lot BEI</h3>
+                                    <h3 class="font-bold text-primary text-sm sm:text-base">Kalkulator Lot BEI</h3>
                                     <p class="text-xs text-text-muted">Uji rasio Risk:Reward dan konversi 100 lembar</p>
                                 </div>
                             </div>
-                            <button type="button" class="mt-4 w-full py-2 px-4 rounded-xl bg-slate-100 hover:bg-primary hover:text-white font-semibold text-xs text-primary transition-colors flex items-center justify-center gap-2" onclick="navigateTo('page-kalkulator')">
+                            <button type="button" class="mt-4 w-full py-2.5 sm:py-2 px-4 rounded-xl bg-slate-100 hover:bg-primary hover:text-white font-semibold text-xs text-primary transition-colors flex items-center justify-center gap-2" onclick="navigateTo('page-kalkulator')">
                                 Buka Kalkulator Lot
                                 <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
                             </button>
@@ -309,12 +322,12 @@
 
             <!-- PAGE 2: REKOMENDASI SAHAM -->
             <div class="page-view" id="page-rekomendasi">
-                <div class="flex flex-col gap-6 max-w-7xl mx-auto">
+                <div class="flex flex-col gap-5 sm:gap-6 max-w-7xl mx-auto">
                     <!-- Header Section -->
-                    <div class="bg-white rounded-2xl p-6 border border-surface-border shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div class="bg-white rounded-2xl p-4 sm:p-6 border border-surface-border shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
                         <div>
-                            <h2 class="text-xl font-bold text-primary flex items-center gap-2">
-                                <span class="material-symbols-outlined text-secondary text-[24px]">recommend</span>
+                            <h2 class="text-lg sm:text-xl font-bold text-primary flex items-center gap-2">
+                                <span class="material-symbols-outlined text-secondary text-[22px] sm:text-[24px]">recommend</span>
                                 Rekomendasi Saham Kuantitatif
                             </h2>
                             <p class="text-xs text-text-muted mt-1">
@@ -323,17 +336,17 @@
                         </div>
 
                         <!-- Filter Controls -->
-                        <div class="flex flex-wrap items-center gap-2.5">
-                            <!-- Filter Universe Tabs -->
-                            <div class="flex items-center bg-slate-100 p-1 rounded-xl" id="universeTabs">
-                                <button type="button" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-white text-primary shadow-sm" onclick="filterByUniverse('all', this)">Semua</button>
-                                <button type="button" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-text-muted hover:text-text-main transition-colors" onclick="filterByUniverse('favorites', this)">Blue Chip</button>
-                                <button type="button" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-text-muted hover:text-text-main transition-colors" onclick="filterByUniverse('dividend', this)">Dividen</button>
-                                <button type="button" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-text-muted hover:text-text-main transition-colors" onclick="filterByUniverse('swing', this)">Swing</button>
+                        <div class="flex flex-col sm:flex-row sm:items-center gap-2.5 w-full md:w-auto">
+                            <!-- Filter Universe Tabs (Horizontal touch scroll on mobile) -->
+                            <div class="flex items-center bg-slate-100 p-1 rounded-xl overflow-x-auto max-w-full" id="universeTabs">
+                                <button type="button" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-white text-primary shadow-sm shrink-0" onclick="filterByUniverse('all', this)">Semua</button>
+                                <button type="button" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-text-muted hover:text-text-main transition-colors shrink-0" onclick="filterByUniverse('favorites', this)">Blue Chip</button>
+                                <button type="button" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-text-muted hover:text-text-main transition-colors shrink-0" onclick="filterByUniverse('dividend', this)">Dividen</button>
+                                <button type="button" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-text-muted hover:text-text-main transition-colors shrink-0" onclick="filterByUniverse('swing', this)">Swing</button>
                             </div>
 
                             <!-- Filter Sektor Dropdown -->
-                            <select class="bg-slate-100 border border-slate-200 text-xs font-semibold text-text-main rounded-xl px-3 py-2 focus:outline-none cursor-pointer" id="sectorFilter" onchange="applyFilters()">
+                            <select class="bg-slate-100 border border-slate-200 text-xs font-semibold text-text-main rounded-xl px-3 py-2 focus:outline-none cursor-pointer w-full sm:w-auto" id="sectorFilter" onchange="applyFilters()">
                                 <option value="ALL">Semua Sektor (11 Sektor BEI)</option>
                                 <option value="Financials">Keuangan (Financials)</option>
                                 <option value="Energy">Energi (Energy)</option>
@@ -351,76 +364,76 @@
                     </div>
 
                     <!-- ==================== VISUALISASI GRAFIK REKOMENDASI KUANTITATIF ==================== -->
-                    <div class="flex flex-col gap-5">
+                    <div class="flex flex-col gap-4 sm:gap-5">
                         <!-- 4 Kartu Metrik Ringkasan Rekomendasi Terfilter -->
-                        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                            <div class="p-4 rounded-2xl bg-white border border-surface-border shadow-sm flex items-center gap-3.5">
-                                <div class="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold shrink-0">
-                                    <span class="material-symbols-outlined text-[24px]">verified</span>
+                        <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
+                            <div class="p-3 sm:p-4 rounded-2xl bg-white border border-surface-border shadow-sm flex items-center gap-2.5 sm:gap-3.5">
+                                <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold shrink-0">
+                                    <span class="material-symbols-outlined text-[20px] sm:text-[24px]">verified</span>
                                 </div>
-                                <div class="flex flex-col">
-                                    <span class="text-[11px] text-text-muted font-semibold uppercase tracking-wider">Saham Terfilter</span>
-                                    <span class="text-xl font-extrabold text-primary" id="chartStatTotal">0 Saham</span>
-                                    <span class="text-[10px] text-emerald-700 font-medium" id="chartStatSub">Konsensus Aktif</span>
-                                </div>
-                            </div>
-
-                            <div class="p-4 rounded-2xl bg-white border border-surface-border shadow-sm flex items-center gap-3.5">
-                                <div class="w-11 h-11 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center font-bold shrink-0">
-                                    <span class="material-symbols-outlined text-[24px]">trending_up</span>
-                                </div>
-                                <div class="flex flex-col">
-                                    <span class="text-[11px] text-text-muted font-semibold uppercase tracking-wider">Rata-Rata Bullish</span>
-                                    <span class="text-xl font-extrabold text-primary" id="chartStatAvgProb">0%</span>
-                                    <span class="text-[10px] text-blue-700 font-medium">Model Ensemble</span>
+                                <div class="flex flex-col min-w-0">
+                                    <span class="text-[10px] sm:text-[11px] text-text-muted font-semibold uppercase tracking-wider truncate">Saham Terfilter</span>
+                                    <span class="text-base sm:text-xl font-extrabold text-primary truncate" id="chartStatTotal">0 Saham</span>
+                                    <span class="text-[9px] sm:text-[10px] text-emerald-700 font-medium truncate" id="chartStatSub">Konsensus Aktif</span>
                                 </div>
                             </div>
 
-                            <div class="p-4 rounded-2xl bg-white border border-surface-border shadow-sm flex items-center gap-3.5">
-                                <div class="w-11 h-11 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center font-bold shrink-0">
-                                    <span class="material-symbols-outlined text-[24px]">balance</span>
+                            <div class="p-3 sm:p-4 rounded-2xl bg-white border border-surface-border shadow-sm flex items-center gap-2.5 sm:gap-3.5">
+                                <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center font-bold shrink-0">
+                                    <span class="material-symbols-outlined text-[20px] sm:text-[24px]">trending_up</span>
                                 </div>
-                                <div class="flex flex-col">
-                                    <span class="text-[11px] text-text-muted font-semibold uppercase tracking-wider">Rata-Rata Risk:Reward</span>
-                                    <span class="text-xl font-extrabold text-primary" id="chartStatAvgRR">1 : 0.0</span>
-                                    <span class="text-[10px] text-amber-700 font-medium">Standar Disiplin Cut-Loss</span>
+                                <div class="flex flex-col min-w-0">
+                                    <span class="text-[10px] sm:text-[11px] text-text-muted font-semibold uppercase tracking-wider truncate">Rata Bullish</span>
+                                    <span class="text-base sm:text-xl font-extrabold text-primary truncate" id="chartStatAvgProb">0%</span>
+                                    <span class="text-[9px] sm:text-[10px] text-blue-700 font-medium truncate">Ensemble Model</span>
                                 </div>
                             </div>
 
-                            <div class="p-4 rounded-2xl bg-white border border-surface-border shadow-sm flex items-center gap-3.5">
-                                <div class="w-11 h-11 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center font-bold shrink-0">
-                                    <span class="material-symbols-outlined text-[24px]">domain</span>
+                            <div class="p-3 sm:p-4 rounded-2xl bg-white border border-surface-border shadow-sm flex items-center gap-2.5 sm:gap-3.5">
+                                <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center font-bold shrink-0">
+                                    <span class="material-symbols-outlined text-[20px] sm:text-[24px]">balance</span>
                                 </div>
-                                <div class="flex flex-col">
-                                    <span class="text-[11px] text-text-muted font-semibold uppercase tracking-wider">Sektor Dominan</span>
-                                    <span class="text-base font-extrabold text-primary truncate max-w-[130px]" id="chartStatTopSector">-</span>
-                                    <span class="text-[10px] text-purple-700 font-medium">Distribusi Universe</span>
+                                <div class="flex flex-col min-w-0">
+                                    <span class="text-[10px] sm:text-[11px] text-text-muted font-semibold uppercase tracking-wider truncate">Rata RRR</span>
+                                    <span class="text-base sm:text-xl font-extrabold text-primary truncate" id="chartStatAvgRR">1 : 0.0</span>
+                                    <span class="text-[9px] sm:text-[10px] text-amber-700 font-medium truncate">Batas Cut-Loss</span>
+                                </div>
+                            </div>
+
+                            <div class="p-3 sm:p-4 rounded-2xl bg-white border border-surface-border shadow-sm flex items-center gap-2.5 sm:gap-3.5">
+                                <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center font-bold shrink-0">
+                                    <span class="material-symbols-outlined text-[20px] sm:text-[24px]">domain</span>
+                                </div>
+                                <div class="flex flex-col min-w-0">
+                                    <span class="text-[10px] sm:text-[11px] text-text-muted font-semibold uppercase tracking-wider truncate">Sektor Dominan</span>
+                                    <span class="text-sm sm:text-base font-extrabold text-primary truncate" id="chartStatTopSector">-</span>
+                                    <span class="text-[9px] sm:text-[10px] text-purple-700 font-medium truncate">Universe BEI</span>
                                 </div>
                             </div>
                         </div>
 
                         <!-- 2 Grafik Visualisasi Interaktif Chart.js -->
-                        <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+                        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-5">
                             <!-- Grafik A: Matriks Sebaran Scatter Plot (Probabilitas vs Rasio Risk:Reward) -->
-                            <div class="lg:col-span-6 bg-white rounded-2xl p-5 border border-surface-border shadow-sm flex flex-col justify-between">
+                            <div class="lg:col-span-6 bg-white rounded-2xl p-4 sm:p-5 border border-surface-border shadow-sm flex flex-col justify-between">
                                 <div class="flex items-center justify-between mb-2">
-                                    <div class="flex items-center gap-2.5">
-                                        <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center">
-                                            <span class="material-symbols-outlined text-[18px]">scatter_plot</span>
+                                    <div class="flex items-center gap-2 sm:gap-2.5">
+                                        <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0">
+                                            <span class="material-symbols-outlined text-[16px] sm:text-[18px]">scatter_plot</span>
                                         </div>
                                         <div>
-                                            <h3 class="text-sm font-bold text-primary">Matriks Sebaran: Probabilitas vs Risk:Reward</h3>
-                                            <p class="text-[11px] text-text-muted">Tingkat keyakinan model vs rasio potensi hasil</p>
+                                            <h3 class="text-xs sm:text-sm font-bold text-primary">Matriks Sebaran: Probabilitas vs Risk:Reward</h3>
+                                            <p class="text-[10px] sm:text-[11px] text-text-muted">Tingkat keyakinan model vs rasio potensi hasil</p>
                                         </div>
                                     </div>
-                                    <span class="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
-                                        Optimal Alpha Zone
+                                    <span class="text-[9px] sm:text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
+                                        Alpha Zone
                                     </span>
                                 </div>
-                                <div class="relative w-full h-[270px]">
+                                <div class="relative w-full h-[220px] sm:h-[270px]">
                                     <canvas id="recScatterChart"></canvas>
                                 </div>
-                                <div class="flex items-center justify-between text-[10px] text-text-muted pt-2 border-t border-slate-100 mt-2">
+                                <div class="flex flex-wrap items-center justify-between text-[9px] sm:text-[10px] text-text-muted pt-2 border-t border-slate-100 mt-2 gap-1">
                                     <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> BUY ON WEAKNESS</span>
                                     <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span> BREAKOUT</span>
                                     <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-slate-400"></span> HOLD</span>
@@ -428,27 +441,27 @@
                             </div>
 
                             <!-- Grafik B: Asimetri Ekspektasi Return vs Toleransi Risiko (Target Profit vs Stop Loss) -->
-                            <div class="lg:col-span-6 bg-white rounded-2xl p-5 border border-surface-border shadow-sm flex flex-col justify-between">
+                            <div class="lg:col-span-6 bg-white rounded-2xl p-4 sm:p-5 border border-surface-border shadow-sm flex flex-col justify-between">
                                 <div class="flex items-center justify-between mb-2">
-                                    <div class="flex items-center gap-2.5">
-                                        <div class="w-8 h-8 rounded-lg bg-blue-100 text-blue-800 flex items-center justify-center">
-                                            <span class="material-symbols-outlined text-[18px]">stacked_bar_chart</span>
+                                    <div class="flex items-center gap-2 sm:gap-2.5">
+                                        <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-blue-100 text-blue-800 flex items-center justify-center shrink-0">
+                                            <span class="material-symbols-outlined text-[16px] sm:text-[18px]">stacked_bar_chart</span>
                                         </div>
                                         <div>
-                                            <h3 class="text-sm font-bold text-primary">Asimetri Rentang: Target Profit vs Stop Loss</h3>
-                                            <p class="text-[11px] text-text-muted">Potensi kenaikan harga (+%) vs batas pengaman risiko (-%)</p>
+                                            <h3 class="text-xs sm:text-sm font-bold text-primary">Asimetri Rentang: Target Profit vs Stop Loss</h3>
+                                            <p class="text-[10px] sm:text-[11px] text-text-muted">Potensi kenaikan harga (+%) vs batas risiko (-%)</p>
                                         </div>
                                     </div>
-                                    <span class="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">
+                                    <span class="text-[9px] sm:text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">
                                         Top 8 Saham
                                     </span>
                                 </div>
-                                <div class="relative w-full h-[270px]">
+                                <div class="relative w-full h-[220px] sm:h-[270px]">
                                     <canvas id="recRiskReturnChart"></canvas>
                                 </div>
-                                <div class="flex items-center justify-between text-[10px] text-text-muted pt-2 border-t border-slate-100 mt-2">
+                                <div class="flex flex-wrap items-center justify-between text-[9px] sm:text-[10px] text-text-muted pt-2 border-t border-slate-100 mt-2 gap-1">
                                     <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span> Target Profit (+)</span>
-                                    <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Toleransi Stop Loss (-)</span>
+                                    <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Stop Loss (-)</span>
                                 </div>
                             </div>
                         </div>
@@ -456,7 +469,15 @@
 
                     <!-- Tabel Rekomendasi Komprehensif -->
                     <div class="bg-white rounded-2xl border border-surface-border shadow-sm overflow-hidden">
-                        <div class="overflow-x-auto">
+                        <!-- Petunjuk swipe layar hp -->
+                        <div class="flex lg:hidden items-center justify-between px-4 py-2 bg-slate-50 border-b border-surface-border text-[11px] text-text-muted">
+                            <span class="flex items-center gap-1 font-medium">
+                                <span class="material-symbols-outlined text-[15px] text-primary">swipe</span>
+                                Geser ke samping untuk melihat seluruh kolom
+                            </span>
+                            <span class="font-bold text-primary">9 Kolom</span>
+                        </div>
+                        <div class="overflow-x-auto -webkit-overflow-scrolling-touch">
                             <table class="w-full text-left min-w-[950px]">
                                 <thead>
                                     <tr class="bg-slate-50 border-b border-surface-border text-text-muted text-xs uppercase font-bold tracking-wider">
@@ -484,39 +505,39 @@
             <div class="page-view" id="page-portofolio">
                 <div class="flex flex-col gap-6 max-w-7xl mx-auto">
                     <!-- Header Alokasi -->
-                    <div class="bg-white rounded-2xl p-6 border border-surface-border shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div class="bg-white rounded-2xl p-4 sm:p-6 border border-surface-border shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
                         <div>
-                            <h2 class="text-xl font-bold text-primary flex items-center gap-2">
-                                <span class="material-symbols-outlined text-secondary text-[24px]">pie_chart</span>
+                            <h2 class="text-lg sm:text-xl font-bold text-primary flex items-center gap-2">
+                                <span class="material-symbols-outlined text-secondary text-[22px] sm:text-[24px]">pie_chart</span>
                                 Optimasi Alokasi Portofolio Modal
                             </h2>
                             <p class="text-xs text-text-muted mt-1">
                                 Perhitungan bobot modal investasi optimal berbasis rasio Sharpe dan diversifikasi risiko volatilitas GARCH.
                             </p>
                         </div>
-                        <div class="flex items-center gap-3">
-                            <button type="button" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-xs font-bold text-primary flex items-center gap-2 transition-colors" onclick="copyPortfolioText()">
+                        <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+                            <button type="button" class="flex-1 sm:flex-initial px-3.5 sm:px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-xs font-bold text-primary flex items-center justify-center gap-2 transition-colors" onclick="copyPortfolioText()">
                                 <span class="material-symbols-outlined text-[16px]">content_copy</span>
-                                Salin Rencana Alokasi
+                                <span>Salin Alokasi</span>
                             </button>
-                            <button type="button" class="px-4 py-2 rounded-xl bg-primary hover:bg-slate-800 text-xs font-bold text-white flex items-center gap-2 transition-colors" onclick="downloadPortfolioCSV()">
+                            <button type="button" class="flex-1 sm:flex-initial px-3.5 sm:px-4 py-2 rounded-xl bg-primary hover:bg-slate-800 text-xs font-bold text-white flex items-center justify-center gap-2 transition-colors" onclick="downloadPortfolioCSV()">
                                 <span class="material-symbols-outlined text-[16px]">download</span>
-                                Download CSV
+                                <span>Download CSV</span>
                             </button>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6">
                         <!-- Kolom Kiri: Pengaturan Modal & Donut Chart -->
-                        <div class="lg:col-span-4 flex flex-col gap-5">
-                            <div class="bg-white rounded-2xl p-6 border border-surface-border shadow-sm flex flex-col gap-4">
-                                <h3 class="text-sm font-bold text-primary">Simulasi Modal Investasi</h3>
+                        <div class="lg:col-span-4 flex flex-col gap-4 sm:gap-5">
+                            <div class="bg-white rounded-2xl p-4 sm:p-6 border border-surface-border shadow-sm flex flex-col gap-4">
+                                <h3 class="text-xs sm:text-sm font-bold text-primary">Simulasi Modal Investasi</h3>
 
                                 <div class="flex flex-col gap-1.5">
                                     <label class="text-xs font-semibold text-text-muted">Total Modal Yang Disiapkan (IDR)</label>
                                     <div class="relative flex items-center">
                                         <span class="absolute left-3.5 text-xs font-bold text-text-muted">Rp</span>
-                                        <input class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-3.5 py-2.5 text-base font-bold text-primary focus:outline-none focus:bg-white" id="portfolioCapitalInput" type="number" step="1000000" value="50000000" oninput="updatePortfolioCalculations()"/>
+                                        <input class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-3.5 py-2 sm:py-2.5 text-sm sm:text-base font-bold text-primary focus:outline-none focus:bg-white" id="portfolioCapitalInput" type="number" step="1000000" value="50000000" oninput="updatePortfolioCalculations()"/>
                                     </div>
                                 </div>
 
@@ -551,12 +572,20 @@
                         <!-- Kolom Kanan: Tabel Alokasi Tiap Emiten -->
                         <div class="lg:col-span-8">
                             <div class="bg-white rounded-2xl border border-surface-border shadow-sm overflow-hidden">
-                                <div class="p-4 border-b border-surface-border flex items-center justify-between">
-                                    <h3 class="text-sm font-bold text-primary">Rincian Pembobotan Emiten dan Jumlah Lot Resmi BEI</h3>
-                                    <span class="text-xs text-text-muted font-medium">1 Lot = 100 Lembar Saham</span>
+                                <div class="p-3.5 sm:p-4 border-b border-surface-border flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-2">
+                                    <h3 class="text-xs sm:text-sm font-bold text-primary">Rincian Pembobotan Emiten dan Jumlah Lot Resmi BEI</h3>
+                                    <span class="text-[11px] sm:text-xs text-text-muted font-medium">1 Lot = 100 Lembar Saham</span>
                                 </div>
-                                <div class="overflow-x-auto">
-                                    <table class="w-full text-left">
+                                <!-- Petunjuk swipe layar hp -->
+                                <div class="flex lg:hidden items-center justify-between px-4 py-2 bg-slate-50 border-b border-surface-border text-[11px] text-text-muted">
+                                    <span class="flex items-center gap-1 font-medium">
+                                        <span class="material-symbols-outlined text-[15px] text-primary">swipe</span>
+                                        Geser ke samping untuk melihat alokasi lot
+                                    </span>
+                                    <span class="font-bold text-primary">7 Kolom</span>
+                                </div>
+                                <div class="overflow-x-auto -webkit-overflow-scrolling-touch">
+                                    <table class="w-full text-left min-w-[750px]">
                                         <thead>
                                             <tr class="bg-slate-50 border-b border-surface-border text-text-muted text-xs uppercase font-bold tracking-wider">
                                                 <th class="py-3 px-4">Emiten</th>
@@ -583,14 +612,14 @@
             <div class="page-view" id="page-grafik">
                 <div class="flex flex-col gap-6 max-w-7xl mx-auto">
                     <!-- Header Section -->
-                    <div class="bg-white rounded-2xl p-6 border border-surface-border shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div class="bg-white rounded-2xl p-4 sm:p-6 border border-surface-border shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
                         <div>
                             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 text-xs font-bold mb-2">
                                 <span class="material-symbols-outlined text-[16px]">insights</span>
                                 <span>Visual Research • Barometer Makro</span>
                             </div>
-                            <h2 class="text-xl font-bold text-primary flex items-center gap-2">
-                                <span class="material-symbols-outlined text-secondary text-[24px]">candlestick_chart</span>
+                            <h2 class="text-lg sm:text-xl font-bold text-primary flex items-center gap-2">
+                                <span class="material-symbols-outlined text-secondary text-[22px] sm:text-[24px]">candlestick_chart</span>
                                 Grafik Interaktif dan Barometer Indeks Pasar
                             </h2>
                             <p class="text-xs text-text-muted mt-1">
@@ -598,51 +627,51 @@
                             </p>
                         </div>
 
-                        <!-- Selector Saham / Indeks Cepat -->
-                        <div class="flex flex-wrap items-center gap-2" id="chartTickerSelector">
-                            <button type="button" class="chart-ticker-btn px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all bg-primary text-white shadow-sm" data-symbol="IDX:COMPOSITE" data-title="IHSG" onclick="loadInteractiveChart('IDX:COMPOSITE', 'IHSG', this)">
+                        <!-- Selector Saham / Indeks Cepat (Horizontal scroll on mobile) -->
+                        <div class="flex items-center gap-2 overflow-x-auto max-w-full pb-1" id="chartTickerSelector">
+                            <button type="button" class="chart-ticker-btn px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all bg-primary text-white shadow-sm shrink-0" data-symbol="IDX:COMPOSITE" data-title="IHSG" onclick="loadInteractiveChart('IDX:COMPOSITE', 'IHSG', this)">
                                 IHSG
                             </button>
-                            <button type="button" class="chart-ticker-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-text-muted bg-slate-100 hover:text-text-main transition-colors" data-symbol="IDX:BBCA" data-title="BBCA" onclick="loadInteractiveChart('IDX:BBCA', 'BBCA', this)">
+                            <button type="button" class="chart-ticker-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-text-muted bg-slate-100 hover:text-text-main transition-colors shrink-0" data-symbol="IDX:BBCA" data-title="BBCA" onclick="loadInteractiveChart('IDX:BBCA', 'BBCA', this)">
                                 BBCA
                             </button>
-                            <button type="button" class="chart-ticker-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-text-muted bg-slate-100 hover:text-text-main transition-colors" data-symbol="IDX:BBRI" data-title="BBRI" onclick="loadInteractiveChart('IDX:BBRI', 'BBRI', this)">
+                            <button type="button" class="chart-ticker-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-text-muted bg-slate-100 hover:text-text-main transition-colors shrink-0" data-symbol="IDX:BBRI" data-title="BBRI" onclick="loadInteractiveChart('IDX:BBRI', 'BBRI', this)">
                                 BBRI
                             </button>
-                            <button type="button" class="chart-ticker-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-text-muted bg-slate-100 hover:text-text-main transition-colors" data-symbol="IDX:BMRI" data-title="BMRI" onclick="loadInteractiveChart('IDX:BMRI', 'BMRI', this)">
+                            <button type="button" class="chart-ticker-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-text-muted bg-slate-100 hover:text-text-main transition-colors shrink-0" data-symbol="IDX:BMRI" data-title="BMRI" onclick="loadInteractiveChart('IDX:BMRI', 'BMRI', this)">
                                 BMRI
                             </button>
-                            <button type="button" class="chart-ticker-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-text-muted bg-slate-100 hover:text-text-main transition-colors" data-symbol="IDX:TLKM" data-title="TLKM" onclick="loadInteractiveChart('IDX:TLKM', 'TLKM', this)">
+                            <button type="button" class="chart-ticker-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-text-muted bg-slate-100 hover:text-text-main transition-colors shrink-0" data-symbol="IDX:TLKM" data-title="TLKM" onclick="loadInteractiveChart('IDX:TLKM', 'TLKM', this)">
                                 TLKM
                             </button>
-                            <button type="button" class="chart-ticker-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-text-muted bg-slate-100 hover:text-text-main transition-colors" data-symbol="IDX:ASII" data-title="ASII" onclick="loadInteractiveChart('IDX:ASII', 'ASII', this)">
+                            <button type="button" class="chart-ticker-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-text-muted bg-slate-100 hover:text-text-main transition-colors shrink-0" data-symbol="IDX:ASII" data-title="ASII" onclick="loadInteractiveChart('IDX:ASII', 'ASII', this)">
                                 ASII
                             </button>
-                            <button type="button" class="chart-ticker-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-text-muted bg-slate-100 hover:text-text-main transition-colors" data-symbol="IDX:ADRO" data-title="ADRO" onclick="loadInteractiveChart('IDX:ADRO', 'ADRO', this)">
+                            <button type="button" class="chart-ticker-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-text-muted bg-slate-100 hover:text-text-main transition-colors shrink-0" data-symbol="IDX:ADRO" data-title="ADRO" onclick="loadInteractiveChart('IDX:ADRO', 'ADRO', this)">
                                 ADRO
                             </button>
                         </div>
                     </div>
 
                     <!-- Area Grafik Interaktif TradingView Real-Time -->
-                    <div class="bg-white rounded-2xl p-5 border border-surface-border shadow-sm flex flex-col gap-4">
+                    <div class="bg-white rounded-2xl p-4 sm:p-5 border border-surface-border shadow-sm flex flex-col gap-4">
                         <div class="flex items-center justify-between">
-                            <div class="flex items-center gap-3">
-                                <div class="w-9 h-9 rounded-xl bg-slate-100 text-primary flex items-center justify-center font-bold text-xs" id="chartActiveBadge">
+                            <div class="flex items-center gap-2.5 sm:gap-3">
+                                <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-slate-100 text-primary flex items-center justify-center font-bold text-xs" id="chartActiveBadge">
                                     IHSG
                                 </div>
                                 <div class="flex flex-col">
-                                    <h3 class="font-bold text-primary text-base" id="chartActiveTitle">IHSG</h3>
-                                    <span class="text-xs text-text-muted">Live Charting Feed • Bursa Efek Indonesia (BEI / IDX)</span>
+                                    <h3 class="font-bold text-primary text-sm sm:text-base" id="chartActiveTitle">IHSG</h3>
+                                    <span class="text-[11px] sm:text-xs text-text-muted">Live Charting Feed • BEI / IDX</span>
                                 </div>
                             </div>
-                            <span class="text-xs font-semibold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
+                            <span class="text-[10px] sm:text-xs font-semibold text-emerald-700 bg-emerald-50 px-2.5 sm:px-3 py-1 rounded-full border border-emerald-200">
                                 Real-Time Feed
                             </span>
                         </div>
 
                         <!-- TradingView Widget Container -->
-                        <div class="w-full h-[520px] rounded-xl overflow-hidden border border-slate-200 bg-slate-50" id="tradingviewChartContainer">
+                        <div class="w-full h-[340px] sm:h-[440px] lg:h-[520px] rounded-xl overflow-hidden border border-slate-200 bg-slate-50" id="tradingviewChartContainer">
                             <!-- Injected by TradingView JS -->
                         </div>
                     </div>
@@ -846,12 +875,12 @@
 
             <!-- PAGE: KALKULATOR LOT & MANAJEMEN RISIKO -->
             <div class="page-view" id="page-kalkulator">
-                <div class="flex flex-col gap-6 max-w-7xl mx-auto">
+                <div class="flex flex-col gap-5 sm:gap-6 max-w-7xl mx-auto">
                     <!-- Header Kalkulator -->
-                    <div class="bg-white rounded-2xl p-6 border border-surface-border shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div class="bg-white rounded-2xl p-4 sm:p-6 border border-surface-border shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
                         <div>
-                            <h2 class="text-xl font-bold text-primary flex items-center gap-2">
-                                <span class="material-symbols-outlined text-secondary text-[24px]">calculate</span>
+                            <h2 class="text-lg sm:text-xl font-bold text-primary flex items-center gap-2">
+                                <span class="material-symbols-outlined text-secondary text-[22px] sm:text-[24px]">calculate</span>
                                 Kalkulator Pembelian Lot dan Evaluasi Risiko
                             </h2>
                             <p class="text-xs text-text-muted mt-1">
@@ -860,11 +889,11 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6">
                         <!-- Form Input Parameter Transaksi -->
-                        <div class="lg:col-span-6 flex flex-col gap-5">
-                            <div class="bg-white rounded-2xl p-6 border border-surface-border shadow-sm flex flex-col gap-4">
-                                <h3 class="text-sm font-bold text-primary">Parameter Rencana Transaksi</h3>
+                        <div class="lg:col-span-6 flex flex-col gap-4 sm:gap-5">
+                            <div class="bg-white rounded-2xl p-4 sm:p-6 border border-surface-border shadow-sm flex flex-col gap-4">
+                                <h3 class="text-xs sm:text-sm font-bold text-primary">Parameter Rencana Transaksi</h3>
 
                                 <!-- Pilihan Saham -->
                                 <div class="flex flex-col gap-1.5">
@@ -874,7 +903,7 @@
                                     </select>
                                 </div>
 
-                                <div class="grid grid-cols-3 gap-3">
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
                                     <div class="flex flex-col gap-1">
                                         <label class="text-xs font-semibold text-text-muted">Harga Beli (Rp)</label>
                                         <input class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm font-bold text-primary focus:outline-none" id="calcEntryPrice" type="number" value="9900" oninput="runLotCalculation()"/>
@@ -890,22 +919,22 @@
                                 </div>
 
                                 <!-- Modal Yang Ingin Dipakai -->
-                                <div class="flex flex-col gap-1.5 pt-2">
+                                <div class="flex flex-col gap-1.5 pt-1 sm:pt-2">
                                     <label class="text-xs font-semibold text-text-muted">Alokasi Modal Untuk Saham Ini (IDR)</label>
                                     <div class="relative flex items-center">
                                         <span class="absolute left-3.5 text-xs font-bold text-text-muted">Rp</span>
-                                        <input class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-3.5 py-2.5 text-base font-bold text-primary focus:outline-none focus:bg-white" id="calcCapitalInput" type="number" step="500000" value="10000000" oninput="runLotCalculation()"/>
+                                        <input class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-3.5 py-2 sm:py-2.5 text-sm sm:text-base font-bold text-primary focus:outline-none focus:bg-white" id="calcCapitalInput" type="number" step="500000" value="10000000" oninput="runLotCalculation()"/>
                                     </div>
-                                    <div class="flex items-center gap-2 pt-1">
-                                        <button type="button" class="py-1 px-2.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-xs font-bold text-primary" onclick="setCalcCapital(5000000)">Rp 5 Juta</button>
-                                        <button type="button" class="py-1 px-2.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-xs font-bold text-primary" onclick="setCalcCapital(10000000)">Rp 10 Juta</button>
-                                        <button type="button" class="py-1 px-2.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-xs font-bold text-primary" onclick="setCalcCapital(20000000)">Rp 20 Juta</button>
+                                    <div class="flex flex-wrap items-center gap-2 pt-1">
+                                        <button type="button" class="flex-1 sm:flex-initial py-1 px-2.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-xs font-bold text-primary" onclick="setCalcCapital(5000000)">Rp 5 Juta</button>
+                                        <button type="button" class="flex-1 sm:flex-initial py-1 px-2.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-xs font-bold text-primary" onclick="setCalcCapital(10000000)">Rp 10 Juta</button>
+                                        <button type="button" class="flex-1 sm:flex-initial py-1 px-2.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-xs font-bold text-primary" onclick="setCalcCapital(20000000)">Rp 20 Juta</button>
                                     </div>
                                 </div>
 
                                 <!-- Tombol Simpan Rencana -->
                                 <div class="pt-2 flex flex-col gap-2">
-                                    <button type="button" class="w-full py-3 rounded-xl bg-primary hover:bg-slate-800 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-sm transition-all" onclick="saveTradingPlan()">
+                                    <button type="button" class="w-full py-3 rounded-xl bg-primary hover:bg-slate-800 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-sm transition-all active:scale-[0.99]" onclick="saveTradingPlan()">
                                         <span class="material-symbols-outlined text-[18px]">bookmark</span>
                                         Simpan ke Rencana Trading Saya
                                     </button>
@@ -914,59 +943,59 @@
                         </div>
 
                         <!-- Ringkasan Hasil Kalkulasi dan Evaluasi RRR -->
-                        <div class="lg:col-span-6 flex flex-col gap-5">
-                            <div class="bg-white rounded-2xl p-6 border border-surface-border shadow-sm flex flex-col gap-5">
-                                <h3 class="text-sm font-bold text-primary">Hasil Kalkulasi Lot dan Rasio Risiko</h3>
+                        <div class="lg:col-span-6 flex flex-col gap-4 sm:gap-5">
+                            <div class="bg-white rounded-2xl p-4 sm:p-6 border border-surface-border shadow-sm flex flex-col gap-4 sm:gap-5">
+                                <h3 class="text-xs sm:text-sm font-bold text-primary">Hasil Kalkulasi Lot dan Rasio Risiko</h3>
 
                                 <!-- Big Lot Counter Box -->
-                                <div class="p-5 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
+                                <div class="p-4 sm:p-5 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
                                     <div class="flex flex-col">
                                         <span class="text-xs text-text-muted font-medium">Jumlah Lot Yang Dapat Dibeli</span>
-                                        <div class="text-3xl font-extrabold text-primary mt-1" id="resCalcLots">10 Lot</div>
-                                        <span class="text-xs text-text-muted mt-0.5" id="resCalcShares">(1.000 lembar saham resmi)</span>
+                                        <div class="text-2xl sm:text-3xl font-extrabold text-primary mt-1" id="resCalcLots">10 Lot</div>
+                                        <span class="text-[11px] sm:text-xs text-text-muted mt-0.5" id="resCalcShares">(1.000 lembar saham resmi)</span>
                                     </div>
-                                    <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold">
-                                        <span class="material-symbols-outlined text-[26px]">inventory_2</span>
+                                    <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold">
+                                        <span class="material-symbols-outlined text-[24px] sm:text-[26px]">inventory_2</span>
                                     </div>
                                 </div>
 
                                 <!-- Detail Nominal Pembelian -->
-                                <div class="grid grid-cols-2 gap-3 text-xs">
+                                <div class="grid grid-cols-2 gap-2.5 sm:gap-3 text-xs">
                                     <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex flex-col gap-1">
-                                        <span class="text-text-muted">Total Pembelian Efektif:</span>
-                                        <span class="text-sm font-bold text-primary" id="resCalcTotalBuy">Rp 9.900.000</span>
+                                        <span class="text-text-muted text-[11px]">Total Beli Efektif:</span>
+                                        <span class="text-xs sm:text-sm font-bold text-primary" id="resCalcTotalBuy">Rp 9.900.000</span>
                                     </div>
                                     <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex flex-col gap-1">
-                                        <span class="text-text-muted">Sisa Kembalian Kas:</span>
-                                        <span class="text-sm font-bold text-text-main" id="resCalcChange">Rp 100.000</span>
+                                        <span class="text-text-muted text-[11px]">Sisa Kembalian:</span>
+                                        <span class="text-xs sm:text-sm font-bold text-text-main" id="resCalcChange">Rp 100.000</span>
                                     </div>
                                 </div>
 
                                 <!-- Proyeksi Profit vs Risiko -->
-                                <div class="grid grid-cols-2 gap-3 text-xs">
-                                    <div class="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 flex flex-col gap-1">
-                                        <div class="flex items-center gap-1 text-emerald-800 font-bold">
-                                            <span class="material-symbols-outlined text-[16px]">north_east</span>
-                                            <span>Target Keuntungan (TP)</span>
+                                <div class="grid grid-cols-2 gap-2.5 sm:gap-3 text-xs">
+                                    <div class="p-3 sm:p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 flex flex-col gap-1">
+                                        <div class="flex items-center gap-1 text-emerald-800 font-bold text-[11px] sm:text-xs">
+                                            <span class="material-symbols-outlined text-[15px] sm:text-[16px]">north_east</span>
+                                            <span>Target Profit (TP)</span>
                                         </div>
-                                        <span class="text-sm font-bold text-emerald-800" id="resCalcGain">+Rp 500.000 (+5.05%)</span>
+                                        <span class="text-xs sm:text-sm font-bold text-emerald-800" id="resCalcGain">+Rp 500.000 (+5.05%)</span>
                                     </div>
-                                    <div class="p-3.5 rounded-xl bg-rose-50 border border-rose-200 flex flex-col gap-1">
-                                        <div class="flex items-center gap-1 text-rose-800 font-bold">
-                                            <span class="material-symbols-outlined text-[16px]">south_east</span>
-                                            <span>Maksimal Kerugian (SL)</span>
+                                    <div class="p-3 sm:p-3.5 rounded-xl bg-rose-50 border border-rose-200 flex flex-col gap-1">
+                                        <div class="flex items-center gap-1 text-rose-800 font-bold text-[11px] sm:text-xs">
+                                            <span class="material-symbols-outlined text-[15px] sm:text-[16px]">south_east</span>
+                                            <span>Maks. Risiko (SL)</span>
                                         </div>
-                                        <span class="text-sm font-bold text-rose-800" id="resCalcLoss">-Rp 250.000 (-2.52%)</span>
+                                        <span class="text-xs sm:text-sm font-bold text-rose-800" id="resCalcLoss">-Rp 250.000 (-2.52%)</span>
                                     </div>
                                 </div>
 
                                 <!-- Rasio Risk to Reward Evaluator -->
-                                <div class="p-4 rounded-xl border flex items-start gap-3" id="rrrStatusBox">
-                                    <span class="material-symbols-outlined text-[22px] shrink-0 mt-0.5" id="rrrIcon">verified</span>
+                                <div class="p-3.5 sm:p-4 rounded-xl border flex items-start gap-2.5 sm:gap-3" id="rrrStatusBox">
+                                    <span class="material-symbols-outlined text-[20px] sm:text-[22px] shrink-0 mt-0.5" id="rrrIcon">verified</span>
                                     <div class="flex flex-col">
                                         <span class="text-xs font-bold" id="rrrTitle">Rasio Risk : Reward = 1 : 2.00 (Memenuhi Standar)</span>
                                         <p class="text-[11px] leading-relaxed mt-0.5" id="rrrDesc">
-                                            Potensi keuntungan setidaknya 2x lebih besar dari risiko penurunan. Transaksi ini layak dieksekusi secara disiplin.
+                                             Potensi keuntungan setidaknya 2x lebih besar dari risiko penurunan. Transaksi ini layak dieksekusi secara disiplin.
                                         </p>
                                     </div>
                                 </div>
@@ -976,16 +1005,24 @@
 
                     <!-- Tabel Rencana Trading Tersimpan (LocalStorage) -->
                     <div class="bg-white rounded-2xl border border-surface-border shadow-sm overflow-hidden">
-                        <div class="p-4 border-b border-surface-border flex items-center justify-between">
+                        <div class="p-3.5 sm:p-4 border-b border-surface-border flex items-center justify-between">
                             <div class="flex items-center gap-2">
-                                <span class="material-symbols-outlined text-primary text-[20px]">bookmarks</span>
-                                <h3 class="text-sm font-bold text-primary">Daftar Rencana Trading Saya (Tersimpan Lokal)</h3>
+                                <span class="material-symbols-outlined text-primary text-[18px] sm:text-[20px]">bookmarks</span>
+                                <h3 class="text-xs sm:text-sm font-bold text-primary">Daftar Rencana Trading Saya (Tersimpan Lokal)</h3>
                             </div>
                             <button type="button" class="text-xs text-rose-600 hover:underline font-semibold" onclick="clearAllTradingPlans()">
                                 Hapus Semua
                             </button>
                         </div>
-                        <div class="overflow-x-auto">
+                        <!-- Petunjuk swipe layar hp -->
+                        <div class="flex lg:hidden items-center justify-between px-4 py-2 bg-slate-50 border-b border-surface-border text-[11px] text-text-muted">
+                            <span class="flex items-center gap-1 font-medium">
+                                <span class="material-symbols-outlined text-[15px] text-primary">swipe</span>
+                                Geser ke samping untuk melihat detail transaksi
+                            </span>
+                            <span class="font-bold text-primary">8 Kolom</span>
+                        </div>
+                        <div class="overflow-x-auto -webkit-overflow-scrolling-touch">
                             <table class="w-full text-left min-w-[700px]">
                                 <thead>
                                     <tr class="bg-slate-50 border-b border-surface-border text-text-muted text-xs uppercase font-bold tracking-wider">
@@ -1010,11 +1047,11 @@
 
             <!-- PAGE 5: PANDUAN DAN MANAJEMEN RISIKO -->
             <div class="page-view" id="page-panduan">
-                <div class="flex flex-col gap-6 max-w-5xl mx-auto">
+                <div class="flex flex-col gap-5 sm:gap-6 max-w-5xl mx-auto">
                     <!-- Header Panduan -->
-                    <div class="bg-white rounded-2xl p-6 border border-surface-border shadow-sm flex flex-col gap-2">
-                        <h2 class="text-xl font-bold text-primary flex items-center gap-2">
-                            <span class="material-symbols-outlined text-secondary text-[24px]">menu_book</span>
+                    <div class="bg-white rounded-2xl p-4 sm:p-6 border border-surface-border shadow-sm flex flex-col gap-2">
+                        <h2 class="text-lg sm:text-xl font-bold text-primary flex items-center gap-2">
+                            <span class="material-symbols-outlined text-secondary text-[22px] sm:text-[24px]">menu_book</span>
                             Panduan Investasi dan Manajemen Risiko Pasar Modal
                         </h2>
                         <p class="text-xs text-text-muted leading-relaxed">
@@ -1023,15 +1060,15 @@
                     </div>
 
                     <!-- Modul 1: Aturan Satuan Lot dan Fraksi Harga -->
-                    <div class="bg-white rounded-2xl p-6 border border-surface-border shadow-sm flex flex-col gap-4">
+                    <div class="bg-white rounded-2xl p-4 sm:p-6 border border-surface-border shadow-sm flex flex-col gap-4">
                         <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 rounded-lg bg-primary text-white flex items-center justify-center font-bold text-xs">1</div>
-                            <h3 class="text-base font-bold text-primary">Satuan Perdagangan dan Mekanisme Fraksi Harga BEI</h3>
+                            <div class="w-8 h-8 rounded-lg bg-primary text-white flex items-center justify-center font-bold text-xs shrink-0">1</div>
+                            <h3 class="text-sm sm:text-base font-bold text-primary">Satuan Perdagangan dan Mekanisme Fraksi Harga BEI</h3>
                         </div>
                         <p class="text-xs text-text-muted leading-relaxed">
                             Di Bursa Efek Indonesia, perdagangan saham di Pasar Reguler wajib dilakukan dalam kelipatan <strong>1 Lot = 100 Lembar Saham</strong>. Perubahan harga minimum (tick size) diatur berdasarkan kelompok harga:
                         </p>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-2.5 sm:gap-3 text-xs">
                             <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
                                 <span class="font-bold text-primary">&lt; Rp 200</span>
                                 <p class="text-text-muted mt-1">Fraksi Rp 1 per tick. Maksimum auto-rejection 35%.</p>
@@ -1048,31 +1085,31 @@
                     </div>
 
                     <!-- Modul 2: Strategi Aksi Trading -->
-                    <div class="bg-white rounded-2xl p-6 border border-surface-border shadow-sm flex flex-col gap-4">
+                    <div class="bg-white rounded-2xl p-4 sm:p-6 border border-surface-border shadow-sm flex flex-col gap-4">
                         <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 rounded-lg bg-primary text-white flex items-center justify-center font-bold text-xs">2</div>
-                            <h3 class="text-base font-bold text-primary">Definisi Rekomendasi Taktis</h3>
+                            <div class="w-8 h-8 rounded-lg bg-primary text-white flex items-center justify-center font-bold text-xs shrink-0">2</div>
+                            <h3 class="text-sm sm:text-base font-bold text-primary">Definisi Rekomendasi Taktis</h3>
                         </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-                            <div class="p-4 rounded-xl bg-emerald-50/60 border border-emerald-200 flex flex-col gap-1.5">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 text-xs">
+                            <div class="p-3.5 sm:p-4 rounded-xl bg-emerald-50/60 border border-emerald-200 flex flex-col gap-1.5">
                                 <span class="font-bold text-emerald-900">Buy on Weakness (BoW)</span>
                                 <p class="text-emerald-800 leading-relaxed">
                                     Membeli saat harga terkoreksi menguji area support kuat dalam tren pergerakan yang stabil. Risiko terukur karena dekat dengan batas cut-loss.
                                 </p>
                             </div>
-                            <div class="p-4 rounded-xl bg-blue-50/60 border border-blue-200 flex flex-col gap-1.5">
+                            <div class="p-3.5 sm:p-4 rounded-xl bg-blue-50/60 border border-blue-200 flex flex-col gap-1.5">
                                 <span class="font-bold text-blue-900">Buy on Breakout (BoB)</span>
                                 <p class="text-blue-800 leading-relaxed">
                                     Membeli saat harga berhasil menembus level resistance utama yang diiringi oleh lonjakan volume perdagangan, mengindikasikan kelanjutan tren naik.
                                 </p>
                             </div>
-                            <div class="p-4 rounded-xl bg-amber-50/60 border border-amber-200 flex flex-col gap-1.5">
+                            <div class="p-3.5 sm:p-4 rounded-xl bg-amber-50/60 border border-amber-200 flex flex-col gap-1.5">
                                 <span class="font-bold text-amber-900">Hold / Tahan Kepemilikan</span>
                                 <p class="text-amber-800 leading-relaxed">
                                     Mempertahankan posisi saat emiten berada dalam fase konsolidasi wajar atau sedang mendekati rilis katalis dividen/laba bersih.
                                 </p>
                             </div>
-                            <div class="p-4 rounded-xl bg-rose-50/60 border border-rose-200 flex flex-col gap-1.5">
+                            <div class="p-3.5 sm:p-4 rounded-xl bg-rose-50/60 border border-rose-200 flex flex-col gap-1.5">
                                 <span class="font-bold text-rose-900">Sell on Strength / Amankan Kas</span>
                                 <p class="text-rose-800 leading-relaxed">
                                     Merealisasikan keuntungan bertahap saat harga telah mencapai target profit atau momentum mulai melandai, guna mengamankan modal ke kas siaga.
@@ -1082,15 +1119,15 @@
                     </div>
 
                     <!-- Modul 3: Konsep Disiplin Cut-Loss dan Risk-to-Reward -->
-                    <div class="bg-white rounded-2xl p-6 border border-surface-border shadow-sm flex flex-col gap-4">
+                    <div class="bg-white rounded-2xl p-4 sm:p-6 border border-surface-border shadow-sm flex flex-col gap-4">
                         <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 rounded-lg bg-primary text-white flex items-center justify-center font-bold text-xs">3</div>
-                            <h3 class="text-base font-bold text-primary">Prinsip Disiplin Cut-Loss dan Rasio Risk : Reward</h3>
+                            <div class="w-8 h-8 rounded-lg bg-primary text-white flex items-center justify-center font-bold text-xs shrink-0">3</div>
+                            <h3 class="text-sm sm:text-base font-bold text-primary">Prinsip Disiplin Cut-Loss dan Rasio Risk : Reward</h3>
                         </div>
                         <p class="text-xs text-text-muted leading-relaxed">
                             Stop Loss atau Cut Loss adalah mekanisme pengaman modal paling krusial bagi setiap investor dan trader profesional. Batasi potensi kerugian maksimal pada kisaran 2% - 5% per posisi transaksi.
                         </p>
-                        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-text-main flex flex-col gap-2">
+                        <div class="p-3.5 sm:p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-text-main flex flex-col gap-2">
                             <span class="font-bold text-primary">Standar Rasio Minimal 1 : 2</span>
                             <p class="text-text-muted leading-relaxed">
                                 Jangan pernah membuka posisi transaksi apabila potensi keuntungan lebih kecil dari dua kali potensi kerugian. Dengan rasio 1:2, bahkan dengan tingkat akurasi (win-rate) 45%, modal portofolio Anda secara statistik tetap bertumbuh positif.
@@ -1123,25 +1160,52 @@
         </main>
     </div>
 
+    <!-- ==================== MOBILE BOTTOM APP NAVIGATION ==================== -->
+    <nav class="fixed bottom-0 left-0 right-0 h-16 bg-white/95 backdrop-blur-md border-t border-surface-border z-30 flex items-center justify-around px-1 lg:hidden shadow-[0_-4px_16px_rgba(0,0,0,0.06)]" id="mobileBottomNav">
+        <button type="button" class="mobile-nav-btn flex flex-col items-center justify-center w-full py-1 text-primary active:scale-95 transition-transform" data-target="page-ringkasan" onclick="navigateTo('page-ringkasan', this)">
+            <span class="material-symbols-outlined text-[22px]">query_stats</span>
+            <span class="text-[10px] font-bold mt-0.5 text-primary">Pasar</span>
+        </button>
+        <button type="button" class="mobile-nav-btn flex flex-col items-center justify-center w-full py-1 text-slate-400 active:scale-95 transition-transform relative" data-target="page-rekomendasi" onclick="navigateTo('page-rekomendasi', this)">
+            <div class="relative">
+                <span class="material-symbols-outlined text-[22px]">trending_up</span>
+                <span class="w-2 h-2 rounded-full bg-emerald-500 absolute -top-0.5 -right-0.5 animate-pulse"></span>
+            </div>
+            <span class="text-[10px] font-semibold mt-0.5">Saham</span>
+        </button>
+        <button type="button" class="mobile-nav-btn flex flex-col items-center justify-center w-full py-1 text-slate-400 active:scale-95 transition-transform" data-target="page-portofolio" onclick="navigateTo('page-portofolio', this)">
+            <span class="material-symbols-outlined text-[22px]">pie_chart</span>
+            <span class="text-[10px] font-semibold mt-0.5">Portofolio</span>
+        </button>
+        <button type="button" class="mobile-nav-btn flex flex-col items-center justify-center w-full py-1 text-slate-400 active:scale-95 transition-transform" data-target="page-grafik" onclick="navigateTo('page-grafik', this)">
+            <span class="material-symbols-outlined text-[22px]">candlestick_chart</span>
+            <span class="text-[10px] font-semibold mt-0.5">Grafik</span>
+        </button>
+        <button type="button" class="mobile-nav-btn flex flex-col items-center justify-center w-full py-1 text-slate-400 active:scale-95 transition-transform" data-target="page-kalkulator" onclick="navigateTo('page-kalkulator', this)">
+            <span class="material-symbols-outlined text-[22px]">calculate</span>
+            <span class="text-[10px] font-semibold mt-0.5">Kalkulator</span>
+        </button>
+    </nav>
+
     <!-- ==================== MODAL DETAIL EMITEN & MULTI-MODEL ==================== -->
-    <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4" id="stockDetailModal">
-        <div class="bg-white rounded-2xl max-w-xl w-full border border-surface-border shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
-            <div class="p-5 border-b border-surface-border flex items-center justify-between bg-slate-50">
+    <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-3 sm:p-4" id="stockDetailModal">
+        <div class="bg-white rounded-2xl max-w-xl w-full border border-surface-border shadow-2xl max-h-[92vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+            <div class="p-4 sm:p-5 border-b border-surface-border flex items-center justify-between bg-slate-50 shrink-0">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-primary text-white flex items-center justify-center font-bold text-base" id="modalStockInitial">
+                    <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-primary text-white flex items-center justify-center font-bold text-sm sm:text-base" id="modalStockInitial">
                         B
                     </div>
                     <div class="flex flex-col">
-                        <h3 class="font-bold text-primary text-base" id="modalStockTicker">BBCA</h3>
-                        <span class="text-xs text-text-muted" id="modalStockSector">Financials</span>
+                        <h3 class="font-bold text-primary text-sm sm:text-base" id="modalStockTicker">BBCA</h3>
+                        <span class="text-[11px] sm:text-xs text-text-muted" id="modalStockSector">Financials</span>
                     </div>
                 </div>
-                <button type="button" class="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-200 flex items-center justify-center transition-colors" onclick="closeStockDetailModal()">
+                <button type="button" class="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-200 flex items-center justify-center transition-colors" onclick="closeStockDetailModal()" aria-label="Tutup">
                     <span class="material-symbols-outlined text-[20px]">close</span>
                 </button>
             </div>
 
-            <div class="p-6 flex flex-col gap-5 text-xs">
+            <div class="p-4 sm:p-6 flex flex-col gap-4 sm:gap-5 text-xs overflow-y-auto">
                 <!-- Consensus Summary -->
                 <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-between">
                     <div class="flex flex-col">
@@ -1253,7 +1317,7 @@
             return 'Rp ' + Number(val || 0).toLocaleString('id-ID');
         }
 
-        // 1. Navigasi Antar Halaman (SPA Navigation)
+        // 1. Navigasi Antar Halaman (SPA Navigation & Responsive Sync)
         function navigateTo(pageId, buttonElement) {
             // Sembunyikan seluruh page-view
             document.querySelectorAll('.page-view').forEach(page => {
@@ -1266,21 +1330,60 @@
                 target.classList.add('active');
             }
 
-            // Update status tombol sidebar aktif
+            // Update status tombol sidebar desktop aktif
             document.querySelectorAll('#sidebarNav .nav-btn').forEach(btn => {
                 btn.className = "nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-semibold text-sm transition-colors text-text-muted hover:bg-slate-100 hover:text-text-main";
             });
 
-            if (buttonElement) {
-                buttonElement.className = "nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-semibold text-sm transition-colors bg-primary text-white shadow-sm";
-            } else {
-                const matchingBtn = document.querySelector(`#sidebarNav .nav-btn[data-target="${pageId}"]`);
-                if (matchingBtn) {
-                    matchingBtn.className = "nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-semibold text-sm transition-colors bg-primary text-white shadow-sm";
-                }
+            const matchingDesktopBtn = document.querySelector(`#sidebarNav .nav-btn[data-target="${pageId}"]`);
+            if (matchingDesktopBtn) {
+                matchingDesktopBtn.className = "nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-semibold text-sm transition-colors bg-primary text-white shadow-sm";
             }
 
+            // Update status tombol navigasi bawah mobile
+            document.querySelectorAll('#mobileBottomNav .mobile-nav-btn').forEach(btn => {
+                btn.className = "mobile-nav-btn flex flex-col items-center justify-center w-full py-1 text-slate-400 active:scale-95 transition-transform";
+                const span = btn.querySelector('span:last-child');
+                if (span) span.className = "text-[10px] font-semibold mt-0.5 text-slate-400";
+            });
+
+            const matchingMobileBtn = document.querySelector(`#mobileBottomNav .mobile-nav-btn[data-target="${pageId}"]`);
+            if (matchingMobileBtn) {
+                matchingMobileBtn.className = "mobile-nav-btn flex flex-col items-center justify-center w-full py-1 text-primary active:scale-95 transition-transform";
+                const span = matchingMobileBtn.querySelector('span:last-child');
+                if (span) span.className = "text-[10px] font-bold mt-0.5 text-primary";
+            }
+
+            // Otomatis tutup drawer sidebar mobile jika sedang terbuka
+            closeSidebar();
+
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('mainSidebar');
+            const backdrop = document.getElementById('sidebarBackdrop');
+            if (!sidebar) return;
+
+            if (sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.remove('-translate-x-full');
+                sidebar.classList.add('translate-x-0');
+                if (backdrop) backdrop.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            } else {
+                closeSidebar();
+            }
+        }
+
+        function closeSidebar() {
+            const sidebar = document.getElementById('mainSidebar');
+            const backdrop = document.getElementById('sidebarBackdrop');
+            if (sidebar) {
+                sidebar.classList.add('-translate-x-full');
+                sidebar.classList.remove('translate-x-0');
+            }
+            if (backdrop) backdrop.classList.add('hidden');
+            document.body.style.overflow = '';
         }
 
         // 2. Tampilkan Notifikasi Toast Modern
