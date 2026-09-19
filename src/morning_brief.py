@@ -107,13 +107,13 @@ class MorningBriefGenerator:
 
     def generate_brief_text(self, snapshot: Dict[str, Any]) -> Dict[str, Any]:
         """
-        Generates editorial Morning Brief text using Gemini 1.5 Flash.
+        Generates editorial Morning Brief text using Gemini 3.6 Flash with clean institutional formatting.
         """
         title = f"Morning Brief IHSG: Katalis Wall Street & Arah Pasar Hari Ini ({snapshot['date']})"
 
         prompt = f"""
 Bertindaklah sebagai Senior Institutional Equity Research Analyst di pasar modal Indonesia.
-Susun laporan Morning Market Brief harian untuk para investor dan trader institusi sebelum bursa BEI dibuka pagi ini.
+Susun laporan Morning Market Brief harian untuk para investor institusi dan profesional sebelum bursa BEI dibuka pagi ini.
 
 Data Fakta Pasar Hari Ini:
 - Tanggal: {snapshot['date']}
@@ -124,14 +124,15 @@ Data Fakta Pasar Hari Ini:
 - Minyak Mentah Brent: {snapshot['brent_oil']}
 - Kurs Rupiah: {snapshot['usd_idr']}
 
-Format Laporan Wajib:
-1. Paragraf 1: Judul headline editorial tebal dan ringkasan arah pembukaan IHSG hari ini beserta rentang perkiraan.
-2. Paragraf 2: Sentimen eksternal (Wall Street, tren yield US Treasury 10Y, pergerakan minyak dunia, dan implikasi bagi bursa domestik).
-3. Paragraf 3: Kondisi pasar domestik, kurs rupiah, dan foreign fund flow.
-4. Paragraf 4: Analisis teknikal ringkas posisi IHSG (Support, Resistance, dan pivot batas risiko).
-5. Paragraf 5 (Rekomendasi Aksi): Panduan taktis hari ini (misal: Buy on Weakness, Selective Accumulation, atau Partial Profit Taking).
-
-Gaya penulisan: Bahasa Indonesia resmi, tajam, analitis, padat, dan persis seperti riset harian sekuritas papan atas. Hindari basa-basi.
+PANDUAN PENULISAN:
+1. JANGAN mencantumkan header judul berulang seperti "INSTITUTIONAL EQUITY RESEARCH" atau "Tanggal: ...", karena sistem sudah memiliki header tersendiri.
+2. JANGAN menggunakan tanda asterisk tebal ganda berlebihan (**) pada setiap kata. Tulis dalam paragraf naratif berita pasar yang mengalir alami dan profesional.
+3. Struktur Analisis:
+   - Paragraf 1: Ringkasan arah pembukaan IHSG hari ini dan proyeksi rentang pergerakan support-resisten.
+   - Paragraf 2: Analisis sentimen global (penutupan Wall Street, yield obligasi AS, komoditas minyak, dan transmisi dampaknya ke bursa domestik).
+   - Paragraf 3: Fundamental domestik, stabilitas kurs rupiah, dan ekspektasi arus dana asing (foreign inflow).
+   - Paragraf 4: Posisi teknikal IHSG dan batas risiko pivot harian.
+   - Paragraf 5: Panduan Taktis Hari Ini (misal: Selective Accumulation on Weakness atau Profit Taking bertahap).
 """
 
         if not self.api_key:
@@ -155,6 +156,17 @@ Gaya penulisan: Bahasa Indonesia resmi, tajam, analitis, padat, dan persis seper
             model = genai.GenerativeModel("gemini-3.6-flash")
             response = model.generate_content(prompt)
             brief_body = response.text.strip()
+            
+            # Clean up any remaining repetitive headers
+            lines = brief_body.split("\n")
+            cleaned_lines = []
+            for line in lines:
+                l_strip = line.strip()
+                if l_strip.startswith("**INSTITUTIONAL") or l_strip.startswith("INSTITUTIONAL") or l_strip.startswith("**Tanggal"):
+                    continue
+                cleaned_lines.append(line)
+            brief_body = "\n".join(cleaned_lines).strip()
+
             return {
                 "date": snapshot["date"],
                 "headline": title,
@@ -169,7 +181,7 @@ Gaya penulisan: Bahasa Indonesia resmi, tajam, analitis, padat, dan persis seper
                 "brief_content": (
                     f"IHSG diperkirakan menguji area {snapshot['ihsg_support']} - {snapshot['ihsg_resistance']}. "
                     f"Sentimen pasar dipengaruhi penutupan Wall Street ({snapshot['sp500_change']}) dan kurs {snapshot['usd_idr']}. "
-                    f"Rekomendasi taktis: Buy on Weakness pada emiten berbobot pasar defensif."
+                    f"Panduan taktis: Buy on Weakness pada emiten berbobot pasar defensif."
                 ),
                 "snapshot": snapshot,
             }
