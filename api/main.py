@@ -181,6 +181,56 @@ def web_dashboard():
     return HTMLResponse(content="<h1>Stock Market Recommendation Platform is running.</h1>")
 
 
+@app.get("/login", response_class=HTMLResponse, tags=["Dashboard"])
+@app.get("/login.html", response_class=HTMLResponse, tags=["Dashboard"])
+def web_login():
+    login_file = Path(__file__).resolve().parent.parent / "login.html"
+    if login_file.exists():
+        return HTMLResponse(content=login_file.read_text(encoding="utf-8"))
+    return HTMLResponse(content="<h1>Halaman Login Tidak Ditemukan</h1>")
+
+
+class AuthLoginRequest(BaseModel):
+    username: str
+    password: Optional[str] = None
+    remember_me: Optional[bool] = True
+
+
+@app.post("/api/v1/auth/login", tags=["Auth"])
+def auth_login(req: AuthLoginRequest) -> Dict[str, Any]:
+    username = req.username.strip().lower()
+    if "sekar" in username or "analyst" in username:
+        user_data = {
+            "name": "Sekar Widhastri",
+            "role": "Research Analyst",
+            "email": "sekar.widhastri@stockmarket.id",
+            "initials": "SW",
+            "access_level": "Senior Analyst (Full Access)",
+        }
+    elif "portfolio" in username or "manager" in username:
+        user_data = {
+            "name": "Portfolio Manager",
+            "role": "Asset Management",
+            "email": "portfolio.manager@stockmarket.id",
+            "initials": "PM",
+            "access_level": "Portfolio Management Access",
+        }
+    else:
+        clean_name = req.username.strip().split("@")[0].title() or "Tamu Pengunjung"
+        user_data = {
+            "name": clean_name,
+            "role": "Market Explorer",
+            "email": req.username.strip() if "@" in req.username else f"{req.username.strip()}@stockmarket.id",
+            "initials": clean_name[:2].upper() if len(clean_name) >= 2 else "TM",
+            "access_level": "Public Research Access",
+        }
+    return {
+        "status": "success",
+        "token": "bearer-jwt-idx-quant-2026",
+        "user": user_data,
+    }
+
+
 @app.get("/morning-brief", tags=["Morning Market Brief"])
 def get_morning_brief() -> Dict[str, Any]:
     """

@@ -19,6 +19,7 @@
         .page-view { display: none; }
         .page-view.active { display: block; }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script id="tailwind-config">
         tailwind.config = {
@@ -100,6 +101,20 @@
                 </button>
             </nav>
         </div>
+
+        <!-- Profil Sesi Pengguna di Bawah Sidebar -->
+        <div class="p-4 border-t border-surface-border flex flex-col gap-2">
+            <a href="/login" class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-xs text-text-main transition-colors group">
+                <div class="flex items-center gap-2.5">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                    <div class="flex flex-col text-left">
+                        <span class="font-bold text-primary group-hover:text-accent transition-colors" id="sidebarUserName">Sekar Widhastri</span>
+                        <span class="text-[10px] text-text-muted" id="sidebarUserRole">Research Analyst</span>
+                    </div>
+                </div>
+                <span class="material-symbols-outlined text-[18px] text-slate-400 group-hover:text-primary transition-colors">login</span>
+            </a>
+        </div>
     </aside>
 
     <!-- ==================== HEADER ATAS ==================== -->
@@ -122,14 +137,40 @@
 
                 <div class="h-8 w-px bg-slate-200"></div>
 
-                <!-- Profil Analis -->
-                <div class="flex items-center gap-3">
-                    <div class="w-9 h-9 rounded-full bg-primary text-white flex items-center justify-center font-bold text-xs shadow-sm">
-                        SW
-                    </div>
-                    <div class="flex flex-col text-left">
-                        <span class="text-sm font-bold text-primary leading-tight">Sekar Widhastri</span>
-                        <span class="text-xs text-text-muted leading-tight font-medium">Research Analyst</span>
+                <!-- Profil Analis dengan Dropdown Menu Interaktif -->
+                <div class="relative">
+                    <button type="button" class="flex items-center gap-3 p-1.5 rounded-xl hover:bg-slate-100 transition-colors focus:outline-none" onclick="toggleUserDropdown()" id="userProfileBtn">
+                        <div class="w-9 h-9 rounded-full bg-primary text-white flex items-center justify-center font-bold text-xs shadow-sm" id="headerUserAvatar">
+                            SW
+                        </div>
+                        <div class="flex flex-col text-left hidden sm:flex">
+                            <span class="text-sm font-bold text-primary leading-tight" id="headerUserName">Sekar Widhastri</span>
+                            <span class="text-xs text-text-muted leading-tight font-medium" id="headerUserRole">Research Analyst</span>
+                        </div>
+                        <span class="material-symbols-outlined text-[18px] text-slate-400">expand_more</span>
+                    </button>
+
+                    <!-- Dropdown Menu Sesi Pengguna -->
+                    <div class="absolute right-0 top-full mt-2 w-64 bg-white rounded-2xl border border-surface-border shadow-xl p-3 hidden flex-col gap-2 z-50 animate-in fade-in zoom-in-95 duration-150" id="userDropdownMenu">
+                        <div class="p-3 rounded-xl bg-slate-50 border border-slate-100 flex flex-col gap-0.5">
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs font-bold text-primary" id="dropdownUserName">Sekar Widhastri</span>
+                                <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold">Aktif</span>
+                            </div>
+                            <span class="text-[11px] text-text-muted" id="dropdownUserEmail">sekar.widhastri@stockmarket.id</span>
+                            <span class="text-[10px] text-slate-400 mt-1">Sesi Terotentikasi Analis BEI</span>
+                        </div>
+
+                        <div class="flex flex-col gap-1 pt-1 border-t border-slate-100">
+                            <a href="/login" class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-text-main hover:bg-slate-100 transition-colors">
+                                <span class="material-symbols-outlined text-[18px] text-slate-500">switch_account</span>
+                                <span>Ganti Akun / Halaman Login</span>
+                            </a>
+                            <button type="button" class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-rose-600 hover:bg-rose-50 transition-colors text-left w-full" onclick="logoutUser()">
+                                <span class="material-symbols-outlined text-[18px]">logout</span>
+                                <span>Keluar (Logout)</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -306,6 +347,110 @@
                                 <option value="Industrials">Perindustrian (Industrials)</option>
                                 <option value="Transportation & Logistics">Transportasi dan Logistik</option>
                             </select>
+                        </div>
+                    </div>
+
+                    <!-- ==================== VISUALISASI GRAFIK REKOMENDASI KUANTITATIF ==================== -->
+                    <div class="flex flex-col gap-5">
+                        <!-- 4 Kartu Metrik Ringkasan Rekomendasi Terfilter -->
+                        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                            <div class="p-4 rounded-2xl bg-white border border-surface-border shadow-sm flex items-center gap-3.5">
+                                <div class="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold shrink-0">
+                                    <span class="material-symbols-outlined text-[24px]">verified</span>
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="text-[11px] text-text-muted font-semibold uppercase tracking-wider">Saham Terfilter</span>
+                                    <span class="text-xl font-extrabold text-primary" id="chartStatTotal">0 Saham</span>
+                                    <span class="text-[10px] text-emerald-700 font-medium" id="chartStatSub">Konsensus Aktif</span>
+                                </div>
+                            </div>
+
+                            <div class="p-4 rounded-2xl bg-white border border-surface-border shadow-sm flex items-center gap-3.5">
+                                <div class="w-11 h-11 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center font-bold shrink-0">
+                                    <span class="material-symbols-outlined text-[24px]">trending_up</span>
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="text-[11px] text-text-muted font-semibold uppercase tracking-wider">Rata-Rata Bullish</span>
+                                    <span class="text-xl font-extrabold text-primary" id="chartStatAvgProb">0%</span>
+                                    <span class="text-[10px] text-blue-700 font-medium">Model Ensemble</span>
+                                </div>
+                            </div>
+
+                            <div class="p-4 rounded-2xl bg-white border border-surface-border shadow-sm flex items-center gap-3.5">
+                                <div class="w-11 h-11 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center font-bold shrink-0">
+                                    <span class="material-symbols-outlined text-[24px]">balance</span>
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="text-[11px] text-text-muted font-semibold uppercase tracking-wider">Rata-Rata Risk:Reward</span>
+                                    <span class="text-xl font-extrabold text-primary" id="chartStatAvgRR">1 : 0.0</span>
+                                    <span class="text-[10px] text-amber-700 font-medium">Standar Disiplin Cut-Loss</span>
+                                </div>
+                            </div>
+
+                            <div class="p-4 rounded-2xl bg-white border border-surface-border shadow-sm flex items-center gap-3.5">
+                                <div class="w-11 h-11 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center font-bold shrink-0">
+                                    <span class="material-symbols-outlined text-[24px]">domain</span>
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="text-[11px] text-text-muted font-semibold uppercase tracking-wider">Sektor Dominan</span>
+                                    <span class="text-base font-extrabold text-primary truncate max-w-[130px]" id="chartStatTopSector">-</span>
+                                    <span class="text-[10px] text-purple-700 font-medium">Distribusi Universe</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 2 Grafik Visualisasi Interaktif Chart.js -->
+                        <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+                            <!-- Grafik A: Matriks Sebaran Scatter Plot (Probabilitas vs Rasio Risk:Reward) -->
+                            <div class="lg:col-span-6 bg-white rounded-2xl p-5 border border-surface-border shadow-sm flex flex-col justify-between">
+                                <div class="flex items-center justify-between mb-2">
+                                    <div class="flex items-center gap-2.5">
+                                        <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center">
+                                            <span class="material-symbols-outlined text-[18px]">scatter_plot</span>
+                                        </div>
+                                        <div>
+                                            <h3 class="text-sm font-bold text-primary">Matriks Sebaran: Probabilitas vs Risk:Reward</h3>
+                                            <p class="text-[11px] text-text-muted">Tingkat keyakinan model vs rasio potensi hasil</p>
+                                        </div>
+                                    </div>
+                                    <span class="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
+                                        Optimal Alpha Zone
+                                    </span>
+                                </div>
+                                <div class="relative w-full h-[270px]">
+                                    <canvas id="recScatterChart"></canvas>
+                                </div>
+                                <div class="flex items-center justify-between text-[10px] text-text-muted pt-2 border-t border-slate-100 mt-2">
+                                    <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> BUY ON WEAKNESS</span>
+                                    <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span> BREAKOUT</span>
+                                    <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-slate-400"></span> HOLD</span>
+                                </div>
+                            </div>
+
+                            <!-- Grafik B: Asimetri Ekspektasi Return vs Toleransi Risiko (Target Profit vs Stop Loss) -->
+                            <div class="lg:col-span-6 bg-white rounded-2xl p-5 border border-surface-border shadow-sm flex flex-col justify-between">
+                                <div class="flex items-center justify-between mb-2">
+                                    <div class="flex items-center gap-2.5">
+                                        <div class="w-8 h-8 rounded-lg bg-blue-100 text-blue-800 flex items-center justify-center">
+                                            <span class="material-symbols-outlined text-[18px]">stacked_bar_chart</span>
+                                        </div>
+                                        <div>
+                                            <h3 class="text-sm font-bold text-primary">Asimetri Rentang: Target Profit vs Stop Loss</h3>
+                                            <p class="text-[11px] text-text-muted">Potensi kenaikan harga (+%) vs batas pengaman risiko (-%)</p>
+                                        </div>
+                                    </div>
+                                    <span class="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">
+                                        Top 8 Saham
+                                    </span>
+                                </div>
+                                <div class="relative w-full h-[270px]">
+                                    <canvas id="recRiskReturnChart"></canvas>
+                                </div>
+                                <div class="flex items-center justify-between text-[10px] text-text-muted pt-2 border-t border-slate-100 mt-2">
+                                    <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span> Target Profit (+)</span>
+                                    <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Toleransi Stop Loss (-)</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -959,12 +1104,12 @@
             <footer class="mt-12 pt-6 border-t border-slate-200 text-slate-500 text-xs flex flex-col gap-3 pb-8">
                 <div class="p-4 rounded-xl bg-slate-100/80 border border-slate-200 flex items-start gap-3">
                     <span class="material-symbols-outlined text-[20px] text-slate-600 shrink-0 mt-0.5">verified_user</span>
-                    <div class="flex flex-col gap-1 text-[11px] leading-relaxed">
-                        <span class="font-bold text-slate-700">Pemberitahuan Kepatuhan Regulasi dan Penafian Risiko (Disclaimer):</span>
-                        <p class="text-slate-600">
+                    <div class="flex flex-col gap-1.5 text-[11px] leading-relaxed text-justify">
+                        <span class="font-bold text-slate-700 text-left">Pemberitahuan Kepatuhan Regulasi dan Penafian Risiko (Disclaimer):</span>
+                        <p class="text-slate-600 text-justify">
                             Seluruh data kuantitatif, proyeksi probabilitas, estimasi rentang teknikal, dan ringkasan Morning Brief yang disajikan dalam platform ini merupakan hasil pengolahan model komputasi matematis untuk tujuan edukasi, riset, dan analisis data pasar modal. Informasi ini bukan merupakan nasihat investasi personal, ajakan, ataupun penawaran transaksi efek sebagaimana diatur dalam ketentuan perundang-undangan Otoritas Jasa Keuangan (OJK).
                         </p>
-                        <p class="text-slate-600">
+                        <p class="text-slate-600 text-justify">
                             Investasi saham di Bursa Efek Indonesia (BEI) mengandung risiko fluktuasi modal. Keputusan transaksi sepenuhnya merupakan tanggung jawab independen masing-masing investor (Do Your Own Research - DYOR).
                         </p>
                     </div>
@@ -1249,6 +1394,7 @@
                 console.log("Menggunakan data rekomendasi lokal.");
             } finally {
                 renderRecommendationsTable(allRecommendations);
+                updateRecommendationCharts(allRecommendations);
                 populateCalculatorStockDropdown(allRecommendations);
                 updatePortfolioCalculations();
             }
@@ -1305,7 +1451,13 @@
                             ${rec.toUpperCase()}
                         </span>
                     </td>
-                    <td class="py-3.5 px-4 font-bold text-primary">Rp ${closePrice.toLocaleString('id-ID')}</td>
+                    <td class="py-3.5 px-4 font-bold text-primary">
+                        <div>Rp ${closePrice.toLocaleString('id-ID')}</div>
+                        <div class="w-20 bg-slate-100 rounded-full h-1 mt-1 overflow-hidden flex" title="Rentang Asimetri Potensi Gain vs Cut-Loss">
+                            <div class="bg-rose-400 h-full" style="width: 35%;"></div>
+                            <div class="bg-emerald-500 h-full" style="width: 65%;"></div>
+                        </div>
+                    </td>
                     <td class="py-3.5 px-4 font-semibold text-text-main">Rp ${entryPrice.toLocaleString('id-ID')}</td>
                     <td class="py-3.5 px-4 font-bold text-emerald-700">Rp ${targetPrice.toLocaleString('id-ID')} <span class="text-[11px] font-medium text-emerald-600">(+${targetPct}%)</span></td>
                     <td class="py-3.5 px-4 font-bold text-rose-700">Rp ${stopLoss.toLocaleString('id-ID')} <span class="text-[11px] font-medium text-rose-600">(-${slPct}%)</span></td>
@@ -1372,6 +1524,7 @@
             }
 
             renderRecommendationsTable(filtered);
+            updateRecommendationCharts(filtered);
         }
 
         function handleGlobalSearch(val) {
@@ -1835,8 +1988,295 @@
             `;
         }
 
+        // 11. Visualisasi Grafik Interaktif Rekomendasi Saham (Chart.js)
+        let recScatterChartInstance = null;
+        let recRiskReturnChartInstance = null;
+
+        function updateRecommendationCharts(items) {
+            const validItems = (items && items.length > 0) ? items : allRecommendations;
+            if (!validItems || validItems.length === 0) return;
+
+            // 1. Update 4 Kartu Metrik Ringkasan
+            const totalCount = validItems.length;
+            const statTotalEl = document.getElementById('chartStatTotal');
+            if (statTotalEl) statTotalEl.innerText = `${totalCount} Saham`;
+
+            let totalProb = 0;
+            let totalRR = 0;
+            const sectorCounts = {};
+
+            validItems.forEach(x => {
+                totalProb += (parseFloat(x.Bullish_Probability) || 0.5);
+                totalRR += (parseFloat(x.Risk_Reward_Ratio) || 1.5);
+                const sec = x.Sector || 'General';
+                sectorCounts[sec] = (sectorCounts[sec] || 0) + 1;
+            });
+
+            const avgProb = totalCount > 0 ? Math.round((totalProb / totalCount) * 100) : 50;
+            const avgRR = totalCount > 0 ? (totalRR / totalCount).toFixed(1) : "1.8";
+
+            let topSector = "-";
+            let maxCount = 0;
+            for (const [sec, count] of Object.entries(sectorCounts)) {
+                if (count > maxCount) {
+                    maxCount = count;
+                    topSector = sec;
+                }
+            }
+
+            const statProbEl = document.getElementById('chartStatAvgProb');
+            if (statProbEl) statProbEl.innerText = `${avgProb}%`;
+
+            const statRREl = document.getElementById('chartStatAvgRR');
+            if (statRREl) statRREl.innerText = `1 : ${avgRR}`;
+
+            const statSectorEl = document.getElementById('chartStatTopSector');
+            if (statSectorEl) statSectorEl.innerText = topSector;
+
+            // 2. Render / Update Scatter Chart (Probabilitas Bullish vs Rasio Risk:Reward)
+            const scatterCanvas = document.getElementById('recScatterChart');
+            if (scatterCanvas && typeof Chart !== 'undefined') {
+                const buyPoints = [];
+                const breakoutPoints = [];
+                const holdPoints = [];
+
+                validItems.forEach(x => {
+                    const ticker = (x.Ticker || "").replace(".JK", "");
+                    const rr = parseFloat(x.Risk_Reward_Ratio) || 1.5;
+                    const prob = Math.round((parseFloat(x.Bullish_Probability) || 0.5) * 100);
+                    const rec = (x.Recommendation || "").toLowerCase();
+                    const pt = { x: rr, y: prob, ticker: ticker, sector: x.Sector || 'General', close: x.Close || 0 };
+
+                    if (rec.includes("breakout")) {
+                        breakoutPoints.push(pt);
+                    } else if (rec.includes("buy")) {
+                        buyPoints.push(pt);
+                    } else {
+                        holdPoints.push(pt);
+                    }
+                });
+
+                if (recScatterChartInstance) {
+                    recScatterChartInstance.data.datasets[0].data = buyPoints;
+                    recScatterChartInstance.data.datasets[1].data = breakoutPoints;
+                    recScatterChartInstance.data.datasets[2].data = holdPoints;
+                    recScatterChartInstance.update();
+                } else {
+                    const ctx = scatterCanvas.getContext('2d');
+                    recScatterChartInstance = new Chart(ctx, {
+                        type: 'scatter',
+                        data: {
+                            datasets: [
+                                {
+                                    label: 'BUY ON WEAKNESS',
+                                    data: buyPoints,
+                                    backgroundColor: '#10b981',
+                                    borderColor: '#047857',
+                                    pointRadius: 6,
+                                    pointHoverRadius: 9,
+                                },
+                                {
+                                    label: 'BUY ON BREAKOUT',
+                                    data: breakoutPoints,
+                                    backgroundColor: '#3b82f6',
+                                    borderColor: '#1d4ed8',
+                                    pointRadius: 6,
+                                    pointHoverRadius: 9,
+                                },
+                                {
+                                    label: 'HOLD / NETRAL',
+                                    data: holdPoints,
+                                    backgroundColor: '#94a3b8',
+                                    borderColor: '#64748b',
+                                    pointRadius: 5,
+                                    pointHoverRadius: 8,
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(context) {
+                                            const raw = context.raw;
+                                            return `${raw.ticker} (${raw.sector}): Prob ${raw.y}%, R:R 1:${raw.x} (Rp ${Math.round(raw.close).toLocaleString('id-ID')})`;
+                                        }
+                                    }
+                                }
+                            },
+                            scales: {
+                                x: {
+                                    title: { display: true, text: 'Rasio Risk : Reward (1 : X)', font: { size: 10, weight: 'bold' } },
+                                    grid: { color: '#f1f5f9' },
+                                    min: 0.5,
+                                    max: 3.5
+                                },
+                                y: {
+                                    title: { display: true, text: 'Probabilitas Bullish (%)', font: { size: 10, weight: 'bold' } },
+                                    grid: { color: '#f1f5f9' },
+                                    min: 35,
+                                    max: 75
+                                }
+                            },
+                            onClick: (evt, elements) => {
+                                if (elements.length > 0) {
+                                    const el = elements[0];
+                                    const datasetIndex = el.datasetIndex;
+                                    const index = el.index;
+                                    const point = recScatterChartInstance.data.datasets[datasetIndex].data[index];
+                                    if (point && point.ticker) {
+                                        openStockDetailModal(point.ticker);
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+
+            // 3. Render / Update Bar Chart (Target Profit % vs Stop Loss %)
+            const barCanvas = document.getElementById('recRiskReturnChart');
+            if (barCanvas && typeof Chart !== 'undefined') {
+                const top8 = validItems.slice(0, 8);
+                const labels = top8.map(x => (x.Ticker || "").replace(".JK", ""));
+                const targetPcts = top8.map(x => {
+                    const close = x.Close || 1000;
+                    const target = x.Target_Price || close * 1.05;
+                    return parseFloat((((target - close) / close) * 100).toFixed(1));
+                });
+                const slPcts = top8.map(x => {
+                    const close = x.Close || 1000;
+                    const sl = x.Stop_Loss || close * 0.96;
+                    return -parseFloat((((close - sl) / close) * 100).toFixed(1));
+                });
+
+                if (recRiskReturnChartInstance) {
+                    recRiskReturnChartInstance.data.labels = labels;
+                    recRiskReturnChartInstance.data.datasets[0].data = targetPcts;
+                    recRiskReturnChartInstance.data.datasets[1].data = slPcts;
+                    recRiskReturnChartInstance.update();
+                } else {
+                    const ctx = barCanvas.getContext('2d');
+                    recRiskReturnChartInstance = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: labels,
+                            datasets: [
+                                {
+                                    label: 'Target Profit (%)',
+                                    data: targetPcts,
+                                    backgroundColor: '#059669',
+                                    borderRadius: 4,
+                                },
+                                {
+                                    label: 'Stop Loss (%)',
+                                    data: slPcts,
+                                    backgroundColor: '#e11d48',
+                                    borderRadius: 4,
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(context) {
+                                            const val = context.raw;
+                                            const sign = val > 0 ? "+" : "";
+                                            return `${context.dataset.label}: ${sign}${val}%`;
+                                        }
+                                    }
+                                }
+                            },
+                            scales: {
+                                x: {
+                                    grid: { display: false },
+                                    ticks: { font: { size: 10, weight: 'bold' } }
+                                },
+                                y: {
+                                    title: { display: true, text: 'Persentase Ekspektasi (%)', font: { size: 10 } },
+                                    grid: { color: '#f1f5f9' },
+                                    ticks: {
+                                        callback: function(val) {
+                                            return val + '%';
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+        }
+
+        // 12. Manajemen Sesi Pengguna & Profil Analis
+        function initUserSession() {
+            const sessionRaw = localStorage.getItem('stock_market_user_session');
+            if (sessionRaw) {
+                try {
+                    const u = JSON.parse(sessionRaw);
+                    if (u && u.name) {
+                        const nameEl = document.getElementById('headerUserName');
+                        const roleEl = document.getElementById('headerUserRole');
+                        const avatarEl = document.getElementById('headerUserAvatar');
+                        const sideNameEl = document.getElementById('sidebarUserName');
+                        const sideRoleEl = document.getElementById('sidebarUserRole');
+                        const dropNameEl = document.getElementById('dropdownUserName');
+                        const dropEmailEl = document.getElementById('dropdownUserEmail');
+
+                        if (nameEl) nameEl.innerText = u.name;
+                        if (roleEl) roleEl.innerText = u.role || 'Research Analyst';
+                        if (avatarEl) avatarEl.innerText = u.initials || u.name.slice(0, 2).toUpperCase();
+                        if (sideNameEl) sideNameEl.innerText = u.name;
+                        if (sideRoleEl) sideRoleEl.innerText = u.role || 'Research Analyst';
+                        if (dropNameEl) dropNameEl.innerText = u.name;
+                        if (dropEmailEl) dropEmailEl.innerText = u.email || `${u.name.toLowerCase().replace(/\\s+/g, '.')}@stockmarket.id`;
+                    }
+                } catch (e) {
+                    console.log("Error loading session:", e);
+                }
+            }
+        }
+
+        function toggleUserDropdown() {
+            const menu = document.getElementById('userDropdownMenu');
+            if (!menu) return;
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                menu.classList.add('flex');
+            } else {
+                menu.classList.add('hidden');
+                menu.classList.remove('flex');
+            }
+        }
+
+        function logoutUser() {
+            localStorage.removeItem('stock_market_user_session');
+            showToast("Sesi berhasil diakhiri. Mengalihkan ke halaman login...");
+            setTimeout(() => {
+                window.location.href = "/login";
+            }, 700);
+        }
+
+        // Tutup dropdown saat klik di luar area
+        document.addEventListener('click', (e) => {
+            const btn = document.getElementById('userProfileBtn');
+            const menu = document.getElementById('userDropdownMenu');
+            if (btn && menu && !btn.contains(e.target) && !menu.contains(e.target)) {
+                menu.classList.add('hidden');
+                menu.classList.remove('flex');
+            }
+        });
+
         // Inisialisasi Saat Dokumen Siap
         document.addEventListener('DOMContentLoaded', () => {
+            initUserSession();
             updateMarketStatus();
             setInterval(updateMarketStatus, 60000);
 
