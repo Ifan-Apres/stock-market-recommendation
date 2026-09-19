@@ -117,7 +117,7 @@ class MorningBriefGenerator:
         """
         Generates editorial Morning Brief text using Gemini 3.6 Flash with clean institutional formatting.
         """
-        title = f"Morning Brief IHSG: Katalis Wall Street & Arah Pasar Hari Ini ({snapshot['date']})"
+        title = f"Morning Brief IHSG: Katalis Wall Street dan Arah Pasar Hari Ini ({snapshot['date']})"
 
         prompt = f"""
 Bertindaklah sebagai Senior Institutional Equity Research Analyst di pasar modal Indonesia.

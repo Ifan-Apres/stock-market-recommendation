@@ -232,22 +232,32 @@ def get_portfolio_allocation(capital: float = Query(50000000.0, description="Tot
 
 @app.get("/recommendations", response_model=List[RecommendationItem], tags=["Recommendations"])
 def get_latest_recommendations(
-    mode: str = Query("swing", description="Strategy mode: 'swing', 'dividend', or 'favorites'"),
+    mode: str = Query("all", description="Strategy mode: 'all', 'swing', 'dividend', or 'favorites'"),
+    universe: Optional[str] = Query(None, description="Alias for mode parameter"),
     sector: Optional[str] = Query(None, description="Optional sector filter (e.g. 'Financials', 'Energy')"),
 ) -> List[Dict]:
-    target_file = SWING_RECOMMENDATION_FILE
-    if mode == "dividend":
-        target_file = DIVIDEND_RECOMMENDATION_FILE
-    elif mode == "favorites":
-        target_file = FAVORITES_RECOMMENDATION_FILE
+    active_mode = (universe or mode or "all").lower()
 
-    if not target_file.exists():
-        raise HTTPException(
-            status_code=404,
-            detail="Recommendations dataset not found. Please run the quantitative pipeline first.",
-        )
     try:
-        df = pd.read_csv(target_file)
+        if active_mode == "dividend":
+            df = pd.read_csv(DIVIDEND_RECOMMENDATION_FILE)
+        elif active_mode == "favorites":
+            df = pd.read_csv(FAVORITES_RECOMMENDATION_FILE)
+        elif active_mode == "swing":
+            df = pd.read_csv(SWING_RECOMMENDATION_FILE)
+        else:
+            # Mode "all": gabungkan semua universe (Favorit + Dividen + Swing) tanpa duplikasi
+            dfs = []
+            for f in [FAVORITES_RECOMMENDATION_FILE, DIVIDEND_RECOMMENDATION_FILE, SWING_RECOMMENDATION_FILE]:
+                if f.exists():
+                    dfs.append(pd.read_csv(f))
+            if dfs:
+                df = pd.concat(dfs, ignore_index=True).drop_duplicates(subset=["Ticker"])
+            elif SWING_RECOMMENDATION_FILE.exists():
+                df = pd.read_csv(SWING_RECOMMENDATION_FILE)
+            else:
+                raise HTTPException(status_code=404, detail="Recommendations dataset not found. Run pipeline first.")
+
         if sector and sector.lower() != "all":
             if "Sector" in df.columns:
                 df = df[df["Sector"].str.lower() == sector.lower()]
@@ -265,6 +275,8 @@ def get_latest_recommendations(
                 df[c] = None
 
         return [_clean_record(r) for r in df.to_dict(orient="records")]
+    except HTTPException:
+        raise
     except Exception as e:
         logger.error(f"Failed to read recommendations: {str(e)}")
         raise HTTPException(status_code=500, detail="Error reading recommendation artifacts.")
