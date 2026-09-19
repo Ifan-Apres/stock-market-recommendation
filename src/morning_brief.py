@@ -47,69 +47,133 @@ class MorningBriefGenerator:
 
     def collect_market_snapshot(self) -> Dict[str, Any]:
         """
-        Gathers overnight global market closes and IHSG technical status.
+        Gathers overnight global market closes and IHSG technical status using Floor Pivots and real data.
+        Removes all hardcoded placeholders to prevent emitting false market figures.
         """
-        snapshot = {
-            "date": datetime.today().strftime("%Y-%m-%d"),
-            "ihsg_close": 7150.0,
-            "ihsg_change_pct": 0.35,
-            "ihsg_ma20": 7120.0,
-            "ihsg_support": "7.080 - 7.120",
-            "ihsg_resistance": "7.200 - 7.240",
-            "sp500_change": "+0.65%",
-            "nasdaq_change": "+1.15%",
-            "dow_change": "+0.40%",
-            "ust_10y_yield": "4.25%",
-            "brent_oil": "US$ 78.50 / barel",
-            "usd_idr": "Rp 15.850 / US$",
+        if not BENCHMARK_DATA_FILE.exists():
+            raise FileNotFoundError(f"Benchmark file {BENCHMARK_DATA_FILE} not found. Ingestion must run first.")
+
+        b_df = pd.read_csv(BENCHMARK_DATA_FILE)
+        if b_df.empty:
+            raise ValueError(f"Benchmark file {BENCHMARK_DATA_FILE} is empty.")
+
+        last_row = b_df.iloc[-1]
+        prev_row = b_df.iloc[-2] if len(b_df) > 1 else last_row
+        close = round(float(last_row["Close"]), 2)
+        prev_close = float(prev_row["Close"])
+        chg_pct = round(((close - prev_close) / prev_close) * 100.0, 2)
+        date_str = str(last_row["Date"])[:10]
+
+        high = float(last_row.get("High", close))
+        low = float(last_row.get("Low", close))
+
+        # Standard Institutional Floor Pivots (P, S1, R1, S2, R2)
+        pivot = (high + low + close) / 3.0
+        s1 = (2.0 * pivot) - high
+        r1 = (2.0 * pivot) - low
+        s2 = pivot - (high - low)
+        r2 = pivot + (high - low)
+
+        ma20 = round(float(b_df["Close"].rolling(20, min_periods=5).mean().iloc[-1]), 2)
+
+        snapshot: Dict[str, Any] = {
+            "date": date_str,
+            "ihsg_close": close,
+            "ihsg_change_pct": chg_pct,
+            "ihsg_ma20": ma20,
+            "ihsg_pivot": round(pivot, 2),
+            "ihsg_support": f"{int(round(s1)):,} - {int(round(pivot)):,}",
+            "ihsg_resistance": f"{int(round(pivot)):,} - {int(round(r1)):,}",
+            "ihsg_s1": int(round(s1)),
+            "ihsg_r1": int(round(r1)),
+            "ihsg_s2": int(round(s2)),
+            "ihsg_r2": int(round(r2)),
+            "sp500_change": "Data Belum Tersedia",
+            "nasdaq_change": "Data Belum Tersedia",
+            "dow_change": "Data Belum Tersedia",
+            "ust_10y_yield": "Data Belum Tersedia",
+            "brent_oil": "Data Belum Tersedia",
+            "usd_idr": "Data Belum Tersedia",
         }
 
-        # Read actual benchmark data if available
-        if BENCHMARK_DATA_FILE.exists():
-            try:
-                b_df = pd.read_csv(BENCHMARK_DATA_FILE)
-                if not b_df.empty:
-                    last_row = b_df.iloc[-1]
-                    prev_row = b_df.iloc[-2] if len(b_df) > 1 else last_row
-                    close = round(float(last_row["Close"]), 2)
-                    prev_close = float(prev_row["Close"])
-                    chg_pct = round(((close - prev_close) / prev_close) * 100.0, 2)
-                    snapshot["ihsg_close"] = close
-                    snapshot["ihsg_change_pct"] = chg_pct
-                    snapshot["date"] = str(last_row["Date"])[:10]
-                    # Calculate simple support & resistance range
-                    sup = round(close * 0.99, 0)
-                    res = round(close * 1.012, 0)
-                    snapshot["ihsg_support"] = f"{int(sup):,}"
-                    snapshot["ihsg_resistance"] = f"{int(res):,}"
-            except Exception as e:
-                logger.warning(f"Error reading benchmark data: {str(e)}")
-
         # Read actual global macro data if available
+        macro_loaded = False
         if GLOBAL_MACRO_FILE.exists():
             try:
                 m_df = pd.read_csv(GLOBAL_MACRO_FILE)
-                for asset, symbol in [("SP500", "SP500"), ("Nasdaq", "Nasdaq"), ("DowJones", "DowJones")]:
-                    sub = m_df[m_df["Asset_Name"] == asset]
-                    if len(sub) >= 2:
-                        c1 = sub.iloc[-1]["Close"]
-                        c0 = sub.iloc[-2]["Close"]
-                        pct = round(((c1 - c0) / c0) * 100.0, 2)
-                        snapshot[f"{asset.lower()}_change"] = f"{'+' if pct > 0 else ''}{pct}%"
+                if not m_df.empty:
+                    for asset in ["SP500", "Nasdaq", "DowJones"]:
+                        sub = m_df[m_df["Asset_Name"] == asset]
+                        if len(sub) >= 2:
+                            c1 = float(sub.iloc[-1]["Close"])
+                            c0 = float(sub.iloc[-2]["Close"])
+                            pct = round(((c1 - c0) / c0) * 100.0, 2)
+                            snapshot[f"{asset.lower()}_change"] = f"{'+' if pct > 0 else ''}{pct}%"
 
-                oil_sub = m_df[m_df["Asset_Name"] == "Oil_Brent"]
-                if not oil_sub.empty:
-                    snapshot["brent_oil"] = f"US$ {oil_sub.iloc[-1]['Close']:.2f} / barel"
+                    oil_sub = m_df[m_df["Asset_Name"] == "Oil_Brent"]
+                    if not oil_sub.empty:
+                        snapshot["brent_oil"] = f"US$ {float(oil_sub.iloc[-1]['Close']):.2f} / barel"
 
-                usd_sub = m_df[m_df["Asset_Name"] == "USD_IDR"]
-                if not usd_sub.empty:
-                    snapshot["usd_idr"] = f"Rp {usd_sub.iloc[-1]['Close']:,.0f} / US$"
+                    usd_sub = m_df[m_df["Asset_Name"] == "USD_IDR"]
+                    if not usd_sub.empty:
+                        snapshot["usd_idr"] = f"Rp {float(usd_sub.iloc[-1]['Close']):,.0f} / US$"
 
-                ust_sub = m_df[m_df["Asset_Name"] == "US_Treasury_10Y"]
-                if not ust_sub.empty:
-                    snapshot["ust_10y_yield"] = f"{ust_sub.iloc[-1]['Close']:.2f}%"
+                    ust_sub = m_df[m_df["Asset_Name"] == "US_Treasury_10Y"]
+                    if not ust_sub.empty:
+                        snapshot["ust_10y_yield"] = f"{float(ust_sub.iloc[-1]['Close']):.2f}%"
+                    macro_loaded = True
             except Exception as e:
-                logger.warning(f"Error reading macro data: {str(e)}")
+                logger.warning(f"Error reading macro file: {str(e)}")
+
+        # If macro dataset was absent, attempt on-the-fly fetch using yfinance
+        if not macro_loaded:
+            try:
+                import yfinance as yf
+                macro_map = {
+                    "SP500": "^GSPC",
+                    "Nasdaq": "^IXIC",
+                    "DowJones": "^DJI",
+                    "US_Treasury_10Y": "^TNX",
+                    "Oil_Brent": "BZ=F",
+                    "USD_IDR": "USDIDR=X",
+                }
+                live_records = []
+                for name, symbol in macro_map.items():
+                    try:
+                        ticker_data = yf.download(symbol, period="5d", progress=False)
+                        if not ticker_data.empty:
+                            closes = ticker_data["Close"].dropna().values.flatten()
+                            if len(closes) >= 2:
+                                c1 = float(closes[-1])
+                                c0 = float(closes[-2])
+                                pct = round(((c1 - c0) / c0) * 100.0, 2)
+                                if name in ["SP500", "Nasdaq"]:
+                                    snapshot[f"{name.lower()}_change"] = f"{'+' if pct > 0 else ''}{pct}%"
+                                elif name == "DowJones":
+                                    snapshot["dow_change"] = f"{'+' if pct > 0 else ''}{pct}%"
+                                elif name == "Oil_Brent":
+                                    snapshot["brent_oil"] = f"US$ {c1:.2f} / barel"
+                                elif name == "USD_IDR":
+                                    snapshot["usd_idr"] = f"Rp {c1:,.0f} / US$"
+                                elif name == "US_Treasury_10Y":
+                                    snapshot["ust_10y_yield"] = f"{c1:.2f}%"
+
+                                live_records.append({
+                                    "Date": str(ticker_data.index[-1])[:10],
+                                    "Asset_Name": name,
+                                    "Symbol": symbol,
+                                    "Close": c1,
+                                    "Volume": 0,
+                                })
+                    except Exception as ex:
+                        logger.warning(f"Could not live-fetch {name}: {str(ex)}")
+
+                if live_records:
+                    saved_mdf = pd.DataFrame(live_records)
+                    GLOBAL_MACRO_FILE.parent.mkdir(parents=True, exist_ok=True)
+                    saved_mdf.to_csv(GLOBAL_MACRO_FILE, index=False)
+            except ImportError:
+                pass
 
         return snapshot
 

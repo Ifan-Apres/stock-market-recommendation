@@ -207,6 +207,61 @@ class PyTorchLSTMTrainer:
         return round(float(prob), 4)
 
 
+def round_to_idx_tick(price: float) -> int:
+    """
+    Rounds a stock price to official Indonesia Stock Exchange (IDX / BEI) tick size rules:
+    - Price < 200: tick = 1 (minimum price = 50 on regular board)
+    - 200 <= Price < 500: tick = 2
+    - 500 <= Price < 2000: tick = 5
+    - 2000 <= Price < 5000: tick = 10
+    - Price >= 5000: tick = 25
+    """
+    p = max(50.0, float(price))
+    if p < 200.0:
+        tick = 1.0
+    elif p < 500.0:
+        tick = 2.0
+    elif p < 2000.0:
+        tick = 5.0
+    elif p < 5000.0:
+        tick = 10.0
+    else:
+        tick = 25.0
+    rounded = int(round(p / tick) * tick)
+    return max(50, rounded)
+
+
+def capped_weights(score: np.ndarray, cap: float = 0.25, budget: float = 0.80) -> np.ndarray:
+    """
+    Convex cap-and-redistribute algorithm guaranteeing that:
+    1. No asset exceeds single-stock cap (default 25%)
+    2. Sum of equity weights never exceeds budget (default 80%),
+       strictly reserving at least 20% for cash reserve (Kas Siaga).
+    """
+    w = np.maximum(np.asarray(score, dtype=float), 0.0)
+    total_score = np.sum(w)
+    if total_score <= 1e-12:
+        return np.zeros_like(w)
+
+    w = (w / total_score) * budget
+    for _ in range(50):
+        over = w > (cap + 1e-12)
+        if not np.any(over):
+            break
+        excess = np.sum(w[over] - cap)
+        w[over] = cap
+        free = (~over) & (w > 0) & (w < (cap - 1e-12))
+        if not np.any(free):
+            break
+        w[free] += excess * (w[free] / np.sum(w[free]))
+
+    # Final guard to strictly respect budget
+    current_sum = np.sum(w)
+    if current_sum > budget + 1e-6:
+        w = (w / current_sum) * budget
+    return w
+
+
 # ==============================================================================
 # 3. Multi-Engine Quantitative Alpha Model & Portfolio Optimizer
 # ==============================================================================
@@ -229,6 +284,7 @@ class QuantitativeAlphaModel:
         self.lstm_trainer = PyTorchLSTMTrainer()
         self.arima_predictor = ARIMAPredictor()
         self.ticker_to_sector = {t: sector for sector, tickers in SECTOR_MAP.items() for t in tickers}
+        self._cached_latest_rows: Optional[pd.DataFrame] = None
 
     def load_processed_data(self) -> pd.DataFrame:
         df = pd.read_csv(self.processed_data_path)
@@ -274,6 +330,16 @@ class QuantitativeAlphaModel:
             "GBDT_ROC_AUC": round(float(auc), 4),
         }
 
+    def get_or_extract_latest_rows(self, df: pd.DataFrame, ticker_filter: Optional[List[str]] = None) -> pd.DataFrame:
+        """
+        Caches and extracts latest rows across the default universe to avoid redundant multi-model computation.
+        """
+        if self._cached_latest_rows is None:
+            self._cached_latest_rows = self._extract_latest_rows_with_ensemble(df, DEFAULT_TICKERS)
+        if ticker_filter is None:
+            return self._cached_latest_rows.copy()
+        return self._cached_latest_rows[self._cached_latest_rows["Ticker"].isin(ticker_filter)].copy().reset_index(drop=True)
+
     def _extract_latest_rows_with_ensemble(self, df: pd.DataFrame, ticker_filter: List[str]) -> pd.DataFrame:
         filtered_df = df[df["Ticker"].isin(ticker_filter)].copy()
         latest_records = []
@@ -296,12 +362,21 @@ class QuantitativeAlphaModel:
             latest_row["Bullish_Probability"] = blended_prob
             latest_row["Conviction_Score"] = np.abs(blended_prob - 0.50)
 
+            # Calculate 14-day Average True Range (ATR)
+            high_low = grp["High"] - grp["Low"]
+            high_close = (grp["High"] - grp["Close"].shift(1)).abs()
+            low_close = (grp["Low"] - grp["Close"].shift(1)).abs()
+            tr = pd.concat([high_low, high_close, low_close], axis=1).max(axis=1)
+            atr_14 = float(tr.rolling(14).mean().iloc[-1])
+            close = float(latest_row.get("Close", 1000.0))
+            if np.isnan(atr_14) or atr_14 <= 0:
+                atr_14 = max(close * 0.02, 1.0)
+
             # Technical Action Signals
-            rsi = latest_row.get("RSI_14", 50.0) or 50.0
-            vol_ratio = latest_row.get("Volume_Ratio", 1.0) or 1.0
-            close = latest_row.get("Close", 1000.0)
-            res1 = latest_row.get("Resistance_1", close * 1.03) or (close * 1.03)
-            sup1 = latest_row.get("Support_1", close * 0.97) or (close * 0.97)
+            rsi = float(latest_row.get("RSI_14", 50.0) or 50.0)
+            vol_ratio = float(latest_row.get("Volume_Ratio", 1.0) or 1.0)
+            res1 = float(latest_row.get("Resistance_1", close * 1.03) or (close * 1.03))
+            sup1 = float(latest_row.get("Support_1", close * 0.97) or (close * 0.97))
 
             if blended_prob >= 0.52 and (rsi <= 45.0 or close <= sup1 * 1.01):
                 action = "BUY ON WEAKNESS"
@@ -314,13 +389,32 @@ class QuantitativeAlphaModel:
             else:
                 action = "HOLD"
 
-            # Entry, Target Price (TP), Stop Loss (SL), Risk-Reward
-            entry_price = round(close, 0)
-            target_price = round(close * 1.06, 0)  # TP1: +6%
-            stop_loss = round(close * 0.96, 0)     # SL: -4%
-            potential_gain = target_price - entry_price
-            potential_risk = entry_price - stop_loss
-            rr_ratio = round(potential_gain / (potential_risk + 1e-4), 2)
+            # Entry, Target Price (TP), Stop Loss (SL), Risk-Reward with IDX tick size rounding
+            entry_price = round_to_idx_tick(close)
+
+            if action in ["BUY ON WEAKNESS", "BUY ON BREAKOUT", "TRADING BUY"]:
+                raw_sl = max(sup1, close - (1.5 * atr_14))
+                raw_sl = min(raw_sl, close - (0.8 * atr_14))
+                stop_loss = round_to_idx_tick(raw_sl)
+                if stop_loss >= entry_price:
+                    stop_loss = round_to_idx_tick(close - (1.2 * atr_14))
+                stop_loss = max(50, stop_loss)
+
+                raw_tp = min(res1, close + (2.0 * atr_14))
+                raw_tp = max(raw_tp, close + (1.2 * atr_14))
+                target_price = round_to_idx_tick(raw_tp)
+                if target_price <= entry_price:
+                    target_price = round_to_idx_tick(close + (1.5 * atr_14))
+            elif action == "SELL ON STRENGTH":
+                target_price = round_to_idx_tick(max(res1, close + atr_14))
+                stop_loss = round_to_idx_tick(min(sup1, close - atr_14))
+            else:  # HOLD
+                target_price = round_to_idx_tick(max(res1, close * 1.03))
+                stop_loss = round_to_idx_tick(min(sup1, close * 0.97))
+
+            potential_gain = max(1.0, float(target_price - entry_price))
+            potential_risk = max(1.0, float(abs(entry_price - stop_loss)))
+            rr_ratio = round(potential_gain / potential_risk, 2)
 
             latest_row["Recommendation"] = action
             latest_row["Sector"] = self.ticker_to_sector.get(ticker, "General")
@@ -328,6 +422,7 @@ class QuantitativeAlphaModel:
             latest_row["Target_Price"] = target_price
             latest_row["Stop_Loss"] = stop_loss
             latest_row["Risk_Reward_Ratio"] = rr_ratio
+            latest_row["ATR_14"] = round(atr_14, 2)
 
             latest_records.append(latest_row)
 
@@ -339,7 +434,7 @@ class QuantitativeAlphaModel:
             "Beta_IHSG", "Sharpe_Ratio", "Max_Drawdown_1Y", "Annualized_Return_1Y",
             "Debt_to_Equity", "Current_Ratio", "RSI_14", "MACD_Hist", "MFI_14", "CMF_20",
             "Volatility_20D", "PE_Ratio", "PB_Ratio", "ROE", "Dividend_Yield",
-            "GARCH_Vol", "VaR_95_1D", "Sector"
+            "GARCH_Vol", "VaR_95_1D", "VaR_99_1D", "ES_95_1D", "Sector"
         ]
         for c in all_expected_cols:
             if c not in latest_df.columns:
@@ -349,10 +444,19 @@ class QuantitativeAlphaModel:
 
     def generate_swing_recommendations(self, df: pd.DataFrame, top_n: int = 12) -> pd.DataFrame:
         logger.info("Generating Strategy 1: Daily Swing Trader (LQ45)...")
-        latest_df = self._extract_latest_rows_with_ensemble(df, SWING_TICKERS)
+        latest_df = self.get_or_extract_latest_rows(df, SWING_TICKERS)
+        priority_map = {
+            "BUY ON BREAKOUT": 3,
+            "BUY ON WEAKNESS": 2,
+            "TRADING BUY": 1,
+            "HOLD": 0,
+            "SELL ON STRENGTH": -1,
+        }
+        latest_df["Action_Priority"] = latest_df["Recommendation"].map(priority_map).fillna(0)
         ranked_df = latest_df.sort_values(
-            by=["Conviction_Score", "Bullish_Probability"], ascending=[False, False]
+            by=["Action_Priority", "Bullish_Probability"], ascending=[False, False]
         ).head(top_n).reset_index(drop=True)
+        ranked_df.drop(columns=["Action_Priority"], inplace=True)
 
         ranked_df["Date"] = pd.to_datetime(ranked_df["Date"]).dt.strftime("%Y-%m-%d")
         SWING_RECOMMENDATION_FILE.parent.mkdir(parents=True, exist_ok=True)
@@ -361,7 +465,7 @@ class QuantitativeAlphaModel:
 
     def generate_dividend_recommendations(self, df: pd.DataFrame, top_n: int = 12) -> pd.DataFrame:
         logger.info("Generating Strategy 2: Dividend & Value Investor...")
-        latest_df = self._extract_latest_rows_with_ensemble(df, DIVIDEND_TICKERS)
+        latest_df = self.get_or_extract_latest_rows(df, DIVIDEND_TICKERS)
         div_yield = latest_df["Dividend_Yield"].fillna(0.0) if "Dividend_Yield" in latest_df.columns else 0.0
         roe = latest_df["ROE"].fillna(0.0) if "ROE" in latest_df.columns else 0.0
         der = latest_df["Debt_to_Equity"].fillna(1.0) if "Debt_to_Equity" in latest_df.columns else 1.0
@@ -377,7 +481,7 @@ class QuantitativeAlphaModel:
 
     def generate_favorites_recommendations(self, df: pd.DataFrame) -> pd.DataFrame:
         logger.info("Generating Strategy 3: 10 Favorite Stocks Portfolio...")
-        latest_df = self._extract_latest_rows_with_ensemble(df, FAVORITE_TICKERS)
+        latest_df = self.get_or_extract_latest_rows(df, FAVORITE_TICKERS)
         ranked_df = latest_df.sort_values(by="Bullish_Probability", ascending=False).reset_index(drop=True)
         ranked_df["Date"] = pd.to_datetime(ranked_df["Date"]).dt.strftime("%Y-%m-%d")
         FAVORITES_RECOMMENDATION_FILE.parent.mkdir(parents=True, exist_ok=True)
@@ -386,66 +490,93 @@ class QuantitativeAlphaModel:
 
     def optimize_portfolio_allocation(self, df: pd.DataFrame, capital_idr: float = 50000000.0) -> pd.DataFrame:
         """
-        Optimal Portfolio Weighting Algorithm (Sharpe-Weighted & Risk Parity with Cash Reserve).
-        Calculates exact % allocation and nominal Rupiah amount per stock.
+        Optimal Portfolio Weighting Algorithm (Sharpe-Weighted Convex Capped Weights with Cash Reserve).
+        Guarantees:
+        1. Candidates must be active BUY signals with positive Sharpe ratio (never holds losing stocks).
+        2. Maximum single-stock equity cap = 25%.
+        3. Maximum total equity allocation = 80%, strictly guaranteeing Cash Reserve >= 20%.
+        4. Exact unspent IDR from 100-shares lot rounding is added back to Cash Reserve.
         """
         logger.info(f"Computing optimal portfolio allocation for total capital: Rp {capital_idr:,.0f}...")
-        latest_df = self._extract_latest_rows_with_ensemble(df, DEFAULT_TICKERS)
+        latest_df = self.get_or_extract_latest_rows(df, DEFAULT_TICKERS)
 
-        # Select candidates with positive conviction
+        # Select candidates with positive conviction (BUY recommendations ONLY)
         buy_candidates = latest_df[
             latest_df["Recommendation"].isin(["BUY ON WEAKNESS", "BUY ON BREAKOUT", "TRADING BUY"])
         ].copy()
 
-        if len(buy_candidates) < 3:
-            # Fallback to top bullish probability
-            buy_candidates = latest_df.sort_values(by="Bullish_Probability", ascending=False).head(5).copy()
-        else:
-            buy_candidates = buy_candidates.sort_values(by="Bullish_Probability", ascending=False).head(5)
+        # Quantitative gate: Sharpe ratio must be strictly positive (> 0.0)
+        if not buy_candidates.empty:
+            buy_candidates = buy_candidates[buy_candidates["Sharpe_Ratio"].fillna(0.0) > 0.0].copy()
 
-        # Calculate Risk-Parity & Sharpe Weights
-        sharpe_raw = buy_candidates["Sharpe_Ratio"].fillna(0.5)
-        sharpe_safe = np.clip(sharpe_raw, 0.1, 5.0)
-        garch_vol = buy_candidates["GARCH_Vol"].fillna(0.30)
+        # If zero candidates pass the quantitative gate, reserve 100% in Cash
+        if len(buy_candidates) == 0:
+            logger.warning("No BUY candidates with positive Sharpe ratio found. Holding 100% Cash Reserve.")
+            allocation_records = [{
+                "Ticker": "KAS SIAGA (CASH)",
+                "Sector": "Money Market / Risk Reserve",
+                "Recommendation": "RESERVE",
+                "Allocation_Pct": 100.0,
+                "Nominal_IDR": round(capital_idr, 0),
+                "Shares_Lot": 0,
+                "Close_Price": 1.0,
+                "Target_Price": 1.0,
+                "Stop_Loss": 1.0,
+                "Bullish_Probability": 0.50,
+            }]
+            alloc_df = pd.DataFrame(allocation_records)
+            PORTFOLIO_ALLOCATION_FILE.parent.mkdir(parents=True, exist_ok=True)
+            alloc_df.to_csv(PORTFOLIO_ALLOCATION_FILE, index=False)
+            logger.info(f"Portfolio allocation (100% Cash Reserve) saved to {PORTFOLIO_ALLOCATION_FILE}")
+            return alloc_df
 
-        # Score = Sharpe / Volatility
-        raw_scores = (sharpe_safe / (garch_vol + 0.05)).values
-        equity_weight_budget = 0.80  # 80% Equity Allocation, 20% Cash Reserve for risk management
-        weights = (raw_scores / np.sum(raw_scores)) * equity_weight_budget
+        # Sort top candidates by probability and Sharpe ratio (max 5)
+        buy_candidates = buy_candidates.sort_values(
+            by=["Bullish_Probability", "Sharpe_Ratio"], ascending=[False, False]
+        ).head(5)
 
-        # Cap single stock weight at 25% for institutional risk diversification
-        weights = np.clip(weights, 0.08, 0.25)
-        actual_equity_sum = np.sum(weights)
-        cash_weight = round(1.0 - actual_equity_sum, 4)
+        sharpe_raw = buy_candidates["Sharpe_Ratio"].fillna(0.1).to_numpy()
+        sharpe_safe = np.maximum(sharpe_raw, 0.05)
+        garch_vol = buy_candidates["GARCH_Vol"].fillna(0.25).to_numpy()
 
+        # Score = Sharpe / (Volatility + 0.05)
+        raw_scores = sharpe_safe / (garch_vol + 0.05)
+        weights = capped_weights(raw_scores, cap=0.25, budget=0.80)
+
+        total_equity_spent = 0.0
         allocation_records = []
         for i, (_, row) in enumerate(buy_candidates.iterrows()):
             w = round(float(weights[i]), 4)
-            nominal = round(capital_idr * w, 0)
-            close = row["Close"]
-            num_shares = int((nominal / close) // 100) * 100  # Rounded to IDX 100-shares lot
-            actual_nominal = num_shares * close
+            target_nominal = capital_idr * w
+            close = float(row["Close"])
+            lot_price = close * 100.0
+            num_lots = int(target_nominal // lot_price) if lot_price > 0 else 0
+            actual_nominal = num_lots * lot_price
+            total_equity_spent += actual_nominal
 
             allocation_records.append({
                 "Ticker": row["Ticker"],
                 "Sector": row.get("Sector", "General"),
                 "Recommendation": row["Recommendation"],
                 "Allocation_Pct": round(w * 100.0, 1),
-                "Nominal_IDR": actual_nominal if actual_nominal > 0 else nominal,
-                "Shares_Lot": num_shares // 100,
+                "Nominal_IDR": round(actual_nominal, 0) if actual_nominal > 0 else round(target_nominal, 0),
+                "Shares_Lot": num_lots,
                 "Close_Price": close,
                 "Target_Price": row["Target_Price"],
                 "Stop_Loss": row["Stop_Loss"],
                 "Bullish_Probability": row["Bullish_Probability"],
             })
 
-        # Add Cash Reserve Record
+        # Remainder returned to Cash Reserve (including unspent fraction from 100-share lot rounding)
+        actual_cash_idr = max(0.0, capital_idr - total_equity_spent)
+        actual_cash_pct = round((actual_cash_idr / capital_idr) * 100.0, 1)
+
         allocation_records.append({
             "Ticker": "KAS SIAGA (CASH)",
             "Sector": "Money Market / Risk Reserve",
             "Recommendation": "RESERVE",
-            "Allocation_Pct": round(cash_weight * 100.0, 1),
-            "Nominal_IDR": round(capital_idr * cash_weight, 0),
+            "Allocation_Pct": actual_cash_pct,
+            "Nominal_IDR": round(actual_cash_idr, 0),
             "Shares_Lot": 0,
             "Close_Price": 1.0,
             "Target_Price": 1.0,

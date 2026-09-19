@@ -11,6 +11,7 @@ if str(ROOT_DIR) not in sys.path:
 import numpy as np  # type: ignore # pyrefly: ignore [missing-import]
 import pandas as pd  # type: ignore # pyrefly: ignore [missing-import]
 from arch import arch_model  # type: ignore # pyrefly: ignore [missing-import]
+from scipy import stats  # type: ignore # pyrefly: ignore [missing-import]
 
 # pyrefly: ignore [missing-import]
 from src.config import (  # type: ignore # pyrefly: ignore [missing-import]
@@ -93,24 +94,114 @@ class QuantitativeFeatureEngineer:
         return 100 - (100 / (1 + rs))
 
     @staticmethod
-    def estimate_garch_volatility(return_series: pd.Series) -> float:
+    def calculate_var_es_garch_t(return_series: pd.Series, alpha: float = 0.05, min_obs: int = 250, lam: float = 0.94) -> dict:
         """
-        Estimates GARCH(1,1) conditional volatility on 120-day return window.
+        Estimates Student-t GARCH(1,1) conditional volatility, VaR (95% and 99%),
+        and Expected Shortfall (ES) with RiskMetrics EWMA fallback (lambda=0.94).
+        Avoids silent failures and parameter divergence.
         """
-        clean_ret = return_series.dropna().values
-        if len(clean_ret) < 60:
-            return float(np.std(clean_ret) * np.sqrt(252)) if len(clean_ret) > 0 else 0.25
+        clean_ret = pd.Series(return_series).dropna().to_numpy()
+        x = clean_ret[-1000:] * 100.0  # Scale to percent for GARCH numerical stability
 
-        recent_ret = clean_ret[-120:] * 100.0  # Scale to percent for GARCH numerical stability
+        if len(x) < 30:
+            return {
+                "garch_vol": 0.25,
+                "var_95_1d": 2.50,
+                "var_99_1d": 3.50,
+                "es_95_1d": 3.10,
+                "model": "prior_default",
+                "nu": 8.0,
+            }
+
+        if len(x) < min_obs:
+            # Fallback to EWMA RiskMetrics when sample is shorter than min_obs
+            s2 = float(np.var(x[:30])) if len(x) >= 30 else float(np.var(x))
+            for r in x:
+                s2 = lam * s2 + (1.0 - lam) * (r ** 2)
+            sig = np.sqrt(max(s2, 1e-6))
+            z = stats.norm.ppf(alpha)
+            var_pct = -z * sig
+            es_pct = sig * stats.norm.pdf(z) / alpha
+            ann_vol = (sig / 100.0) * np.sqrt(252)
+            return {
+                "garch_vol": round(float(ann_vol), 4),
+                "var_95_1d": round(float(var_pct), 2),
+                "var_99_1d": round(float(-stats.norm.ppf(0.01) * sig), 2),
+                "es_95_1d": round(float(es_pct), 2),
+                "model": "ewma",
+                "nu": 30.0,
+            }
+
         try:
-            am = arch_model(recent_ret, vol="GARCH", p=1, q=1, rescale=False)
-            res = am.fit(disp="off", show_warning=False)
+            am = arch_model(x, mean="Constant", vol="GARCH", p=1, q=1, dist="t", rescale=False)
+            res = am.fit(disp="off", show_warning=False, options={"maxiter": 500})
+            params = res.params
+            a = float(params.get("alpha[1]", 0.0))
+            b = float(params.get("beta[1]", 0.0))
+            nu = float(params.get("nu", 8.0))
+            mu = float(params.get("mu", 0.0))
+
+            healthy = (
+                res.convergence_flag == 0
+                and a > 1e-3
+                and (a + b) < 0.999
+                and np.isfinite(getattr(res, "std_err", [0.0])).all()
+                and 2.5 < nu < 60
+            )
+
+            if not healthy:
+                # Fallback to EWMA RiskMetrics if GARCH parameters are degenerate or non-converged
+                s2 = float(np.var(x[:30]))
+                for r in x:
+                    s2 = lam * s2 + (1.0 - lam) * (r ** 2)
+                sig = np.sqrt(max(s2, 1e-6))
+                z = stats.norm.ppf(alpha)
+                var_pct = -z * sig
+                es_pct = sig * stats.norm.pdf(z) / alpha
+                ann_vol = (sig / 100.0) * np.sqrt(252)
+                return {
+                    "garch_vol": round(float(ann_vol), 4),
+                    "var_95_1d": round(float(var_pct), 2),
+                    "var_99_1d": round(float(-stats.norm.ppf(0.01) * sig), 2),
+                    "es_95_1d": round(float(es_pct), 2),
+                    "model": "ewma_unhealthy_guard",
+                    "nu": round(float(nu), 2),
+                }
+
             forecast = res.forecast(horizon=1)
-            var_1d = forecast.variance.iloc[-1, 0]
-            vol_daily = np.sqrt(var_1d) / 100.0
-            return float(round(vol_daily * np.sqrt(252), 4))
+            sig = np.sqrt(forecast.variance.iloc[-1, 0])
+            k = np.sqrt((nu - 2.0) / nu)
+            tq = stats.t.ppf(alpha, nu)
+            var_pct = -(mu + sig * k * tq)
+            es_pct = -mu + sig * k * stats.t.pdf(tq, nu) / alpha * (nu + (tq ** 2)) / (nu - 1.0)
+            tq99 = stats.t.ppf(0.01, nu)
+            var99_pct = -(mu + sig * k * tq99)
+            ann_vol = (sig / 100.0) * np.sqrt(252)
+
+            return {
+                "garch_vol": round(float(ann_vol), 4),
+                "var_95_1d": round(float(var_pct), 2),
+                "var_99_1d": round(float(var99_pct), 2),
+                "es_95_1d": round(float(es_pct), 2),
+                "model": "garch-t",
+                "nu": round(float(nu), 2),
+                "persist": round(float(a + b), 4),
+            }
         except Exception:
-            return float(round(np.std(recent_ret / 100.0) * np.sqrt(252), 4))
+            # Fallback to EWMA RiskMetrics upon numerical error
+            s2 = float(np.var(x[:30])) if len(x) >= 30 else float(np.var(x))
+            for r in x:
+                s2 = lam * s2 + (1.0 - lam) * (r ** 2)
+            sig = np.sqrt(max(s2, 1e-6))
+            z = stats.norm.ppf(alpha)
+            return {
+                "garch_vol": round(float((sig / 100.0) * np.sqrt(252)), 4),
+                "var_95_1d": round(float(-z * sig), 2),
+                "var_99_1d": round(float(-stats.norm.ppf(0.01) * sig), 2),
+                "es_95_1d": round(float(sig * stats.norm.pdf(z) / alpha), 2),
+                "model": "ewma_exception_fallback",
+                "nu": 8.0,
+            }
 
     def generate_ticker_features(self, group: pd.DataFrame, bench_df: pd.DataFrame) -> pd.DataFrame:
         """
@@ -191,7 +282,8 @@ class QuantitativeFeatureEngineer:
             )
             cov = merged_bench["Return_1D"].rolling(window=252).cov(merged_bench["Benchmark_Return_1D"])
             var = merged_bench["Benchmark_Return_1D"].rolling(window=252).var()
-            df["Beta_IHSG"] = np.clip((cov / (var + 1e-9)).fillna(1.0), -1.0, 4.0)
+            beta_vals = np.clip((cov / (var + 1e-9)).fillna(1.0), -1.0, 4.0).to_numpy()
+            df["Beta_IHSG"] = beta_vals
         else:
             df["Beta_IHSG"] = 1.0
 
@@ -199,10 +291,13 @@ class QuantitativeFeatureEngineer:
             (df["Annualized_Return_1Y"] - self.risk_free_rate) / (df["Annualized_Vol_252D"] + 1e-6), -5.0, 10.0
         ).fillna(0.0)
 
-        # GARCH Volatility & Value at Risk (VaR 95%) for latest row
-        latest_garch_vol = self.estimate_garch_volatility(df["Return_1D"])
-        df["GARCH_Vol"] = latest_garch_vol
-        df["VaR_95_1D"] = round((latest_garch_vol / np.sqrt(252)) * 1.645 * 100.0, 2)  # 1-day 95% VaR in %
+        # GARCH-t Volatility & Value at Risk (VaR 95% and 99%, ES)
+        garch_res = self.calculate_var_es_garch_t(df["Return_1D"])
+        df["GARCH_Vol"] = garch_res["garch_vol"]
+        df["VaR_95_1D"] = garch_res["var_95_1d"]
+        df["VaR_99_1D"] = garch_res["var_99_1d"]
+        df["ES_95_1D"] = garch_res["es_95_1d"]
+        df["GARCH_Model"] = garch_res["model"]
 
         # 7. Forward Target
         df["Target_Return_5D"] = np.log(df["Adj Close"].shift(-5) / df["Adj Close"])
@@ -254,6 +349,7 @@ class QuantitativeFeatureEngineer:
         cols = [
             "Ticker", "Sector", "Date", "Close", "Annualized_Return_1Y", "Annualized_Vol_252D",
             "Beta_IHSG", "Sharpe_Ratio", "Max_Drawdown_1Y", "GARCH_Vol", "VaR_95_1D",
+            "VaR_99_1D", "ES_95_1D", "GARCH_Model",
             "Pivot_Point", "Support_1", "Resistance_1", "PE_Ratio", "PB_Ratio", "ROE",
             "Dividend_Yield", "Debt_to_Equity", "Current_Ratio"
         ]
