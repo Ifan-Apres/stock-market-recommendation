@@ -169,6 +169,7 @@ class PyTorchLSTMTrainer:
         optimizer = torch.optim.Adam(self.model.parameters(), lr=0.005, weight_decay=1e-4)
 
         self.model.train()
+        total_loss = 0.0
         for epoch in range(epochs):
             total_loss = 0.0
             for batch_x, batch_y in loader:

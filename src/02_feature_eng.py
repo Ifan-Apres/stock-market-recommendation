@@ -103,7 +103,7 @@ class QuantitativeFeatureEngineer:
 
         recent_ret = clean_ret[-120:] * 100.0  # Scale to percent for GARCH numerical stability
         try:
-            am = arch_model(recent_ret, vol="Garch", p=1, q=1, rescale=False)
+            am = arch_model(recent_ret, vol="GARCH", p=1, q=1, rescale=False)
             res = am.fit(disp="off", show_warning=False)
             forecast = res.forecast(horizon=1)
             var_1d = forecast.variance.iloc[-1, 0]
