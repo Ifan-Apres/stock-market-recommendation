@@ -1,7 +1,7 @@
-# 📈 CuanSantai: Investasi Saham Santai & AI Recommendation Platform
+# 📈 Stock Market Recommendation: AI & Quant Platform
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fsekarwidhastri%2Fcuansantai-stock-recommendation)
-[![GitHub Repository](https://img.shields.io/badge/GitHub-sekarwidhastri%2Fcuansantai--stock--recommendation-blue?logo=github)](https://github.com/sekarwidhastri/cuansantai-stock-recommendation)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fsekarwidhastri%2Fstock-market-recommendation)
+[![GitHub Repository](https://img.shields.io/badge/GitHub-sekarwidhastri%2Fstock--market--recommendation-blue?logo=github)](https://github.com/sekarwidhastri/stock-market-recommendation)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue.svg)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
@@ -11,7 +11,7 @@
 
 ## 🌟 Ikhtisar Proyek (Project Overview)
 
-**CuanSantai** adalah platform investasi saham dan riset kuantitatif yang dirancang dengan antarmuka yang santai, ramah pemula (*user-friendly*), namun bertenaga mesin komputasi kuantitatif tingkat institusional. Platform ini memadukan model machine learning modern (**GBDT + Deep Learning LSTM + ARIMA**), pemodelan volatilitas ekonometrika (**GARCH 1,1**), optimasi alokasi portofolio (**Sharpe & Risk-Parity dengan 20% Kas Siaga**), serta generator **Institutional Morning Brief IHSG harian otomatis** yang ditenagai oleh **Google Gemini AI**.
+**Stock Market Recommendation** adalah platform investasi saham dan riset kuantitatif yang dirancang dengan antarmuka yang bersih, ramah pengguna (*user-friendly*), dan bertenaga mesin komputasi kuantitatif tingkat institusional. Platform ini memadukan model machine learning modern (**GBDT + Deep Learning LSTM + ARIMA**), pemodelan volatilitas ekonometrika (**GARCH 1,1**), optimasi alokasi portofolio (**Sharpe & Risk-Parity dengan 20% Kas Siaga**), serta generator **Institutional Morning Brief IHSG harian otomatis** yang ditenagai oleh **Google Gemini AI**.
 
 Platform ini menyajikan rekomendasi yang actionable dengan level teknikal presisi (*Entry Price, Target Price, Stop Loss, Risk-to-Reward Ratio*) dan kalkulator alokasi modal nominal (Rupiah & Lot) yang langsung dapat dieksekusi oleh investor maupun trader.
 

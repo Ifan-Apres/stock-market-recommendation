@@ -35,26 +35,32 @@ GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 if GEMINI_API_KEY:
     genai.configure(api_key=GEMINI_API_KEY)
 
-# Dynamic imports
-data_ingestion = importlib.import_module("src.01_data_ingestion")
-feature_eng = importlib.import_module("src.02_feature_eng")
-model_inference = importlib.import_module("src.03_model_inference")
-morning_brief_mod = importlib.import_module("src.morning_brief")
+# Lazy pipeline imports for serverless compatibility
+def run_ingestion_pipeline():
+    mod = importlib.import_module("src.01_data_ingestion")
+    return mod.run_ingestion_pipeline()
 
-run_ingestion_pipeline = data_ingestion.run_ingestion_pipeline
-run_feature_engineering_pipeline = feature_eng.run_feature_engineering_pipeline
-run_model_inference_pipeline = model_inference.run_model_inference_pipeline
-run_morning_brief_pipeline = morning_brief_mod.run_morning_brief_pipeline
+def run_feature_engineering_pipeline():
+    mod = importlib.import_module("src.02_feature_eng")
+    return mod.run_feature_engineering_pipeline()
+
+def run_model_inference_pipeline():
+    mod = importlib.import_module("src.03_model_inference")
+    return mod.run_model_inference_pipeline()
+
+def run_morning_brief_pipeline():
+    mod = importlib.import_module("src.morning_brief")
+    return mod.run_morning_brief_pipeline()
 
 logging.basicConfig(level=logging.INFO, format=LOG_FORMAT)
-logger = logging.getLogger("AlphaAPI")
+logger = logging.getLogger("StockMarketRecommendationAPI")
 
 RECOMMENDATION_FILE = SWING_RECOMMENDATION_FILE
 
 app = FastAPI(
-    title="AlphaTech Institutional Quant Platform API",
+    title="Stock Market Recommendation API",
     description="Multi-Engine Algorithmic Recommendation Engine (GBDT + LSTM + ARIMA + GARCH), Institutional Morning Brief & Portfolio Allocator",
-    version="4.0.0",
+    version="4.2.0",
 )
 
 app.add_middleware(
