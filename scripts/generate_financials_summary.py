@@ -19,6 +19,7 @@ FUND_FILE = DATA_DIR / "raw" / "fundamental_financial_data.csv"
 RAW_MARKET_FILE = DATA_DIR / "raw" / "raw_market_data.csv"
 OUTPUT_FILE = DATA_DIR / "processed" / "financial_statements_summary.json"
 PRICE_HISTORY_FILE = DATA_DIR / "processed" / "price_history_30d.json"
+FOREIGN_FLOW_FILE = DATA_DIR / "processed" / "foreign_flow_summary.json"
 REC_FILES = [
     DATA_DIR / "processed" / "latest_alpha_recommendations_favorites.csv",
     DATA_DIR / "processed" / "latest_alpha_recommendations_swing.csv",
@@ -104,6 +105,15 @@ def build_summary():
             logger.info(f"Extracted real 30-day price history for {len(price_history_map)} tickers.")
         except Exception as e:
             logger.error(f"Error extracting price history: {e}")
+
+    foreign_flow_map = {}
+    if FOREIGN_FLOW_FILE.exists():
+        try:
+            with open(FOREIGN_FLOW_FILE, "r", encoding="utf-8") as f:
+                foreign_flow_map = json.load(f).get("constituents", {})
+            logger.info(f"Loaded foreign flow data for {len(foreign_flow_map)} tickers.")
+        except Exception as e:
+            logger.error(f"Error loading foreign flow: {e}")
 
     financials_summary = {}
 
@@ -331,6 +341,7 @@ def build_summary():
             "archetypes": archetypes,
             "gemini_analysis": gemini_summary,
             "price_history": price_history_map.get(ticker, {}),
+            "foreign_flow": foreign_flow_map.get(ticker, {}),
         }
 
     # Save dedicated 30-day factual price history file

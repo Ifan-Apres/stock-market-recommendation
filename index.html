@@ -888,6 +888,59 @@
                         </div>
                     </div>
 
+                    <!-- Section: Arus Modal Asing (Foreign Flow Tracker & Barometer Institusi 30 Hari) -->
+                    <div class="bg-white rounded-3xl p-5 sm:p-7 border border-surface-border shadow-xs flex flex-col gap-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-700 flex items-center justify-center shrink-0 font-bold">
+                                        <span class="material-symbols-outlined text-[18px]">payments</span>
+                                    </div>
+                                    <h3 class="text-base sm:text-lg font-bold text-primary">Arus Modal Asing & Bandarmologi Institusi (30 Hari)</h3>
+                                </div>
+                                <span class="text-xs text-text-muted mt-1 block">Pelacakan akumulasi dan distribusi bersih harian oleh investor institusi asing di Bursa Efek Indonesia.</span>
+                            </div>
+                            <div class="flex items-center gap-2 self-start sm:self-auto">
+                                <span class="px-3.5 py-1 rounded-full text-xs font-black border shadow-2xs bg-emerald-50 text-emerald-800 border-emerald-200" id="deepDiveForeignBadge">AKUMULASI AKTIF</span>
+                            </div>
+                        </div>
+
+                        <!-- 4 Kartu Metrik Foreign Flow -->
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 text-xs">
+                            <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col">
+                                <span class="text-[10px] text-text-muted font-bold uppercase tracking-wider">Net Foreign 1D (Terakhir)</span>
+                                <span class="text-base sm:text-lg font-black text-primary mt-0.5" id="deepDiveForeign1D">+Rp 24,5 M</span>
+                                <span class="text-[10px] text-emerald-600 font-medium mt-0.5" id="deepDiveForeign1DDesc">Akumulasi Harian</span>
+                            </div>
+                            <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col">
+                                <span class="text-[10px] text-text-muted font-bold uppercase tracking-wider">Net Foreign 5D (1 Pekan)</span>
+                                <span class="text-base sm:text-lg font-black text-primary mt-0.5" id="deepDiveForeign5D">+Rp 142,0 M</span>
+                                <span class="text-[10px] text-emerald-600 font-medium mt-0.5" id="deepDiveForeign5DDesc">Tren Inflow Mingguan</span>
+                            </div>
+                            <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col">
+                                <span class="text-[10px] text-text-muted font-bold uppercase tracking-wider">Net Foreign 20D (1 Bulan)</span>
+                                <span class="text-base sm:text-lg font-black text-primary mt-0.5" id="deepDiveForeign20D">+Rp 310,5 M</span>
+                                <span class="text-[10px] text-text-muted mt-0.5">Akumulasi Bulanan</span>
+                            </div>
+                            <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col">
+                                <span class="text-[10px] text-text-muted font-bold uppercase tracking-wider">Estimasi Partisipasi Asing</span>
+                                <span class="text-base sm:text-lg font-black text-indigo-700 mt-0.5" id="deepDiveForeignPartRate">42.5%</span>
+                                <span class="text-[10px] text-indigo-600 font-semibold mt-0.5">Pengaruh Likuiditas Global</span>
+                            </div>
+                        </div>
+
+                        <!-- Sub-chart: Foreign Net Flow Daily Histogram (Batang Hijau / Merah) -->
+                        <div class="mt-2 flex flex-col gap-2">
+                            <div class="flex items-center justify-between text-xs font-semibold text-text-muted">
+                                <span>Distribusi Net Foreign Harian (Hijau = Net Buy, Merah = Net Sell):</span>
+                                <span class="text-[11px] text-slate-400">Skala Rupiah Indonesia (IDR)</span>
+                            </div>
+                            <div class="h-44 sm:h-48 w-full relative">
+                                <canvas id="deepDiveForeignFlowChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Section: Tabel Laporan Keuangan Historis Multi-Tahun (4-5 Tahun Terakhir) -->
                     <div class="bg-white rounded-3xl p-5 sm:p-7 border border-surface-border shadow-xs flex flex-col gap-5">
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
@@ -1367,35 +1420,37 @@
                                         <p class="text-xs text-text-muted">Foreign Flow dan Market Breadth institusi bursa</p>
                                     </div>
                                 </div>
-                                <span class="text-[11px] font-bold text-emerald-800 bg-emerald-100 px-2.5 py-1 rounded-lg">Net Inflow</span>
+                                <span class="text-[11px] font-bold text-emerald-800 bg-emerald-100 px-2.5 py-1 rounded-lg" id="mbForeignFlowBadge">Net Inflow</span>
                             </div>
 
                             <div class="grid grid-cols-2 gap-3 text-center">
                                 <div class="p-3 rounded-xl bg-emerald-50/70 border border-emerald-200">
                                     <span class="text-text-muted text-[11px]">Net Foreign Regular</span>
-                                    <div class="text-lg font-black text-emerald-800 mt-0.5">+Rp 482 M</div>
-                                    <span class="text-[10px] text-emerald-700 font-semibold">Akumulasi Positif</span>
+                                    <div class="text-lg font-black text-emerald-800 mt-0.5" id="mbForeignFlowRegular">+Rp 482 M</div>
+                                    <span class="text-[10px] text-emerald-700 font-semibold" id="mbForeignFlowSentiment">Akumulasi Positif</span>
                                 </div>
                                 <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
                                     <span class="text-text-muted text-[11px]">Rasio Saham Naik / Turun</span>
-                                    <div class="text-lg font-black text-primary mt-0.5">265 : 210</div>
-                                    <span class="text-[10px] text-text-muted">180 Stagnan</span>
+                                    <div class="text-lg font-black text-primary mt-0.5" id="mbForeignFlowBreadth">265 : 210</div>
+                                    <span class="text-[10px] text-text-muted" id="mbForeignFlowStagnant">180 Stagnan</span>
                                 </div>
                             </div>
 
                             <div class="space-y-2 text-xs">
-                                <span class="font-bold text-primary">Top 3 Saham Net Buy Asing:</span>
-                                <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200">
-                                    <span class="font-bold text-primary">1. BBCA.JK</span>
-                                    <span class="font-bold text-emerald-700">+Rp 215 Miliar</span>
-                                </div>
-                                <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200">
-                                    <span class="font-bold text-primary">2. BMRI.JK</span>
-                                    <span class="font-bold text-emerald-700">+Rp 148 Miliar</span>
-                                </div>
-                                <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200">
-                                    <span class="font-bold text-primary">3. ADRO.JK</span>
-                                    <span class="font-bold text-emerald-700">+Rp 94 Miliar</span>
+                                <span class="font-bold text-primary" id="mbForeignFlowTopTitle">Top 3 Saham Net Buy Asing:</span>
+                                <div id="mbForeignFlowTopList" class="space-y-2">
+                                    <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer hover:bg-slate-100 transition-colors" onclick="showStockDeepDive('BBCA')">
+                                        <span class="font-bold text-primary">1. BBCA.JK</span>
+                                        <span class="font-bold text-emerald-700">+Rp 215 Miliar</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer hover:bg-slate-100 transition-colors" onclick="showStockDeepDive('BMRI')">
+                                        <span class="font-bold text-primary">2. BMRI.JK</span>
+                                        <span class="font-bold text-emerald-700">+Rp 148 Miliar</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer hover:bg-slate-100 transition-colors" onclick="showStockDeepDive('ADRO')">
+                                        <span class="font-bold text-primary">3. ADRO.JK</span>
+                                        <span class="font-bold text-emerald-700">+Rp 94 Miliar</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -2198,6 +2253,73 @@
                         `;
                     }).join('');
                 }
+
+                // Render Arus Modal Asing di Morning Brief Card 2
+                let ff = data.foreign_flow;
+                if (!ff) {
+                    try {
+                        const ffRes = await fetch('/data/processed/foreign_flow_summary.json');
+                        if (ffRes.ok) {
+                            const ffData = await ffRes.json();
+                            ff = ffData.macro;
+                        }
+                    } catch(e) {}
+                }
+
+                if (ff) {
+                    const badgeEl = document.getElementById('mbForeignFlowBadge');
+                    const regularEl = document.getElementById('mbForeignFlowRegular');
+                    const sentimentEl = document.getElementById('mbForeignFlowSentiment');
+                    const breadthEl = document.getElementById('mbForeignFlowBreadth');
+                    const stagnantEl = document.getElementById('mbForeignFlowStagnant');
+                    const topTitleEl = document.getElementById('mbForeignFlowTopTitle');
+                    const topListEl = document.getElementById('mbForeignFlowTopList');
+
+                    if (badgeEl) {
+                        badgeEl.innerText = ff.status || "Net Flow";
+                        badgeEl.className = ff.status === "Net Inflow" 
+                            ? "text-[11px] font-bold text-emerald-800 bg-emerald-100 px-2.5 py-1 rounded-lg"
+                            : "text-[11px] font-bold text-rose-800 bg-rose-100 px-2.5 py-1 rounded-lg";
+                    }
+                    if (regularEl) {
+                        regularEl.innerText = ff.ihsg_net_foreign_1d_formatted || "+Rp 482 M";
+                        regularEl.className = (ff.ihsg_net_foreign_1d >= 0)
+                            ? "text-lg font-black text-emerald-800 mt-0.5"
+                            : "text-lg font-black text-rose-800 mt-0.5";
+                    }
+                    if (sentimentEl) {
+                        sentimentEl.innerText = ff.sentiment || "Akumulasi Positif";
+                        sentimentEl.className = (ff.ihsg_net_foreign_1d >= 0)
+                            ? "text-[10px] text-emerald-700 font-semibold"
+                            : "text-[10px] text-rose-700 font-semibold";
+                    }
+                    if (breadthEl && ff.market_breadth) {
+                        breadthEl.innerText = ff.market_breadth;
+                    }
+                    if (stagnantEl && ff.unchanged !== undefined) {
+                        stagnantEl.innerText = `${ff.unchanged} Stagnan`;
+                    }
+                    if (topListEl) {
+                        const isBuy = (ff.top_foreign_buy && ff.top_foreign_buy.length > 0);
+                        const listItems = isBuy ? ff.top_foreign_buy.slice(0, 3) : (ff.top_foreign_sell || []).slice(0, 3);
+                        if (topTitleEl) {
+                            topTitleEl.innerText = isBuy ? "Top 3 Saham Net Buy Asing:" : "Top 3 Saham Net Sell Asing:";
+                        }
+                        topListEl.innerHTML = listItems.map((item, idx) => {
+                            const isPositive = (item.net_1d || 0) >= 0;
+                            const colorClass = isPositive ? "text-emerald-700 font-bold" : "text-rose-700 font-bold";
+                            return `
+                                <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer hover:bg-slate-100 transition-colors" onclick="showStockDeepDive('${item.ticker}')">
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="text-text-muted font-bold text-xs">${idx + 1}.</span>
+                                        <span class="font-bold text-primary hover:text-accent">${item.ticker}.JK</span>
+                                    </div>
+                                    <span class="${colorClass}">${item.net_1d_formatted}</span>
+                                </div>
+                            `;
+                        }).join('');
+                    }
+                }
             } catch (e) {
                 console.log("Menggunakan data brief bawaan.");
             }
@@ -2266,6 +2388,16 @@
                 const rrr = item.Risk_Reward_Ratio ? `1 : ${item.Risk_Reward_Ratio.toFixed(1)}` : "1 : 2.0";
                 const prob = Math.round((item.Bullish_Probability || 0.7) * 100);
 
+                let ffMiniBadge = "";
+                const ffData = (window.allForeignFlow && window.allForeignFlow.constituents && window.allForeignFlow.constituents[tickerClean])
+                    ? window.allForeignFlow.constituents[tickerClean]
+                    : (financialsSummaryData && financialsSummaryData[tickerClean]?.foreign_flow);
+                if (ffData && ffData.net_foreign_1d_formatted) {
+                    const isNetBuy = (ffData.net_foreign_1d || 0) >= 0;
+                    const badgeCls = isNetBuy ? "bg-emerald-50 text-emerald-800 border-emerald-200" : "bg-rose-50 text-rose-800 border-rose-200";
+                    ffMiniBadge = `<span class="text-[9px] font-extrabold px-1.5 py-0.5 rounded border ${badgeCls}" title="Net Foreign Flow Harian">${ffData.net_foreign_1d_formatted}</span>`;
+                }
+
                 html += `
                 <tr class="hover:bg-slate-50/80 transition-colors cursor-pointer group" onclick="if(!event.target.closest('button')) showStockDeepDive('${tickerClean}')">
                     <td class="py-3.5 px-5">
@@ -2288,7 +2420,10 @@
                         </span>
                     </td>
                     <td class="py-3.5 px-4 font-bold text-primary">
-                        <div>Rp ${closePrice.toLocaleString('id-ID')}</div>
+                        <div class="flex items-center justify-between gap-1.5">
+                            <span>Rp ${closePrice.toLocaleString('id-ID')}</span>
+                            ${ffMiniBadge}
+                        </div>
                         <div class="w-20 bg-slate-100 rounded-full h-1 mt-1 overflow-hidden flex" title="Rentang Asimetri Potensi Gain vs Cut-Loss">
                             <div class="bg-rose-400 h-full" style="width: 35%;"></div>
                             <div class="bg-emerald-500 h-full" style="width: 65%;"></div>
@@ -2686,6 +2821,7 @@
 
             // 7. Render Chart.js
             renderDeepDivePriceChart(stock, closePrice, entryPrice, targetPrice, stopLoss);
+            renderDeepDiveForeignFlowChart(stock);
 
             // 8. Setup Kalkulator Lot
             document.getElementById('deepDiveCalcPriceRef').innerText = formatIDR(entryPrice);
@@ -2862,6 +2998,150 @@
             });
         }
 
+        let deepDiveForeignChartInstance = null;
+
+        function renderDeepDiveForeignFlowChart(stock) {
+            const ctx = document.getElementById('deepDiveForeignFlowChart');
+            if (!ctx) return;
+
+            if (deepDiveForeignChartInstance) {
+                deepDiveForeignChartInstance.destroy();
+            }
+
+            const tickerClean = (stock.Ticker || "").replace(".JK", "").toUpperCase();
+            let ff = null;
+
+            if (financialsSummaryData && financialsSummaryData[tickerClean] && financialsSummaryData[tickerClean].foreign_flow) {
+                ff = financialsSummaryData[tickerClean].foreign_flow;
+            } else if (window.allForeignFlow && window.allForeignFlow.constituents && window.allForeignFlow.constituents[tickerClean]) {
+                ff = window.allForeignFlow.constituents[tickerClean];
+            }
+
+            if (!ff) {
+                // Async fetch fallback
+                fetch(`/api/foreign-flow/${tickerClean}`)
+                    .then(res => res.ok ? res.json() : null)
+                    .then(data => {
+                        if (data) {
+                            if (!window.allForeignFlow) window.allForeignFlow = { constituents: {} };
+                            if (!window.allForeignFlow.constituents) window.allForeignFlow.constituents = {};
+                            window.allForeignFlow.constituents[tickerClean] = data;
+                            if (activeDeepDiveStock && (activeDeepDiveStock.Ticker || "").replace(".JK", "").toUpperCase() === tickerClean) {
+                                renderDeepDiveForeignFlowChart(stock);
+                            }
+                        }
+                    })
+                    .catch(() => {});
+                return;
+            }
+
+            // Update Foreign Flow Cards
+            const badgeEl = document.getElementById('deepDiveForeignBadge');
+            const f1dEl = document.getElementById('deepDiveForeign1D');
+            const f1dDescEl = document.getElementById('deepDiveForeign1DDesc');
+            const f5dEl = document.getElementById('deepDiveForeign5D');
+            const f5dDescEl = document.getElementById('deepDiveForeign5DDesc');
+            const f20dEl = document.getElementById('deepDiveForeign20D');
+            const partEl = document.getElementById('deepDiveForeignPartRate');
+
+            const isNetBuy5d = (ff.net_foreign_5d || 0) >= 0;
+            const isNetBuy1d = (ff.net_foreign_1d || 0) >= 0;
+
+            if (badgeEl) {
+                badgeEl.innerText = (ff.status_id || ff.status || "Netral").toUpperCase();
+                badgeEl.className = isNetBuy5d
+                    ? "px-3.5 py-1 rounded-full text-xs font-black border shadow-2xs bg-emerald-50 text-emerald-800 border-emerald-200"
+                    : "px-3.5 py-1 rounded-full text-xs font-black border shadow-2xs bg-rose-50 text-rose-800 border-rose-200";
+            }
+            if (f1dEl) {
+                f1dEl.innerText = ff.net_foreign_1d_formatted || formatIDR(ff.net_foreign_1d || 0);
+                f1dEl.className = isNetBuy1d ? "text-base sm:text-lg font-black text-emerald-700 mt-0.5" : "text-base sm:text-lg font-black text-rose-700 mt-0.5";
+            }
+            if (f1dDescEl) {
+                f1dDescEl.innerText = isNetBuy1d ? "Akumulasi Harian" : "Distribusi Harian";
+                f1dDescEl.className = isNetBuy1d ? "text-[10px] text-emerald-600 font-medium mt-0.5" : "text-[10px] text-rose-600 font-medium mt-0.5";
+            }
+            if (f5dEl) {
+                f5dEl.innerText = ff.net_foreign_5d_formatted || formatIDR(ff.net_foreign_5d || 0);
+                f5dEl.className = isNetBuy5d ? "text-base sm:text-lg font-black text-emerald-700 mt-0.5" : "text-base sm:text-lg font-black text-rose-700 mt-0.5";
+            }
+            if (f5dDescEl) {
+                f5dDescEl.innerText = isNetBuy5d ? "Tren Inflow Mingguan" : "Tren Outflow Mingguan";
+                f5dDescEl.className = isNetBuy5d ? "text-[10px] text-emerald-600 font-medium mt-0.5" : "text-[10px] text-rose-600 font-medium mt-0.5";
+            }
+            if (f20dEl) {
+                f20dEl.innerText = ff.net_foreign_20d_formatted || formatIDR(ff.net_foreign_20d || 0);
+            }
+            if (partEl) {
+                partEl.innerText = `${ff.foreign_participation_pct || ff.participation_pct || 25}%`;
+            }
+
+            // Render Chart.js Bar Histogram
+            const dates = ff.dates || [];
+            const dailyNet = ff.daily_net_idr || [];
+            const barColors = dailyNet.map(v => v >= 0 ? '#10b981' : '#f43f5e');
+
+            deepDiveForeignChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: dates,
+                    datasets: [{
+                        label: 'Net Foreign (IDR)',
+                        data: dailyNet,
+                        backgroundColor: barColors,
+                        borderRadius: 3,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#0f172a',
+                            titleFont: { family: 'Plus Jakarta Sans', size: 11, weight: 'bold' },
+                            bodyFont: { family: 'Plus Jakarta Sans', size: 10 },
+                            padding: 8,
+                            cornerRadius: 8,
+                            callbacks: {
+                                label: function(context) {
+                                    const val = context.raw;
+                                    const sign = val > 0 ? "+" : "";
+                                    const abs = Math.abs(val);
+                                    let txt = abs >= 1e9 ? `${(val / 1e9).toFixed(1)} Miliar` : `${(val / 1e6).toFixed(0)} Juta`;
+                                    return `Net Foreign: ${sign}Rp ${txt}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { display: false },
+                            ticks: {
+                                font: { family: 'Plus Jakarta Sans', size: 9 },
+                                color: '#94a3b8',
+                                maxRotation: 0,
+                                autoSkip: true,
+                                maxTicksLimit: 10
+                            }
+                        },
+                        y: {
+                            grid: { color: '#f1f5f9' },
+                            ticks: {
+                                font: { family: 'Plus Jakarta Sans', size: 9 },
+                                color: '#94a3b8',
+                                callback: function(val) {
+                                    if (Math.abs(val) >= 1e9) return (val / 1e9).toFixed(0) + ' M';
+                                    if (Math.abs(val) >= 1e6) return (val / 1e6).toFixed(0) + ' Jt';
+                                    return val;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
         // Kalkulator Lot Khusus Emiten Deep Dive
         function setDeepDiveCalcCapital(val) {
             const input = document.getElementById('deepDiveCalcCapitalInput');
@@ -2931,6 +3211,15 @@
                 const resHistory = await fetch('/data/processed/price_history_30d.json');
                 if (resHistory.ok) {
                     window.allPriceHistory = await resHistory.json();
+                }
+            } catch(e) {}
+            try {
+                const resFF = await fetch('/data/processed/foreign_flow_summary.json');
+                if (resFF.ok) {
+                    window.allForeignFlow = await resFF.json();
+                    if (allRecommendations && allRecommendations.length > 0) {
+                        renderRecommendationsTable(allRecommendations);
+                    }
                 }
             } catch(e) {}
         }

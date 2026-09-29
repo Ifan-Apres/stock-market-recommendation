@@ -25,6 +25,7 @@ from src.config import (  # type: ignore # pyrefly: ignore [missing-import]
     LOG_FORMAT,
     MORNING_BRIEF_FILE,
     PROCESSED_DATA_FILE,
+    PROCESSED_DATA_DIR,
 )
 
 load_dotenv()
@@ -306,6 +307,16 @@ class MorningBriefGenerator:
         # Collect scraped news headlines
         snapshot["news"] = self.collect_macro_news()
 
+        # Collect foreign flow data
+        foreign_summary_file = PROCESSED_DATA_DIR / "foreign_flow_summary.json"
+        if foreign_summary_file.exists():
+            try:
+                with open(foreign_summary_file, "r", encoding="utf-8") as f:
+                    ff_summary = json.load(f)
+                    snapshot["foreign_flow"] = ff_summary.get("macro", {})
+            except Exception as e:
+                logger.warning(f"Could not load foreign flow summary: {e}")
+
         return snapshot
 
     def _generate_fallback_content(self, snapshot: Dict[str, Any]) -> Dict[str, Any]:
@@ -391,6 +402,13 @@ class MorningBriefGenerator:
         oil_news = "\n".join([f"- {h}" for h in news_dict.get("oil", [])[:4]]) or "- Dinamika pasar komoditas energi internasional"
         forex_news = "\n".join([f"- {h}" for h in news_dict.get("forex", [])[:4]]) or "- Pergerakan US Dollar Index dan Yield US Treasury"
 
+        # Foreign Flow macro metrics
+        ff = snapshot.get("foreign_flow", {})
+        ff_1d = ff.get("ihsg_net_foreign_1d_formatted", "Netral")
+        ff_status = ff.get("status", "Netral")
+        top_buys = ", ".join([f"{b['ticker']} ({b['net_1d_formatted']})" for b in ff.get("top_foreign_buy", [])[:3]]) or "Belum ada data akumulasi masif"
+        top_sells = ", ".join([f"{s['ticker']} ({s['net_1d_formatted']})" for s in ff.get("top_foreign_sell", [])[:3]]) or "Belum ada data distribusi masif"
+
         prompt = f"""
 Bertindaklah sebagai "New York" (Senior Quantitative Investment Manager & Strategist) sesuai doktrin AlphaTech.
 Susun laporan Morning Market Brief harian berstandar institusi untuk para manajer portofolio dan pelaku pasar profesional sebelum bel pembukaan Bursa Efek Indonesia (BEI) pagi ini.
@@ -409,6 +427,9 @@ Data Angka Pasar Hari Ini:
 - Yield US Treasury 10 Tahun: {snapshot['ust_10y_yield']}
 - Minyak Mentah Brent: {snapshot['brent_oil']}
 - Kurs Rupiah: {snapshot['usd_idr']}
+- Arus Modal Asing (Foreign Flow BEI): Net Foreign Harian {ff_1d} ({ff_status})
+- Top Saham Akumulasi Asing: {top_buys}
+- Top Saham Distribusi Asing: {top_sells}
 
 Headline Berita & Isu Terkini Pasar Global (Hasil Scraping Real-Time):
 - Isu S&P 500 & Wall Street:
@@ -536,6 +557,7 @@ Kembalikan respon HANYA dalam format JSON valid (tanpa teks pembuka atau markdow
             "cards": cards_data,
             "key_takeaways": clean_takeaways,
             "brief_content": brief_body,
+            "foreign_flow": snapshot.get("foreign_flow", {}),
             "snapshot": snapshot,
         }
 

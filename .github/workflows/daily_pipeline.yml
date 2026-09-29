@@ -45,6 +45,9 @@ jobs:
       - name: Step 3 - Model Training & Alpha Inference
         run: python -m src.03_model_inference
 
+      - name: Step 3.5 - Institutional Foreign Flow Engine
+        run: python -m src.foreign_flow
+
       - name: Step 4 - Institutional Morning Market Brief
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}

@@ -40,6 +40,7 @@ from src.config import (  # type: ignore # pyrefly: ignore [missing-import]
 load_dotenv()
 FINANCIALS_SUMMARY_FILE = PROCESSED_DATA_DIR / "financial_statements_summary.json"
 PRICE_HISTORY_FILE = PROCESSED_DATA_DIR / "price_history_30d.json"
+FOREIGN_FLOW_FILE = PROCESSED_DATA_DIR / "foreign_flow_summary.json"
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 if GEMINI_API_KEY:
     genai.configure(api_key=GEMINI_API_KEY)
@@ -493,6 +494,38 @@ def get_all_price_history() -> Dict[str, Any]:
         except Exception as e:
             logger.error(f"Error reading price history: {e}")
     return {}
+
+
+@app.get("/api/foreign-flow", tags=["Foreign Flow"])
+def get_foreign_flow_summary() -> Dict[str, Any]:
+    """
+    Returns institutional Foreign Flow (Arus Modal Asing) summary across macro IHSG and constituents.
+    """
+    if FOREIGN_FLOW_FILE.exists():
+        try:
+            with open(FOREIGN_FLOW_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception as e:
+            logger.error(f"Error reading foreign flow file: {e}")
+    raise HTTPException(status_code=404, detail="Foreign flow summary not found.")
+
+
+@app.get("/api/foreign-flow/{ticker}", tags=["Foreign Flow"])
+def get_ticker_foreign_flow(ticker: str) -> Dict[str, Any]:
+    """
+    Returns 30-day foreign flow data and metrics for a specific constituent.
+    """
+    clean_ticker = ticker.strip().upper().replace(".JK", "")
+    if FOREIGN_FLOW_FILE.exists():
+        try:
+            with open(FOREIGN_FLOW_FILE, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                constituents = data.get("constituents", {})
+                if clean_ticker in constituents:
+                    return constituents[clean_ticker]
+        except Exception as e:
+            logger.error(f"Error reading foreign flow for ticker: {e}")
+    raise HTTPException(status_code=404, detail=f"Foreign flow for {clean_ticker} not found.")
 
 
 @app.get("/api/analysis/{ticker}", tags=["AI Analysis"])
