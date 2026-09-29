@@ -66,6 +66,10 @@ FEATURE_COLUMNS = [
     "Oil_Energy_Tailwind",
     "Rate_Bank_Sensitivity",
     "FX_Consumer_Headwind",
+    "Foreign_Flow_Norm_1D",
+    "Foreign_Flow_5D_Accum",
+    "Foreign_Participation",
+    "Foreign_Flow_Momentum",
 ]
 
 LSTM_FEATURE_COLS = [
@@ -81,6 +85,8 @@ LSTM_FEATURE_COLS = [
     "Oil_Energy_Tailwind",
     "Rate_Bank_Sensitivity",
     "FX_Consumer_Headwind",
+    "Foreign_Flow_Norm_1D",
+    "Foreign_Flow_5D_Accum",
 ]
 TARGET_COLUMN = "Target_Class_5D"
 MODEL_PATH = DATA_DIR / "processed" / "alpha_model.joblib"

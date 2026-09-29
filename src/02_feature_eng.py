@@ -1,3 +1,4 @@
+import json
 import logging
 from pathlib import Path
 import sys
@@ -27,6 +28,7 @@ from src.config import (  # type: ignore # pyrefly: ignore [missing-import]
     RISK_FREE_RATE,
     SECTOR_MAP,
 )
+from src.foreign_flow import FOREIGN_WEIGHTS, DEFAULT_FOREIGN_WEIGHT
 
 # Configure logger
 logging.basicConfig(level=logging.INFO, format=LOG_FORMAT)
@@ -57,6 +59,21 @@ class QuantitativeFeatureEngineer:
         for sector, tickers in SECTOR_MAP.items():
             for t in tickers:
                 self.ticker_to_sector[t] = sector
+
+        # Load cached official IDX daily records for high-fidelity foreign flow features
+        self.cached_idx_flows: Dict[str, Dict[str, Any]] = {}
+        idx_daily_dir = ROOT_DIR / "data" / "raw" / "idx_daily"
+        if idx_daily_dir.exists():
+            for f in idx_daily_dir.glob("idx_summary_*.json"):
+                d_str = f.stem.replace("idx_summary_", "")
+                if len(d_str) == 8:
+                    fmt_date = f"{d_str[:4]}-{d_str[4:6]}-{d_str[6:]}"
+                    try:
+                        with open(f, "r", encoding="utf-8") as fp:
+                            self.cached_idx_flows[fmt_date] = json.load(fp)
+                    except Exception:
+                        pass
+        logger.info(f"Loaded {len(self.cached_idx_flows)} official IDX daily flow snapshots for feature engineering.")
 
     def load_raw_data(self) -> pd.DataFrame:
         """
@@ -280,6 +297,36 @@ class QuantitativeFeatureEngineer:
         mf_volume = mf_multiplier * df["Volume"]
         df["CMF_20"] = mf_volume.rolling(window=20).sum() / (df["Volume"].rolling(window=20).sum() + 1e-9)
 
+        # 4.1 Official & Hybrid Foreign Money Flow (Arus Modal Asing BEI)
+        ticker_clean = str(ticker).replace(".JK", "").strip().upper()
+        fw = FOREIGN_WEIGHTS.get(ticker_clean, DEFAULT_FOREIGN_WEIGHT)
+
+        df["Value"] = df["Close"] * df["Volume"]
+        df["Value_SMA_20"] = df["Value"].rolling(window=20).mean()
+
+        net_foreign_list = []
+        part_list = []
+
+        for _, row in df.iterrows():
+            d_str = row["Date"].strftime("%Y-%m-%d")
+            if d_str in self.cached_idx_flows and ticker_clean in self.cached_idx_flows[d_str]:
+                item = self.cached_idx_flows[d_str][ticker_clean]
+                net_foreign_list.append(float(item.get("net_foreign_idr", 0.0)))
+                part_list.append(float(item.get("foreign_participation", fw)))
+            else:
+                ret = row.get("Return_1D", 0.0)
+                val = row.get("Value", 0.0)
+                scaled_pressure = np.clip(ret * 7.5, -0.65, 0.65)
+                fallback_flow = val * fw * scaled_pressure
+                net_foreign_list.append(fallback_flow)
+                part_list.append(fw)
+
+        df["Net_Foreign_IDR"] = net_foreign_list
+        df["Foreign_Participation"] = np.clip(part_list, 0.0, 1.0)
+        df["Foreign_Flow_Norm_1D"] = np.clip(df["Net_Foreign_IDR"] / (df["Value_SMA_20"] + 1e-9), -3.0, 3.0).fillna(0.0)
+        df["Foreign_Flow_5D_Accum"] = np.clip(df["Net_Foreign_IDR"].rolling(5).sum() / ((df["Value_SMA_20"] * 5.0) + 1e-9), -3.0, 3.0).fillna(0.0)
+        df["Foreign_Flow_Momentum"] = (df["Foreign_Flow_Norm_1D"] - df["Foreign_Flow_Norm_1D"].shift(3)).fillna(0.0)
+
         # 5. Technical Floor Pivot Levels (Support & Resistance for BoW & BoB)
         prev_h = df["High"].shift(1)
         prev_l = df["Low"].shift(1)
@@ -412,7 +459,8 @@ class QuantitativeFeatureEngineer:
             "Beta_IHSG", "Sharpe_Ratio", "Max_Drawdown_1Y", "GARCH_Vol", "VaR_95_1D",
             "VaR_99_1D", "ES_95_1D", "GARCH_Model",
             "Pivot_Point", "Support_1", "Resistance_1", "PE_Ratio", "PB_Ratio", "ROE",
-            "Dividend_Yield", "Debt_to_Equity", "Current_Ratio"
+            "Dividend_Yield", "Debt_to_Equity", "Current_Ratio",
+            "Foreign_Flow_Norm_1D", "Foreign_Participation", "Foreign_Flow_5D_Accum", "Foreign_Flow_Momentum"
         ]
         available_cols = [c for c in cols if c in latest_df.columns]
         snapshot_df = latest_df[available_cols].copy()
