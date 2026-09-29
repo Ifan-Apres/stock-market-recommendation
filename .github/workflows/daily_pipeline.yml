@@ -50,6 +50,9 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python -m src.morning_brief
 
+      - name: Step 4.5 - Multi-Year Financial Statements & Stock Archetypes
+        run: python scripts/generate_financials_summary.py
+
       - name: Commit & Push Processed Alpha Recommendations & Briefs
         run: |
           git config --local user.email "action@github.com"

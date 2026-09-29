@@ -63,6 +63,14 @@ def run_all():
     except Exception as e:
         logger.warning(f"Morning Brief generation encountered an issue (non-fatal): {e}")
 
+    # Step 4.5: Multi-Year Financial Statements & Stock Archetypes
+    logger.info("Generating Multi-Year Financial Statements & Stock Archetypes...")
+    try:
+        gen_fin = importlib.import_module("scripts.generate_financials_summary")
+        gen_fin.build_summary()
+    except Exception as e:
+        logger.warning(f"Financial summary generation encountered an issue (non-fatal): {e}")
+
     elapsed = round(time.time() - start_time, 2)
     logger.info("=========================================================")
     logger.info(f"PIPELINE COMPLETED SUCCESSFULLY IN {elapsed} SECONDS!")
