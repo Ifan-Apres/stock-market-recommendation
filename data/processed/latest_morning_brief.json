@@ -34,8 +34,8 @@
     "date": "2026-09-29",
     "ihsg_net_foreign_1d": -20803900859,
     "ihsg_net_foreign_1d_formatted": "-Rp 20.8 M",
-    "ihsg_net_foreign_5d": -170274555296,
-    "ihsg_net_foreign_5d_formatted": "-Rp 170.3 M",
+    "ihsg_net_foreign_5d": -2385849779950,
+    "ihsg_net_foreign_5d_formatted": "-Rp 2.39 T",
     "status": "Net Outflow",
     "sentiment": "Distribusi / Rotasi Keluar Asing",
     "advances": 22,
@@ -47,7 +47,7 @@
         "ticker": "BBRI",
         "net_1d": 10538563242,
         "net_1d_formatted": "+Rp 10.5 M",
-        "status": "Netral / Rotasi Normal"
+        "status": "Distribusi Besar Asing"
       },
       {
         "ticker": "BMRI",
@@ -59,7 +59,7 @@
         "ticker": "ISAT",
         "net_1d": 6191914219,
         "net_1d_formatted": "+Rp 6.2 M",
-        "status": "Netral / Rotasi Normal"
+        "status": "Distribusi Besar Asing"
       },
       {
         "ticker": "MDKA",
@@ -71,7 +71,7 @@
         "ticker": "ANTM",
         "net_1d": 1840632798,
         "net_1d_formatted": "+Rp 1.8 M",
-        "status": "Netral / Rotasi Normal"
+        "status": "Distribusi Besar Asing"
       }
     ],
     "top_foreign_sell": [
@@ -79,33 +79,36 @@
         "ticker": "ADRO",
         "net_1d": -14813930050,
         "net_1d_formatted": "-Rp 14.8 M",
-        "status": "Outflow Asing"
+        "status": "Distribusi Besar Asing"
       },
       {
         "ticker": "AADI",
         "net_1d": -11342045161,
         "net_1d_formatted": "-Rp 11.3 M",
-        "status": "Netral / Rotasi Normal"
+        "status": "Outflow Asing"
       },
       {
         "ticker": "BBCA",
         "net_1d": -5717101235,
         "net_1d_formatted": "-Rp 5.7 M",
-        "status": "Netral / Rotasi Normal"
+        "status": "Akumulasi Kuat Asing"
       },
       {
         "ticker": "AMMN",
         "net_1d": -5008142116,
         "net_1d_formatted": "-Rp 5.0 M",
-        "status": "Outflow Asing"
+        "status": "Inflow Asing"
       },
       {
         "ticker": "TLKM",
         "net_1d": -4037542139,
         "net_1d_formatted": "-Rp 4.0 M",
-        "status": "Outflow Asing"
+        "status": "Distribusi Besar Asing"
       }
-    ]
+    ],
+    "data_source": "IDX Official Bursa (BEI) [28 hari transaksi resmi]",
+    "official_days_scraped": 28,
+    "total_days_evaluated": 30
   },
   "snapshot": {
     "date": "2026-09-29",

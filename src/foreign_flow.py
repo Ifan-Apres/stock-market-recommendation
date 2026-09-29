@@ -22,6 +22,8 @@ OUTPUT_FILE = PROCESSED_DIR / "foreign_flow_summary.json"
 FINANCIALS_FILE = PROCESSED_DIR / "financial_statements_summary.json"
 MORNING_BRIEF_FILE = PROCESSED_DIR / "latest_morning_brief.json"
 
+from src.idx_scraper import fetch_idx_stock_summary, parse_foreign_flow_from_summary
+
 # Institutional foreign participation weights for IDX constituents
 # Calibrated against historical IDX foreign ownership and free-float statistics
 FOREIGN_WEIGHTS: Dict[str, float] = {
@@ -59,7 +61,8 @@ def format_idr_compact(val: float) -> str:
 def compute_foreign_flow() -> Dict[str, Any]:
     """
     Computes institutional foreign money flow across all 66 constituents
-    for the last 30 trading days, including macro totals.
+    for the last 30 trading days, using official IDX Trading Summary data
+    with an automated graceful fallback to the Order Flow Proxy Model.
     """
     if not RAW_MARKET_FILE.exists():
         logger.error(f"Raw market file not found at {RAW_MARKET_FILE}")
@@ -68,6 +71,26 @@ def compute_foreign_flow() -> Dict[str, Any]:
     logger.info(f"Loading market data from {RAW_MARKET_FILE}...")
     df = pd.read_csv(RAW_MARKET_FILE)
     df["Date"] = pd.to_datetime(df["Date"])
+
+    # Extract recent dates to scrape / check cache
+    unique_dates = sorted(df["Date"].unique())
+    recent_dates = [pd.to_datetime(d).strftime("%Y-%m-%d") for d in unique_dates[-30:]]
+
+    logger.info(f"Checking official IDX bursa feed for {len(recent_dates)} recent trading days...")
+    idx_daily_data: Dict[str, Dict[str, Any]] = {}
+    official_scraped_days = 0
+
+    for d_str in recent_dates:
+        records = fetch_idx_stock_summary(d_str)
+        if records:
+            idx_daily_data[d_str] = parse_foreign_flow_from_summary(records)
+            official_scraped_days += 1
+        else:
+            logger.info(f"Date {d_str}: Using Graceful Fallback Proxy Model (unreleased / weekend)")
+
+    logger.info(
+        f"Data Ingestion Complete: {official_scraped_days}/{len(recent_dates)} days sourced directly from Official IDX Bursa"
+    )
 
     constituents_flow: Dict[str, Any] = {}
     macro_daily_flow: Dict[str, float] = {}
@@ -88,10 +111,29 @@ def compute_foreign_flow() -> Dict[str, Any]:
         # Daily Return
         sorted_grp["Return"] = sorted_grp["Close"].pct_change().fillna(0)
 
-        # Institutional Order Flow Pressure
-        # Traded Value * Foreign Weight * tanh-scaled directional pressure
-        scaled_pressure = np.clip(sorted_grp["Return"] * 7.5, -0.65, 0.65)
-        sorted_grp["NetForeign_IDR"] = sorted_grp["Value"] * fw * scaled_pressure
+        # Calculate Net Foreign Flow with Graceful Fallback
+        net_foreign_list = []
+        actual_part_list = []
+
+        for _, row in sorted_grp.iterrows():
+            d_str = row["Date"].strftime("%Y-%m-%d")
+            
+            # Check if official IDX record exists for this date and ticker
+            if d_str in idx_daily_data and t_clean in idx_daily_data[d_str]:
+                item = idx_daily_data[d_str][t_clean]
+                net_foreign_list.append(item["net_foreign_idr"])
+                actual_part_list.append(item["foreign_participation"])
+            else:
+                # Graceful Fallback: Calibrated Institutional Order Flow Pressure Model
+                ret = row["Return"]
+                val = row["Value"]
+                scaled_pressure = np.clip(ret * 7.5, -0.65, 0.65)
+                fallback_flow = val * fw * scaled_pressure
+                net_foreign_list.append(fallback_flow)
+                actual_part_list.append(fw)
+
+        sorted_grp["NetForeign_IDR"] = net_foreign_list
+        avg_participation = float(np.mean(actual_part_list)) if actual_part_list else fw
 
         dates = [d.strftime("%d %b") for d in sorted_grp["Date"]]
         full_dates = [d.strftime("%Y-%m-%d") for d in sorted_grp["Date"]]
@@ -138,7 +180,7 @@ def compute_foreign_flow() -> Dict[str, Any]:
 
         constituents_flow[t_clean] = {
             "ticker": t_clean,
-            "foreign_participation_pct": round(fw * 100, 1),
+            "foreign_participation_pct": round(avg_participation * 100, 1),
             "net_foreign_1d": net_1d,
             "net_foreign_1d_formatted": format_idr_compact(net_1d),
             "net_foreign_5d": net_5d,
@@ -202,6 +244,12 @@ def compute_foreign_flow() -> Dict[str, Any]:
         else "Distribusi / Rotasi Keluar Asing"
     )
 
+    data_source_label = (
+        f"IDX Official Bursa (BEI) [{official_scraped_days} hari transaksi resmi]"
+        if official_scraped_days > 0
+        else "Order Flow Proxy Model (Fallback)"
+    )
+
     result = {
         "macro": {
             "date": latest_date,
@@ -217,6 +265,9 @@ def compute_foreign_flow() -> Dict[str, Any]:
             "market_breadth": f"{adv_dec['advances']} : {adv_dec['declines']}",
             "top_foreign_buy": top_buy,
             "top_foreign_sell": top_sell,
+            "data_source": data_source_label,
+            "official_days_scraped": official_scraped_days,
+            "total_days_evaluated": len(recent_dates),
         },
         "constituents": constituents_flow,
     }
