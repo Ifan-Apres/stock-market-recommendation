@@ -1,7 +1,7 @@
 # 📈 Stock Market Recommendation: AI & Quant Platform
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FIfan-Apres%2Fstock-market-recommendation)
-[![Live Web Application](https://img.shields.io/badge/Vercel_Live_App-Online-black?logo=vercel&logoColor=white)](https://stock-market-recommendation-new-york5.vercel.app)
+[![Live Web Application](https://img.shields.io/badge/Vercel_Live_App-Online-black?logo=vercel&logoColor=white)](https://stock-market-recommendation-silk.vercel.app)
 [![GitHub Repository](https://img.shields.io/badge/GitHub-Ifan--Apres%2Fstock--market--recommendation-blue?logo=github)](https://github.com/Ifan-Apres/stock-market-recommendation)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue.svg)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
