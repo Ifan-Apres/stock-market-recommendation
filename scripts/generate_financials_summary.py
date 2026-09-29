@@ -16,7 +16,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = BASE_DIR / "data"
 FIN_DIR = DATA_DIR / "raw" / "financial_statements"
 FUND_FILE = DATA_DIR / "raw" / "fundamental_financial_data.csv"
+RAW_MARKET_FILE = DATA_DIR / "raw" / "raw_market_data.csv"
 OUTPUT_FILE = DATA_DIR / "processed" / "financial_statements_summary.json"
+PRICE_HISTORY_FILE = DATA_DIR / "processed" / "price_history_30d.json"
 REC_FILES = [
     DATA_DIR / "processed" / "latest_alpha_recommendations_favorites.csv",
     DATA_DIR / "processed" / "latest_alpha_recommendations_swing.csv",
@@ -60,6 +62,48 @@ def build_summary():
                 t_clean = str(r.get("Ticker", "")).replace(".JK", "").strip()
                 if t_clean not in rec_map:
                     rec_map[t_clean] = r.to_dict()
+
+    # Extract 100% Real 30-Day Historical Prices from raw_market_data.csv
+    price_history_map = {}
+    if RAW_MARKET_FILE.exists():
+        logger.info(f"Extracting 30-day factual price history from {RAW_MARKET_FILE}...")
+        try:
+            raw_market_df = pd.read_csv(RAW_MARKET_FILE)
+            raw_market_df["Date"] = pd.to_datetime(raw_market_df["Date"])
+            for ticker_full, grp in raw_market_df.groupby("Ticker"):
+                t_clean = str(ticker_full).replace(".JK", "").strip().upper()
+                sorted_grp = grp.sort_values("Date").tail(30).copy()
+                if sorted_grp.empty:
+                    continue
+
+                # Calculate factual 20-day Simple Moving Average (SMA 20)
+                full_close = grp.sort_values("Date")["Close"]
+                sma_series = full_close.rolling(window=20, min_periods=1).mean()
+                sorted_sma = sma_series.loc[sorted_grp.index]
+
+                dates_formatted = [d.strftime("%d %b") for d in sorted_grp["Date"]]
+                full_dates = [d.strftime("%Y-%m-%d") for d in sorted_grp["Date"]]
+                prices = [round(float(p)) for p in sorted_grp["Close"]]
+                sma20 = [round(float(s)) for s in sorted_sma]
+                highs = [round(float(h)) for h in sorted_grp["High"]]
+                lows = [round(float(l)) for l in sorted_grp["Low"]]
+                volumes = [int(v) if pd.notnull(v) else 0 for v in sorted_grp["Volume"]]
+
+                price_history_map[t_clean] = {
+                    "ticker": t_clean,
+                    "dates": dates_formatted,
+                    "full_dates": full_dates,
+                    "prices": prices,
+                    "sma20": sma20,
+                    "highs": highs,
+                    "lows": lows,
+                    "volumes": volumes,
+                    "last_price": prices[-1] if prices else 0,
+                    "last_date": full_dates[-1] if full_dates else "",
+                }
+            logger.info(f"Extracted real 30-day price history for {len(price_history_map)} tickers.")
+        except Exception as e:
+            logger.error(f"Error extracting price history: {e}")
 
     financials_summary = {}
 
@@ -286,8 +330,16 @@ def build_summary():
             },
             "archetypes": archetypes,
             "gemini_analysis": gemini_summary,
+            "price_history": price_history_map.get(ticker, {}),
         }
 
+    # Save dedicated 30-day factual price history file
+    PRICE_HISTORY_FILE.parent.mkdir(parents=True, exist_ok=True)
+    with open(PRICE_HISTORY_FILE, "w", encoding="utf-8") as f:
+        json.dump(price_history_map, f, indent=2, ensure_ascii=False)
+    logger.info(f"Saved real 30-day price history to {PRICE_HISTORY_FILE}")
+
+    # Save comprehensive financials summary file
     OUTPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         json.dump(financials_summary, f, indent=2, ensure_ascii=False)

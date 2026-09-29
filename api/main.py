@@ -39,6 +39,7 @@ from src.config import (  # type: ignore # pyrefly: ignore [missing-import]
 
 load_dotenv()
 FINANCIALS_SUMMARY_FILE = PROCESSED_DATA_DIR / "financial_statements_summary.json"
+PRICE_HISTORY_FILE = PROCESSED_DATA_DIR / "price_history_30d.json"
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 if GEMINI_API_KEY:
     genai.configure(api_key=GEMINI_API_KEY)
@@ -461,6 +462,37 @@ def get_emiten_financials(ticker: str) -> Dict[str, Any]:
             "verdict": f"Gunakan manajemen risiko modal terukur saat mentransaksikan {clean_ticker}."
         }
     }
+
+
+@app.get("/api/history/{ticker}", tags=["Price History"])
+def get_price_history_ticker(ticker: str) -> Dict[str, Any]:
+    """
+    Returns real 30-day historical daily OHLCV & SMA-20 prices directly from BEI database.
+    """
+    clean_ticker = ticker.strip().upper().replace(".JK", "")
+    if PRICE_HISTORY_FILE.exists():
+        try:
+            with open(PRICE_HISTORY_FILE, "r", encoding="utf-8") as f:
+                history_data = json.load(f)
+                if clean_ticker in history_data:
+                    return history_data[clean_ticker]
+        except Exception as e:
+            logger.error(f"Error reading price history: {e}")
+    raise HTTPException(status_code=404, detail=f"Price history for {clean_ticker} not found.")
+
+
+@app.get("/api/history", tags=["Price History"])
+def get_all_price_history() -> Dict[str, Any]:
+    """
+    Returns real 30-day historical prices for all constituents.
+    """
+    if PRICE_HISTORY_FILE.exists():
+        try:
+            with open(PRICE_HISTORY_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception as e:
+            logger.error(f"Error reading price history: {e}")
+    return {}
 
 
 @app.get("/api/analysis/{ticker}", tags=["AI Analysis"])

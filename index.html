@@ -2723,42 +2723,53 @@
                 deepDivePriceChartInstance.destroy();
             }
 
-            // 25 titik harga historis harian menuju harga closing saat ini
-            const labels = [];
-            const prices = [];
-            const sma20 = [];
-            const tpLine = [];
-            const slLine = [];
+            const tickerClean = (stock.Ticker || "").replace(".JK", "").toUpperCase();
 
-            const now = new Date();
-            let runningPrice = closePrice * 0.94;
-
-            for (let i = 24; i >= 0; i--) {
-                const d = new Date(now);
-                d.setDate(d.getDate() - i);
-                const dateStr = d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
-                labels.push(dateStr);
-
-                if (i === 0) {
-                    runningPrice = closePrice;
-                } else {
-                    const jitter = (Math.sin(i * 0.7) * 0.015) + ((Math.random() - 0.48) * 0.02);
-                    runningPrice = runningPrice * (1 + jitter);
-                }
-                const ptPrice = Math.round(runningPrice);
-                prices.push(ptPrice);
-                tpLine.push(targetPrice);
-                slLine.push(stopLoss);
+            // 1. Ambil riwayat harga riil 30 hari dari database
+            let history = null;
+            if (financialsSummaryData && financialsSummaryData[tickerClean] && financialsSummaryData[tickerClean].price_history) {
+                history = financialsSummaryData[tickerClean].price_history;
+            } else if (window.allPriceHistory && window.allPriceHistory[tickerClean]) {
+                history = window.allPriceHistory[tickerClean];
             }
 
-            // SMA 20
-            for (let i = 0; i < prices.length; i++) {
-                if (i < 4) {
-                    sma20.push(prices[i]);
-                } else {
-                    const slice = prices.slice(Math.max(0, i - 10), i + 1);
-                    const avg = slice.reduce((a, b) => a + b, 0) / slice.length;
-                    sma20.push(Math.round(avg));
+            let labels = [];
+            let prices = [];
+            let sma20 = [];
+            let tpLine = [];
+            let slLine = [];
+
+            if (history && history.prices && history.prices.length > 0) {
+                labels = history.dates;
+                prices = history.prices;
+                sma20 = history.sma20;
+                tpLine = Array(prices.length).fill(targetPrice);
+                slLine = Array(prices.length).fill(stopLoss);
+            } else {
+                // Fetch riwayat riil jika belum tersedia di memori
+                fetch(`/api/history/${tickerClean}`)
+                    .then(res => res.ok ? res.json() : null)
+                    .then(data => {
+                        if (data && data.prices && data.prices.length > 0) {
+                            if (!window.allPriceHistory) window.allPriceHistory = {};
+                            window.allPriceHistory[tickerClean] = data;
+                            if (activeDeepDiveStock && (activeDeepDiveStock.Ticker || "").replace(".JK", "").toUpperCase() === tickerClean) {
+                                renderDeepDivePriceChart(stock, closePrice, entryPrice, targetPrice, stopLoss);
+                            }
+                        }
+                    })
+                    .catch(() => {});
+
+                // Jika data riil sedang di-load, buat titik transisi awal menuju closePrice
+                const now = new Date();
+                for (let i = 24; i >= 0; i--) {
+                    const d = new Date(now);
+                    d.setDate(d.getDate() - i);
+                    labels.push(d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }));
+                    prices.push(closePrice);
+                    sma20.push(closePrice);
+                    tpLine.push(targetPrice);
+                    slLine.push(stopLoss);
                 }
             }
 
@@ -2906,13 +2917,20 @@
                 const res = await fetch('/data/processed/financial_statements_summary.json');
                 if (res.ok) {
                     financialsSummaryData = await res.json();
-                    return;
                 }
             } catch(e) {}
+            if (!financialsSummaryData || Object.keys(financialsSummaryData).length === 0) {
+                try {
+                    const res2 = await fetch('/api/financials');
+                    if (res2.ok) {
+                        financialsSummaryData = await res2.json();
+                    }
+                } catch(e) {}
+            }
             try {
-                const res2 = await fetch('/api/financials');
-                if (res2.ok) {
-                    financialsSummaryData = await res2.json();
+                const resHistory = await fetch('/data/processed/price_history_30d.json');
+                if (resHistory.ok) {
+                    window.allPriceHistory = await resHistory.json();
                 }
             } catch(e) {}
         }
