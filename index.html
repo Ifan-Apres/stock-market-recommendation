@@ -2310,6 +2310,12 @@
             return {};
         }
 
+        function authFetch(url, options = {}) {
+            const authHeaders = getAuthHeaders();
+            const headers = Object.assign({}, options.headers || {}, authHeaders);
+            return fetch(url, Object.assign({}, options, { headers }));
+        }
+
         // 1.1 Navigasi Antar Halaman (SPA Navigation & Responsive Sync)
         function navigateTo(pageId, buttonElement) {
             // Guard Keamanan: Tampilan awal website hanya di Morning Brief (page-ringkasan).
@@ -2611,7 +2617,7 @@
                     window.allWatchlistAnalyses = data.watchlist_analyses;
                 } else {
                     // Coba muat dari /watchlist-analysis
-                    fetch('/watchlist-analysis').then(r => r.ok ? r.json() : {}).then(wa => {
+                    authFetch('/watchlist-analysis').then(r => r.ok ? r.json() : {}).then(wa => {
                         if (wa && Object.keys(wa).length > 0) window.allWatchlistAnalyses = wa;
                     }).catch(() => {});
                 }
@@ -2764,10 +2770,10 @@
         async function loadRecommendations() {
             try {
                 // Panggil mode=all agar backend menggabungkan seluruh 29 saham favorit, dividen, dan swing
-                const res = await fetch('/recommendations?mode=all');
+                const res = await authFetch('/recommendations?mode=all');
                 if (!res.ok) {
                     // Coba fallback ke /recommendations?universe=all
-                    const fallbackRes = await fetch('/recommendations?universe=all');
+                    const fallbackRes = await authFetch('/recommendations?universe=all');
                     if (fallbackRes.ok) {
                         const data = await fallbackRes.json();
                         if (data && data.length > 0) {
@@ -3330,7 +3336,7 @@
                 slLine = Array(prices.length).fill(stopLoss);
             } else {
                 // Fetch riwayat riil jika belum tersedia di memori
-                fetch(`/api/history/${tickerClean}`)
+                authFetch(`/api/history/${tickerClean}`)
                     .then(res => res.ok ? res.json() : null)
                     .then(data => {
                         if (data && data.prices && data.prices.length > 0) {
@@ -3466,7 +3472,7 @@
 
             if (!ff) {
                 // Async fetch fallback
-                fetch(`/api/foreign-flow/${tickerClean}`)
+                authFetch(`/api/foreign-flow/${tickerClean}`)
                     .then(res => res.ok ? res.json() : null)
                     .then(data => {
                         if (data) {
@@ -3648,7 +3654,7 @@
             } catch(e) {}
             if (!financialsSummaryData || Object.keys(financialsSummaryData).length === 0) {
                 try {
-                    const res2 = await fetch('/api/financials');
+                    const res2 = await authFetch('/api/financials');
                     if (res2.ok) {
                         financialsSummaryData = await res2.json();
                     }
@@ -3686,7 +3692,7 @@
 
             if (!data) {
                 try {
-                    const res = await fetch(`/api/financials/${tickerClean}`);
+                    const res = await authFetch(`/api/financials/${tickerClean}`);
                     if (res.ok) {
                         data = await res.json();
                         if (!financialsSummaryData) financialsSummaryData = {};
@@ -3891,7 +3897,7 @@
             showToast(`Gemini 3.8 Flash sedang membedah laporan keuangan 5 tahun ${activeDeepDiveTicker}...`);
 
             try {
-                const res = await fetch(`/api/analysis/${activeDeepDiveTicker}`);
+                const res = await authFetch(`/api/analysis/${activeDeepDiveTicker}`);
                 if (res.ok) {
                     const payload = await res.json();
                     const analysis = payload.analysis || {};
@@ -4080,7 +4086,7 @@
 
             if (!analysis) {
                 try {
-                    const res = await fetch(`/api/stocks/analyze/${tickerClean}`);
+                    const res = await authFetch(`/api/stocks/analyze/${tickerClean}`);
                     if (res.ok) {
                         analysis = await res.json();
                         if (!window.allWatchlistAnalyses) window.allWatchlistAnalyses = {};
@@ -4197,7 +4203,7 @@
                 populateResearchModal(window.allWatchlistAnalyses[tickerClean], tickerClean);
             } else {
                 // Fetch on demand
-                fetch(`/stocks/analyze/${tickerClean}`)
+                authFetch(`/stocks/analyze/${tickerClean}`)
                     .then(r => r.ok ? r.json() : null)
                     .then(analysis => {
                         if (analysis) {
@@ -4208,7 +4214,7 @@
                     })
                     .catch(() => {
                         // Coba alternatif endpoint
-                        fetch(`/api/stocks/analyze/${tickerClean}`)
+                        authFetch(`/api/stocks/analyze/${tickerClean}`)
                             .then(r => r.ok ? r.json() : null)
                             .then(analysis => {
                                 if (analysis) {

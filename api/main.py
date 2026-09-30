@@ -81,10 +81,15 @@ logger = logging.getLogger("StockMarketRecommendationAPI")
 
 RECOMMENDATION_FILE = SWING_RECOMMENDATION_FILE
 
+ENABLE_DOCS = os.getenv("ENABLE_DOCS", "false").lower() in ("true", "1")
+
 app = FastAPI(
     title="Stock Market Recommendation API",
     description="Multi-Engine Algorithmic Recommendation Engine (GBDT + LSTM + ARIMA + GARCH), Institutional Morning Brief & Portfolio Allocator",
     version="4.3.0",
+    docs_url="/docs" if ENABLE_DOCS else None,
+    redoc_url="/redoc" if ENABLE_DOCS else None,
+    openapi_url="/openapi.json" if ENABLE_DOCS else None,
 )
 
 # 1. Security Headers & Rate Limiting Middleware
@@ -92,6 +97,33 @@ app = FastAPI(
 async def security_and_rate_limit_middleware(request: Request, call_next):
     client_ip = request.client.host if request.client else "127.0.0.1"
     path = request.url.path
+    user_agent = (request.headers.get("user-agent") or "").lower()
+
+    # Anti-Bot & Scraper WAF: Block automated programmatic scrapers from crawling sensitive endpoints
+    BLOCKED_BOT_SIGNATURES = [
+        "python-requests",
+        "aiohttp",
+        "curl/",
+        "wget/",
+        "scrapy",
+        "postmanruntime",
+        "go-http-client",
+        "httpclient",
+        "urllib",
+        "httpx",
+    ]
+    if any(sig in user_agent for sig in BLOCKED_BOT_SIGNATURES):
+        if path not in ("/", "/status", "/api/status"):
+            logger.warning(f"Blocked scraper bot request from {client_ip} targeting {path} [User-Agent: {user_agent}]")
+            return JSONResponse(
+                status_code=403,
+                content={
+                    "detail": "Akses Ditolak: Akses scraper/bot otomatis terdeteksi (Anti-Scraping Protection Active). Akses data programmatic hanya diizinkan melalui antarmuka web resmi.",
+                    "error_code": "BOT_SCRAPING_FORBIDDEN",
+                    "client_ip": client_ip,
+                },
+                headers={"X-Security-Firewall": "Anti-Scraping-Active"},
+            )
 
     # Anti-Brute-Force Rate Limiting on Auth endpoints (max 10 req/min)
     if path.startswith("/api/v1/auth/"):
@@ -388,7 +420,10 @@ def get_universe_telemetry() -> Dict[str, Any]:
 
 @app.get("/portfolio/allocate", response_model=List[AllocationItem], tags=["Portfolio Optimizer"])
 @app.get("/api/portfolio/allocate", response_model=List[AllocationItem], tags=["Portfolio Optimizer"])
-def get_portfolio_allocation(capital: float = Query(50000000.0, description="Total capital in IDR (Rupiah)")) -> List[Dict]:
+def get_portfolio_allocation(
+    capital: float = Query(50000000.0, description="Total capital in IDR (Rupiah)"),
+    current_user: Dict[str, Any] = Depends(get_current_user),
+) -> List[Dict]:
     """
     Computes optimal portfolio allocation weights and nominal IDR for user's capital.
     """
@@ -419,6 +454,7 @@ def get_latest_recommendations(
     mode: str = Query("all", description="Strategy mode: 'all', 'swing', 'dividend', or 'favorites'"),
     universe: Optional[str] = Query(None, description="Alias for mode parameter"),
     sector: Optional[str] = Query(None, description="Optional sector filter (e.g. 'Financials', 'Energy')"),
+    current_user: Dict[str, Any] = Depends(get_current_user),
 ) -> List[Dict]:
     active_mode = (universe or mode or "all").lower()
 
@@ -468,7 +504,10 @@ def get_latest_recommendations(
 
 @app.get("/models/compare/{ticker}", tags=["Model Architecture"])
 @app.get("/api/models/compare/{ticker}", tags=["Model Architecture"])
-def compare_models(ticker: str) -> Dict[str, Any]:
+def compare_models(
+    ticker: str,
+    current_user: Dict[str, Any] = Depends(get_current_user),
+) -> Dict[str, Any]:
     clean_ticker = ticker.upper()
     if not clean_ticker.endswith(".JK"):
         clean_ticker = f"{clean_ticker}.JK"
@@ -511,7 +550,10 @@ def compare_models(ticker: str) -> Dict[str, Any]:
 
 
 @app.get("/api/financials/{ticker}", tags=["Financials"])
-def get_emiten_financials(ticker: str) -> Dict[str, Any]:
+def get_emiten_financials(
+    ticker: str,
+    current_user: Dict[str, Any] = Depends(get_current_user),
+) -> Dict[str, Any]:
     """
     Returns multi-year (4-5 years) standardized financial statements,
     health diagnostics, and archetype classifications for a given IDX ticker.
@@ -562,7 +604,10 @@ def get_emiten_financials(ticker: str) -> Dict[str, Any]:
 
 
 @app.get("/api/history/{ticker}", tags=["Price History"])
-def get_price_history_ticker(ticker: str) -> Dict[str, Any]:
+def get_price_history_ticker(
+    ticker: str,
+    current_user: Dict[str, Any] = Depends(get_current_user),
+) -> Dict[str, Any]:
     """
     Returns real 30-day historical daily OHLCV & SMA-20 prices directly from BEI database.
     """
@@ -579,7 +624,9 @@ def get_price_history_ticker(ticker: str) -> Dict[str, Any]:
 
 
 @app.get("/api/history", tags=["Price History"])
-def get_all_price_history() -> Dict[str, Any]:
+def get_all_price_history(
+    current_user: Dict[str, Any] = Depends(get_current_user),
+) -> Dict[str, Any]:
     """
     Returns real 30-day historical prices for all constituents.
     """
@@ -593,7 +640,9 @@ def get_all_price_history() -> Dict[str, Any]:
 
 
 @app.get("/api/foreign-flow", tags=["Foreign Flow"])
-def get_foreign_flow_summary() -> Dict[str, Any]:
+def get_foreign_flow_summary(
+    current_user: Dict[str, Any] = Depends(get_current_user),
+) -> Dict[str, Any]:
     """
     Returns institutional Foreign Flow (Arus Modal Asing) summary across macro IHSG and constituents.
     """
@@ -607,7 +656,10 @@ def get_foreign_flow_summary() -> Dict[str, Any]:
 
 
 @app.get("/api/foreign-flow/{ticker}", tags=["Foreign Flow"])
-def get_ticker_foreign_flow(ticker: str) -> Dict[str, Any]:
+def get_ticker_foreign_flow(
+    ticker: str,
+    current_user: Dict[str, Any] = Depends(get_current_user),
+) -> Dict[str, Any]:
     """
     Returns 30-day foreign flow data and metrics for a specific constituent.
     """
@@ -626,7 +678,10 @@ def get_ticker_foreign_flow(ticker: str) -> Dict[str, Any]:
 
 @app.get("/api/analysis/{ticker}", tags=["AI Analysis"])
 @app.get("/api/gemini/analyze-emiten/{ticker}", tags=["AI Analysis"])
-def analyze_emiten_with_gemini(ticker: str) -> Dict[str, Any]:
+def analyze_emiten_with_gemini(
+    ticker: str,
+    current_user: Dict[str, Any] = Depends(get_current_user),
+) -> Dict[str, Any]:
     """
     Generates institutional-grade deep dive research using Gemini 3.8 Flash:
     - 5-Year Financial Health & Balance Sheet evaluation
@@ -726,7 +781,9 @@ def analyze_emiten_with_gemini(ticker: str) -> Dict[str, Any]:
 
 @app.get("/watchlist-analysis", tags=["Watchlist"])
 @app.get("/api/watchlist-analysis", tags=["Watchlist"])
-def get_all_watchlist_analyses() -> Dict[str, Any]:
+def get_all_watchlist_analyses(
+    current_user: Dict[str, Any] = Depends(get_current_user),
+) -> Dict[str, Any]:
     """
     Returns full structured technical and fundamental research reports for watchlist stocks.
     """
@@ -759,7 +816,10 @@ def get_all_watchlist_analyses() -> Dict[str, Any]:
 
 @app.get("/stocks/analyze/{ticker}", tags=["Watchlist"])
 @app.get("/api/stocks/analyze/{ticker}", tags=["Watchlist"])
-def get_stock_analysis(ticker: str) -> Dict[str, Any]:
+def get_stock_analysis(
+    ticker: str,
+    current_user: Dict[str, Any] = Depends(get_current_user),
+) -> Dict[str, Any]:
     """
     Returns the exact structured institutional technical & fundamental report for a specific ticker:
     - [Nama Perusahaan] ([TICKER])
@@ -790,7 +850,10 @@ def get_stock_analysis(ticker: str) -> Dict[str, Any]:
 
 
 @app.get("/api/v1/analyze-favorite", tags=["Favorite Emiten"])
-def analyze_favorite_ticker(ticker: str) -> Dict[str, Any]:
+def analyze_favorite_ticker(
+    ticker: str,
+    current_user: Dict[str, Any] = Depends(get_current_user),
+) -> Dict[str, Any]:
     clean_ticker = ticker.strip().upper().replace(".JK", "")
     full_ticker = f"{clean_ticker}.JK"
 
