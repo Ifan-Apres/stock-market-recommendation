@@ -16,15 +16,22 @@ if str(ROOT_DIR) not in sys.path:
 # pyrefly: ignore [missing-import]
 from dotenv import load_dotenv  # type: ignore # pyrefly: ignore [missing-import]
 # pyrefly: ignore [missing-import]
-from fastapi import BackgroundTasks, FastAPI, Header, HTTPException, Query  # type: ignore # pyrefly: ignore [missing-import]
+from fastapi import BackgroundTasks, Depends, FastAPI, Header, HTTPException, Query, Request  # type: ignore # pyrefly: ignore [missing-import]
 from fastapi.middleware.cors import CORSMiddleware  # type: ignore # pyrefly: ignore [missing-import]
-from fastapi.responses import HTMLResponse  # type: ignore # pyrefly: ignore [missing-import]
+from fastapi.responses import HTMLResponse, JSONResponse  # type: ignore # pyrefly: ignore [missing-import]
 import google.generativeai as genai  # type: ignore # pyrefly: ignore [missing-import]
 import numpy as np  # type: ignore # pyrefly: ignore [missing-import]
 import pandas as pd  # type: ignore # pyrefly: ignore [missing-import]
 from pydantic import BaseModel  # type: ignore # pyrefly: ignore [missing-import]
 
 # pyrefly: ignore [missing-import]
+from src.auth import (  # type: ignore # pyrefly: ignore [missing-import]
+    authenticate_user,
+    create_token,
+    rate_limiter,
+    register_user,
+    verify_token,
+)
 from src.config import (  # type: ignore # pyrefly: ignore [missing-import]
     DEFAULT_TICKERS,
     DIVIDEND_RECOMMENDATION_FILE,
@@ -77,16 +84,82 @@ RECOMMENDATION_FILE = SWING_RECOMMENDATION_FILE
 app = FastAPI(
     title="Stock Market Recommendation API",
     description="Multi-Engine Algorithmic Recommendation Engine (GBDT + LSTM + ARIMA + GARCH), Institutional Morning Brief & Portfolio Allocator",
-    version="4.2.0",
+    version="4.3.0",
 )
+
+# 1. Security Headers & Rate Limiting Middleware
+@app.middleware("http")
+async def security_and_rate_limit_middleware(request: Request, call_next):
+    client_ip = request.client.host if request.client else "127.0.0.1"
+    path = request.url.path
+
+    # Anti-Brute-Force Rate Limiting on Auth endpoints (max 10 req/min)
+    if path.startswith("/api/v1/auth/"):
+        allowed, retry_after = rate_limiter.is_allowed(client_ip, "auth", max_requests=10, window_seconds=60)
+        if not allowed:
+            return JSONResponse(
+                status_code=429,
+                content={"detail": f"Terlalu banyak percobaan autentikasi. Demi keamanan, silakan coba lagi dalam {retry_after} detik."},
+                headers={"Retry-After": str(retry_after)},
+            )
+    # Anti-Abuse Rate Limiting on Gemini AI endpoints (max 8 req/min)
+    elif "/gemini/" in path or path.startswith("/api/analysis/"):
+        allowed, retry_after = rate_limiter.is_allowed(client_ip, "gemini_ai", max_requests=8, window_seconds=60)
+        if not allowed:
+            return JSONResponse(
+                status_code=429,
+                content={"detail": f"Batas kuota akses Gemini AI tercapai. Silakan coba lagi dalam {retry_after} detik."},
+                headers={"Retry-After": str(retry_after)},
+            )
+
+    response = await call_next(request)
+
+    # Industry-standard HTTP Security Headers
+    response.headers["X-Frame-Options"] = "SAMEORIGIN"
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-XSS-Protection"] = "1; mode=block"
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    response.headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()"
+    return response
+
+# 2. Controlled CORS Configuration
+ALLOWED_ORIGINS = [
+    origin.strip() for origin in os.getenv(
+        "ALLOWED_ORIGINS",
+        "http://localhost:8080,http://127.0.0.1:8080,http://localhost:8000,http://127.0.0.1:8000,http://localhost:3000,http://127.0.0.1:3000"
+    ).split(",") if origin.strip()
+]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=False,
+    allow_origins=ALLOWED_ORIGINS or ["*"],
+    allow_credentials=True,
     allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["*"],
 )
+
+def get_current_user(authorization: Optional[str] = Header(None)) -> Dict[str, Any]:
+    """Dependency to enforce valid Bearer token authentication."""
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(
+            status_code=401,
+            detail="Akses ditolak: Autentikasi diperlukan. Silakan masuk (login) terlebih dahulu untuk membuka akses ke seluruh layer rekomendasi.",
+        )
+    token = authorization.split("Bearer ", 1)[1].strip()
+    payload = verify_token(token)
+    if not payload:
+        raise HTTPException(
+            status_code=401,
+            detail="Sesi login Anda tidak valid atau telah kedaluwarsa. Silakan login kembali.",
+        )
+    return payload
+
+def get_current_user_optional(authorization: Optional[str] = Header(None)) -> Optional[Dict[str, Any]]:
+    """Optional authentication check (returns user payload or None)."""
+    if not authorization or not authorization.startswith("Bearer "):
+        return None
+    token = authorization.split("Bearer ", 1)[1].strip()
+    return verify_token(token)
 
 
 class RecommendationItem(BaseModel):
@@ -203,60 +276,65 @@ def web_login():
     return HTMLResponse(content="<h1>Halaman Login Tidak Ditemukan</h1>")
 
 
+class AuthRegisterRequest(BaseModel):
+    name: str
+    email: str
+    password: str
+    role: Optional[str] = "Market Explorer"
+
+
 class AuthLoginRequest(BaseModel):
     username: str
     password: Optional[str] = None
     remember_me: Optional[bool] = True
 
 
-@app.post("/api/v1/auth/login", tags=["Auth"])
-def auth_login(req: AuthLoginRequest) -> Dict[str, Any]:
-    username = req.username.strip().lower()
-    if "ifan" in username:
-        user_data = {
-            "name": "Ifan Apres",
-            "role": "Lead Quantitative Engineer (TIM New York)",
-            "email": "ifan.apres@stockmarket.id",
-            "initials": "IA",
-            "access_level": "Lead Quant & Systems Architect (Full Access)",
-        }
-    elif "sekar" in username:
-        user_data = {
-            "name": "Sekar Widhastri",
-            "role": "Senior Market Analyst (TIM New York)",
-            "email": "sekar.widhastri@stockmarket.id",
-            "initials": "SW",
-            "access_level": "Senior Research Analyst (Full Access)",
-        }
-    elif "newyork" in username or "team" in username or "tim" in username or "analyst" in username:
-        user_data = {
-            "name": "TIM New York",
-            "role": "Quantitative Strategy Team",
-            "email": "team.newyork@stockmarket.id",
-            "initials": "NY",
-            "access_level": "Institutional Suite (Ifan & Sekar)",
-        }
-    elif "portfolio" in username or "manager" in username:
-        user_data = {
-            "name": "Portfolio Manager",
-            "role": "Asset Management",
-            "email": "portfolio.manager@stockmarket.id",
-            "initials": "PM",
-            "access_level": "Portfolio Management Access",
-        }
-    else:
-        clean_name = req.username.strip().split("@")[0].title() or "Tamu Pengunjung"
-        user_data = {
-            "name": clean_name,
-            "role": "Market Explorer",
-            "email": req.username.strip() if "@" in req.username else f"{req.username.strip()}@stockmarket.id",
-            "initials": clean_name[:2].upper() if len(clean_name) >= 2 else "TM",
-            "access_level": "Public Research Access",
-        }
+@app.post("/api/v1/auth/register", tags=["Auth"])
+def auth_register(req: AuthRegisterRequest) -> Dict[str, Any]:
+    """Registers a new user account with secure PBKDF2 password hashing."""
+    success, message, user_data = register_user(
+        name=req.name,
+        email=req.email,
+        password=req.password,
+        role=req.role or "Market Explorer",
+    )
+    if not success or not user_data:
+        raise HTTPException(status_code=400, detail=message)
+
+    token = create_token(user_data)
     return {
         "status": "success",
-        "token": "bearer-jwt-idx-quant-2026",
+        "message": message,
+        "token": token,
         "user": user_data,
+    }
+
+
+@app.post("/api/v1/auth/login", tags=["Auth"])
+def auth_login(req: AuthLoginRequest) -> Dict[str, Any]:
+    """Authenticates user credentials using cryptographic verification and issues signed bearer token."""
+    if not req.password:
+        raise HTTPException(status_code=400, detail="Kata sandi wajib diisi.")
+
+    success, message, user_data = authenticate_user(req.username, req.password)
+    if not success or not user_data:
+        raise HTTPException(status_code=401, detail=message)
+
+    token = create_token(user_data)
+    return {
+        "status": "success",
+        "message": message,
+        "token": token,
+        "user": user_data,
+    }
+
+
+@app.get("/api/v1/auth/me", tags=["Auth"])
+def auth_me(current_user: Dict[str, Any] = Depends(get_current_user)) -> Dict[str, Any]:
+    """Returns the authenticated user profile."""
+    return {
+        "status": "authenticated",
+        "user": current_user,
     }
 
 
@@ -751,7 +829,12 @@ def trigger_pipeline(
             detail="Pipeline execution is disabled on Vercel Serverless runtime. The compute plane runs automatically via GitHub Actions CI/CD daily.",
         )
 
-    expected_secret = os.getenv("ADMIN_PIPELINE_SECRET", "alphatech-secure-pipeline-trigger-2026")
+    expected_secret = os.getenv("ADMIN_PIPELINE_SECRET")
+    if not expected_secret:
+        raise HTTPException(
+            status_code=503,
+            detail="Pipeline execution endpoint is locked: ADMIN_PIPELINE_SECRET must be explicitly configured in server environment.",
+        )
     provided_token = admin_token or x_admin_secret
     if not provided_token or not secrets.compare_digest(str(provided_token), str(expected_secret)):
         raise HTTPException(

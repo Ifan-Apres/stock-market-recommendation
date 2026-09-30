@@ -1,5 +1,7 @@
-# Environment variables
+# Environment variables & secrets
 .env
+data/users.json
+data/*.tmp
 
 # Python Bytecode & Cache
 __pycache__/

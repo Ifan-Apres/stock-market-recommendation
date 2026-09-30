@@ -42,7 +42,7 @@
 
     <!-- Header Sederhana -->
     <header class="w-full max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-6 flex items-center justify-between z-10">
-        <a href="/" class="flex items-center gap-3 group">
+        <a href="/index.html" class="flex items-center gap-3 group">
             <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-emerald-400 font-bold shadow-md group-hover:border-emerald-500 transition-colors">
                 <span class="material-symbols-outlined text-[20px] sm:text-[22px]">show_chart</span>
             </div>
@@ -52,7 +52,7 @@
             </div>
         </a>
 
-        <a href="/" class="inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-slate-300 hover:text-white transition-all">
+        <a href="/index.html" class="inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-slate-300 hover:text-white transition-all">
             <span class="material-symbols-outlined text-[16px]">arrow_back</span>
             <span class="hidden sm:inline">Kembali ke Dashboard</span>
             <span class="sm:hidden">Dashboard</span>
@@ -72,126 +72,245 @@
                         <span>Portal Analis Riset Pasar Modal BEI</span>
                     </div>
 
-                    <h1 class="text-xl sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight leading-tight">
+                    <h1 class="text-xl sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight leading-tight" id="authCardTitle">
                         Masuk ke Akun Anda
                     </h1>
-                    <p class="text-xs sm:text-sm text-slate-400 mt-2">
+                    <p class="text-xs sm:text-sm text-slate-400 mt-2" id="authCardDesc">
                         Akses konsensus kuantitatif multi-engine, metrik risiko GARCH, dan rekomendasi swing harian terkurasi.
                     </p>
 
-                    <!-- Alert Box untuk Notifikasi -->
-                    <div id="loginAlert" class="hidden mt-4 p-3.5 rounded-xl text-xs font-semibold"></div>
-
-                    <!-- Form Login -->
-                    <form id="loginForm" onsubmit="handleFormLogin(event)" class="mt-6 flex flex-col gap-4">
-                        <div class="flex flex-col gap-1.5">
-                            <label class="text-xs font-semibold text-slate-300" for="usernameInput">Email atau ID Pengguna</label>
-                            <div class="relative flex items-center">
-                                <span class="material-symbols-outlined absolute left-3.5 text-slate-500 text-[20px] pointer-events-none">mail</span>
-                                <input 
-                                    type="text" 
-                                    id="usernameInput" 
-                                    required 
-                                    class="w-full bg-slate-800/80 border border-slate-700 focus:border-emerald-500 text-sm text-white placeholder:text-slate-500 rounded-xl pl-10 pr-4 py-3 focus:outline-none transition-colors"
-                                    placeholder="ifan.apres@stockmarket.id / team.newyork@stockmarket.id"
-                                    value="team.newyork@stockmarket.id"
-                                />
-                            </div>
-                        </div>
-
-                        <div class="flex flex-col gap-1.5">
-                            <div class="flex items-center justify-between">
-                                <label class="text-xs font-semibold text-slate-300" for="passwordInput">Kata Sandi</label>
-                                <a href="javascript:void(0)" onclick="forgotPasswordNotice()" class="text-[11px] text-emerald-400 hover:underline">Lupa Kata Sandi?</a>
-                            </div>
-                            <div class="relative flex items-center">
-                                <span class="material-symbols-outlined absolute left-3.5 text-slate-500 text-[20px] pointer-events-none">lock</span>
-                                <input 
-                                    type="password" 
-                                    id="passwordInput" 
-                                    required 
-                                    class="w-full bg-slate-800/80 border border-slate-700 focus:border-emerald-500 text-sm text-white placeholder:text-slate-500 rounded-xl pl-10 pr-11 py-3 focus:outline-none transition-colors"
-                                    placeholder="••••••••••••"
-                                    value="alphatech2026"
-                                />
-                                <button type="button" onclick="togglePasswordVisibility()" class="absolute right-3 text-slate-400 hover:text-white p-1 rounded-md transition-colors" title="Lihat password">
-                                    <span class="material-symbols-outlined text-[20px]" id="passwordToggleIcon">visibility</span>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="flex items-center justify-between text-xs text-slate-400 my-1">
-                            <label class="flex items-center gap-2 cursor-pointer select-none">
-                                <input type="checkbox" id="rememberMe" checked class="w-4 h-4 rounded bg-slate-800 border-slate-700 text-emerald-500 focus:ring-0 focus:ring-offset-0 cursor-pointer"/>
-                                <span>Ingat sesi saya</span>
-                            </label>
-                            <span class="text-[11px] text-slate-500">Enkripsi SHA-256</span>
-                        </div>
-
-                        <button 
-                            type="submit" 
-                            id="loginSubmitBtn"
-                            class="mt-2 w-full py-3.5 px-5 rounded-xl bg-emerald-600 hover:bg-emerald-500 active:scale-[0.99] text-white font-bold text-sm shadow-lg shadow-emerald-900/30 transition-all flex items-center justify-center gap-2"
-                        >
-                            <span>Masuk ke Dashboard</span>
-                            <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+                    <!-- Tab Switcher: Masuk vs Daftar Akun Baru -->
+                    <div class="flex items-center gap-1 p-1 bg-slate-800/90 rounded-2xl mt-5 mb-2 border border-slate-700/80">
+                        <button type="button" id="tabLoginBtn" onclick="switchAuthTab('login')" class="flex-1 py-2 px-3 rounded-xl text-xs font-bold transition-all bg-emerald-600 text-white shadow-sm flex items-center justify-center gap-1.5 focus:outline-none">
+                            <span class="material-symbols-outlined text-[16px]">login</span>
+                            <span>Masuk (Login)</span>
                         </button>
-                    </form>
-
-                    <!-- Pemisah -->
-                    <div class="relative my-6 flex items-center justify-center">
-                        <div class="border-t border-slate-800 w-full"></div>
-                        <span class="bg-slate-900 px-3 text-[11px] text-slate-500 uppercase tracking-wider font-semibold absolute">
-                            Atau Akses Cepat 1-Klik (TIM New York)
-                        </span>
+                        <button type="button" id="tabRegisterBtn" onclick="switchAuthTab('register')" class="flex-1 py-2 px-3 rounded-xl text-xs font-semibold transition-all text-slate-400 hover:text-white flex items-center justify-center gap-1.5 focus:outline-none">
+                            <span class="material-symbols-outlined text-[16px]">person_add</span>
+                            <span>Daftar Akun Baru (Register)</span>
+                        </button>
                     </div>
 
-                    <!-- Tombol Cepat 1-Klik (Role-Based Quick Access) -->
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-                        <button 
-                            type="button" 
-                            onclick="quickLogin('Ifan Apres', 'Lead Quantitative Engineer', 'ifan.apres@stockmarket.id', 'IA')"
-                            class="p-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700/90 border border-slate-700 text-left transition-all group flex flex-col justify-between active:scale-95"
-                        >
-                            <div class="flex items-center justify-between">
-                                <span class="w-6 h-6 rounded-lg bg-emerald-500/20 text-emerald-400 font-bold text-[10px] flex items-center justify-center">IA</span>
-                                <span class="material-symbols-outlined text-[14px] text-slate-500 group-hover:text-emerald-400">login</span>
-                            </div>
-                            <div class="mt-2">
-                                <div class="text-[11px] font-bold text-white group-hover:text-emerald-400 transition-colors">Ifan Apres</div>
-                                <div class="text-[9px] text-slate-400">Lead Quant Eng.</div>
-                            </div>
-                        </button>
+                    <!-- Alert Box untuk Notifikasi -->
+                    <div id="loginAlert" class="hidden mt-3 p-3.5 rounded-xl text-xs font-semibold"></div>
 
-                        <button 
-                            type="button" 
-                            onclick="quickLogin('Sekar Widhastri', 'Research Analyst', 'sekar.widhastri@stockmarket.id', 'SW')"
-                            class="p-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700/90 border border-slate-700 text-left transition-all group flex flex-col justify-between active:scale-95"
-                        >
-                            <div class="flex items-center justify-between">
-                                <span class="w-6 h-6 rounded-lg bg-blue-500/20 text-blue-400 font-bold text-[10px] flex items-center justify-center">SW</span>
-                                <span class="material-symbols-outlined text-[14px] text-slate-500 group-hover:text-blue-400">login</span>
+                    <!-- 1. CONTAINER LOGIN -->
+                    <div id="loginContainer" class="flex flex-col">
+                        <!-- Form Login -->
+                        <form id="loginForm" onsubmit="handleFormLogin(event)" class="mt-4 flex flex-col gap-4">
+                            <div class="flex flex-col gap-1.5">
+                                <label class="text-xs font-semibold text-slate-300" for="usernameInput">Email atau ID Pengguna</label>
+                                <div class="relative flex items-center">
+                                    <span class="material-symbols-outlined absolute left-3.5 text-slate-500 text-[20px] pointer-events-none">mail</span>
+                                    <input 
+                                        type="text" 
+                                        id="usernameInput" 
+                                        required 
+                                        class="w-full bg-slate-800/80 border border-slate-700 focus:border-emerald-500 text-sm text-white placeholder:text-slate-500 rounded-xl pl-10 pr-4 py-3 focus:outline-none transition-colors"
+                                        placeholder="email@anda.id / ifan.apres@stockmarket.id"
+                                        value="team.newyork@stockmarket.id"
+                                    />
+                                </div>
                             </div>
-                            <div class="mt-2">
-                                <div class="text-[11px] font-bold text-white group-hover:text-blue-400 transition-colors">Sekar Widhastri</div>
-                                <div class="text-[9px] text-slate-400">Research Analyst</div>
-                            </div>
-                        </button>
 
-                        <button 
-                            type="button" 
-                            onclick="quickLogin('TIM New York', 'Quantitative Strategy Team', 'team.newyork@stockmarket.id', 'NY')"
-                            class="p-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700/90 border border-slate-700 text-left transition-all group flex flex-col justify-between active:scale-95"
-                        >
-                            <div class="flex items-center justify-between">
-                                <span class="w-6 h-6 rounded-lg bg-purple-500/20 text-purple-400 font-bold text-[10px] flex items-center justify-center">NY</span>
-                                <span class="material-symbols-outlined text-[14px] text-slate-500 group-hover:text-purple-400">arrow_forward</span>
+                            <div class="flex flex-col gap-1.5">
+                                <div class="flex items-center justify-between">
+                                    <label class="text-xs font-semibold text-slate-300" for="passwordInput">Kata Sandi</label>
+                                    <a href="javascript:void(0)" onclick="forgotPasswordNotice()" class="text-[11px] text-emerald-400 hover:underline">Lupa Kata Sandi?</a>
+                                </div>
+                                <div class="relative flex items-center">
+                                    <span class="material-symbols-outlined absolute left-3.5 text-slate-500 text-[20px] pointer-events-none">lock</span>
+                                    <input 
+                                        type="password" 
+                                        id="passwordInput" 
+                                        required 
+                                        class="w-full bg-slate-800/80 border border-slate-700 focus:border-emerald-500 text-sm text-white placeholder:text-slate-500 rounded-xl pl-10 pr-11 py-3 focus:outline-none transition-colors"
+                                        placeholder="••••••••••••"
+                                        value="AlphaTech2026!"
+                                    />
+                                    <button type="button" onclick="togglePasswordVisibility('passwordInput', 'passwordToggleIcon')" class="absolute right-3 text-slate-400 hover:text-white p-1 rounded-md transition-colors" title="Lihat password">
+                                        <span class="material-symbols-outlined text-[20px]" id="passwordToggleIcon">visibility</span>
+                                    </button>
+                                </div>
                             </div>
-                            <div class="mt-2">
-                                <div class="text-[11px] font-bold text-white group-hover:text-purple-400 transition-colors">TIM New York</div>
-                                <div class="text-[9px] text-slate-400">Ifan & Sekar</div>
+
+                            <div class="flex items-center justify-between text-xs text-slate-400 my-1">
+                                <label class="flex items-center gap-2 cursor-pointer select-none">
+                                    <input type="checkbox" id="rememberMe" checked class="w-4 h-4 rounded bg-slate-800 border-slate-700 text-emerald-500 focus:ring-0 focus:ring-offset-0 cursor-pointer"/>
+                                    <span>Ingat sesi saya</span>
+                                </label>
+                                <span class="text-[11px] text-slate-500 flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-[14px] text-emerald-400">verified_user</span>
+                                    <span>PBKDF2-SHA256</span>
+                                </span>
                             </div>
-                        </button>
+
+                            <button 
+                                type="submit" 
+                                id="loginSubmitBtn"
+                                class="mt-2 w-full py-3.5 px-5 rounded-xl bg-emerald-600 hover:bg-emerald-500 active:scale-[0.99] text-white font-bold text-sm shadow-lg shadow-emerald-900/30 transition-all flex items-center justify-center gap-2"
+                            >
+                                <span>Masuk ke Dashboard</span>
+                                <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+                            </button>
+                        </form>
+
+                        <!-- Pemisah -->
+                        <div class="relative my-6 flex items-center justify-center">
+                            <div class="border-t border-slate-800 w-full"></div>
+                            <span class="bg-slate-900 px-3 text-[11px] text-slate-500 uppercase tracking-wider font-semibold absolute">
+                                Atau Akses Cepat 1-Klik (TIM New York)
+                            </span>
+                        </div>
+
+                        <!-- Tombol Cepat 1-Klik (Role-Based Quick Access) -->
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                            <button 
+                                type="button" 
+                                onclick="quickLogin('Ifan Apres', 'Lead Quantitative Engineer', 'ifan.apres@stockmarket.id', 'IA')"
+                                class="p-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700/90 border border-slate-700 text-left transition-all group flex flex-col justify-between active:scale-95"
+                            >
+                                <div class="flex items-center justify-between">
+                                    <span class="w-6 h-6 rounded-lg bg-emerald-500/20 text-emerald-400 font-bold text-[10px] flex items-center justify-center">IA</span>
+                                    <span class="material-symbols-outlined text-[14px] text-slate-500 group-hover:text-emerald-400">login</span>
+                                </div>
+                                <div class="mt-2">
+                                    <div class="text-[11px] font-bold text-white group-hover:text-emerald-400 transition-colors">Ifan Apres</div>
+                                    <div class="text-[9px] text-slate-400">Lead Quant Eng.</div>
+                                </div>
+                            </button>
+
+                            <button 
+                                type="button" 
+                                onclick="quickLogin('Sekar Widhastri', 'Research Analyst', 'sekar.widhastri@stockmarket.id', 'SW')"
+                                class="p-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700/90 border border-slate-700 text-left transition-all group flex flex-col justify-between active:scale-95"
+                            >
+                                <div class="flex items-center justify-between">
+                                    <span class="w-6 h-6 rounded-lg bg-blue-500/20 text-blue-400 font-bold text-[10px] flex items-center justify-center">SW</span>
+                                    <span class="material-symbols-outlined text-[14px] text-slate-500 group-hover:text-blue-400">login</span>
+                                </div>
+                                <div class="mt-2">
+                                    <div class="text-[11px] font-bold text-white group-hover:text-blue-400 transition-colors">Sekar Widhastri</div>
+                                    <div class="text-[9px] text-slate-400">Research Analyst</div>
+                                </div>
+                            </button>
+
+                            <button 
+                                type="button" 
+                                onclick="quickLogin('TIM New York', 'Quantitative Strategy Team', 'team.newyork@stockmarket.id', 'NY')"
+                                class="p-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700/90 border border-slate-700 text-left transition-all group flex flex-col justify-between active:scale-95"
+                            >
+                                <div class="flex items-center justify-between">
+                                    <span class="w-6 h-6 rounded-lg bg-purple-500/20 text-purple-400 font-bold text-[10px] flex items-center justify-center">NY</span>
+                                    <span class="material-symbols-outlined text-[14px] text-slate-500 group-hover:text-purple-400">arrow_forward</span>
+                                </div>
+                                <div class="mt-2">
+                                    <div class="text-[11px] font-bold text-white group-hover:text-purple-400 transition-colors">TIM New York</div>
+                                    <div class="text-[9px] text-slate-400">Ifan & Sekar</div>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 2. CONTAINER REGISTER -->
+                    <div id="registerContainer" class="hidden flex flex-col">
+                        <form id="registerForm" onsubmit="handleFormRegister(event)" class="mt-4 flex flex-col gap-3.5">
+                            <div class="flex flex-col gap-1.5">
+                                <label class="text-xs font-semibold text-slate-300" for="regNameInput">Nama Lengkap</label>
+                                <div class="relative flex items-center">
+                                    <span class="material-symbols-outlined absolute left-3.5 text-slate-500 text-[20px] pointer-events-none">badge</span>
+                                    <input 
+                                        type="text" 
+                                        id="regNameInput" 
+                                        required 
+                                        class="w-full bg-slate-800/80 border border-slate-700 focus:border-emerald-500 text-sm text-white placeholder:text-slate-500 rounded-xl pl-10 pr-4 py-2.5 focus:outline-none transition-colors"
+                                        placeholder="Contoh: Rian Pratama"
+                                    />
+                                </div>
+                            </div>
+
+                            <div class="flex flex-col gap-1.5">
+                                <label class="text-xs font-semibold text-slate-300" for="regEmailInput">Alamat Email Aktif</label>
+                                <div class="relative flex items-center">
+                                    <span class="material-symbols-outlined absolute left-3.5 text-slate-500 text-[20px] pointer-events-none">mail</span>
+                                    <input 
+                                        type="email" 
+                                        id="regEmailInput" 
+                                        required 
+                                        class="w-full bg-slate-800/80 border border-slate-700 focus:border-emerald-500 text-sm text-white placeholder:text-slate-500 rounded-xl pl-10 pr-4 py-2.5 focus:outline-none transition-colors"
+                                        placeholder="nama@email.com"
+                                    />
+                                </div>
+                            </div>
+
+                            <div class="flex flex-col gap-1.5">
+                                <label class="text-xs font-semibold text-slate-300" for="regRoleInput">Profil Pengguna / Peran</label>
+                                <div class="relative flex items-center">
+                                    <span class="material-symbols-outlined absolute left-3.5 text-slate-500 text-[20px] pointer-events-none">work</span>
+                                    <select 
+                                        id="regRoleInput" 
+                                        class="w-full bg-slate-800/80 border border-slate-700 focus:border-emerald-500 text-sm text-white rounded-xl pl-10 pr-4 py-2.5 focus:outline-none transition-colors"
+                                    >
+                                        <option value="Retail Investor / Swing Trader">Retail Investor / Swing Trader</option>
+                                        <option value="Equity Research Analyst">Equity Research Analyst</option>
+                                        <option value="Portfolio / Asset Manager">Portfolio / Asset Manager</option>
+                                        <option value="Quantitative Engineer">Quantitative Engineer</option>
+                                        <option value="Akademisi / Mahasiswa">Akademisi / Mahasiswa Pasar Modal</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div class="flex flex-col gap-1.5">
+                                    <label class="text-xs font-semibold text-slate-300" for="regPasswordInput">Kata Sandi (Min. 6 Karakter)</label>
+                                    <div class="relative flex items-center">
+                                        <span class="material-symbols-outlined absolute left-3 text-slate-500 text-[18px] pointer-events-none">lock</span>
+                                        <input 
+                                            type="password" 
+                                            id="regPasswordInput" 
+                                            required 
+                                            minlength="6"
+                                            class="w-full bg-slate-800/80 border border-slate-700 focus:border-emerald-500 text-xs sm:text-sm text-white placeholder:text-slate-500 rounded-xl pl-9 pr-9 py-2.5 focus:outline-none transition-colors"
+                                            placeholder="••••••••"
+                                        />
+                                        <button type="button" onclick="togglePasswordVisibility('regPasswordInput', 'regPasswordToggleIcon')" class="absolute right-2.5 text-slate-400 hover:text-white p-1" title="Lihat password">
+                                            <span class="material-symbols-outlined text-[18px]" id="regPasswordToggleIcon">visibility</span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="flex flex-col gap-1.5">
+                                    <label class="text-xs font-semibold text-slate-300" for="regConfirmPasswordInput">Konfirmasi Kata Sandi</label>
+                                    <div class="relative flex items-center">
+                                        <span class="material-symbols-outlined absolute left-3 text-slate-500 text-[18px] pointer-events-none">lock_reset</span>
+                                        <input 
+                                            type="password" 
+                                            id="regConfirmPasswordInput" 
+                                            required 
+                                            minlength="6"
+                                            class="w-full bg-slate-800/80 border border-slate-700 focus:border-emerald-500 text-xs sm:text-sm text-white placeholder:text-slate-500 rounded-xl pl-9 pr-3 py-2.5 focus:outline-none transition-colors"
+                                            placeholder="••••••••"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-2 text-[11px] text-slate-400 mt-1">
+                                <input type="checkbox" id="regAgreeTerms" required checked class="mt-0.5 w-3.5 h-3.5 rounded bg-slate-800 border-slate-700 text-emerald-500 focus:ring-0 cursor-pointer"/>
+                                <label for="regAgreeTerms" class="cursor-pointer select-none">
+                                    Saya menyetujui ketentuan akses data riset kuantitatif dan memahami risiko pergerakan instrumen saham BEI.
+                                </label>
+                            </div>
+
+                            <button 
+                                type="submit" 
+                                id="registerSubmitBtn"
+                                class="mt-2 w-full py-3.5 px-5 rounded-xl bg-blue-600 hover:bg-blue-500 active:scale-[0.99] text-white font-bold text-sm shadow-lg shadow-blue-900/30 transition-all flex items-center justify-center gap-2"
+                            >
+                                <span>Daftar Akun & Buka Akses</span>
+                                <span class="material-symbols-outlined text-[18px]">verified</span>
+                            </button>
+                        </form>
                     </div>
                 </div>
 
@@ -303,9 +422,10 @@
             }
         });
 
-        function togglePasswordVisibility() {
-            const pwd = document.getElementById('passwordInput');
-            const icon = document.getElementById('passwordToggleIcon');
+        function togglePasswordVisibility(inputId = 'passwordInput', iconId = 'passwordToggleIcon') {
+            const pwd = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
+            if (!pwd || !icon) return;
             if (pwd.type === 'password') {
                 pwd.type = 'text';
                 icon.innerText = 'visibility_off';
@@ -315,11 +435,60 @@
             }
         }
 
+        function switchAuthTab(tab) {
+            const loginBtn = document.getElementById('tabLoginBtn');
+            const regBtn = document.getElementById('tabRegisterBtn');
+            const loginContainer = document.getElementById('loginContainer');
+            const regContainer = document.getElementById('registerContainer');
+            const titleEl = document.getElementById('authCardTitle');
+            const descEl = document.getElementById('authCardDesc');
+            const alertBox = document.getElementById('loginAlert');
+            if (alertBox) alertBox.classList.add('hidden');
+
+            if (tab === 'register') {
+                regBtn.className = "flex-1 py-2 px-3 rounded-xl text-xs font-bold transition-all bg-blue-600 text-white shadow-sm flex items-center justify-center gap-1.5 focus:outline-none";
+                loginBtn.className = "flex-1 py-2 px-3 rounded-xl text-xs font-semibold transition-all text-slate-400 hover:text-white flex items-center justify-center gap-1.5 focus:outline-none";
+                loginContainer.classList.add('hidden');
+                regContainer.classList.remove('hidden');
+                if (titleEl) titleEl.innerText = "Daftar Akun Baru";
+                if (descEl) descEl.innerText = "Daftarkan email Anda untuk membuka akses ke seluruh layer rekomendasi saham, alokasi portofolio, dan kalkulator risiko.";
+            } else {
+                loginBtn.className = "flex-1 py-2 px-3 rounded-xl text-xs font-bold transition-all bg-emerald-600 text-white shadow-sm flex items-center justify-center gap-1.5 focus:outline-none";
+                regBtn.className = "flex-1 py-2 px-3 rounded-xl text-xs font-semibold transition-all text-slate-400 hover:text-white flex items-center justify-center gap-1.5 focus:outline-none";
+                regContainer.classList.add('hidden');
+                loginContainer.classList.remove('hidden');
+                if (titleEl) titleEl.innerText = "Masuk ke Akun Anda";
+                if (descEl) descEl.innerText = "Akses konsensus kuantitatif multi-engine, metrik risiko GARCH, dan rekomendasi swing harian terkurasi.";
+            }
+        }
+
         function showAlert(msg, classes) {
             const box = document.getElementById('loginAlert');
-            box.className = `mt-4 p-3.5 rounded-xl text-xs font-semibold ${classes}`;
+            box.className = `mt-3 p-3.5 rounded-xl text-xs font-semibold ${classes}`;
             box.innerHTML = msg;
             box.classList.remove('hidden');
+        }
+
+        function getRedirectTarget() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('redirect') || '/';
+        }
+
+        function performPostAuthRedirect(userData) {
+            const target = getRedirectTarget();
+            let dest = "/index.html";
+            if (target.startsWith("page-")) {
+                dest = `/index.html#${target.replace('page-', '')}`;
+            } else if (target.startsWith("stock-")) {
+                const ticker = target.replace('stock-', '');
+                sessionStorage.setItem('pendingDeepDiveStock', ticker);
+                dest = `/index.html#rekomendasi`;
+            } else if (target !== '/' && target !== '') {
+                dest = target;
+            }
+            setTimeout(() => {
+                window.location.href = dest;
+            }, 800);
         }
 
         async function handleFormLogin(e) {
@@ -338,8 +507,9 @@
             btn.innerHTML = `<span class="inline-block animate-spin mr-2">🔄</span> Memverifikasi Kredensial...`;
 
             try {
-                // Panggil backend API jika tersedia
                 let userData = null;
+                let token = null;
+
                 try {
                     const res = await fetch('/api/v1/auth/login', {
                         method: 'POST',
@@ -349,77 +519,129 @@
                     if (res.ok) {
                         const json = await res.json();
                         userData = json.user;
+                        token = json.token;
+                        if (userData) userData.token = token;
+                    } else if (res.status === 400 || res.status === 401 || res.status === 422 || res.status === 429) {
+                        const errJson = await res.json().catch(() => null);
+                        if (errJson && errJson.detail) {
+                            btn.disabled = false;
+                            btn.innerHTML = `<span>Masuk ke Dashboard</span><span class="material-symbols-outlined text-[18px]">arrow_forward</span>`;
+                            showAlert(errJson.detail, "bg-rose-500/20 text-rose-300 border border-rose-500/30");
+                            return;
+                        }
+                    } else {
+                        console.log("Mode statis terdeteksi: beralih ke autentikasi sesi lokal.");
                     }
                 } catch (err) {
-                    console.log("Menggunakan autentikasi klien lokal.");
+                    console.log("Fallback autentikasi lokal klien.");
                 }
 
+                // Fallback untuk akun demo bila backend offline/static server
                 if (!userData) {
-                    // Fallback autentikasi klien
                     const uLow = username.toLowerCase();
-                    const isIfan = uLow.includes('ifan');
-                    const isSekar = uLow.includes('sekar');
-                    const isNewYork = uLow.includes('newyork') || uLow.includes('team') || uLow.includes('tim') || uLow.includes('analyst');
-                    const isPM = uLow.includes('portfolio') || uLow.includes('manager');
-                    
-                    if (isIfan) {
-                        userData = {
-                            name: "Ifan Apres",
-                            role: "Lead Quantitative Engineer (TIM New York)",
-                            email: username,
-                            initials: "IA",
-                            loginTime: new Date().toISOString()
-                        };
-                    } else if (isSekar) {
-                        userData = {
-                            name: "Sekar Widhastri",
-                            role: "Senior Market Analyst (TIM New York)",
-                            email: username,
-                            initials: "SW",
-                            loginTime: new Date().toISOString()
-                        };
-                    } else if (isNewYork) {
-                        userData = {
-                            name: "TIM New York",
-                            role: "Quantitative Strategy Team",
-                            email: username,
-                            initials: "NY",
-                            loginTime: new Date().toISOString()
-                        };
-                    } else if (isPM) {
-                        userData = {
-                            name: "Portfolio Manager",
-                            role: "Asset Management",
-                            email: username,
-                            initials: "PM",
-                            loginTime: new Date().toISOString()
-                        };
+                    if (uLow.includes('ifan')) {
+                        userData = { name: "Ifan Apres", role: "Lead Quantitative Engineer", email: username, initials: "IA" };
+                    } else if (uLow.includes('sekar')) {
+                        userData = { name: "Sekar Widhastri", role: "Senior Market Analyst", email: username, initials: "SW" };
+                    } else if (uLow.includes('newyork') || uLow.includes('team')) {
+                        userData = { name: "TIM New York", role: "Quantitative Strategy Team", email: username, initials: "NY" };
                     } else {
                         const cleanName = username.split('@')[0];
-                        userData = {
-                            name: cleanName.charAt(0).toUpperCase() + cleanName.slice(1),
-                            role: "Market Explorer",
-                            email: username,
-                            initials: cleanName.slice(0, 2).toUpperCase(),
-                            loginTime: new Date().toISOString()
-                        };
+                        userData = { name: cleanName.charAt(0).toUpperCase() + cleanName.slice(1), role: "Market Explorer", email: username, initials: cleanName.slice(0,2).toUpperCase() };
                     }
-
+                    userData.token = "bearer-jwt-static-session-2026";
                 }
 
-                // Simpan ke localStorage
+                userData.loginTime = new Date().toISOString();
                 localStorage.setItem('stock_market_user_session', JSON.stringify(userData));
 
-                showAlert(`Berhasil Masuk! Selamat datang kembali, <strong>${userData.name}</strong>. Mengalihkan ke dashboard...`, "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30");
-
-                setTimeout(() => {
-                    window.location.href = "/";
-                }, 800);
+                showAlert(`Berhasil Masuk! Selamat datang kembali, <strong>${userData.name}</strong>. Mengalihkan ke platform...`, "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30");
+                performPostAuthRedirect(userData);
 
             } catch (err) {
                 btn.disabled = false;
                 btn.innerHTML = `<span>Masuk ke Dashboard</span><span class="material-symbols-outlined text-[18px]">arrow_forward</span>`;
-                showAlert("Gagal melakukan login. Silakan periksa kembali kredensial Anda.", "bg-rose-500/20 text-rose-300 border border-rose-500/30");
+                showAlert("Gagal melakukan login. Silakan periksa kembali email dan kata sandi Anda.", "bg-rose-500/20 text-rose-300 border border-rose-500/30");
+            }
+        }
+
+        async function handleFormRegister(e) {
+            e.preventDefault();
+            const btn = document.getElementById('registerSubmitBtn');
+            const name = document.getElementById('regNameInput').value.trim();
+            const email = document.getElementById('regEmailInput').value.trim();
+            const role = document.getElementById('regRoleInput').value;
+            const password = document.getElementById('regPasswordInput').value;
+            const confirmPassword = document.getElementById('regConfirmPasswordInput').value;
+
+            if (!name || !email || !password) {
+                showAlert("Harap lengkapi semua kolom pendaftaran akun.", "bg-rose-500/20 text-rose-300 border border-rose-500/30");
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                showAlert("Konfirmasi kata sandi tidak cocok. Harap periksa kembali.", "bg-rose-500/20 text-rose-300 border border-rose-500/30");
+                return;
+            }
+
+            if (password.length < 6) {
+                showAlert("Kata sandi harus minimal 6 karakter.", "bg-rose-500/20 text-rose-300 border border-rose-500/30");
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = `<span class="inline-block animate-spin mr-2">🔄</span> Mendaftarkan Akun Anda...`;
+
+            try {
+                let userData = null;
+                let token = null;
+
+                try {
+                    const res = await fetch('/api/v1/auth/register', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ name, email, password, role })
+                    });
+                    if (res.ok) {
+                        const json = await res.json();
+                        userData = json.user;
+                        token = json.token;
+                        if (userData) userData.token = token;
+                    } else if (res.status === 400 || res.status === 422 || res.status === 429) {
+                        const errJson = await res.json().catch(() => null);
+                        btn.disabled = false;
+                        btn.innerHTML = `<span>Daftar Akun & Buka Akses</span><span class="material-symbols-outlined text-[18px]">verified</span>`;
+                        showAlert(errJson?.detail || "Gagal melakukan registrasi akun.", "bg-rose-500/20 text-rose-300 border border-rose-500/30");
+                        return;
+                    } else {
+                        console.log("Mode statis terdeteksi: beralih ke pendaftaran akun lokal.");
+                    }
+                } catch(err) {
+                    console.log("Fallback pendaftaran akun lokal.");
+                }
+
+                if (!userData) {
+                    const initials = name.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase() || 'ID';
+                    userData = {
+                        name: name,
+                        email: email,
+                        role: role,
+                        initials: initials,
+                        token: "bearer-jwt-static-session-2026",
+                        loginTime: new Date().toISOString()
+                    };
+                }
+
+                userData.loginTime = new Date().toISOString();
+                localStorage.setItem('stock_market_user_session', JSON.stringify(userData));
+
+                showAlert(`Pendaftaran Berhasil! Selamat datang di platform, <strong>${userData.name}</strong> (${role}). Mengalihkan ke dashboard...`, "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30");
+                performPostAuthRedirect(userData);
+
+            } catch(err) {
+                btn.disabled = false;
+                btn.innerHTML = `<span>Daftar Akun & Buka Akses</span><span class="material-symbols-outlined text-[18px]">verified</span>`;
+                showAlert("Terjadi kendala saat mendaftarkan akun. Silakan coba kembali.", "bg-rose-500/20 text-rose-300 border border-rose-500/30");
             }
         }
 
@@ -429,19 +651,19 @@
                 role: role,
                 email: email,
                 initials: initials,
+                token: "bearer-jwt-idx-quant-2026",
                 loginTime: new Date().toISOString()
             };
 
             const btn = document.getElementById('loginSubmitBtn');
-            btn.disabled = true;
-            btn.innerHTML = `<span class="inline-block animate-spin mr-2">🔄</span> Mengaktifkan Sesi ${name}...`;
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = `<span class="inline-block animate-spin mr-2">🔄</span> Mengaktifkan Sesi ${name}...`;
+            }
 
             localStorage.setItem('stock_market_user_session', JSON.stringify(userData));
             showAlert(`Akses cepat aktif: <strong>${name}</strong> (${role}). Membuka dashboard...`, "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30");
-
-            setTimeout(() => {
-                window.location.href = "/";
-            }, 600);
+            performPostAuthRedirect(userData);
         }
 
         function forgotPasswordNotice() {
