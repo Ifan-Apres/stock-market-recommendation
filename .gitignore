@@ -8,8 +8,18 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# Large intermediate training matrix (reproducible via `python main.py`)
+# Large intermediate training matrix & raw training datasets (Anti-Leak Protection)
 data/processed/processed_market_features.csv
+data/processed/advanced_quant_metrics.csv
+data/processed/*.joblib
+data/processed/*.pth
+
+# Raw market feeds & financial statements
+data/raw/financial_statements/*.xlsx
+data/raw/financial_statements/*.csv
+data/raw/idx_daily/*.json
+data/raw/*.csv
+!data/raw/.gitkeep
 
 # Virtual Environments
 .venv/

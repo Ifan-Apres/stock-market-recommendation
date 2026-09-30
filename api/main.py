@@ -144,6 +144,63 @@ async def security_and_rate_limit_middleware(request: Request, call_next):
                 headers={"Retry-After": str(retry_after)},
             )
 
+    # Anti-Crawling & Anti-Bulk-Dumping Rate Limiting on Data Endpoints
+    DATA_ROUTES = (
+        "/recommendations",
+        "/watchlist-analysis",
+        "/api/recommendations",
+        "/api/watchlist-analysis",
+        "/api/stocks/analyze",
+        "/stocks/analyze",
+        "/api/financials",
+        "/api/history",
+        "/api/foreign-flow",
+        "/portfolio/allocate",
+        "/api/portfolio/allocate",
+    )
+    if any(path.startswith(dr) for dr in DATA_ROUTES):
+        # A. Burst protection: max 10 requests per 2 seconds (stops automated loops)
+        allowed_burst, _ = rate_limiter.is_allowed(client_ip, "data_burst", max_requests=10, window_seconds=2)
+        if not allowed_burst:
+            logger.warning(f"Rapid burst crawling detected from {client_ip} on {path}")
+            return JSONResponse(
+                status_code=429,
+                content={
+                    "detail": "Aktivitas penjelajahan otomatis terlalu cepat terdeteksi (Anti-Crawling Active). Mohon jeda sejenak sebelum melanjutkan.",
+                    "error_code": "BURST_RATE_LIMIT_EXCEEDED",
+                },
+                headers={"Retry-After": "2", "X-Security-Firewall": "Burst-Limit-Active"},
+            )
+
+        # B. Sliding window protection: max 45 requests per 60 seconds (generous for human reading, stops bulk database crawlers)
+        allowed_window, retry_after = rate_limiter.is_allowed(client_ip, "data_window", max_requests=45, window_seconds=60)
+        if not allowed_window:
+            logger.warning(f"Data crawling window rate limit exceeded from {client_ip} on {path}")
+            return JSONResponse(
+                status_code=429,
+                content={
+                    "detail": f"Batas penjelajahan data per menit tercapai. Demi stabilitas sistem, silakan coba lagi dalam {retry_after} detik.",
+                    "error_code": "DATA_RATE_LIMIT_EXCEEDED",
+                },
+                headers={"Retry-After": str(retry_after), "X-Security-Firewall": "Rate-Limit-Active"},
+            )
+
+        # C. Browser Origin Integrity Check
+        origin = request.headers.get("origin")
+        if origin:
+            clean_origin = origin.rstrip("/")
+            valid_origins = [o.rstrip("/") for o in ALLOWED_ORIGINS]
+            if clean_origin not in valid_origins and not any(clean_origin.startswith(vo) for vo in valid_origins):
+                logger.warning(f"Untrusted external origin {origin} attempted to access {path}")
+                return JSONResponse(
+                    status_code=403,
+                    content={
+                        "detail": "Akses Ditolak: Permintaan berasal dari Domain/Origin tidak sah (Cross-Origin Protection Active).",
+                        "error_code": "UNAUTHORIZED_ORIGIN",
+                    },
+                    headers={"X-Security-Firewall": "Origin-Validation-Active"},
+                )
+
     response = await call_next(request)
 
     # Industry-standard HTTP Security Headers
