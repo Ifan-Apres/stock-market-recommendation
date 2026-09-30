@@ -5,7 +5,7 @@ on:
     # 1. Sore hari setelah bursa BEI tutup: 10:00 UTC = 17:00 WIB (Senin - Jumat)
     - cron: '0 10 * * 1-5'
     # 2. Pagi hari sebelum bursa buka: 22:00 UTC = 05:00 WIB (Minggu - Kamis)
-    - cron: '0 22 * * 0-4'
+    - cron: '17 22 * * 0-4'
   workflow_dispatch:
 
 permissions:
@@ -48,7 +48,7 @@ jobs:
       - name: Step 3.5 - Institutional Foreign Flow Engine
         run: python -m src.foreign_flow
 
-      - name: Step 4 - Institutional Morning Market Brief
+      - name: Step 4 - Institutional Morning Market Brief & Watchlist Research
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python -m src.morning_brief

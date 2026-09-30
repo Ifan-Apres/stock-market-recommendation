@@ -2,6 +2,7 @@ import importlib
 import json
 import logging
 import os
+import secrets
 import sys
 from datetime import datetime
 from pathlib import Path
@@ -34,7 +35,9 @@ from src.config import (  # type: ignore # pyrefly: ignore [missing-import]
     PORTFOLIO_ALLOCATION_FILE,
     PROCESSED_DATA_DIR,
     SECTOR_MAP,
+    SNAPSHOT_FILE,
     SWING_RECOMMENDATION_FILE,
+    WATCHLIST_ANALYSIS_FILE,
 )
 
 load_dotenv()
@@ -61,6 +64,10 @@ def run_model_inference_pipeline():
 def run_morning_brief_pipeline():
     mod = importlib.import_module("src.morning_brief")
     return mod.run_morning_brief_pipeline()
+
+def run_watchlist_analyzer_pipeline():
+    mod = importlib.import_module("src.stock_analyzer")
+    return mod.run_watchlist_analyzer_pipeline()
 
 logging.basicConfig(level=logging.INFO, format=LOG_FORMAT)
 logger = logging.getLogger("StockMarketRecommendationAPI")
@@ -139,6 +146,7 @@ def execute_full_pipeline():
         run_feature_engineering_pipeline()
         run_model_inference_pipeline()
         run_morning_brief_pipeline()
+        run_watchlist_analyzer_pipeline()
         logger.info("Full quant pipeline completed successfully.")
     except Exception as e:
         logger.error(f"Error during daily pipeline execution: {str(e)}", exc_info=True)
@@ -162,6 +170,7 @@ def _clean_record(record: Any) -> Dict[str, Any]:
 
 
 @app.get("/status", tags=["Status"])
+@app.get("/api/status", tags=["Status"])
 def get_pipeline_status() -> Dict[str, Any]:
     last_update = "Not Executed"
     if RECOMMENDATION_FILE.exists():
@@ -253,6 +262,7 @@ def auth_login(req: AuthLoginRequest) -> Dict[str, Any]:
 
 
 @app.get("/morning-brief", tags=["Morning Market Brief"])
+@app.get("/api/morning-brief", tags=["Morning Market Brief"])
 def get_morning_brief() -> Dict[str, Any]:
     """
     Returns the latest institutional Morning Brief IHSG narrative.
@@ -269,6 +279,7 @@ def get_morning_brief() -> Dict[str, Any]:
 
 
 @app.get("/sectors", tags=["Sectors"])
+@app.get("/api/sectors", tags=["Sectors"])
 def get_sectors() -> Dict[str, List[str]]:
     """
     Returns the 11 official IDX sectors and their constituent tickers.
@@ -298,6 +309,7 @@ def get_universe_telemetry() -> Dict[str, Any]:
 
 
 @app.get("/portfolio/allocate", response_model=List[AllocationItem], tags=["Portfolio Optimizer"])
+@app.get("/api/portfolio/allocate", response_model=List[AllocationItem], tags=["Portfolio Optimizer"])
 def get_portfolio_allocation(capital: float = Query(50000000.0, description="Total capital in IDR (Rupiah)")) -> List[Dict]:
     """
     Computes optimal portfolio allocation weights and nominal IDR for user's capital.
@@ -324,6 +336,7 @@ def get_portfolio_allocation(capital: float = Query(50000000.0, description="Tot
 
 
 @app.get("/recommendations", response_model=List[RecommendationItem], tags=["Recommendations"])
+@app.get("/api/recommendations", response_model=List[RecommendationItem], tags=["Recommendations"])
 def get_latest_recommendations(
     mode: str = Query("all", description="Strategy mode: 'all', 'swing', 'dividend', or 'favorites'"),
     universe: Optional[str] = Query(None, description="Alias for mode parameter"),
@@ -376,6 +389,7 @@ def get_latest_recommendations(
 
 
 @app.get("/models/compare/{ticker}", tags=["Model Architecture"])
+@app.get("/api/models/compare/{ticker}", tags=["Model Architecture"])
 def compare_models(ticker: str) -> Dict[str, Any]:
     clean_ticker = ticker.upper()
     if not clean_ticker.endswith(".JK"):
@@ -534,7 +548,6 @@ def get_ticker_foreign_flow(ticker: str) -> Dict[str, Any]:
 
 @app.get("/api/analysis/{ticker}", tags=["AI Analysis"])
 @app.get("/api/gemini/analyze-emiten/{ticker}", tags=["AI Analysis"])
-@app.get("/api/v1/analyze-favorite", tags=["Favorite Emiten"])
 def analyze_emiten_with_gemini(ticker: str) -> Dict[str, Any]:
     """
     Generates institutional-grade deep dive research using Gemini 3.8 Flash:
@@ -633,6 +646,98 @@ def analyze_emiten_with_gemini(ticker: str) -> Dict[str, Any]:
     }
 
 
+@app.get("/watchlist-analysis", tags=["Watchlist"])
+@app.get("/api/watchlist-analysis", tags=["Watchlist"])
+def get_all_watchlist_analyses() -> Dict[str, Any]:
+    """
+    Returns full structured technical and fundamental research reports for watchlist stocks.
+    """
+    if WATCHLIST_ANALYSIS_FILE.exists():
+        try:
+            with open(WATCHLIST_ANALYSIS_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception as e:
+            logger.warning(f"Error reading watchlist analysis file: {e}")
+
+    # Fallback to morning brief if nested there
+    if MORNING_BRIEF_FILE.exists():
+        try:
+            with open(MORNING_BRIEF_FILE, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                if "watchlist_analyses" in data and data["watchlist_analyses"]:
+                    return data["watchlist_analyses"]
+        except Exception:
+            pass
+
+    # Dynamic run if not yet generated
+    try:
+        from src.stock_analyzer import StockWatchlistAnalyzer
+        analyzer = StockWatchlistAnalyzer()
+        return analyzer.generate_all_watchlist_analyses()
+    except Exception as e:
+        logger.error(f"Error generating watchlist analyses: {e}")
+        return {}
+
+
+@app.get("/stocks/analyze/{ticker}", tags=["Watchlist"])
+@app.get("/api/stocks/analyze/{ticker}", tags=["Watchlist"])
+def get_stock_analysis(ticker: str) -> Dict[str, Any]:
+    """
+    Returns the exact structured institutional technical & fundamental report for a specific ticker:
+    - [Nama Perusahaan] ([TICKER])
+    - Teknikal (narrative + levels: Buy on Weakness, Buy on Breakout, TP 1, TP 2, Target Utama, Cut Loss)
+    - Fundamental (1. Kinerja Laba Bersih, 2. Pendapatan & Laba Operasional, 3. EBITDA & Margin, 4. Struktur Keuangan)
+    """
+    clean_ticker = ticker.strip().upper().replace(".JK", "")
+    full_ticker = f"{clean_ticker}.JK"
+
+    # 1. Check precomputed cache first
+    if WATCHLIST_ANALYSIS_FILE.exists():
+        try:
+            with open(WATCHLIST_ANALYSIS_FILE, "r", encoding="utf-8") as f:
+                analyses = json.load(f)
+                if clean_ticker in analyses:
+                    return analyses[clean_ticker]
+        except Exception as e:
+            logger.warning(f"Error reading watchlist analysis file: {e}")
+
+    # 2. Dynamic on-demand analysis
+    try:
+        from src.stock_analyzer import StockWatchlistAnalyzer
+        analyzer = StockWatchlistAnalyzer()
+        return analyzer.analyze_ticker(full_ticker)
+    except Exception as e:
+        logger.error(f"Error analyzing stock {clean_ticker}: {e}")
+        raise HTTPException(status_code=500, detail=f"Gagal melakukan analisis untuk emiten {clean_ticker}: {str(e)}")
+
+
+@app.get("/api/v1/analyze-favorite", tags=["Favorite Emiten"])
+def analyze_favorite_ticker(ticker: str) -> Dict[str, Any]:
+    clean_ticker = ticker.strip().upper().replace(".JK", "")
+    full_ticker = f"{clean_ticker}.JK"
+
+    try:
+        from src.stock_analyzer import StockWatchlistAnalyzer
+        analyzer = StockWatchlistAnalyzer()
+        res = analyzer.analyze_ticker(full_ticker)
+        return {
+            "ticker": full_ticker,
+            "company_name": res.get("company_name", clean_ticker),
+            "analysis": res.get("full_text", ""),
+            "teknikal": res.get("teknikal", {}),
+            "fundamental": res.get("fundamental", {}),
+        }
+    except Exception as e:
+        logger.error(f"Error analyzing favorite ticker {clean_ticker}: {e}")
+        return {
+            "ticker": full_ticker,
+            "company_name": clean_ticker,
+            "analysis": f"Emiten {clean_ticker} berada dalam radar pemantauan kuantitatif sistem.",
+            "teknikal": {},
+            "fundamental": {},
+        }
+
+
 @app.post("/pipeline/run", response_model=PipelineResponse, tags=["Pipeline Automation"])
 def trigger_pipeline(
     background_tasks: BackgroundTasks,
@@ -648,7 +753,7 @@ def trigger_pipeline(
 
     expected_secret = os.getenv("ADMIN_PIPELINE_SECRET", "alphatech-secure-pipeline-trigger-2026")
     provided_token = admin_token or x_admin_secret
-    if not provided_token or provided_token != expected_secret:
+    if not provided_token or not secrets.compare_digest(str(provided_token), str(expected_secret)):
         raise HTTPException(
             status_code=401,
             detail="Unauthorized: Valid admin pipeline secret token is required to trigger model training.",
@@ -657,5 +762,5 @@ def trigger_pipeline(
     background_tasks.add_task(execute_full_pipeline)
     return {
         "status": "accepted",
-        "message": "Full quantitative pipeline (Ingestion, GARCH, ML Ensemble, Morning Brief) triggered in background.",
+        "message": "Full quantitative pipeline (Ingestion, GARCH, ML Ensemble, Morning Brief, Watchlist) triggered in background.",
     }
