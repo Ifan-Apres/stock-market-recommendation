@@ -105,8 +105,10 @@ def _load_users_db() -> Dict[str, Dict[str, Any]]:
     """Loads users database with seeded institutional accounts."""
     if not USERS_FILE.exists():
         USERS_FILE.parent.mkdir(parents=True, exist_ok=True)
-        h1, s1 = hash_password(os.getenv("IFAN_PASSWORD", "Ifan@Quant2026!"))
-        h2, s2 = hash_password(os.getenv("SEKAR_PASSWORD", "Sekar@Alpha2026!"))
+        ifan_env = os.getenv("IFAN_PASSWORD") or secrets.token_urlsafe(16)
+        sekar_env = os.getenv("SEKAR_PASSWORD") or secrets.token_urlsafe(16)
+        h1, s1 = hash_password(ifan_env)
+        h2, s2 = hash_password(sekar_env)
         
         seeded = {
             "ifan.apres@stockmarket.id": {

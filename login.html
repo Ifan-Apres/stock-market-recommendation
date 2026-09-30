@@ -503,26 +503,7 @@
                         registeredUsers = []; 
                     }
 
-                    // Akun resmi tim kuantitatif
-                    const officialAccounts = [
-                        {
-                            name: "Ifan Apres",
-                            email: "ifan.apres@stockmarket.id",
-                            password: "Ifan@Quant2026!",
-                            role: "Lead Quantitative Engineer",
-                            initials: "IA"
-                        },
-                        {
-                            name: "Sekar Widhastri",
-                            email: "sekar.widhastri@stockmarket.id",
-                            password: "Sekar@Alpha2026!",
-                            role: "Senior Market Analyst",
-                            initials: "SW"
-                        }
-                    ];
-
-                    const allRecognized = [...officialAccounts, ...registeredUsers];
-                    const matchedUser = allRecognized.find(u => (u.email || '').toLowerCase() === username.toLowerCase());
+                    const matchedUser = registeredUsers.find(u => (u.email || '').toLowerCase() === username.toLowerCase());
                     if (!matchedUser) {
                         btn.disabled = false;
                         btn.innerHTML = `<span>Masuk ke Dashboard</span><span class="material-symbols-outlined text-[18px]">arrow_forward</span>`;
