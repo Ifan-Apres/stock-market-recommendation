@@ -99,16 +99,16 @@
                         <!-- Form Login -->
                         <form id="loginForm" onsubmit="handleFormLogin(event)" class="mt-4 flex flex-col gap-4">
                             <div class="flex flex-col gap-1.5">
-                                <label class="text-xs font-semibold text-slate-300" for="usernameInput">Email atau ID Pengguna</label>
+                                <label class="text-xs font-semibold text-slate-300" for="usernameInput">Email Pengguna</label>
                                 <div class="relative flex items-center">
                                     <span class="material-symbols-outlined absolute left-3.5 text-slate-500 text-[20px] pointer-events-none">mail</span>
                                     <input 
-                                        type="text" 
+                                        type="email" 
                                         id="usernameInput" 
                                         required 
                                         class="w-full bg-slate-800/80 border border-slate-700 focus:border-emerald-500 text-sm text-white placeholder:text-slate-500 rounded-xl pl-10 pr-4 py-3 focus:outline-none transition-colors"
-                                        placeholder="email@anda.id / ifan.apres@stockmarket.id"
-                                        value="team.newyork@stockmarket.id"
+                                        placeholder="nama@email.com"
+                                        autocomplete="username"
                                     />
                                 </div>
                             </div>
@@ -125,8 +125,8 @@
                                         id="passwordInput" 
                                         required 
                                         class="w-full bg-slate-800/80 border border-slate-700 focus:border-emerald-500 text-sm text-white placeholder:text-slate-500 rounded-xl pl-10 pr-11 py-3 focus:outline-none transition-colors"
-                                        placeholder="••••••••••••"
-                                        value="AlphaTech2026!"
+                                        placeholder="Masukkan kata sandi Anda"
+                                        autocomplete="current-password"
                                     />
                                     <button type="button" onclick="togglePasswordVisibility('passwordInput', 'passwordToggleIcon')" class="absolute right-3 text-slate-400 hover:text-white p-1 rounded-md transition-colors" title="Lihat password">
                                         <span class="material-symbols-outlined text-[20px]" id="passwordToggleIcon">visibility</span>
@@ -136,7 +136,7 @@
 
                             <div class="flex items-center justify-between text-xs text-slate-400 my-1">
                                 <label class="flex items-center gap-2 cursor-pointer select-none">
-                                    <input type="checkbox" id="rememberMe" checked class="w-4 h-4 rounded bg-slate-800 border-slate-700 text-emerald-500 focus:ring-0 focus:ring-offset-0 cursor-pointer"/>
+                                    <input type="checkbox" id="rememberMe" class="w-4 h-4 rounded bg-slate-800 border-slate-700 text-emerald-500 focus:ring-0 focus:ring-offset-0 cursor-pointer"/>
                                     <span>Ingat sesi saya</span>
                                 </label>
                                 <span class="text-[11px] text-slate-500 flex items-center gap-1">
@@ -153,63 +153,14 @@
                                 <span>Masuk ke Dashboard</span>
                                 <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
                             </button>
+
+                            <div class="mt-4 pt-4 border-t border-slate-800 text-center text-xs text-slate-400">
+                                <span>Belum memiliki akun?</span>
+                                <button type="button" onclick="switchAuthTab('register')" class="text-emerald-400 font-bold hover:underline ml-1">
+                                    Daftar Akun Baru (Register) &rarr;
+                                </button>
+                            </div>
                         </form>
-
-                        <!-- Pemisah -->
-                        <div class="relative my-6 flex items-center justify-center">
-                            <div class="border-t border-slate-800 w-full"></div>
-                            <span class="bg-slate-900 px-3 text-[11px] text-slate-500 uppercase tracking-wider font-semibold absolute">
-                                Atau Akses Cepat 1-Klik (TIM New York)
-                            </span>
-                        </div>
-
-                        <!-- Tombol Cepat 1-Klik (Role-Based Quick Access) -->
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-                            <button 
-                                type="button" 
-                                onclick="quickLogin('Ifan Apres', 'Lead Quantitative Engineer', 'ifan.apres@stockmarket.id', 'IA')"
-                                class="p-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700/90 border border-slate-700 text-left transition-all group flex flex-col justify-between active:scale-95"
-                            >
-                                <div class="flex items-center justify-between">
-                                    <span class="w-6 h-6 rounded-lg bg-emerald-500/20 text-emerald-400 font-bold text-[10px] flex items-center justify-center">IA</span>
-                                    <span class="material-symbols-outlined text-[14px] text-slate-500 group-hover:text-emerald-400">login</span>
-                                </div>
-                                <div class="mt-2">
-                                    <div class="text-[11px] font-bold text-white group-hover:text-emerald-400 transition-colors">Ifan Apres</div>
-                                    <div class="text-[9px] text-slate-400">Lead Quant Eng.</div>
-                                </div>
-                            </button>
-
-                            <button 
-                                type="button" 
-                                onclick="quickLogin('Sekar Widhastri', 'Research Analyst', 'sekar.widhastri@stockmarket.id', 'SW')"
-                                class="p-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700/90 border border-slate-700 text-left transition-all group flex flex-col justify-between active:scale-95"
-                            >
-                                <div class="flex items-center justify-between">
-                                    <span class="w-6 h-6 rounded-lg bg-blue-500/20 text-blue-400 font-bold text-[10px] flex items-center justify-center">SW</span>
-                                    <span class="material-symbols-outlined text-[14px] text-slate-500 group-hover:text-blue-400">login</span>
-                                </div>
-                                <div class="mt-2">
-                                    <div class="text-[11px] font-bold text-white group-hover:text-blue-400 transition-colors">Sekar Widhastri</div>
-                                    <div class="text-[9px] text-slate-400">Research Analyst</div>
-                                </div>
-                            </button>
-
-                            <button 
-                                type="button" 
-                                onclick="quickLogin('TIM New York', 'Quantitative Strategy Team', 'team.newyork@stockmarket.id', 'NY')"
-                                class="p-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700/90 border border-slate-700 text-left transition-all group flex flex-col justify-between active:scale-95"
-                            >
-                                <div class="flex items-center justify-between">
-                                    <span class="w-6 h-6 rounded-lg bg-purple-500/20 text-purple-400 font-bold text-[10px] flex items-center justify-center">NY</span>
-                                    <span class="material-symbols-outlined text-[14px] text-slate-500 group-hover:text-purple-400">arrow_forward</span>
-                                </div>
-                                <div class="mt-2">
-                                    <div class="text-[11px] font-bold text-white group-hover:text-purple-400 transition-colors">TIM New York</div>
-                                    <div class="text-[9px] text-slate-400">Ifan & Sekar</div>
-                                </div>
-                            </button>
-                        </div>
                     </div>
 
                     <!-- 2. CONTAINER REGISTER -->
@@ -310,6 +261,13 @@
                                 <span>Daftar Akun & Buka Akses</span>
                                 <span class="material-symbols-outlined text-[18px]">verified</span>
                             </button>
+
+                            <div class="mt-4 pt-3 border-t border-slate-800 text-center text-xs text-slate-400">
+                                <span>Sudah memiliki akun terdaftar?</span>
+                                <button type="button" onclick="switchAuthTab('login')" class="text-blue-400 font-bold hover:underline ml-1">
+                                    Masuk ke Akun (Login) &rarr;
+                                </button>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -536,20 +494,37 @@
                     console.log("Fallback autentikasi lokal klien.");
                 }
 
-                // Fallback untuk akun demo bila backend offline/static server
+                // Fallback verifikasi akun lokal (jika backend offline atau static hosting)
                 if (!userData) {
-                    const uLow = username.toLowerCase();
-                    if (uLow.includes('ifan')) {
-                        userData = { name: "Ifan Apres", role: "Lead Quantitative Engineer", email: username, initials: "IA" };
-                    } else if (uLow.includes('sekar')) {
-                        userData = { name: "Sekar Widhastri", role: "Senior Market Analyst", email: username, initials: "SW" };
-                    } else if (uLow.includes('newyork') || uLow.includes('team')) {
-                        userData = { name: "TIM New York", role: "Quantitative Strategy Team", email: username, initials: "NY" };
-                    } else {
-                        const cleanName = username.split('@')[0];
-                        userData = { name: cleanName.charAt(0).toUpperCase() + cleanName.slice(1), role: "Market Explorer", email: username, initials: cleanName.slice(0,2).toUpperCase() };
+                    let registeredUsers = [];
+                    try {
+                        registeredUsers = JSON.parse(localStorage.getItem('stock_market_registered_users') || '[]');
+                    } catch(e) { 
+                        registeredUsers = []; 
                     }
-                    userData.token = "bearer-jwt-static-session-2026";
+
+                    const matchedUser = registeredUsers.find(u => (u.email || '').toLowerCase() === username.toLowerCase());
+                    if (!matchedUser) {
+                        btn.disabled = false;
+                        btn.innerHTML = `<span>Masuk ke Dashboard</span><span class="material-symbols-outlined text-[18px]">arrow_forward</span>`;
+                        showAlert("Akun dengan email ini belum terdaftar. Silakan klik tab <strong>Daftar Akun Baru (Register)</strong> untuk mendaftarkan email Anda terlebih dahulu.", "bg-amber-500/20 text-amber-300 border border-amber-500/30");
+                        return;
+                    }
+
+                    if (matchedUser.password && matchedUser.password !== password) {
+                        btn.disabled = false;
+                        btn.innerHTML = `<span>Masuk ke Dashboard</span><span class="material-symbols-outlined text-[18px]">arrow_forward</span>`;
+                        showAlert("Kata sandi yang Anda masukkan salah. Silakan periksa kembali.", "bg-rose-500/20 text-rose-300 border border-rose-500/30");
+                        return;
+                    }
+
+                    userData = {
+                        name: matchedUser.name,
+                        email: matchedUser.email,
+                        role: matchedUser.role,
+                        initials: matchedUser.initials,
+                        token: matchedUser.token || "bearer-jwt-static-session-2026"
+                    };
                 }
 
                 userData.loginTime = new Date().toISOString();
@@ -620,8 +595,37 @@
                     console.log("Fallback pendaftaran akun lokal.");
                 }
 
+                const initials = name.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase() || 'ID';
+
+                // Simpan akun ke database lokal browser (stock_market_registered_users)
+                let registeredUsers = [];
+                try {
+                    registeredUsers = JSON.parse(localStorage.getItem('stock_market_registered_users') || '[]');
+                } catch(e) {
+                    registeredUsers = [];
+                }
+
+                const exists = registeredUsers.some(u => (u.email || '').toLowerCase() === email.toLowerCase());
+                if (!userData && exists) {
+                    btn.disabled = false;
+                    btn.innerHTML = `<span>Daftar Akun & Buka Akses</span><span class="material-symbols-outlined text-[18px]">verified</span>`;
+                    showAlert("Email ini sudah terdaftar. Silakan gunakan tab <strong>Masuk (Login)</strong>.", "bg-amber-500/20 text-amber-300 border border-amber-500/30");
+                    return;
+                }
+
+                if (!exists) {
+                    registeredUsers.push({
+                        name: name,
+                        email: email,
+                        role: role,
+                        password: password,
+                        initials: initials,
+                        registeredAt: new Date().toISOString()
+                    });
+                    localStorage.setItem('stock_market_registered_users', JSON.stringify(registeredUsers));
+                }
+
                 if (!userData) {
-                    const initials = name.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase() || 'ID';
                     userData = {
                         name: name,
                         email: email,
@@ -635,7 +639,7 @@
                 userData.loginTime = new Date().toISOString();
                 localStorage.setItem('stock_market_user_session', JSON.stringify(userData));
 
-                showAlert(`Pendaftaran Berhasil! Selamat datang di platform, <strong>${userData.name}</strong> (${role}). Mengalihkan ke dashboard...`, "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30");
+                showAlert(`Pendaftaran Berhasil! Selamat datang di platform, <strong>${userData.name}</strong> (${role}). Mengalihkan ke platform...`, "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30");
                 performPostAuthRedirect(userData);
 
             } catch(err) {
@@ -643,27 +647,6 @@
                 btn.innerHTML = `<span>Daftar Akun & Buka Akses</span><span class="material-symbols-outlined text-[18px]">verified</span>`;
                 showAlert("Terjadi kendala saat mendaftarkan akun. Silakan coba kembali.", "bg-rose-500/20 text-rose-300 border border-rose-500/30");
             }
-        }
-
-        function quickLogin(name, role, email, initials) {
-            const userData = {
-                name: name,
-                role: role,
-                email: email,
-                initials: initials,
-                token: "bearer-jwt-idx-quant-2026",
-                loginTime: new Date().toISOString()
-            };
-
-            const btn = document.getElementById('loginSubmitBtn');
-            if (btn) {
-                btn.disabled = true;
-                btn.innerHTML = `<span class="inline-block animate-spin mr-2">🔄</span> Mengaktifkan Sesi ${name}...`;
-            }
-
-            localStorage.setItem('stock_market_user_session', JSON.stringify(userData));
-            showAlert(`Akses cepat aktif: <strong>${name}</strong> (${role}). Membuka dashboard...`, "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30");
-            performPostAuthRedirect(userData);
         }
 
         function forgotPasswordNotice() {
