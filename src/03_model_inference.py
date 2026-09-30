@@ -131,7 +131,7 @@ class ARIMAPredictor:
 # 2. PyTorch Deep Learning LSTM Sequence Model
 # ==============================================================================
 class PyTorchLSTMNet(nn.Module):
-    def __init__(self, input_dim: int = 5, hidden_dim: int = 32, num_layers: int = 2, dropout: float = 0.2):
+    def __init__(self, input_dim: int = 5, hidden_dim: int = 32, num_layers: int = 2, dropout: float = 0.35):
         super().__init__()
         self.lstm = nn.LSTM(
             input_size=input_dim,
@@ -153,7 +153,7 @@ class PyTorchLSTMTrainer:
     def __init__(self, lookback: int = LSTM_LOOKBACK):
         self.lookback = lookback
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        self.model = PyTorchLSTMNet(input_dim=len(LSTM_FEATURE_COLS)).to(self.device)
+        self.model = PyTorchLSTMNet(input_dim=len(LSTM_FEATURE_COLS), dropout=0.35).to(self.device)
 
     def prepare_sequences(self, df: pd.DataFrame) -> Tuple[torch.Tensor, torch.Tensor]:
         sequences, labels = [], []
@@ -192,7 +192,7 @@ class PyTorchLSTMTrainer:
         dataset = TensorDataset(X, y)
         loader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
         criterion = nn.BCELoss()
-        optimizer = torch.optim.Adam(self.model.parameters(), lr=0.005, weight_decay=1e-4)
+        optimizer = torch.optim.Adam(self.model.parameters(), lr=0.005, weight_decay=5e-4)
 
         self.model.train()
         total_loss = 0.0
@@ -453,8 +453,23 @@ class QuantitativeAlphaModel:
             res1 = float(latest_row.get("Resistance_1", close * 1.03) or (close * 1.03))
             sup1 = float(latest_row.get("Support_1", close * 0.97) or (close * 0.97))
 
-            # High-Conviction Ambang Eksekusi (>= 0.55 atau Top Decile dengan floor >= 0.52)
-            is_buy_eligible = (blended_prob >= 0.55) or (is_top_decile and blended_prob >= 0.52)
+            # Multi-Model Consensus Shield & High-Conviction Ambang Eksekusi
+            # 1. Hard threshold: blended_prob must be >= 0.55 (no loose 0.52 floor)
+            # 2. Majority model consensus: at least 2 out of 3 models must be bullish (>= 0.50)
+            # 3. Model divergence guard: no individual model should be bearish (< 0.48)
+            gbdt_p = float(latest_row.get("GBDT_Prob", 0.50))
+            lstm_p = float(latest_row.get("LSTM_Prob", 0.50))
+            arima_p = float(latest_row.get("ARIMA_Prob", 0.50))
+
+            models_bullish_count = sum([p >= 0.50 for p in [gbdt_p, lstm_p, arima_p]])
+            min_model_prob = min(gbdt_p, lstm_p, arima_p)
+            has_model_divergence = (min_model_prob < 0.48)
+
+            is_buy_eligible = (
+                blended_prob >= 0.55
+                and models_bullish_count >= 2
+                and not has_model_divergence
+            )
 
             if is_buy_eligible and (rsi <= 45.0 or close <= sup1 * 1.01):
                 action = "BUY ON WEAKNESS"

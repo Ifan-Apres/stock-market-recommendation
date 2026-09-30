@@ -2052,6 +2052,14 @@
             return 'Rp ' + Number(val || 0).toLocaleString('id-ID');
         }
 
+        function formatRiskPct(val, defaultVal = "-1.85%") {
+            if (val === undefined || val === null || val === "" || isNaN(Number(val))) return defaultVal;
+            let num = Math.abs(Number(val));
+            let pct = num > 0.5 ? num : num * 100.0;
+            pct = Math.min(pct, 35.0);
+            return `-${pct.toFixed(2)}%`;
+        }
+
         // 1. Navigasi Antar Halaman (SPA Navigation & Responsive Sync)
         function navigateTo(pageId, buttonElement) {
             // Sembunyikan seluruh page-view
@@ -2813,8 +2821,8 @@
 
             // 6. Ekonometrika Risiko
             document.getElementById('deepDiveGARCHVol').innerText = stock.GARCH_Vol ? (Number(stock.GARCH_Vol) * 100).toFixed(1) + "%" : "17.4%";
-            document.getElementById('deepDiveVaR95').innerText = stock.VaR_95_1D ? `-${Math.abs(Number(stock.VaR_95_1D) * 100).toFixed(2)}%` : "-1.85%";
-            document.getElementById('deepDiveES95').innerText = stock.ES_95_1D ? `-${Math.abs(Number(stock.ES_95_1D) * 100).toFixed(2)}%` : "-2.45%";
+            document.getElementById('deepDiveVaR95').innerText = formatRiskPct(stock.VaR_95_1D, "-1.85%");
+            document.getElementById('deepDiveES95').innerText = formatRiskPct(stock.ES_95_1D, "-2.45%");
             document.getElementById('deepDiveSharpeRatio').innerText = stock.Sharpe_Ratio ? Number(stock.Sharpe_Ratio).toFixed(2) : "1.35";
             document.getElementById('deepDiveMaxDD').innerText = stock.Max_Drawdown_1Y ? `-${Math.abs(Number(stock.Max_Drawdown_1Y) * 100).toFixed(1)}%` : "-11.8%";
             document.getElementById('deepDiveBetaValue').innerText = stock.Beta_IHSG ? Number(stock.Beta_IHSG).toFixed(2) : "0.95";
@@ -3490,7 +3498,7 @@
             document.getElementById('modalARIMAProb').innerText = `${Math.round((stock.ARIMA_Prob || stock.Bullish_Probability || 0.72) * 100)}%`;
 
             document.getElementById('modalGARCHVol').innerText = stock.GARCH_Vol ? `${(stock.GARCH_Vol * 100).toFixed(1)}%` : "18.5%";
-            document.getElementById('modalVaR').innerText = stock.VaR_95_1D ? `-${(stock.VaR_95_1D * 100).toFixed(2)}%` : "-1.92%";
+            document.getElementById('modalVaR').innerText = formatRiskPct(stock.VaR_95_1D, "-1.92%");
             document.getElementById('modalBeta').innerText = stock.Beta_IHSG ? stock.Beta_IHSG.toFixed(2) : "0.95";
             document.getElementById('modalSharpe').innerText = stock.Sharpe_Ratio ? stock.Sharpe_Ratio.toFixed(2) : "1.25";
 

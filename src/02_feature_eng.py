@@ -141,9 +141,9 @@ class QuantitativeFeatureEngineer:
         if len(x) < 30:
             return {
                 "garch_vol": 0.25,
-                "var_95_1d": 2.50,
-                "var_99_1d": 3.50,
-                "es_95_1d": 3.10,
+                "var_95_1d": 0.025,
+                "var_99_1d": 0.035,
+                "es_95_1d": 0.031,
                 "model": "prior_default",
                 "nu": 8.0,
             }
@@ -158,11 +158,14 @@ class QuantitativeFeatureEngineer:
             var_pct = -z * sig
             es_pct = sig * stats.norm.pdf(z) / alpha
             ann_vol = (sig / 100.0) * np.sqrt(252)
+            var_95_dec = float(np.clip(var_pct / 100.0, 0.005, 0.25))
+            var_99_dec = float(np.clip((-stats.norm.ppf(0.01) * sig) / 100.0, 0.008, 0.35))
+            es_95_dec = float(np.clip(es_pct / 100.0, 0.006, 0.35))
             return {
                 "garch_vol": round(float(ann_vol), 4),
-                "var_95_1d": round(float(var_pct), 2),
-                "var_99_1d": round(float(-stats.norm.ppf(0.01) * sig), 2),
-                "es_95_1d": round(float(es_pct), 2),
+                "var_95_1d": round(var_95_dec, 4),
+                "var_99_1d": round(var_99_dec, 4),
+                "es_95_1d": round(es_95_dec, 4),
                 "model": "ewma",
                 "nu": 30.0,
             }
@@ -194,11 +197,14 @@ class QuantitativeFeatureEngineer:
                 var_pct = -z * sig
                 es_pct = sig * stats.norm.pdf(z) / alpha
                 ann_vol = (sig / 100.0) * np.sqrt(252)
+                var_95_dec = float(np.clip(var_pct / 100.0, 0.005, 0.25))
+                var_99_dec = float(np.clip((-stats.norm.ppf(0.01) * sig) / 100.0, 0.008, 0.35))
+                es_95_dec = float(np.clip(es_pct / 100.0, 0.006, 0.35))
                 return {
                     "garch_vol": round(float(ann_vol), 4),
-                    "var_95_1d": round(float(var_pct), 2),
-                    "var_99_1d": round(float(-stats.norm.ppf(0.01) * sig), 2),
-                    "es_95_1d": round(float(es_pct), 2),
+                    "var_95_1d": round(var_95_dec, 4),
+                    "var_99_1d": round(var_99_dec, 4),
+                    "es_95_1d": round(es_95_dec, 4),
                     "model": "ewma_unhealthy_guard",
                     "nu": round(float(nu), 2),
                 }
@@ -213,11 +219,15 @@ class QuantitativeFeatureEngineer:
             var99_pct = -(mu + sig * k * tq99)
             ann_vol = (sig / 100.0) * np.sqrt(252)
 
+            var_95_dec = float(np.clip(var_pct / 100.0, 0.005, 0.25))
+            var_99_dec = float(np.clip(var99_pct / 100.0, 0.008, 0.35))
+            es_95_dec = float(np.clip(es_pct / 100.0, 0.006, 0.35))
+
             return {
                 "garch_vol": round(float(ann_vol), 4),
-                "var_95_1d": round(float(var_pct), 2),
-                "var_99_1d": round(float(var99_pct), 2),
-                "es_95_1d": round(float(es_pct), 2),
+                "var_95_1d": round(var_95_dec, 4),
+                "var_99_1d": round(var_99_dec, 4),
+                "es_95_1d": round(es_95_dec, 4),
                 "model": "garch-t",
                 "nu": round(float(nu), 2),
                 "persist": round(float(a + b), 4),
@@ -229,11 +239,16 @@ class QuantitativeFeatureEngineer:
                 s2 = lam * s2 + (1.0 - lam) * (r ** 2)
             sig = np.sqrt(max(s2, 1e-6))
             z = stats.norm.ppf(alpha)
+            var_pct = -z * sig
+            es_pct = sig * stats.norm.pdf(z) / alpha
+            var_95_dec = float(np.clip(var_pct / 100.0, 0.005, 0.25))
+            var_99_dec = float(np.clip((-stats.norm.ppf(0.01) * sig) / 100.0, 0.008, 0.35))
+            es_95_dec = float(np.clip(es_pct / 100.0, 0.006, 0.35))
             return {
                 "garch_vol": round(float((sig / 100.0) * np.sqrt(252)), 4),
-                "var_95_1d": round(float(-z * sig), 2),
-                "var_99_1d": round(float(-stats.norm.ppf(0.01) * sig), 2),
-                "es_95_1d": round(float(sig * stats.norm.pdf(z) / alpha), 2),
+                "var_95_1d": round(var_95_dec, 4),
+                "var_99_1d": round(var_99_dec, 4),
+                "es_95_1d": round(es_95_dec, 4),
                 "model": "ewma_exception_fallback",
                 "nu": 8.0,
             }

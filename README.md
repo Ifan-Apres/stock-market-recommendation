@@ -71,11 +71,17 @@ Fitur input kuantitatif diperkaya dengan 4 dimensi baru:
 * **Executive Key Takeaways 10-Detik**: Ringkasan Arah Indeks, Katalis Global, Risiko Makro, dan Panduan Taktis Alokasi Kas.
 * **Fallback Otomatis**: Generator kuantitatif deterministik yang siap menggantikan narasi AI jika terjadi kuota limit/rate limit.
 
-### 5. 📉 Ekonometrika Risiko Lanjutan (GARCH & VaR)
-* **Student-t GARCH(1,1)**: Memodelkan volatilitas kondisional untuk mengantisipasi risiko ekor tebal (*fat-tail risk*).
-* **Value at Risk (VaR 95% & 99%)** & **Expected Shortfall (ES)**: Estimasi potensi penurunan maksimum harian.
-* **20% Kas Siaga Wajib**: Menjamin ketersediaan likuiditas cadangan pada alokasi portofolio.
-* **IDX Tick Size Rounding**: Level Entry, Target Price (TP), dan Stop Loss (SL) otomatis dibulatkan sesuai fraksi harga resmi bursa.
+### 5. 📉 Ekonometrika Risiko Lanjutan & Standardisasi VaR (GARCH-t)
+* **Student-t GARCH(1,1)**: Memodelkan volatilitas kondisional untuk mengantisipasi risiko ekor tebal (*fat-tail risk*) pada 66 emiten aktif.
+* **Value at Risk (VaR 95% & 99%)** & **Expected Shortfall (ES)**: Estimasi ilmiah batas potensi penurunan maksimum harian dalam format desimal terstandarisasi (`[0.005, 0.25]` / 0.5% - 25%), dilengkapi *dual-guard frontend & API formatter* untuk mengeliminasi anomali scaling (misal: `-3.86%` bukan `-386.00%`).
+* **20% Kas Siaga Wajib**: Menjamin ketersediaan likuiditas cadangan pada optimasi alokasi portofolio kuantitatif.
+* **IDX Tick Size Rounding**: Level Entry, Target Price (TP), dan Stop Loss (SL) otomatis dibulatkan sesuai fraksi harga resmi Bursa Efek Indonesia.
+
+### 6. 🛡️ Multi-Model Consensus Shield & No-Divergence Guard
+* **Hard High-Conviction Floor ($\ge 0.55$)**: Menghapus ambang longgar top-decile 0.52. Setiap sinyal BUY wajib memiliki probabilitas gabungan minimal 55%.
+* **Majority Agreement Rule**: Minimal 2 dari 3 model (GBDT, PyTorch LSTM, ARIMA) harus sepakat dalam zona *bullish* ($\ge 0.50$).
+* **No-Divergence Guard**: Jika ada salah satu model memprediksi *bearish* ($\min(\text{GBDT}, \text{LSTM}, \text{ARIMA}) < 0.48$), saham otomatis berstatus **`HOLD`** (menunggu konfirmasi), melindungi modal dari sinyal BUY palsu saat model bertentangan.
+* **Regularisasi PyTorch LSTM Ditingkatkan**: Peningkatan *dropout* menjadi `0.35` dan Adam *weight decay* menjadi `5e-4` guna meredam *overfitting* terhadap *noise* intraday komoditas dan saham siklikal.
 
 ---
 

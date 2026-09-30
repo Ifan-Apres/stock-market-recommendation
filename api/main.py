@@ -406,7 +406,11 @@ def compare_models(ticker: str) -> Dict[str, Any]:
                         "Beta_IHSG": row.get("Beta_IHSG"),
                         "Sharpe_Ratio": row.get("Sharpe_Ratio"),
                         "GARCH_Annual_Vol": row.get("GARCH_Vol"),
-                        "VaR_95_1D": f"{row.get('VaR_95_1D')}%" if row.get("VaR_95_1D") else "N/A",
+                        "VaR_95_1D": (
+                            f"-{abs(float(row['VaR_95_1D']) * (1.0 if abs(float(row['VaR_95_1D'])) > 0.5 else 100.0)):.2f}%"
+                            if row.get("VaR_95_1D") is not None and str(row.get("VaR_95_1D")).strip() != ""
+                            else "N/A"
+                        ),
                         "Max_Drawdown_1Y": row.get("Max_Drawdown_1Y"),
                     },
                 }
