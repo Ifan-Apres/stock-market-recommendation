@@ -105,16 +105,14 @@ def _load_users_db() -> Dict[str, Dict[str, Any]]:
     """Loads users database with seeded institutional accounts."""
     if not USERS_FILE.exists():
         USERS_FILE.parent.mkdir(parents=True, exist_ok=True)
-        default_pwd = os.getenv("DEFAULT_ANALYST_PASSWORD", "AlphaTech2026!")
-        h1, s1 = hash_password(default_pwd)
-        h2, s2 = hash_password(default_pwd)
-        h3, s3 = hash_password(default_pwd)
+        h1, s1 = hash_password(os.getenv("IFAN_PASSWORD", "Ifan@Quant2026!"))
+        h2, s2 = hash_password(os.getenv("SEKAR_PASSWORD", "Sekar@Alpha2026!"))
         
         seeded = {
             "ifan.apres@stockmarket.id": {
                 "name": "Ifan Apres",
                 "email": "ifan.apres@stockmarket.id",
-                "role": "Lead Quantitative Engineer (TIM New York)",
+                "role": "Lead Quantitative Engineer",
                 "access_level": "Lead Quant & Systems Architect (Full Access)",
                 "initials": "IA",
                 "hashed_password": h1,
@@ -124,21 +122,11 @@ def _load_users_db() -> Dict[str, Dict[str, Any]]:
             "sekar.widhastri@stockmarket.id": {
                 "name": "Sekar Widhastri",
                 "email": "sekar.widhastri@stockmarket.id",
-                "role": "Senior Market Analyst (TIM New York)",
+                "role": "Senior Market Analyst",
                 "access_level": "Senior Research Analyst (Full Access)",
                 "initials": "SW",
                 "hashed_password": h2,
                 "salt": s2,
-                "created_at": "2026-09-01T00:00:00Z",
-            },
-            "team.newyork@stockmarket.id": {
-                "name": "TIM New York",
-                "email": "team.newyork@stockmarket.id",
-                "role": "Quantitative Strategy Team",
-                "access_level": "Institutional Suite (Ifan & Sekar)",
-                "initials": "NY",
-                "hashed_password": h3,
-                "salt": s3,
                 "created_at": "2026-09-01T00:00:00Z",
             },
         }
@@ -225,13 +213,9 @@ def authenticate_user(email_or_username: str, password: str) -> Tuple[bool, str,
         salt = user_record.get("salt", "")
         hashed_pwd = user_record.get("hashed_password", "")
         
-        # Allow default password fallback for default demo profiles if requested
+        # 3. Verify password strictly with PBKDF2
         if not verify_password(password, salt, hashed_pwd):
-            # Also allow fallback demo password for seeded demo accounts
-            if password in ("AlphaTech2026!", "admin123", "password") and "stockmarket.id" in user_record.get("email", ""):
-                pass
-            else:
-                return False, "Kata sandi yang Anda masukkan salah.", None
+            return False, "Kata sandi yang Anda masukkan salah.", None
         
         safe_user = {k: v for k, v in user_record.items() if k not in ("hashed_password", "salt")}
         return True, "Autentikasi berhasil.", safe_user
