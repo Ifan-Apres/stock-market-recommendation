@@ -2,6 +2,9 @@
 .env
 data/users.json
 data/*.tmp
+*.bin
+*.enc
+models_vault_encrypted.bin
 
 # Python Bytecode & Cache
 __pycache__/

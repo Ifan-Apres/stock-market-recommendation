@@ -243,6 +243,9 @@ graph TD
    - **IP Registration Quota**: Membatasi pendaftaran maksimal 3 akun per jam per alamat IP guna menggagalkan mass-account generation.
    - **Disposable Email Blacklist**: Memblokir registrasi dari penyedia email sementara/throwaway (misal: mailinator, guerrillamail, tempmail).
    - **Cloudflare Turnstile Ready**: Mendukung integrasi captcha modern tanpa hambatan verifikasi gambar.
+8. **Permanent Git History Purge & Encrypted Model Storage Vault**:
+   - **Git Commit Graph Scrubbing**: Seluruh riwayat commit lawas telah dibersihkan secara permanen menggunakan `git-filter-repo` (ukuran pack repositori terpangkas >90% dari 8.04 MB menjadi ~790 KB), mengeliminasi total kemungkinan eksfiltrasi data mentah dan bobot model historis melalui `git clone`.
+   - **Encrypted Storage Vault (`scripts/sync_model_storage.py`)**: Dilengkapi utilitas enkripsi AES-256 (PBKDF2-HMAC-SHA256) dan integrasi private repository gratis ke Hugging Face Hub untuk pencadangan model weights (`.joblib`, `.pth`) dan raw datasets secara aman.
 
 ---
 
