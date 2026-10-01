@@ -964,17 +964,30 @@
                             <div>
                                 <h3 class="text-base sm:text-lg font-bold text-primary flex items-center gap-2">
                                     <span class="material-symbols-outlined text-secondary text-[22px]">candlestick_chart</span>
-                                    Grafik Riwayat Harga & Level Target Interaktif
+                                    Grafik Riwayat Harga & Level Target Interaktif (3 Bulan)
                                 </h3>
-                                <span class="text-xs text-text-muted">Visualisasi tren harga aktual dilengkapi level TP (hijau putus-putus) dan Stop Loss (merah putus-putus).</span>
+                                <span class="text-xs text-text-muted">Visualisasi tren harga aktual 3 bulan dilengkapi level TP (hijau putus-putus) dan Stop Loss (merah putus-putus).</span>
                             </div>
 
-                            <!-- Chart Legends Info -->
-                            <div class="flex flex-wrap items-center gap-3 text-xs font-semibold">
-                                <span class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-blue-600 rounded"></span> Harga Close</span>
-                                <span class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-amber-500 rounded"></span> SMA 20</span>
-                                <span class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-emerald-500 rounded border border-dashed border-emerald-500"></span> Target TP</span>
-                                <span class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-rose-500 rounded border border-dashed border-rose-500"></span> Stop Loss</span>
+                            <div class="flex flex-wrap items-center gap-3">
+                                <!-- Mode Toggle: Candlestick vs Garis -->
+                                <div class="inline-flex p-1 bg-slate-100 rounded-xl text-xs font-bold border border-slate-200">
+                                    <button id="chartModeCandleBtn" onclick="setDeepDiveChartMode('candle')" class="px-3 py-1.5 rounded-lg transition-all bg-white text-primary shadow-xs flex items-center gap-1.5 font-bold cursor-pointer">
+                                        <span>🕯️</span> Candlestick
+                                    </button>
+                                    <button id="chartModeLineBtn" onclick="setDeepDiveChartMode('line')" class="px-3 py-1.5 rounded-lg transition-all text-slate-500 hover:text-primary flex items-center gap-1.5 font-medium cursor-pointer">
+                                        <span>📈</span> Garis
+                                    </button>
+                                </div>
+
+                                <!-- Chart Legends Info (Dinamis sesuai mode) -->
+                                <div class="flex flex-wrap items-center gap-2.5 text-xs font-semibold" id="deepDiveChartLegends">
+                                    <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 bg-emerald-500 rounded-xs"></span> Naik</span>
+                                    <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 bg-rose-500 rounded-xs"></span> Turun</span>
+                                    <span class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-amber-500 rounded"></span> SMA 20</span>
+                                    <span class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-emerald-500 rounded border border-dashed border-emerald-500"></span> Target TP</span>
+                                    <span class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-rose-500 rounded border border-dashed border-rose-500"></span> Stop Loss</span>
+                                </div>
                             </div>
                         </div>
 
@@ -3286,7 +3299,8 @@
             document.getElementById('deepDivePER').innerText = stock.PE_Ratio ? Number(stock.PE_Ratio).toFixed(1) + "x" : (closePrice > 5000 ? "19.5x" : "12.8x");
             document.getElementById('deepDivePBV').innerText = stock.PB_Ratio ? Number(stock.PB_Ratio).toFixed(1) + "x" : (closePrice > 5000 ? "4.2x" : "1.8x");
             document.getElementById('deepDiveROE').innerText = stock.ROE ? (Number(stock.ROE) * 100).toFixed(1) + "%" : "18.5%";
-            document.getElementById('deepDiveDivYield').innerText = stock.Dividend_Yield ? (Number(stock.Dividend_Yield) * 100).toFixed(1) + "%" : "2.8%";
+            const rawDivYield = Number(stock.Dividend_Yield);
+            document.getElementById('deepDiveDivYield').innerText = stock.Dividend_Yield ? (rawDivYield > 1.0 ? rawDivYield : rawDivYield * 100).toFixed(1) + "%" : "2.8%";
             document.getElementById('deepDiveDER').innerText = stock.Debt_to_Equity ? Number(stock.Debt_to_Equity).toFixed(2) + "x" : "0.25x";
             document.getElementById('deepDiveCurrentRatio').innerText = stock.Current_Ratio ? Number(stock.Current_Ratio).toFixed(2) + "x" : "1.55x";
 
@@ -3333,6 +3347,111 @@
             applyFilters();
         }
 
+        let currentDeepDiveChartMode = 'candle'; // 'candle' | 'line'
+
+        // Plugin Canvas Khusus Candlestick Chart.js
+        const deepDiveCandlestickPlugin = {
+            id: 'deepDiveCandlestickPlugin',
+            afterDatasetsDraw(chart, args, options) {
+                if (!options || !options.enabled) return;
+                const ctx = chart.ctx;
+                const meta = chart.getDatasetMeta(0);
+                const yScale = chart.scales.y;
+                const ohlc = options.ohlc;
+                if (!ohlc || !ohlc.opens || !meta || !meta.data) return;
+
+                ctx.save();
+                const count = meta.data.length;
+                if (count === 0) { ctx.restore(); return; }
+
+                const chartWidth = chart.chartArea.right - chart.chartArea.left;
+                const candleSpacing = chartWidth / count;
+                // Lebar body proporsional dinamis
+                const bodyWidth = Math.max(Math.min(candleSpacing * 0.68, 10), 2.5);
+
+                for (let i = 0; i < count; i++) {
+                    const pt = meta.data[i];
+                    if (!pt) continue;
+                    const x = pt.x;
+                    const o = ohlc.opens[i];
+                    const h = ohlc.highs[i];
+                    const l = ohlc.lows[i];
+                    const c = ohlc.closes[i];
+                    if (o == null || h == null || l == null || c == null) continue;
+
+                    const isBullish = c >= o;
+                    const candleColor = isBullish ? '#10b981' : '#ef4444';
+                    const yOpen = yScale.getPixelForValue(o);
+                    const yClose = yScale.getPixelForValue(c);
+                    const yHigh = yScale.getPixelForValue(h);
+                    const yLow = yScale.getPixelForValue(l);
+
+                    // 1. Gambar Wick (Sumbu Atas & Bawah)
+                    ctx.beginPath();
+                    ctx.strokeStyle = candleColor;
+                    ctx.lineWidth = Math.max(1, bodyWidth * 0.18);
+                    ctx.moveTo(x, yHigh);
+                    ctx.lineTo(x, yLow);
+                    ctx.stroke();
+
+                    // 2. Gambar Real Body
+                    const bodyTop = Math.min(yOpen, yClose);
+                    const bodyHeight = Math.max(Math.abs(yClose - yOpen), 2);
+                    ctx.fillStyle = candleColor;
+                    ctx.fillRect(x - bodyWidth / 2, bodyTop, bodyWidth, bodyHeight);
+                }
+                ctx.restore();
+            }
+        };
+
+        function setDeepDiveChartMode(mode) {
+            currentDeepDiveChartMode = mode;
+            const candleBtn = document.getElementById('chartModeCandleBtn');
+            const lineBtn = document.getElementById('chartModeLineBtn');
+            const legendsEl = document.getElementById('deepDiveChartLegends');
+
+            if (mode === 'candle') {
+                if (candleBtn) {
+                    candleBtn.className = "px-3 py-1.5 rounded-lg transition-all bg-white text-primary shadow-xs flex items-center gap-1.5 font-bold cursor-pointer";
+                }
+                if (lineBtn) {
+                    lineBtn.className = "px-3 py-1.5 rounded-lg transition-all text-slate-500 hover:text-primary flex items-center gap-1.5 font-medium cursor-pointer";
+                }
+                if (legendsEl) {
+                    legendsEl.innerHTML = `
+                        <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 bg-emerald-500 rounded-xs"></span> Naik</span>
+                        <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 bg-rose-500 rounded-xs"></span> Turun</span>
+                        <span class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-amber-500 rounded"></span> SMA 20</span>
+                        <span class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-emerald-500 rounded border border-dashed border-emerald-500"></span> Target TP</span>
+                        <span class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-rose-500 rounded border border-dashed border-rose-500"></span> Stop Loss</span>
+                    `;
+                }
+            } else {
+                if (candleBtn) {
+                    candleBtn.className = "px-3 py-1.5 rounded-lg transition-all text-slate-500 hover:text-primary flex items-center gap-1.5 font-medium cursor-pointer";
+                }
+                if (lineBtn) {
+                    lineBtn.className = "px-3 py-1.5 rounded-lg transition-all bg-white text-primary shadow-xs flex items-center gap-1.5 font-bold cursor-pointer";
+                }
+                if (legendsEl) {
+                    legendsEl.innerHTML = `
+                        <span class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-blue-600 rounded"></span> Close</span>
+                        <span class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-amber-500 rounded"></span> SMA 20</span>
+                        <span class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-emerald-500 rounded border border-dashed border-emerald-500"></span> Target TP</span>
+                        <span class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-rose-500 rounded border border-dashed border-rose-500"></span> Stop Loss</span>
+                    `;
+                }
+            }
+
+            if (activeDeepDiveStock) {
+                const closePrice = Math.round(activeDeepDiveStock.Close || 1000);
+                const entryPrice = Math.round(activeDeepDiveStock.Entry_Price || closePrice);
+                const targetPrice = Math.round(activeDeepDiveStock.Target_Price || (closePrice * 1.05));
+                const stopLoss = Math.round(activeDeepDiveStock.Stop_Loss || (closePrice * 0.95));
+                renderDeepDivePriceChart(activeDeepDiveStock, closePrice, entryPrice, targetPrice, stopLoss);
+            }
+        }
+
         function renderDeepDivePriceChart(stock, closePrice, entryPrice, targetPrice, stopLoss) {
             const ctx = document.getElementById('deepDivePriceChart');
             if (!ctx) return;
@@ -3343,7 +3462,7 @@
 
             const tickerClean = (stock.Ticker || "").replace(".JK", "").toUpperCase();
 
-            // 1. Ambil riwayat harga riil 30 hari dari database
+            // 1. Ambil riwayat harga riil 3 bulan (65 hari bursa) dari database
             let history = null;
             if (financialsSummaryData && financialsSummaryData[tickerClean] && financialsSummaryData[tickerClean].price_history) {
                 history = financialsSummaryData[tickerClean].price_history;
@@ -3353,6 +3472,9 @@
 
             let labels = [];
             let prices = [];
+            let opens = [];
+            let highs = [];
+            let lows = [];
             let sma20 = [];
             let tpLine = [];
             let slLine = [];
@@ -3360,7 +3482,16 @@
             if (history && history.prices && history.prices.length > 0) {
                 labels = history.dates;
                 prices = history.prices;
-                sma20 = history.sma20;
+                sma20 = history.sma20 || [];
+                opens = history.opens && history.opens.length === prices.length 
+                    ? history.opens 
+                    : prices.map((p, i) => i === 0 ? p : prices[i-1]);
+                highs = history.highs && history.highs.length === prices.length 
+                    ? history.highs 
+                    : prices.map((p, i) => Math.max(p, opens[i]));
+                lows = history.lows && history.lows.length === prices.length 
+                    ? history.lows 
+                    : prices.map((p, i) => Math.min(p, opens[i]));
                 tpLine = Array(prices.length).fill(targetPrice);
                 slLine = Array(prices.length).fill(stopLoss);
             } else {
@@ -3378,66 +3509,92 @@
                     })
                     .catch(() => {});
 
-                // Jika data riil sedang di-load, buat titik transisi awal menuju closePrice
+                // Fallback 65 titik transisi awal (~3 bulan bursa)
                 const now = new Date();
-                for (let i = 24; i >= 0; i--) {
+                for (let i = 64; i >= 0; i--) {
                     const d = new Date(now);
-                    d.setDate(d.getDate() - i);
+                    d.setDate(d.getDate() - Math.round(i * (90 / 65)));
                     labels.push(d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }));
                     prices.push(closePrice);
+                    opens.push(closePrice);
+                    highs.push(Math.round(closePrice * 1.01));
+                    lows.push(Math.round(closePrice * 0.99));
                     sma20.push(closePrice);
                     tpLine.push(targetPrice);
                     slLine.push(stopLoss);
                 }
             }
 
+            const isCandle = currentDeepDiveChartMode === 'candle';
+
+            // Hitung min dan max sumbu Y agar wick, TP, dan SL terlihat jelas tanpa terpotong
+            const allYVals = [...lows, ...highs, targetPrice, stopLoss].filter(v => v != null && !isNaN(v) && v > 0);
+            const minY = allYVals.length ? Math.min(...allYVals) : (closePrice * 0.9);
+            const maxY = allYVals.length ? Math.max(...allYVals) : (closePrice * 1.1);
+            const padY = (maxY - minY) * 0.05 || (closePrice * 0.02);
+
+            const datasets = [
+                {
+                    label: isCandle ? 'Candlestick OHLC' : 'Harga Saham (Close)',
+                    data: isCandle ? highs : prices,
+                    borderColor: isCandle ? 'transparent' : '#2563eb',
+                    backgroundColor: isCandle ? 'transparent' : 'rgba(37, 99, 235, 0.08)',
+                    borderWidth: isCandle ? 0 : 2.5,
+                    fill: !isCandle,
+                    tension: 0.25,
+                    pointRadius: 0,
+                    pointHoverRadius: isCandle ? 0 : 6,
+                    pointBackgroundColor: '#2563eb',
+                },
+                {
+                    label: 'SMA 20',
+                    data: sma20,
+                    borderColor: '#f59e0b',
+                    borderWidth: 1.5,
+                    borderDash: [4, 4],
+                    fill: false,
+                    tension: 0.3,
+                    pointRadius: 0,
+                },
+                {
+                    label: 'Target TP',
+                    data: tpLine,
+                    borderColor: '#10b981',
+                    borderWidth: 2,
+                    borderDash: [6, 4],
+                    fill: false,
+                    pointRadius: 0,
+                },
+                {
+                    label: 'Stop Loss',
+                    data: slLine,
+                    borderColor: '#ef4444',
+                    borderWidth: 2,
+                    borderDash: [6, 4],
+                    fill: false,
+                    pointRadius: 0,
+                }
+            ];
+
+            if (isCandle) {
+                // Dataset referensi batas bawah skala grafik
+                datasets.push({
+                    label: '_lowRef',
+                    data: lows,
+                    borderColor: 'transparent',
+                    backgroundColor: 'transparent',
+                    pointRadius: 0,
+                    fill: false,
+                });
+            }
+
             deepDivePriceChartInstance = new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: labels,
-                    datasets: [
-                        {
-                            label: 'Harga Saham (Close)',
-                            data: prices,
-                            borderColor: '#2563eb',
-                            backgroundColor: 'rgba(37, 99, 235, 0.08)',
-                            borderWidth: 2.5,
-                            fill: true,
-                            tension: 0.25,
-                            pointRadius: 2,
-                            pointHoverRadius: 6,
-                            pointBackgroundColor: '#2563eb',
-                        },
-                        {
-                            label: 'SMA 20',
-                            data: sma20,
-                            borderColor: '#f59e0b',
-                            borderWidth: 1.5,
-                            borderDash: [4, 4],
-                            fill: false,
-                            tension: 0.3,
-                            pointRadius: 0,
-                        },
-                        {
-                            label: 'Target TP',
-                            data: tpLine,
-                            borderColor: '#10b981',
-                            borderWidth: 2,
-                            borderDash: [6, 4],
-                            fill: false,
-                            pointRadius: 0,
-                        },
-                        {
-                            label: 'Stop Loss',
-                            data: slLine,
-                            borderColor: '#ef4444',
-                            borderWidth: 2,
-                            borderDash: [6, 4],
-                            fill: false,
-                            pointRadius: 0,
-                        }
-                    ]
+                    datasets: datasets
                 },
+                plugins: [deepDiveCandlestickPlugin],
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
@@ -3447,6 +3604,15 @@
                     },
                     plugins: {
                         legend: { display: false },
+                        deepDiveCandlestickPlugin: {
+                            enabled: isCandle,
+                            ohlc: {
+                                opens: opens,
+                                highs: highs,
+                                lows: lows,
+                                closes: prices
+                            }
+                        },
                         tooltip: {
                             backgroundColor: '#0f172a',
                             titleFont: { family: 'Plus Jakarta Sans', size: 12, weight: 'bold' },
@@ -3455,6 +3621,26 @@
                             cornerRadius: 10,
                             callbacks: {
                                 label: function(context) {
+                                    if (context.dataset.label === '_lowRef') return null;
+                                    const idx = context.dataIndex;
+                                    if (context.datasetIndex === 0) {
+                                        if (isCandle && opens[idx] !== undefined) {
+                                            const o = formatIDR(opens[idx]);
+                                            const h = formatIDR(highs[idx]);
+                                            const l = formatIDR(lows[idx]);
+                                            const c = formatIDR(prices[idx]);
+                                            const diff = prices[idx] - opens[idx];
+                                            const diffPct = opens[idx] > 0 ? ((diff / opens[idx]) * 100).toFixed(2) : '0.00';
+                                            const sign = diff >= 0 ? '+' : '';
+                                            return [
+                                                `Open:  ${o}`,
+                                                `High:  ${h}`,
+                                                `Low:   ${l}`,
+                                                `Close: ${c} (${sign}${diffPct}%)`
+                                            ];
+                                        }
+                                        return `Close: Rp ${Number(context.raw).toLocaleString('id-ID')}`;
+                                    }
                                     return `${context.dataset.label}: Rp ${Number(context.raw).toLocaleString('id-ID')}`;
                                 }
                             }
@@ -3463,10 +3649,16 @@
                     scales: {
                         x: {
                             grid: { display: false },
-                            ticks: { font: { family: 'Plus Jakarta Sans', size: 10 }, color: '#64748b' }
+                            ticks: { 
+                                font: { family: 'Plus Jakarta Sans', size: 10 }, 
+                                color: '#64748b',
+                                maxTicksLimit: 12
+                            }
                         },
                         y: {
                             grid: { color: '#f1f5f9' },
+                            min: Math.floor(minY - padY),
+                            max: Math.ceil(maxY + padY),
                             ticks: {
                                 font: { family: 'Plus Jakarta Sans', size: 10 },
                                 color: '#64748b',
@@ -3856,7 +4048,9 @@
             if (finDerEl && data.health) finDerEl.innerText = data.health.der || (stock.Debt_to_Equity ? Number(stock.Debt_to_Equity).toFixed(2) + "x" : "0.20x");
 
             const finDivEl = document.getElementById('deepDiveFinDiv');
-            if (finDivEl && data.health) finDivEl.innerText = data.health.div_yield || (stock.Dividend_Yield ? (stock.Dividend_Yield * 100).toFixed(1) + "%" : "3.0%");
+            const rawFinDiv = Number(stock.Dividend_Yield);
+            const fallbackFinDiv = stock.Dividend_Yield ? (rawFinDiv > 1.0 ? rawFinDiv : rawFinDiv * 100).toFixed(1) + "%" : "3.0%";
+            if (finDivEl && data.health) finDivEl.innerText = data.health.div_yield || fallbackFinDiv;
 
             const finMcapEl = document.getElementById('deepDiveFinMcap');
             if (finMcapEl && data.health) finMcapEl.innerText = data.health.mcap_formatted || "Rp 120.5 T";

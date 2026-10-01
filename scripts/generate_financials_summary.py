@@ -64,16 +64,16 @@ def build_summary():
                 if t_clean not in rec_map:
                     rec_map[t_clean] = r.to_dict()
 
-    # Extract 100% Real 30-Day Historical Prices from raw_market_data.csv
+    # Extract 100% Real 3-Month (65-Day) Historical Prices with OHLC from raw_market_data.csv
     price_history_map = {}
     if RAW_MARKET_FILE.exists():
-        logger.info(f"Extracting 30-day factual price history from {RAW_MARKET_FILE}...")
+        logger.info(f"Extracting 3-month (65-day) factual OHLC price history from {RAW_MARKET_FILE}...")
         try:
             raw_market_df = pd.read_csv(RAW_MARKET_FILE)
             raw_market_df["Date"] = pd.to_datetime(raw_market_df["Date"])
             for ticker_full, grp in raw_market_df.groupby("Ticker"):
                 t_clean = str(ticker_full).replace(".JK", "").strip().upper()
-                sorted_grp = grp.sort_values("Date").tail(30).copy()
+                sorted_grp = grp.sort_values("Date").tail(65).copy()
                 if sorted_grp.empty:
                     continue
 
@@ -84,6 +84,7 @@ def build_summary():
 
                 dates_formatted = [d.strftime("%d %b") for d in sorted_grp["Date"]]
                 full_dates = [d.strftime("%Y-%m-%d") for d in sorted_grp["Date"]]
+                opens = [round(float(o)) for o in sorted_grp["Open"]]
                 prices = [round(float(p)) for p in sorted_grp["Close"]]
                 sma20 = [round(float(s)) for s in sorted_sma]
                 highs = [round(float(h)) for h in sorted_grp["High"]]
@@ -94,15 +95,16 @@ def build_summary():
                     "ticker": t_clean,
                     "dates": dates_formatted,
                     "full_dates": full_dates,
-                    "prices": prices,
-                    "sma20": sma20,
+                    "opens": opens,
                     "highs": highs,
                     "lows": lows,
+                    "prices": prices,
+                    "sma20": sma20,
                     "volumes": volumes,
                     "last_price": prices[-1] if prices else 0,
                     "last_date": full_dates[-1] if full_dates else "",
                 }
-            logger.info(f"Extracted real 30-day price history for {len(price_history_map)} tickers.")
+            logger.info(f"Extracted real 3-month OHLC price history for {len(price_history_map)} tickers.")
         except Exception as e:
             logger.error(f"Error extracting price history: {e}")
 
