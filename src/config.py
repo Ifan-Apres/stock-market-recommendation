@@ -114,6 +114,7 @@ MORNING_BRIEF_FILE = PROCESSED_DATA_DIR / "latest_morning_brief.json"
 PORTFOLIO_ALLOCATION_FILE = PROCESSED_DATA_DIR / "latest_portfolio_allocation.csv"
 SNAPSHOT_FILE = PROCESSED_DATA_DIR / "snapshot.json"
 WATCHLIST_ANALYSIS_FILE = PROCESSED_DATA_DIR / "watchlist_analysis.json"
+RECOMMENDATIONS_JSON_FILE = PROCESSED_DATA_DIR / "latest_recommendations.json"
 
 # Logging Format
 LOG_FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"

@@ -2184,15 +2184,17 @@
     <!-- ==================== LOGIC JAVASCRIPT ==================== -->
     <script>
         const fallbackDefaultStocks = [
-            { Ticker: "BBCA.JK", Sector: "Financials", Close: 10250, Entry_Price: 10150, Target_Price: 10800, Stop_Loss: 9800, Recommendation: "Buy on Weakness", Risk_Reward_Ratio: 2.1, Bullish_Probability: 0.82, Dividend_Yield: 0.024, GBDT_Prob: 0.85, LSTM_Prob: 0.80, ARIMA_Prob: 0.81, GARCH_Vol: 0.165, VaR_95_1D: -0.018, Beta_IHSG: 0.95, Sharpe_Ratio: 1.45 },
-            { Ticker: "BBRI.JK", Sector: "Financials", Close: 5450, Entry_Price: 5350, Target_Price: 5850, Stop_Loss: 5150, Recommendation: "Buy on Weakness", Risk_Reward_Ratio: 2.5, Bullish_Probability: 0.79, Dividend_Yield: 0.052, GBDT_Prob: 0.80, LSTM_Prob: 0.78, ARIMA_Prob: 0.79, GARCH_Vol: 0.198, VaR_95_1D: -0.021, Beta_IHSG: 1.15, Sharpe_Ratio: 1.30 },
-            { Ticker: "BMRI.JK", Sector: "Financials", Close: 7150, Entry_Price: 7050, Target_Price: 7650, Stop_Loss: 6800, Recommendation: "Buy on Weakness", Risk_Reward_Ratio: 2.4, Bullish_Probability: 0.81, Dividend_Yield: 0.048, GBDT_Prob: 0.83, LSTM_Prob: 0.80, ARIMA_Prob: 0.80, GARCH_Vol: 0.185, VaR_95_1D: -0.019, Beta_IHSG: 1.10, Sharpe_Ratio: 1.38 },
-            { Ticker: "BBNI.JK", Sector: "Financials", Close: 5600, Entry_Price: 5500, Target_Price: 6050, Stop_Loss: 5300, Recommendation: "Buy on Weakness", Risk_Reward_Ratio: 2.2, Bullish_Probability: 0.77, Dividend_Yield: 0.050, GBDT_Prob: 0.79, LSTM_Prob: 0.76, ARIMA_Prob: 0.77, GARCH_Vol: 0.192, VaR_95_1D: -0.020, Beta_IHSG: 1.12, Sharpe_Ratio: 1.25 },
-            { Ticker: "TLKM.JK", Sector: "Infrastructure", Close: 3100, Entry_Price: 3050, Target_Price: 3350, Stop_Loss: 2950, Recommendation: "Buy on Weakness", Risk_Reward_Ratio: 2.0, Bullish_Probability: 0.74, Dividend_Yield: 0.051, GBDT_Prob: 0.76, LSTM_Prob: 0.72, ARIMA_Prob: 0.74, GARCH_Vol: 0.172, VaR_95_1D: -0.017, Beta_IHSG: 0.85, Sharpe_Ratio: 1.10 },
-            { Ticker: "ASII.JK", Sector: "Industrials", Close: 5100, Entry_Price: 5000, Target_Price: 5500, Stop_Loss: 4800, Recommendation: "Buy on Breakout", Risk_Reward_Ratio: 2.5, Bullish_Probability: 0.76, Dividend_Yield: 0.075, GBDT_Prob: 0.78, LSTM_Prob: 0.75, ARIMA_Prob: 0.75, GARCH_Vol: 0.210, VaR_95_1D: -0.022, Beta_IHSG: 1.05, Sharpe_Ratio: 1.18 },
-            { Ticker: "ADRO.JK", Sector: "Energy", Close: 3750, Entry_Price: 3680, Target_Price: 4100, Stop_Loss: 3500, Recommendation: "Buy on Weakness", Risk_Reward_Ratio: 2.3, Bullish_Probability: 0.78, Dividend_Yield: 0.115, GBDT_Prob: 0.80, LSTM_Prob: 0.77, ARIMA_Prob: 0.77, GARCH_Vol: 0.245, VaR_95_1D: -0.026, Beta_IHSG: 0.98, Sharpe_Ratio: 1.22 },
-            { Ticker: "PTBA.JK", Sector: "Energy", Close: 2750, Entry_Price: 2700, Target_Price: 2980, Stop_Loss: 2580, Recommendation: "Buy on Weakness", Risk_Reward_Ratio: 2.1, Bullish_Probability: 0.75, Dividend_Yield: 0.142, GBDT_Prob: 0.77, LSTM_Prob: 0.74, ARIMA_Prob: 0.75, GARCH_Vol: 0.230, VaR_95_1D: -0.024, Beta_IHSG: 0.92, Sharpe_Ratio: 1.15 },
-            { Ticker: "BRIS.JK", Sector: "Financials", Close: 2980, Entry_Price: 2900, Target_Price: 3350, Stop_Loss: 2750, Recommendation: "Buy on Breakout", Risk_Reward_Ratio: 2.8, Bullish_Probability: 0.84, Dividend_Yield: 0.012, GBDT_Prob: 0.86, LSTM_Prob: 0.83, ARIMA_Prob: 0.82, GARCH_Vol: 0.260, VaR_95_1D: -0.028, Beta_IHSG: 1.30, Sharpe_Ratio: 1.50 }
+            { Ticker: "BBCA.JK", Sector: "Financials", Close: 6075, Entry_Price: 6075, Target_Price: 6250, Stop_Loss: 5900, Recommendation: "HOLD", Risk_Reward_Ratio: 1.0, Bullish_Probability: 0.5035, Dividend_Yield: 0.062, GBDT_Prob: 0.5198, LSTM_Prob: 0.4821, ARIMA_Prob: 0.4947, GARCH_Vol: 0.2068, VaR_95_1D: -0.0208, Beta_IHSG: 0.85, Sharpe_Ratio: -0.73 },
+            { Ticker: "BBRI.JK", Sector: "Financials", Close: 3140, Entry_Price: 3140, Target_Price: 3230, Stop_Loss: 3050, Recommendation: "HOLD", Risk_Reward_Ratio: 1.0, Bullish_Probability: 0.5036, Dividend_Yield: 0.132, GBDT_Prob: 0.5175, LSTM_Prob: 0.4821, ARIMA_Prob: 0.5008, GARCH_Vol: 0.2680, VaR_95_1D: -0.0268, Beta_IHSG: 0.82, Sharpe_Ratio: -0.80 },
+            { Ticker: "BMRI.JK", Sector: "Financials", Close: 4010, Entry_Price: 4010, Target_Price: 4130, Stop_Loss: 3890, Recommendation: "HOLD", Risk_Reward_Ratio: 1.0, Bullish_Probability: 0.5058, Dividend_Yield: 0.135, GBDT_Prob: 0.5231, LSTM_Prob: 0.4821, ARIMA_Prob: 0.4980, GARCH_Vol: 0.2551, VaR_95_1D: -0.0248, Beta_IHSG: 0.87, Sharpe_Ratio: -0.12 },
+            { Ticker: "BBNI.JK", Sector: "Financials", Close: 3390, Entry_Price: 3390, Target_Price: 3490, Stop_Loss: 3290, Recommendation: "HOLD", Risk_Reward_Ratio: 1.0, Bullish_Probability: 0.5313, Dividend_Yield: 0.102, GBDT_Prob: 0.5244, LSTM_Prob: 0.4821, ARIMA_Prob: 0.6223, GARCH_Vol: 0.2535, VaR_95_1D: -0.0245, Beta_IHSG: 0.79, Sharpe_Ratio: -0.66 },
+            { Ticker: "TLKM.JK", Sector: "Infrastructures", Close: 2290, Entry_Price: 2290, Target_Price: 2410, Stop_Loss: 2220, Recommendation: "HOLD", Risk_Reward_Ratio: 1.7, Bullish_Probability: 0.5062, Dividend_Yield: 0.094, GBDT_Prob: 0.5344, LSTM_Prob: 0.4821, ARIMA_Prob: 0.4719, GARCH_Vol: 0.3004, VaR_95_1D: -0.0295, Beta_IHSG: 0.97, Sharpe_Ratio: -0.68 },
+            { Ticker: "ASII.JK", Sector: "Consumer Cyclicals", Close: 4600, Entry_Price: 4600, Target_Price: 4750, Stop_Loss: 4460, Recommendation: "HOLD", Risk_Reward_Ratio: 1.1, Bullish_Probability: 0.5043, Dividend_Yield: 0.083, GBDT_Prob: 0.5098, LSTM_Prob: 0.4821, ARIMA_Prob: 0.5239, GARCH_Vol: 0.2584, VaR_95_1D: -0.0255, Beta_IHSG: 0.83, Sharpe_Ratio: -0.44 },
+            { Ticker: "ADRO.JK", Sector: "Energy", Close: 2430, Entry_Price: 2430, Target_Price: 2530, Stop_Loss: 2360, Recommendation: "HOLD", Risk_Reward_Ratio: 1.4, Bullish_Probability: 0.5098, Dividend_Yield: 0.096, GBDT_Prob: 0.5074, LSTM_Prob: 0.4821, ARIMA_Prob: 0.5575, GARCH_Vol: 0.4141, VaR_95_1D: -0.0380, Beta_IHSG: 0.57, Sharpe_Ratio: 1.52 },
+            { Ticker: "PTBA.JK", Sector: "Energy", Close: 3120, Entry_Price: 3120, Target_Price: 3210, Stop_Loss: 3030, Recommendation: "HOLD", Risk_Reward_Ratio: 1.0, Bullish_Probability: 0.4756, Dividend_Yield: 0.037, GBDT_Prob: 0.4652, LSTM_Prob: 0.4821, ARIMA_Prob: 0.4919, GARCH_Vol: 0.3132, VaR_95_1D: -0.0278, Beta_IHSG: 0.50, Sharpe_Ratio: 1.06 },
+            { Ticker: "BRIS.JK", Sector: "Financials", Close: 1420, Entry_Price: 1420, Target_Price: 1535, Stop_Loss: 1375, Recommendation: "HOLD", Risk_Reward_Ratio: 2.6, Bullish_Probability: 0.5220, Dividend_Yield: 0.022, GBDT_Prob: 0.5241, LSTM_Prob: 0.4821, ARIMA_Prob: 0.5768, GARCH_Vol: 0.4823, VaR_95_1D: -0.0433, Beta_IHSG: 0.86, Sharpe_Ratio: -1.31 },
+            { Ticker: "ISAT.JK", Sector: "Infrastructures", Close: 2260, Entry_Price: 2260, Target_Price: 2380, Stop_Loss: 2190, Recommendation: "HOLD", Risk_Reward_Ratio: 1.7, Bullish_Probability: 0.4915, Dividend_Yield: 0.048, GBDT_Prob: 0.4911, LSTM_Prob: 0.4821, ARIMA_Prob: 0.5067, GARCH_Vol: 0.4366, VaR_95_1D: -0.0420, Beta_IHSG: 0.87, Sharpe_Ratio: 0.45 },
+            { Ticker: "UNTR.JK", Sector: "Industrials", Close: 27075, Entry_Price: 27075, Target_Price: 27875, Stop_Loss: 24525, Recommendation: "HOLD", Risk_Reward_Ratio: 0.3, Bullish_Probability: 0.4907, Dividend_Yield: 0.087, GBDT_Prob: 0.4604, LSTM_Prob: 0.4821, ARIMA_Prob: 0.5793, GARCH_Vol: 0.5239, VaR_95_1D: -0.0475, Beta_IHSG: 0.65, Sharpe_Ratio: 0.07 }
         ];
 
         let allRecommendations = [...fallbackDefaultStocks];
@@ -2769,22 +2771,46 @@
         // 4. Fetch dan Render Rekomendasi Saham
         async function loadRecommendations() {
             try {
-                // Panggil mode=all agar backend menggabungkan seluruh 29 saham favorit, dividen, dan swing
-                const res = await authFetch('/recommendations?mode=all');
-                if (!res.ok) {
-                    // Coba fallback ke /recommendations?universe=all
-                    const fallbackRes = await authFetch('/recommendations?universe=all');
-                    if (fallbackRes.ok) {
-                        const data = await fallbackRes.json();
+                let loaded = false;
+                // 1. Coba panggil API backend
+                try {
+                    const res = await authFetch('/recommendations?mode=all');
+                    if (res && res.ok) {
+                        const data = await res.json();
                         if (data && data.length > 0) {
                             allRecommendations = data;
+                            loaded = true;
                         }
                     }
-                } else {
-                    const data = await res.json();
-                    if (data && data.length > 0) {
-                        allRecommendations = data;
-                    }
+                } catch (e) {}
+
+                // 2. Jika offline / port 8080 statis, fetch data/processed/latest_recommendations.json
+                if (!loaded) {
+                    try {
+                        const jsonRes = await fetch('/data/processed/latest_recommendations.json');
+                        if (jsonRes && jsonRes.ok) {
+                            const data = await jsonRes.json();
+                            if (data && data.length > 0) {
+                                allRecommendations = data;
+                                loaded = true;
+                            }
+                        }
+                    } catch (e) {}
+                }
+
+                // 3. Fallback alternatif ke data/processed/snapshot.json
+                if (!loaded) {
+                    try {
+                        const snapRes = await fetch('/data/processed/snapshot.json');
+                        if (snapRes && snapRes.ok) {
+                            const snap = await snapRes.json();
+                            const data = snap.all_recommendations || snap.recommendations_swing;
+                            if (data && data.length > 0) {
+                                allRecommendations = data;
+                                loaded = true;
+                            }
+                        }
+                    } catch (e) {}
                 }
             } catch (e) {
                 console.log("Menggunakan data rekomendasi lokal.");
@@ -2813,7 +2839,7 @@
                 const entryPrice = Math.round(item.Entry_Price || closePrice);
                 const targetPrice = Math.round(item.Target_Price || (closePrice * 1.05));
                 const stopLoss = Math.round(item.Stop_Loss || (closePrice * 0.96));
-                const rec = item.Recommendation || "Buy on Weakness";
+                const rec = item.Recommendation || "HOLD";
 
                 let badgeClass = "bg-emerald-50 text-emerald-800 border-emerald-200";
                 if (rec.toLowerCase().includes("breakout")) {
@@ -2826,8 +2852,8 @@
 
                 const targetPct = (((targetPrice - closePrice) / closePrice) * 100).toFixed(1);
                 const slPct = (((closePrice - stopLoss) / closePrice) * 100).toFixed(1);
-                const rrr = item.Risk_Reward_Ratio ? `1 : ${item.Risk_Reward_Ratio.toFixed(1)}` : "1 : 2.0";
-                const prob = Math.round((item.Bullish_Probability || 0.7) * 100);
+                const rrr = item.Risk_Reward_Ratio ? `1 : ${Number(item.Risk_Reward_Ratio).toFixed(1)}` : "1 : 1.5";
+                const prob = Math.round((item.Bullish_Probability !== undefined && item.Bullish_Probability !== null ? item.Bullish_Probability : 0.5) * 100);
 
                 let ffMiniBadge = "";
                 const ffData = (window.allForeignFlow && window.allForeignFlow.constituents && window.allForeignFlow.constituents[tickerClean])
@@ -3112,8 +3138,8 @@
             const upsidePct = (((targetPrice - closePrice) / (closePrice || 1)) * 100).toFixed(1);
             const downsidePct = (((closePrice - stopLoss) / (closePrice || 1)) * 100).toFixed(1);
             const compName = COMPANY_NAMES[tickerClean] || stock.Company || `PT ${tickerClean} Tbk`;
-            const rrr = stock.Risk_Reward_Ratio ? Number(stock.Risk_Reward_Ratio).toFixed(1) : "1.8";
-            const prob = Math.round((stock.Bullish_Probability || 0.72) * 100);
+            const rrr = stock.Risk_Reward_Ratio ? Number(stock.Risk_Reward_Ratio).toFixed(1) : "1.5";
+            const prob = Math.round((stock.Bullish_Probability !== undefined ? stock.Bullish_Probability : 0.5) * 100);
 
             // 1. Breadcrumb & Hero Card
             document.getElementById('deepDiveBreadcrumbTicker').innerText = tickerClean;
@@ -3707,8 +3733,8 @@
                 const roeNum = stock.ROE ? (stock.ROE * 100).toFixed(1) : "18.5";
                 const derNum = stock.Debt_to_Equity ? Number(stock.Debt_to_Equity).toFixed(2) : "0.20";
                 const divNum = stock.Dividend_Yield ? (stock.Dividend_Yield * 100).toFixed(1) : "3.0";
-                const recAction = (stock.Recommendation || 'BUY ON WEAKNESS').toUpperCase();
-                const prob = Math.round((stock.Bullish_Probability || 0.75) * 100);
+                const recAction = (stock.Recommendation || 'HOLD').toUpperCase();
+                const prob = Math.round((stock.Bullish_Probability !== undefined ? stock.Bullish_Probability : 0.5) * 100);
 
                 data = {
                     ticker: tickerClean,
@@ -4179,12 +4205,12 @@
             document.getElementById('modalStockTicker').innerText = tickerClean;
             document.getElementById('modalStockSector').innerText = stock.Sector || 'General';
             document.getElementById('modalStockFullName').innerText = `${tickerClean} • Bursa Efek Indonesia`;
-            document.getElementById('modalConsensusProb').innerText = `${Math.round((stock.Bullish_Probability || 0.7) * 100)}%`;
-            document.getElementById('modalActionBadge').innerText = (stock.Recommendation || 'BUY ON WEAKNESS').toUpperCase();
+            document.getElementById('modalConsensusProb').innerText = `${Math.round((stock.Bullish_Probability !== undefined ? stock.Bullish_Probability : 0.5) * 100)}%`;
+            document.getElementById('modalActionBadge').innerText = (stock.Recommendation || 'HOLD').toUpperCase();
 
-            document.getElementById('modalGBDTProb').innerText = `${Math.round((stock.GBDT_Prob || stock.Bullish_Probability || 0.75) * 100)}%`;
-            document.getElementById('modalLSTMProb').innerText = `${Math.round((stock.LSTM_Prob || stock.Bullish_Probability || 0.78) * 100)}%`;
-            document.getElementById('modalARIMAProb').innerText = `${Math.round((stock.ARIMA_Prob || stock.Bullish_Probability || 0.72) * 100)}%`;
+            document.getElementById('modalGBDTProb').innerText = `${Math.round((stock.GBDT_Prob !== undefined ? stock.GBDT_Prob : (stock.Bullish_Probability || 0.5)) * 100)}%`;
+            document.getElementById('modalLSTMProb').innerText = `${Math.round((stock.LSTM_Prob !== undefined ? stock.LSTM_Prob : (stock.Bullish_Probability || 0.5)) * 100)}%`;
+            document.getElementById('modalARIMAProb').innerText = `${Math.round((stock.ARIMA_Prob !== undefined ? stock.ARIMA_Prob : (stock.Bullish_Probability || 0.5)) * 100)}%`;
 
             document.getElementById('modalGARCHVol').innerText = stock.GARCH_Vol ? `${(stock.GARCH_Vol * 100).toFixed(1)}%` : "18.5%";
             document.getElementById('modalVaR').innerText = formatRiskPct(stock.VaR_95_1D, "-1.92%");

@@ -37,6 +37,7 @@ from src.config import (  # type: ignore # pyrefly: ignore [missing-import]
     MORNING_BRIEF_FILE,
     PORTFOLIO_ALLOCATION_FILE,
     PROCESSED_DATA_FILE,
+    RECOMMENDATIONS_JSON_FILE,
     SECTOR_MAP,
     SNAPSHOT_FILE,
     SWING_RECOMMENDATION_FILE,
@@ -759,6 +760,14 @@ def export_snapshot_json(
     with open(SNAPSHOT_FILE, "w", encoding="utf-8") as f:
         json.dump(snapshot, f, ensure_ascii=False, indent=2)
     logger.info(f"Consolidated snapshot safely written to {SNAPSHOT_FILE}")
+
+    try:
+        RECOMMENDATIONS_JSON_FILE.parent.mkdir(parents=True, exist_ok=True)
+        with open(RECOMMENDATIONS_JSON_FILE, "w", encoding="utf-8") as f:
+            json.dump(clean_records(all_recs), f, ensure_ascii=False, indent=2)
+        logger.info(f"Unified recommendations safely written to {RECOMMENDATIONS_JSON_FILE}")
+    except Exception as e:
+        logger.error(f"Failed exporting {RECOMMENDATIONS_JSON_FILE}: {str(e)}")
 
 
 def run_model_inference_pipeline() -> Tuple[Dict[str, float], pd.DataFrame]:
