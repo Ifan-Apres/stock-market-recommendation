@@ -237,6 +237,12 @@ graph TD
    - Menyisipkan tanda pengenal jejak audit unik berbasis user hash dan time-window pada setiap respon data terautentikasi untuk melacak dan mendeteksi sumber kebocoran data.
 6. **Zero-Trust Git Hygiene**:
    - Dataset mentah (`data/raw/`) serta bobot biner model machine learning (`.joblib`, `.pth`) dikecualikan sepenuhnya dari pelacakan repositori publik (`.gitignore`) demi perlindungan hak cipta model kuantitatif.
+7. **Multi-Layer Anti-Bot Registration Armor**:
+   - **Invisible Honeypot Trap**: Memasang jebakan input tersembunyi (`company_fax`) yang otomatis memblokir script scraper/bot jika terisi.
+   - **Submission Speed Trap**: Menolak submit formulir yang lebih cepat dari 1,5 detik (menangkap eksekusi headless script).
+   - **IP Registration Quota**: Membatasi pendaftaran maksimal 3 akun per jam per alamat IP guna menggagalkan mass-account generation.
+   - **Disposable Email Blacklist**: Memblokir registrasi dari penyedia email sementara/throwaway (misal: mailinator, guerrillamail, tempmail).
+   - **Cloudflare Turnstile Ready**: Mendukung integrasi captcha modern tanpa hambatan verifikasi gambar.
 
 ---
 

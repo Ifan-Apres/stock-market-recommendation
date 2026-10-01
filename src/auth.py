@@ -162,6 +162,17 @@ def _save_users_db(users: Dict[str, Dict[str, Any]]) -> None:
     temp_file.replace(USERS_FILE)
 
 
+DISPOSABLE_EMAIL_DOMAINS = {
+    "mailinator.com", "guerrillamail.com", "tempmail.com", "10minutemail.com",
+    "trashmail.com", "yopmail.com", "sharklasers.com", "getairmail.com",
+    "dispostable.com", "fakeinbox.com", "mytemp.email", "mohmal.com",
+    "throwawaymail.com", "burnermail.io", "temp-mail.org", "crazymailing.com",
+    "armyspy.com", "cuvox.de", "dayrep.com", "einrot.com", "fleckens.hu",
+    "gustr.com", "jourrapide.com", "rhyta.com", "superrito.com", "teleworm.us",
+    "inboxkitten.com", "tempail.com", "temp-mail.io", "nada.ltd",
+}
+
+
 def register_user(name: str, email: str, password: str, role: str = "Market Explorer") -> Tuple[bool, str, Optional[Dict[str, Any]]]:
     """Registers a new user with PBKDF2 password hashing."""
     email_clean = email.strip().lower()
@@ -174,6 +185,11 @@ def register_user(name: str, email: str, password: str, role: str = "Market Expl
         return False, "Nama lengkap harus minimal 2 karakter.", None
     if len(password) < 6:
         return False, "Kata sandi harus minimal 6 karakter.", None
+
+    # Check disposable email domain
+    domain = email_clean.split("@")[-1]
+    if domain in DISPOSABLE_EMAIL_DOMAINS:
+        return False, "Registrasi dengan email sementara/disposable tidak diizinkan demi keamanan platform.", None
 
     with _db_lock:
         users = _load_users_db()

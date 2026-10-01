@@ -388,6 +388,9 @@ class AuthRegisterRequest(BaseModel):
     email: str
     password: str
     role: Optional[str] = "Market Explorer"
+    company_fax: Optional[str] = None  # Anti-Bot Honeypot Trap (Must remain empty)
+    client_ts: Optional[float] = None  # Timestamp for human typing speed verification
+    turnstile_token: Optional[str] = None  # Optional Cloudflare Turnstile token
 
 
 class AuthLoginRequest(BaseModel):
@@ -397,8 +400,66 @@ class AuthLoginRequest(BaseModel):
 
 
 @app.post("/api/v1/auth/register", tags=["Auth"])
-def auth_register(req: AuthRegisterRequest) -> Dict[str, Any]:
-    """Registers a new user account with secure PBKDF2 password hashing."""
+def auth_register(req: AuthRegisterRequest, request: Request) -> Dict[str, Any]:
+    """Registers a new user account with multi-layer anti-bot armor and PBKDF2 hashing."""
+    client_ip = request.client.host if request.client else "127.0.0.1"
+
+    # 1. Anti-Bot Honeypot Trap: Reject if hidden field is filled
+    if req.company_fax and req.company_fax.strip():
+        logger.warning(f"Registration honeypot trap triggered by {client_ip} [Field content: {req.company_fax}]")
+        raise HTTPException(
+            status_code=400,
+            detail="Aktivitas otomasi mencurigakan terdeteksi (Anti-Bot Trap). Pendaftaran dibatalkan.",
+        )
+
+    # 2. Registration Quota: Max 3 accounts per hour per IP (Stops mass account generators)
+    allowed, retry_after = rate_limiter.is_allowed(client_ip, "register_account", max_requests=3, window_seconds=3600)
+    if not allowed:
+        logger.warning(f"Registration quota exceeded for IP {client_ip}")
+        raise HTTPException(
+            status_code=429,
+            detail=f"Batas pendaftaran akun baru per jam tercapai untuk jaringan Anda. Silakan coba lagi dalam {max(1, retry_after // 60)} menit atau masuk menggunakan akun yang ada.",
+        )
+
+    # 3. Submission Speed Trap: Humans take >= 1.5 seconds to fill registration
+    if req.client_ts:
+        now_ms = time.time() * 1000
+        time_elapsed_ms = now_ms - req.client_ts
+        if time_elapsed_ms < 1500:
+            logger.warning(f"Registration speed trap triggered by {client_ip} (form filled in {time_elapsed_ms:.0f}ms)")
+            raise HTTPException(
+                status_code=400,
+                detail="Pengisian formulir terlalu cepat (terindikasi automated bot script). Harap isi formulir secara manual.",
+            )
+
+    # 4. Optional Cloudflare Turnstile Server Verification
+    turnstile_secret = os.getenv("TURNSTILE_SECRET_KEY")
+    if turnstile_secret:
+        if not req.turnstile_token:
+            raise HTTPException(status_code=400, detail="Verifikasi Cloudflare Turnstile diperlukan.")
+        try:
+            import urllib.parse
+            import urllib.request
+            verify_payload = urllib.parse.urlencode({
+                "secret": turnstile_secret,
+                "response": req.turnstile_token,
+                "remoteip": client_ip,
+            }).encode("utf-8")
+            cf_req = urllib.request.Request(
+                "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+                data=verify_payload,
+                method="POST",
+            )
+            with urllib.request.urlopen(cf_req, timeout=5) as cf_resp:
+                cf_result = json.loads(cf_resp.read().decode("utf-8"))
+                if not cf_result.get("success"):
+                    raise HTTPException(status_code=400, detail="Verifikasi Cloudflare Turnstile gagal. Silakan muat ulang halaman.")
+        except HTTPException:
+            raise
+        except Exception as e:
+            logger.error(f"Turnstile verification error: {e}")
+
+    # 5. Core Registration with PBKDF2
     success, message, user_data = register_user(
         name=req.name,
         email=req.email,

@@ -166,6 +166,12 @@
                     <!-- 2. CONTAINER REGISTER -->
                     <div id="registerContainer" class="hidden flex flex-col">
                         <form id="registerForm" onsubmit="handleFormRegister(event)" class="mt-4 flex flex-col gap-3.5">
+                            <!-- Anti-Bot Honeypot Trap: Invisible to humans, traps automated scrapers -->
+                            <div style="position: absolute; left: -9999px; top: -9999px; opacity: 0; pointer-events: none; width: 0; height: 0; overflow: hidden;" aria-hidden="true">
+                                <label for="company_fax">Company Fax (Leave blank)</label>
+                                <input type="text" id="company_fax" name="company_fax" tabindex="-1" autocomplete="off"/>
+                            </div>
+
                             <div class="flex flex-col gap-1.5">
                                 <label class="text-xs font-semibold text-slate-300" for="regNameInput">Nama Lengkap</label>
                                 <div class="relative flex items-center">
@@ -261,6 +267,11 @@
                                 <span>Daftar Akun & Buka Akses</span>
                                 <span class="material-symbols-outlined text-[18px]">verified</span>
                             </button>
+
+                            <div class="mt-2.5 flex items-center justify-center gap-1.5 text-[11px] text-slate-500">
+                                <span class="material-symbols-outlined text-[13px] text-blue-400">verified_user</span>
+                                <span>Multi-Layer Anti-Bot &amp; Honeypot Defense Active</span>
+                            </div>
 
                             <div class="mt-4 pt-3 border-t border-slate-800 text-center text-xs text-slate-400">
                                 <span>Sudah memiliki akun terdaftar?</span>
@@ -393,7 +404,10 @@
             }
         }
 
+        let regFormRenderTs = Date.now();
+
         function switchAuthTab(tab) {
+            regFormRenderTs = Date.now();
             const loginBtn = document.getElementById('tabLoginBtn');
             const regBtn = document.getElementById('tabRegisterBtn');
             const loginContainer = document.getElementById('loginContainer');
@@ -564,6 +578,28 @@
                 return;
             }
 
+            // Anti-Bot Layer 1: Honeypot trap check
+            const honeypotVal = (document.getElementById('company_fax')?.value || '').trim();
+            if (honeypotVal) {
+                showAlert("Aktivitas otomasi tidak wajar terdeteksi (Anti-Bot Trap). Pendaftaran dibatalkan.", "bg-rose-500/20 text-rose-300 border border-rose-500/30");
+                return;
+            }
+
+            // Anti-Bot Layer 2: Speed Trap (minimum 1.2s for human form completion)
+            const elapsedMs = Date.now() - regFormRenderTs;
+            if (elapsedMs < 1200) {
+                showAlert("Pengisian formulir terdeteksi terlalu cepat. Harap luangkan waktu untuk memverifikasi isian Anda.", "bg-rose-500/20 text-rose-300 border border-rose-500/30");
+                return;
+            }
+
+            // Anti-Bot Layer 3: Disposable email check
+            const disposableDomains = ['mailinator.com', 'guerrillamail.com', 'tempmail.com', '10minutemail.com', 'trashmail.com', 'yopmail.com', 'sharklasers.com', 'getairmail.com', 'dispostable.com', 'fakeinbox.com', 'temp-mail.org'];
+            const emailDomain = (email.split('@')[1] || '').toLowerCase();
+            if (disposableDomains.includes(emailDomain)) {
+                showAlert("Pendaftaran menggunakan email sementara/disposable tidak diizinkan demi integritas platform.", "bg-rose-500/20 text-rose-300 border border-rose-500/30");
+                return;
+            }
+
             btn.disabled = true;
             btn.innerHTML = `<span class="inline-block animate-spin mr-2">🔄</span> Mendaftarkan Akun Anda...`;
 
@@ -575,7 +611,14 @@
                     const res = await fetch('/api/v1/auth/register', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ name, email, password, role })
+                        body: JSON.stringify({ 
+                            name, 
+                            email, 
+                            password, 
+                            role,
+                            company_fax: honeypotVal,
+                            client_ts: regFormRenderTs
+                        })
                     });
                     if (res.ok) {
                         const json = await res.json();
