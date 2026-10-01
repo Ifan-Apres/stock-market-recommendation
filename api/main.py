@@ -20,6 +20,7 @@ if str(ROOT_DIR) not in sys.path:
 from dotenv import load_dotenv  # type: ignore # pyrefly: ignore [missing-import]
 # pyrefly: ignore [missing-import]
 from fastapi import BackgroundTasks, Depends, FastAPI, Header, HTTPException, Query, Request  # type: ignore # pyrefly: ignore [missing-import]
+from fastapi.staticfiles import StaticFiles  # type: ignore # pyrefly: ignore [missing-import]
 from fastapi.middleware.cors import CORSMiddleware  # type: ignore # pyrefly: ignore [missing-import]
 from fastapi.responses import HTMLResponse, JSONResponse  # type: ignore # pyrefly: ignore [missing-import]
 import google.generativeai as genai  # type: ignore # pyrefly: ignore [missing-import]
@@ -95,6 +96,10 @@ app = FastAPI(
     redoc_url="/redoc" if ENABLE_DOCS else None,
     openapi_url="/openapi.json" if ENABLE_DOCS else None,
 )
+
+DATA_DIR = ROOT_DIR / "data"
+if DATA_DIR.exists():
+    app.mount("/data", StaticFiles(directory=str(DATA_DIR)), name="data")
 
 # 1. Security Headers & Rate Limiting Middleware
 @app.middleware("http")

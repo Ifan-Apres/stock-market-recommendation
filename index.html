@@ -23,6 +23,12 @@
         .page-view.active { display: block; }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/data/lightweight-charts.standalone.production.js"></script>
+    <script>
+        if (typeof LightweightCharts === 'undefined') {
+            document.write('<script src="https://unpkg.com/lightweight-charts@4.2.1/dist/lightweight-charts.standalone.production.js"><\/script>');
+        }
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script id="tailwind-config">
         tailwind.config = {
@@ -958,117 +964,175 @@
                         </div>
                     </div>
 
-                    <!-- Section 2: Interactive Technical Price Chart with TP & SL Overlay -->
+                    <!-- Section: Terminal Analisis Teknikal & Bandarmologi Institusi (Unified Pro Studio) -->
                     <div class="bg-white rounded-3xl p-5 sm:p-7 border border-surface-border shadow-xs flex flex-col gap-4">
-                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                            <div>
-                                <h3 class="text-base sm:text-lg font-bold text-primary flex items-center gap-2">
-                                    <span class="material-symbols-outlined text-secondary text-[22px]">candlestick_chart</span>
-                                    Grafik Riwayat Harga & Level Target Interaktif (3 Bulan)
-                                </h3>
-                                <span class="text-xs text-text-muted">Visualisasi tren harga aktual 3 bulan dilengkapi level TP (hijau putus-putus) dan Stop Loss (merah putus-putus).</span>
-                            </div>
-
-                            <div class="flex flex-wrap items-center gap-3">
-                                <!-- Mode Toggle: Candlestick vs Garis -->
-                                <div class="inline-flex p-1 bg-slate-100 rounded-xl text-xs font-bold border border-slate-200">
-                                    <button id="chartModeCandleBtn" onclick="setDeepDiveChartMode('candle')" class="px-3 py-1.5 rounded-lg transition-all bg-white text-primary shadow-xs flex items-center gap-1.5 font-bold cursor-pointer">
-                                        <span>🕯️</span> Candlestick
-                                    </button>
-                                    <button id="chartModeLineBtn" onclick="setDeepDiveChartMode('line')" class="px-3 py-1.5 rounded-lg transition-all text-slate-500 hover:text-primary flex items-center gap-1.5 font-medium cursor-pointer">
-                                        <span>📈</span> Garis
-                                    </button>
-                                </div>
-
-                                <!-- Chart Legends Info (Dinamis sesuai mode) -->
-                                <div class="flex flex-wrap items-center gap-2.5 text-xs font-semibold" id="deepDiveChartLegends">
-                                    <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 bg-emerald-500 rounded-xs"></span> Naik</span>
-                                    <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 bg-rose-500 rounded-xs"></span> Turun</span>
-                                    <span class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-amber-500 rounded"></span> SMA 20</span>
-                                    <span class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-emerald-500 rounded border border-dashed border-emerald-500"></span> Target TP</span>
-                                    <span class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-rose-500 rounded border border-dashed border-rose-500"></span> Stop Loss</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="h-72 sm:h-80 w-full relative">
-                            <canvas id="deepDivePriceChart"></canvas>
-                        </div>
-
-                        <!-- Technical Oscillators Quick Bar -->
-                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 pt-3 border-t border-slate-100 text-xs">
-                            <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-100 flex flex-col">
-                                <span class="text-[10px] text-text-muted font-bold uppercase">RSI (14)</span>
-                                <span class="text-sm font-black text-primary mt-0.5" id="deepDiveRSI">54.2</span>
-                                <span class="text-[10px] text-slate-500" id="deepDiveRSIStatus">Zona Netral</span>
-                            </div>
-                            <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-100 flex flex-col">
-                                <span class="text-[10px] text-text-muted font-bold uppercase">MACD Histogram</span>
-                                <span class="text-sm font-black text-primary mt-0.5" id="deepDiveMACD">+12.5</span>
-                                <span class="text-[10px] text-emerald-600 font-semibold" id="deepDiveMACDStatus">Bullish Momentum</span>
-                            </div>
-                            <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-100 flex flex-col">
-                                <span class="text-[10px] text-text-muted font-bold uppercase">Chaikin Money Flow</span>
-                                <span class="text-sm font-black text-primary mt-0.5" id="deepDiveCMF">+0.18</span>
-                                <span class="text-[10px] text-emerald-600 font-semibold" id="deepDiveCMFStatus">Akumulasi Dana Masuk</span>
-                            </div>
-                            <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-100 flex flex-col">
-                                <span class="text-[10px] text-text-muted font-bold uppercase">Volatilitas (ATR 14)</span>
-                                <span class="text-sm font-black text-primary mt-0.5" id="deepDiveATR">Rp 225</span>
-                                <span class="text-[10px] text-slate-500">Rentang Harian Wajar</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Section: Arus Modal Asing (Foreign Flow Tracker & Barometer Institusi 3 Bulan) -->
-                    <div class="bg-white rounded-3xl p-5 sm:p-7 border border-surface-border shadow-xs flex flex-col gap-4">
+                        <!-- Header: Title, Live Status Badges, Tanggal Hover -->
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
                             <div>
                                 <div class="flex items-center gap-2">
-                                    <div class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-700 flex items-center justify-center shrink-0 font-bold">
-                                        <span class="material-symbols-outlined text-[18px]">payments</span>
+                                    <div class="w-8 h-8 rounded-lg bg-slate-900 text-emerald-400 flex items-center justify-center shrink-0 font-bold shadow-xs">
+                                        <span class="material-symbols-outlined text-[19px]">candlestick_chart</span>
                                     </div>
-                                    <h3 class="text-base sm:text-lg font-bold text-primary">Arus Modal Asing & Bandarmologi Institusi (3 Bulan)</h3>
+                                    <h3 class="text-base sm:text-lg font-bold text-primary">Terminal Analisis Teknikal & Bandarmologi (Pro Studio)</h3>
                                 </div>
-                                <span class="text-xs text-text-muted mt-1 block">Pelacakan akumulasi dan distribusi bersih harian oleh investor institusi asing di Bursa Efek Indonesia.</span>
+                                <span class="text-xs text-text-muted mt-1 block">Multi-pane interaktif: Candlestick Faktual BEI, MA/EMA Ribbon, Bollinger Bands, MACD, RSI, Volume, dan Arus Modal Asing.</span>
                             </div>
-                            <div class="flex items-center gap-2 self-start sm:self-auto">
+
+                            <div class="flex items-center gap-2 flex-wrap self-start sm:self-auto">
                                 <span class="px-3.5 py-1 rounded-full text-xs font-black border shadow-2xs bg-emerald-50 text-emerald-800 border-emerald-200" id="deepDiveForeignBadge">AKUMULASI AKTIF</span>
+                                <span class="px-3 py-1 rounded-full text-xs font-bold border shadow-2xs bg-slate-100 text-slate-700 border-slate-200 font-mono" id="proChartCrosshairDate">1D · 3 Bulan</span>
                             </div>
                         </div>
 
-                        <!-- 4 Kartu Metrik Foreign Flow -->
-                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 text-xs">
-                            <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col">
-                                <span class="text-[10px] text-text-muted font-bold uppercase tracking-wider">Net Foreign 1D (Terakhir)</span>
-                                <span class="text-base sm:text-lg font-black text-primary mt-0.5" id="deepDiveForeign1D">+Rp 24,5 M</span>
-                                <span class="text-[10px] text-emerald-600 font-medium mt-0.5" id="deepDiveForeign1DDesc">Akumulasi Harian</span>
+                        <!-- Interactive Control Toolbar (Kustomisasi Interaktif: Toggle Chips) -->
+                        <div class="bg-slate-900 text-slate-200 p-3.5 rounded-2xl border border-slate-800 flex flex-col gap-2.5 shadow-inner">
+                            <!-- Row 1: Overlays (EMA Ribbon, Bollinger Bands, Target TP/SL) -->
+                            <div class="flex items-center justify-between gap-2 flex-wrap text-xs">
+                                <div class="flex items-center gap-2 flex-wrap">
+                                    <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+                                        <span class="material-symbols-outlined text-[14px] text-amber-400">tune</span> Overlays:
+                                    </span>
+
+                                    <!-- EMA & Indicator Toggles -->
+                                    <button id="toggleEma10Btn" onclick="toggleProIndicator('ema10')" class="px-2.5 py-1 rounded-md text-[11px] font-bold border transition-all cursor-pointer flex items-center gap-1.5 bg-amber-500/20 text-amber-300 border-amber-500/40">
+                                        <span class="w-2 h-2 rounded-full bg-amber-400"></span> EMA 10
+                                    </button>
+                                    <button id="toggleEma20Btn" onclick="toggleProIndicator('ema20')" class="px-2.5 py-1 rounded-md text-[11px] font-bold border transition-all cursor-pointer flex items-center gap-1.5 bg-yellow-500/20 text-yellow-300 border-yellow-500/40">
+                                        <span class="w-2 h-2 rounded-full bg-yellow-400"></span> EMA 20
+                                    </button>
+                                    <button id="toggleEma50Btn" onclick="toggleProIndicator('ema50')" class="px-2.5 py-1 rounded-md text-[11px] font-bold border transition-all cursor-pointer flex items-center gap-1.5 bg-blue-500/20 text-blue-300 border-blue-500/40">
+                                        <span class="w-2 h-2 rounded-full bg-blue-400"></span> EMA 50
+                                    </button>
+                                    <button id="toggleEma200Btn" onclick="toggleProIndicator('ema200')" class="px-2.5 py-1 rounded-md text-[11px] font-bold border transition-all cursor-pointer flex items-center gap-1.5 bg-purple-500/20 text-purple-300 border-purple-500/40">
+                                        <span class="w-2 h-2 rounded-full bg-purple-400"></span> EMA 200
+                                    </button>
+                                    <button id="toggleBbBtn" onclick="toggleProIndicator('bb')" class="px-2.5 py-1 rounded-md text-[11px] font-bold border transition-all cursor-pointer flex items-center gap-1.5 bg-teal-500/20 text-teal-300 border-teal-500/40">
+                                        <span class="w-2 h-2 rounded-full bg-teal-400"></span> BB (20,2)
+                                    </button>
+                                    <button id="toggleTargetsBtn" onclick="toggleProIndicator('targets')" class="px-2.5 py-1 rounded-md text-[11px] font-bold border transition-all cursor-pointer flex items-center gap-1.5 bg-emerald-500/20 text-emerald-300 border-emerald-500/40">
+                                        <span class="w-2 h-2 rounded-full bg-emerald-400"></span> TP/SL
+                                    </button>
+                                </div>
+
+                                <!-- Chart Type & Reset View -->
+                                <div class="flex items-center gap-1.5 ml-auto">
+                                    <button id="proChartTypeCandleBtn" onclick="setProChartType('candle')" class="px-2.5 py-1 rounded-md text-[11px] font-bold bg-slate-800 text-white border border-slate-700 hover:bg-slate-700 transition-all cursor-pointer">
+                                        🕯️ Candle
+                                    </button>
+                                    <button id="proChartTypeLineBtn" onclick="setProChartType('line')" class="px-2.5 py-1 rounded-md text-[11px] font-bold bg-transparent text-slate-400 hover:text-white transition-all cursor-pointer">
+                                        📈 Line
+                                    </button>
+                                    <button onclick="resetProChartScale()" title="Reset Skala & Posisi" class="px-2 py-1 rounded-md text-[11px] font-bold bg-slate-800 text-slate-300 hover:text-white border border-slate-700 transition-all cursor-pointer flex items-center gap-1">
+                                        <span class="material-symbols-outlined text-[13px]">fit_screen</span> Reset
+                                    </button>
+                                </div>
                             </div>
-                            <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col">
-                                <span class="text-[10px] text-text-muted font-bold uppercase tracking-wider">Net Foreign 5D (1 Pekan)</span>
-                                <span class="text-base sm:text-lg font-black text-primary mt-0.5" id="deepDiveForeign5D">+Rp 142,0 M</span>
-                                <span class="text-[10px] text-emerald-600 font-medium mt-0.5" id="deepDiveForeign5DDesc">Tren Inflow Mingguan</span>
-                            </div>
-                            <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col">
-                                <span class="text-[10px] text-text-muted font-bold uppercase tracking-wider">Net Foreign 20D (1 Bulan)</span>
-                                <span class="text-base sm:text-lg font-black text-primary mt-0.5" id="deepDiveForeign20D">+Rp 310,5 M</span>
-                                <span class="text-[10px] text-text-muted mt-0.5">Akumulasi Bulanan</span>
-                            </div>
-                            <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col">
-                                <span class="text-[10px] text-text-muted font-bold uppercase tracking-wider">Estimasi Partisipasi Asing</span>
-                                <span class="text-base sm:text-lg font-black text-indigo-700 mt-0.5" id="deepDiveForeignPartRate">42.5%</span>
-                                <span class="text-[10px] text-indigo-600 font-semibold mt-0.5">Pengaruh Likuiditas Global</span>
+
+                            <!-- Row 2: Sub-Pane Selectors (MACD, RSI, Volume, Foreign Flow) -->
+                            <div class="flex items-center gap-2 flex-wrap text-xs pt-2 border-t border-slate-800/80">
+                                <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-[14px] text-cyan-400">stacked_bar_chart</span> Sub-Panes:
+                                </span>
+                                <button id="togglePaneMacdBtn" onclick="toggleProPane('macd')" class="px-2.5 py-1 rounded-md text-[11px] font-bold border transition-all cursor-pointer flex items-center gap-1 bg-cyan-500/20 text-cyan-300 border-cyan-500/40">
+                                    <span class="material-symbols-outlined text-[13px]">show_chart</span> MACD (12, 26, 9)
+                                </button>
+                                <button id="togglePaneRsiBtn" onclick="toggleProPane('rsi')" class="px-2.5 py-1 rounded-md text-[11px] font-bold border transition-all cursor-pointer flex items-center gap-1 bg-purple-500/20 text-purple-300 border-purple-500/40">
+                                    <span class="material-symbols-outlined text-[13px]">ssid_chart</span> RSI (14)
+                                </button>
+                                <button id="togglePaneVolumeBtn" onclick="toggleProPane('volume')" class="px-2.5 py-1 rounded-md text-[11px] font-bold border transition-all cursor-pointer flex items-center gap-1 bg-emerald-500/20 text-emerald-300 border-emerald-500/40">
+                                    <span class="material-symbols-outlined text-[13px]">bar_chart</span> Volume (SMA 20)
+                                </button>
+                                <button id="togglePaneForeignBtn" onclick="toggleProPane('foreign')" class="px-2.5 py-1 rounded-md text-[11px] font-bold border transition-all cursor-pointer flex items-center gap-1 bg-rose-500/20 text-rose-300 border-rose-500/40">
+                                    <span class="material-symbols-outlined text-[13px]">payments</span> Net Foreign (3 Bulan)
+                                </button>
                             </div>
                         </div>
 
-                        <!-- Sub-chart: Foreign Net Flow Daily Histogram (Batang Hijau / Merah) -->
-                        <div class="mt-2 flex flex-col gap-2">
-                            <div class="flex items-center justify-between text-xs font-semibold text-text-muted">
-                                <span>Distribusi Net Foreign Harian (3 Bulan Terakhir) (Hijau = Net Buy, Merah = Net Sell):</span>
-                                <span class="text-[11px] text-slate-400">Skala Rupiah Indonesia (IDR)</span>
+                        <!-- The Multi-Pane Chart Stack (TradingView Pro Theme) -->
+                        <div class="rounded-2xl border border-slate-800 bg-[#131722] overflow-hidden flex flex-col divide-y divide-slate-800 shadow-2xl relative">
+                            <!-- Live OHLC Legend on Top Left of Chart -->
+                            <div id="proChartHeaderLegend" class="px-4 py-2 bg-[#1e222d] border-b border-slate-800/80 flex items-center justify-between text-xs text-slate-300 flex-wrap gap-2">
+                                <div class="flex items-center gap-2 font-mono text-[11px] flex-wrap">
+                                    <span class="font-bold text-white text-sm" id="proChartTickerTitle">BBCA</span>
+                                    <span class="text-slate-400">· 1D · BEI</span>
+                                    <span class="text-slate-400">O: <b id="proLegendOpen" class="text-white ml-0.5">-</b></span>
+                                    <span class="text-slate-400">H: <b id="proLegendHigh" class="text-white ml-0.5">-</b></span>
+                                    <span class="text-slate-400">L: <b id="proLegendLow" class="text-white ml-0.5">-</b></span>
+                                    <span class="text-slate-400">C: <b id="proLegendClose" class="text-white ml-0.5">-</b></span>
+                                    <span id="proLegendChange" class="font-bold">-</span>
+                                </div>
+                                <div class="flex items-center gap-3 text-[10px] text-slate-300 font-mono flex-wrap" id="proLegendIndicators">
+                                    <!-- Populated dynamically with active indicators' hover values -->
+                                </div>
                             </div>
-                            <div class="h-44 sm:h-48 w-full relative">
-                                <canvas id="deepDiveForeignFlowChart"></canvas>
+
+                            <!-- 1. Main Price Pane (Candlestick + Overlays) -->
+                            <div id="proPanePrice" class="w-full h-80 sm:h-96 relative"></div>
+
+                            <!-- 2. Sub-Pane MACD -->
+                            <div id="proPaneMacd" class="w-full h-28 relative">
+                                <div class="absolute top-1 left-3 z-10 text-[10px] font-mono text-cyan-400 font-semibold pointer-events-none flex items-center gap-2">
+                                    <span>MACD (12, 26, 9)</span>
+                                    <span id="proLegendMacd" class="text-slate-300"></span>
+                                </div>
+                            </div>
+
+                            <!-- 3. Sub-Pane RSI -->
+                            <div id="proPaneRsi" class="w-full h-24 relative">
+                                <div class="absolute top-1 left-3 z-10 text-[10px] font-mono text-purple-400 font-semibold pointer-events-none flex items-center gap-2">
+                                    <span>RSI (14)</span>
+                                    <span id="proLegendRsi" class="text-slate-300"></span>
+                                </div>
+                            </div>
+
+                            <!-- 4. Sub-Pane Volume -->
+                            <div id="proPaneVolume" class="w-full h-24 relative">
+                                <div class="absolute top-1 left-3 z-10 text-[10px] font-mono text-emerald-400 font-semibold pointer-events-none flex items-center gap-2">
+                                    <span>Volume & SMA 20</span>
+                                    <span id="proLegendVolume" class="text-slate-300"></span>
+                                </div>
+                            </div>
+
+                            <!-- 5. Sub-Pane Net Foreign Flow (3 Bulan) -->
+                            <div id="proPaneForeign" class="w-full h-28 relative">
+                                <div class="absolute top-1 left-3 z-10 text-[10px] font-mono text-rose-400 font-semibold pointer-events-none flex items-center gap-2">
+                                    <span>Net Foreign Flow BEI (IDR)</span>
+                                    <span id="proLegendForeign" class="text-slate-300"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Institutional Quantitative Metrics Ribbon (6 Kartu Terpadu) -->
+                        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 text-xs pt-1">
+                            <div class="p-3 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col">
+                                <span class="text-[10px] text-text-muted font-bold uppercase tracking-wider">Net Foreign 1D</span>
+                                <span class="text-sm sm:text-base font-black text-primary mt-0.5" id="deepDiveForeign1D">+Rp 24,5 M</span>
+                                <span class="text-[10px] text-emerald-600 font-medium" id="deepDiveForeign1DDesc">Akumulasi Harian</span>
+                            </div>
+                            <div class="p-3 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col">
+                                <span class="text-[10px] text-text-muted font-bold uppercase tracking-wider">Net Foreign 5D</span>
+                                <span class="text-sm sm:text-base font-black text-primary mt-0.5" id="deepDiveForeign5D">+Rp 142,0 M</span>
+                                <span class="text-[10px] text-emerald-600 font-medium" id="deepDiveForeign5DDesc">Tren Inflow</span>
+                            </div>
+                            <div class="p-3 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col">
+                                <span class="text-[10px] text-text-muted font-bold uppercase tracking-wider">Net Foreign 3 Bulan</span>
+                                <span class="text-sm sm:text-base font-black text-primary mt-0.5" id="deepDiveForeign20D">+Rp 399,9 M</span>
+                                <span class="text-[10px] text-text-muted">Akumulasi Kuartalan</span>
+                            </div>
+                            <div class="p-3 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col">
+                                <span class="text-[10px] text-text-muted font-bold uppercase tracking-wider">Partisipasi Asing</span>
+                                <span class="text-sm sm:text-base font-black text-indigo-700 mt-0.5" id="deepDiveForeignPartRate">42.5%</span>
+                                <span class="text-[10px] text-indigo-600 font-semibold">Bobot Institusi</span>
+                            </div>
+                            <div class="p-3 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col">
+                                <span class="text-[10px] text-text-muted font-bold uppercase tracking-wider">RSI (14)</span>
+                                <span class="text-sm sm:text-base font-black text-primary mt-0.5" id="deepDiveRSI">54.2</span>
+                                <span class="text-[10px] text-slate-500" id="deepDiveRSIStatus">Zona Netral</span>
+                            </div>
+                            <div class="p-3 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col">
+                                <span class="text-[10px] text-text-muted font-bold uppercase tracking-wider">MACD Histogram</span>
+                                <span class="text-sm sm:text-base font-black text-primary mt-0.5" id="deepDiveMACD">-201.35</span>
+                                <span class="text-[10px] text-rose-600 font-semibold" id="deepDiveMACDStatus">Pullback Momentum</span>
                             </div>
                         </div>
                     </div>
@@ -3275,25 +3339,35 @@
 
             // 4. Indikator Teknikal & Momentum
             const rsi = stock.RSI_14 ? Number(stock.RSI_14).toFixed(1) : "53.8";
-            document.getElementById('deepDiveRSI').innerText = rsi;
+            const rsiEl = document.getElementById('deepDiveRSI');
+            if (rsiEl) rsiEl.innerText = rsi;
             const rsiStatusEl = document.getElementById('deepDiveRSIStatus');
-            if (Number(rsi) >= 70) {
-                rsiStatusEl.innerText = "Overbought (Hati-hati Rebound)";
-                rsiStatusEl.className = "text-[10px] text-amber-600 font-semibold";
-            } else if (Number(rsi) <= 35) {
-                rsiStatusEl.innerText = "Oversold (Zona Akumulasi Murah)";
-                rsiStatusEl.className = "text-[10px] text-emerald-600 font-semibold";
-            } else {
-                rsiStatusEl.innerText = "Zona Momentum Wajar";
-                rsiStatusEl.className = "text-[10px] text-slate-500";
+            if (rsiStatusEl) {
+                if (Number(rsi) >= 70) {
+                    rsiStatusEl.innerText = "Overbought (Hati-hati Rebound)";
+                    rsiStatusEl.className = "text-[10px] text-amber-600 font-semibold";
+                } else if (Number(rsi) <= 35) {
+                    rsiStatusEl.innerText = "Oversold (Zona Akumulasi Murah)";
+                    rsiStatusEl.className = "text-[10px] text-emerald-600 font-semibold";
+                } else {
+                    rsiStatusEl.innerText = "Zona Momentum Wajar";
+                    rsiStatusEl.className = "text-[10px] text-slate-500";
+                }
             }
 
             const macdVal = stock.MACD_Hist ? Number(stock.MACD_Hist).toFixed(2) : "+8.40";
-            document.getElementById('deepDiveMACD').innerText = (Number(macdVal) > 0 ? "+" : "") + macdVal;
-            const cmfVal = stock.CMF_20 ? Number(stock.CMF_20).toFixed(2) : "+0.15";
-            document.getElementById('deepDiveCMF').innerText = (Number(cmfVal) > 0 ? "+" : "") + cmfVal;
-            const atrVal = stock.ATR_14 ? Math.round(stock.ATR_14) : Math.round(closePrice * 0.022);
-            document.getElementById('deepDiveATR').innerText = formatIDR(atrVal);
+            const macdEl = document.getElementById('deepDiveMACD');
+            if (macdEl) macdEl.innerText = (Number(macdVal) > 0 ? "+" : "") + macdVal;
+            const cmfEl = document.getElementById('deepDiveCMF');
+            if (cmfEl) {
+                const cmfVal = stock.CMF_20 ? Number(stock.CMF_20).toFixed(2) : "+0.15";
+                cmfEl.innerText = (Number(cmfVal) > 0 ? "+" : "") + cmfVal;
+            }
+            const atrEl = document.getElementById('deepDiveATR');
+            if (atrEl) {
+                const atrVal = stock.ATR_14 ? Math.round(stock.ATR_14) : Math.round(closePrice * 0.022);
+                atrEl.innerText = formatIDR(atrVal);
+            }
 
             // 5. Fundamental & Valuasi
             document.getElementById('deepDivePER').innerText = stock.PE_Ratio ? Number(stock.PE_Ratio).toFixed(1) + "x" : (closePrice > 5000 ? "19.5x" : "12.8x");
@@ -3312,9 +3386,8 @@
             document.getElementById('deepDiveMaxDD').innerText = stock.Max_Drawdown_1Y ? `-${Math.abs(Number(stock.Max_Drawdown_1Y) * 100).toFixed(1)}%` : "-11.8%";
             document.getElementById('deepDiveBetaValue').innerText = stock.Beta_IHSG ? Number(stock.Beta_IHSG).toFixed(2) : "0.95";
 
-            // 7. Render Chart.js
-            renderDeepDivePriceChart(stock, closePrice, entryPrice, targetPrice, stopLoss);
-            renderDeepDiveForeignFlowChart(stock);
+            // 7. Render Pro Technical Terminal Studio (Lightweight Charts Multi-Pane)
+            renderProTechnicalStudio(stock, closePrice, entryPrice, targetPrice, stopLoss);
 
             // 8. Setup Kalkulator Lot
             document.getElementById('deepDiveCalcPriceRef').innerText = formatIDR(entryPrice);
@@ -3404,65 +3477,198 @@
             }
         };
 
-        function setDeepDiveChartMode(mode) {
-            currentDeepDiveChartMode = mode;
-            const candleBtn = document.getElementById('chartModeCandleBtn');
-            const lineBtn = document.getElementById('chartModeLineBtn');
-            const legendsEl = document.getElementById('deepDiveChartLegends');
+        // ========================================================
+        // PRO TECHNICAL TERMINAL STUDIO (LIGHTWEIGHT CHARTS ENGINE)
+        // ========================================================
+        let proCharts = {
+            price: null,
+            macd: null,
+            rsi: null,
+            volume: null,
+            foreign: null,
+        };
 
-            if (mode === 'candle') {
-                if (candleBtn) {
-                    candleBtn.className = "px-3 py-1.5 rounded-lg transition-all bg-white text-primary shadow-xs flex items-center gap-1.5 font-bold cursor-pointer";
-                }
-                if (lineBtn) {
-                    lineBtn.className = "px-3 py-1.5 rounded-lg transition-all text-slate-500 hover:text-primary flex items-center gap-1.5 font-medium cursor-pointer";
-                }
-                if (legendsEl) {
-                    legendsEl.innerHTML = `
-                        <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 bg-emerald-500 rounded-xs"></span> Naik</span>
-                        <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 bg-rose-500 rounded-xs"></span> Turun</span>
-                        <span class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-amber-500 rounded"></span> SMA 20</span>
-                        <span class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-emerald-500 rounded border border-dashed border-emerald-500"></span> Target TP</span>
-                        <span class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-rose-500 rounded border border-dashed border-rose-500"></span> Stop Loss</span>
-                    `;
-                }
-            } else {
-                if (candleBtn) {
-                    candleBtn.className = "px-3 py-1.5 rounded-lg transition-all text-slate-500 hover:text-primary flex items-center gap-1.5 font-medium cursor-pointer";
-                }
-                if (lineBtn) {
-                    lineBtn.className = "px-3 py-1.5 rounded-lg transition-all bg-white text-primary shadow-xs flex items-center gap-1.5 font-bold cursor-pointer";
-                }
-                if (legendsEl) {
-                    legendsEl.innerHTML = `
-                        <span class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-blue-600 rounded"></span> Close</span>
-                        <span class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-amber-500 rounded"></span> SMA 20</span>
-                        <span class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-emerald-500 rounded border border-dashed border-emerald-500"></span> Target TP</span>
-                        <span class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-rose-500 rounded border border-dashed border-rose-500"></span> Stop Loss</span>
-                    `;
-                }
+        let proSeries = {
+            candle: null,
+            line: null,
+            ema10: null,
+            ema20: null,
+            ema50: null,
+            ema200: null,
+            bbUpper: null,
+            bbLower: null,
+            tpLine: null,
+            slLine: null,
+            macdLine: null,
+            macdSignal: null,
+            macdHist: null,
+            rsiLine: null,
+            volBars: null,
+            volSma: null,
+            foreignBars: null,
+        };
+
+        let proChartState = {
+            mode: 'candle',
+            overlays: {
+                ema10: true,
+                ema20: true,
+                ema50: true,
+                ema200: true,
+                bb: true,
+                targets: true,
+            },
+            panes: {
+                macd: true,
+                rsi: true,
+                volume: true,
+                foreign: true,
+            },
+            activeStock: null,
+            historyData: null,
+            foreignData: null,
+            lastValues: {},
+        };
+
+        function setProChartType(mode) {
+            proChartState.mode = mode;
+            const isCandle = mode === 'candle';
+            if (proSeries.candle) proSeries.candle.applyOptions({ visible: isCandle });
+            if (proSeries.line) proSeries.line.applyOptions({ visible: !isCandle });
+
+            const candleBtn = document.getElementById('proChartTypeCandleBtn');
+            const lineBtn = document.getElementById('proChartTypeLineBtn');
+            if (candleBtn) {
+                candleBtn.className = isCandle
+                    ? "px-2.5 py-1 rounded-md text-[11px] font-bold bg-slate-800 text-white border border-slate-700 hover:bg-slate-700 transition-all cursor-pointer"
+                    : "px-2.5 py-1 rounded-md text-[11px] font-bold bg-transparent text-slate-400 hover:text-white transition-all cursor-pointer";
             }
-
-            if (activeDeepDiveStock) {
-                const closePrice = Math.round(activeDeepDiveStock.Close || 1000);
-                const entryPrice = Math.round(activeDeepDiveStock.Entry_Price || closePrice);
-                const targetPrice = Math.round(activeDeepDiveStock.Target_Price || (closePrice * 1.05));
-                const stopLoss = Math.round(activeDeepDiveStock.Stop_Loss || (closePrice * 0.95));
-                renderDeepDivePriceChart(activeDeepDiveStock, closePrice, entryPrice, targetPrice, stopLoss);
+            if (lineBtn) {
+                lineBtn.className = !isCandle
+                    ? "px-2.5 py-1 rounded-md text-[11px] font-bold bg-slate-800 text-white border border-slate-700 hover:bg-slate-700 transition-all cursor-pointer"
+                    : "px-2.5 py-1 rounded-md text-[11px] font-bold bg-transparent text-slate-400 hover:text-white transition-all cursor-pointer";
             }
         }
 
-        function renderDeepDivePriceChart(stock, closePrice, entryPrice, targetPrice, stopLoss) {
-            const ctx = document.getElementById('deepDivePriceChart');
-            if (!ctx) return;
+        function toggleProIndicator(key) {
+            if (proChartState.overlays[key] !== undefined) {
+                proChartState.overlays[key] = !proChartState.overlays[key];
+                const isVisible = proChartState.overlays[key];
 
-            if (deepDivePriceChartInstance) {
-                deepDivePriceChartInstance.destroy();
+                const btn = document.getElementById(`toggle${key.charAt(0).toUpperCase() + key.slice(1)}Btn`);
+                if (btn) {
+                    btn.style.opacity = isVisible ? "1" : "0.35";
+                }
+
+                if (key === 'bb') {
+                    if (proSeries.bbUpper) proSeries.bbUpper.applyOptions({ visible: isVisible });
+                    if (proSeries.bbLower) proSeries.bbLower.applyOptions({ visible: isVisible });
+                } else if (key === 'targets') {
+                    if (proSeries.tpLine) proSeries.tpLine.applyOptions({ visible: isVisible });
+                    if (proSeries.slLine) proSeries.slLine.applyOptions({ visible: isVisible });
+                } else if (proSeries[key]) {
+                    proSeries[key].applyOptions({ visible: isVisible });
+                }
             }
+        }
 
+        function toggleProPane(key) {
+            if (proChartState.panes[key] !== undefined) {
+                proChartState.panes[key] = !proChartState.panes[key];
+                const isVisible = proChartState.panes[key];
+
+                const btn = document.getElementById(`togglePane${key.charAt(0).toUpperCase() + key.slice(1)}Btn`);
+                if (btn) {
+                    btn.style.opacity = isVisible ? "1" : "0.35";
+                }
+
+                const paneContainerId = `proPane${key.charAt(0).toUpperCase() + key.slice(1)}`;
+                const container = document.getElementById(paneContainerId);
+                if (container) {
+                    if (isVisible) {
+                        container.classList.remove('hidden');
+                    } else {
+                        container.classList.add('hidden');
+                    }
+                }
+                setTimeout(handleProChartResize, 40);
+            }
+        }
+
+        function resetProChartScale() {
+            Object.values(proCharts).forEach(c => {
+                if (c && c.timeScale) {
+                    try { c.timeScale().resetTimeScale(); } catch(e) {}
+                }
+            });
+        }
+
+        function handleProChartResize() {
+            const container = document.getElementById('proPanePrice');
+            if (!container) return;
+            const w = container.clientWidth;
+            if (!w) return;
+            Object.values(proCharts).forEach(c => {
+                if (c) {
+                    try { c.applyOptions({ width: w }); } catch(e) {}
+                }
+            });
+        }
+        window.addEventListener('resize', handleProChartResize);
+
+        function destroyExistingProCharts() {
+            Object.keys(proCharts).forEach(k => {
+                if (proCharts[k]) {
+                    try { proCharts[k].remove(); } catch(e) {}
+                    proCharts[k] = null;
+                }
+            });
+            Object.keys(proSeries).forEach(k => {
+                proSeries[k] = null;
+            });
+        }
+
+        function getProChartBaseOptions(container, height, showTimeScale) {
+            return {
+                width: container.clientWidth || 800,
+                height: height,
+                layout: {
+                    background: { type: 'solid', color: '#131722' },
+                    textColor: '#d1d4dc',
+                    fontSize: 10,
+                    fontFamily: 'Plus Jakarta Sans, sans-serif'
+                },
+                grid: {
+                    vertLines: { color: 'rgba(42, 46, 57, 0.45)' },
+                    horzLines: { color: 'rgba(42, 46, 57, 0.45)' }
+                },
+                crosshair: {
+                    mode: 1, // Normal crosshair
+                    vertLine: { color: '#758696', width: 1, style: 3, labelBackgroundColor: '#2a2e39' },
+                    horzLine: { color: '#758696', width: 1, style: 3, labelBackgroundColor: '#2a2e39' }
+                },
+                timeScale: {
+                    borderColor: '#2a2e39',
+                    visible: showTimeScale,
+                    timeVisible: false,
+                    secondsVisible: false,
+                    fixLeftEdge: true,
+                    fixRightEdge: true,
+                },
+                rightPriceScale: {
+                    borderColor: '#2a2e39',
+                    scaleMargins: { top: 0.1, bottom: 0.1 }
+                },
+                handleScroll: { mouseWheel: true, pressedMouseMove: true, horzTouchDrag: true, vertTouchDrag: false },
+                handleScale: { axisPressedMouseMove: true, mouseWheel: true, pinch: true },
+            };
+        }
+
+        async function renderProTechnicalStudio(stock, closePrice, entryPrice, targetPrice, stopLoss) {
             const tickerClean = (stock.Ticker || "").replace(".JK", "").toUpperCase();
+            proChartState.activeStock = stock;
 
-            // 1. Ambil riwayat harga riil 3 bulan (65 hari bursa) dari database
+            // 1. Dapatkan data riwayat harga (OHLCV + Indikator riil 65 hari bursa)
             let history = null;
             if (financialsSummaryData && financialsSummaryData[tickerClean] && financialsSummaryData[tickerClean].price_history) {
                 history = financialsSummaryData[tickerClean].price_history;
@@ -3470,246 +3676,47 @@
                 history = window.allPriceHistory[tickerClean];
             }
 
-            let labels = [];
-            let prices = [];
-            let opens = [];
-            let highs = [];
-            let lows = [];
-            let sma20 = [];
-            let tpLine = [];
-            let slLine = [];
-
-            if (history && history.prices && history.prices.length > 0) {
-                labels = history.dates;
-                prices = history.prices;
-                sma20 = history.sma20 || [];
-                opens = history.opens && history.opens.length === prices.length 
-                    ? history.opens 
-                    : prices.map((p, i) => i === 0 ? p : prices[i-1]);
-                highs = history.highs && history.highs.length === prices.length 
-                    ? history.highs 
-                    : prices.map((p, i) => Math.max(p, opens[i]));
-                lows = history.lows && history.lows.length === prices.length 
-                    ? history.lows 
-                    : prices.map((p, i) => Math.min(p, opens[i]));
-                tpLine = Array(prices.length).fill(targetPrice);
-                slLine = Array(prices.length).fill(stopLoss);
-            } else {
-                // Fetch riwayat riil jika belum tersedia di memori
-                authFetch(`/api/history/${tickerClean}`)
-                    .then(res => res.ok ? res.json() : null)
-                    .then(data => {
-                        if (data && data.prices && data.prices.length > 0) {
-                            if (!window.allPriceHistory) window.allPriceHistory = {};
-                            window.allPriceHistory[tickerClean] = data;
-                            if (activeDeepDiveStock && (activeDeepDiveStock.Ticker || "").replace(".JK", "").toUpperCase() === tickerClean) {
-                                renderDeepDivePriceChart(stock, closePrice, entryPrice, targetPrice, stopLoss);
-                            }
-                        }
-                    })
-                    .catch(() => {});
-
-                // Fallback 65 titik transisi awal (~3 bulan bursa)
-                const now = new Date();
-                for (let i = 64; i >= 0; i--) {
-                    const d = new Date(now);
-                    d.setDate(d.getDate() - Math.round(i * (90 / 65)));
-                    labels.push(d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }));
-                    prices.push(closePrice);
-                    opens.push(closePrice);
-                    highs.push(Math.round(closePrice * 1.01));
-                    lows.push(Math.round(closePrice * 0.99));
-                    sma20.push(closePrice);
-                    tpLine.push(targetPrice);
-                    slLine.push(stopLoss);
-                }
-            }
-
-            const isCandle = currentDeepDiveChartMode === 'candle';
-
-            // Hitung min dan max sumbu Y agar wick, TP, dan SL terlihat jelas tanpa terpotong
-            const allYVals = [...lows, ...highs, targetPrice, stopLoss].filter(v => v != null && !isNaN(v) && v > 0);
-            const minY = allYVals.length ? Math.min(...allYVals) : (closePrice * 0.9);
-            const maxY = allYVals.length ? Math.max(...allYVals) : (closePrice * 1.1);
-            const padY = (maxY - minY) * 0.05 || (closePrice * 0.02);
-
-            const datasets = [
-                {
-                    label: isCandle ? 'Candlestick OHLC' : 'Harga Saham (Close)',
-                    data: isCandle ? highs : prices,
-                    borderColor: isCandle ? 'transparent' : '#2563eb',
-                    backgroundColor: isCandle ? 'transparent' : 'rgba(37, 99, 235, 0.08)',
-                    borderWidth: isCandle ? 0 : 2.5,
-                    fill: !isCandle,
-                    tension: 0.25,
-                    pointRadius: 0,
-                    pointHoverRadius: isCandle ? 0 : 6,
-                    pointBackgroundColor: '#2563eb',
-                },
-                {
-                    label: 'SMA 20',
-                    data: sma20,
-                    borderColor: '#f59e0b',
-                    borderWidth: 1.5,
-                    borderDash: [4, 4],
-                    fill: false,
-                    tension: 0.3,
-                    pointRadius: 0,
-                },
-                {
-                    label: 'Target TP',
-                    data: tpLine,
-                    borderColor: '#10b981',
-                    borderWidth: 2,
-                    borderDash: [6, 4],
-                    fill: false,
-                    pointRadius: 0,
-                },
-                {
-                    label: 'Stop Loss',
-                    data: slLine,
-                    borderColor: '#ef4444',
-                    borderWidth: 2,
-                    borderDash: [6, 4],
-                    fill: false,
-                    pointRadius: 0,
-                }
-            ];
-
-            if (isCandle) {
-                // Dataset referensi batas bawah skala grafik
-                datasets.push({
-                    label: '_lowRef',
-                    data: lows,
-                    borderColor: 'transparent',
-                    backgroundColor: 'transparent',
-                    pointRadius: 0,
-                    fill: false,
-                });
-            }
-
-            deepDivePriceChartInstance = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: datasets
-                },
-                plugins: [deepDiveCandlestickPlugin],
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    interaction: {
-                        mode: 'index',
-                        intersect: false,
-                    },
-                    plugins: {
-                        legend: { display: false },
-                        deepDiveCandlestickPlugin: {
-                            enabled: isCandle,
-                            ohlc: {
-                                opens: opens,
-                                highs: highs,
-                                lows: lows,
-                                closes: prices
-                            }
-                        },
-                        tooltip: {
-                            backgroundColor: '#0f172a',
-                            titleFont: { family: 'Plus Jakarta Sans', size: 12, weight: 'bold' },
-                            bodyFont: { family: 'Plus Jakarta Sans', size: 11 },
-                            padding: 10,
-                            cornerRadius: 10,
-                            callbacks: {
-                                label: function(context) {
-                                    if (context.dataset.label === '_lowRef') return null;
-                                    const idx = context.dataIndex;
-                                    if (context.datasetIndex === 0) {
-                                        if (isCandle && opens[idx] !== undefined) {
-                                            const o = formatIDR(opens[idx]);
-                                            const h = formatIDR(highs[idx]);
-                                            const l = formatIDR(lows[idx]);
-                                            const c = formatIDR(prices[idx]);
-                                            const diff = prices[idx] - opens[idx];
-                                            const diffPct = opens[idx] > 0 ? ((diff / opens[idx]) * 100).toFixed(2) : '0.00';
-                                            const sign = diff >= 0 ? '+' : '';
-                                            return [
-                                                `Open:  ${o}`,
-                                                `High:  ${h}`,
-                                                `Low:   ${l}`,
-                                                `Close: ${c} (${sign}${diffPct}%)`
-                                            ];
-                                        }
-                                        return `Close: Rp ${Number(context.raw).toLocaleString('id-ID')}`;
-                                    }
-                                    return `${context.dataset.label}: Rp ${Number(context.raw).toLocaleString('id-ID')}`;
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            grid: { display: false },
-                            ticks: { 
-                                font: { family: 'Plus Jakarta Sans', size: 10 }, 
-                                color: '#64748b',
-                                maxTicksLimit: 12
-                            }
-                        },
-                        y: {
-                            grid: { color: '#f1f5f9' },
-                            min: Math.floor(minY - padY),
-                            max: Math.ceil(maxY + padY),
-                            ticks: {
-                                font: { family: 'Plus Jakarta Sans', size: 10 },
-                                color: '#64748b',
-                                callback: function(val) {
-                                    return 'Rp ' + Number(val).toLocaleString('id-ID');
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        let deepDiveForeignChartInstance = null;
-
-        function renderDeepDiveForeignFlowChart(stock) {
-            const ctx = document.getElementById('deepDiveForeignFlowChart');
-            if (!ctx) return;
-
-            if (deepDiveForeignChartInstance) {
-                deepDiveForeignChartInstance.destroy();
-            }
-
-            const tickerClean = (stock.Ticker || "").replace(".JK", "").toUpperCase();
+            // 2. Dapatkan data Foreign Flow (Arus Modal Asing riil 65 hari bursa)
             let ff = null;
-
             if (financialsSummaryData && financialsSummaryData[tickerClean] && financialsSummaryData[tickerClean].foreign_flow) {
                 ff = financialsSummaryData[tickerClean].foreign_flow;
             } else if (window.allForeignFlow && window.allForeignFlow.constituents && window.allForeignFlow.constituents[tickerClean]) {
                 ff = window.allForeignFlow.constituents[tickerClean];
             }
 
+            if (!history || !history.prices || history.prices.length === 0) {
+                const priceContainer = document.getElementById('proPanePrice');
+                if (priceContainer) {
+                    priceContainer.innerHTML = '<div class="w-full h-full flex items-center justify-center text-slate-400 font-mono text-xs gap-2"><div class="w-4 h-4 border-2 border-emerald-400 border-t-transparent rounded-full animate-spin"></div> Memuat data teknikal 65 hari bursa BEI...</div>';
+                }
+                try {
+                    const res = await fetch('/data/processed/price_history_30d.json');
+                    if (res.ok) {
+                        const allH = await res.json();
+                        window.allPriceHistory = allH;
+                        history = allH[tickerClean];
+                    }
+                } catch(e) {}
+            }
+
             if (!ff) {
-                // Async fetch fallback
-                authFetch(`/api/foreign-flow/${tickerClean}`)
-                    .then(res => res.ok ? res.json() : null)
-                    .then(data => {
-                        if (data) {
-                            if (!window.allForeignFlow) window.allForeignFlow = { constituents: {} };
-                            if (!window.allForeignFlow.constituents) window.allForeignFlow.constituents = {};
-                            window.allForeignFlow.constituents[tickerClean] = data;
-                            if (activeDeepDiveStock && (activeDeepDiveStock.Ticker || "").replace(".JK", "").toUpperCase() === tickerClean) {
-                                renderDeepDiveForeignFlowChart(stock);
-                            }
+                try {
+                    const res = await fetch('/data/processed/foreign_flow_summary.json');
+                    if (res.ok) {
+                        const allFF = await res.json();
+                        window.allForeignFlow = allFF;
+                        if (allFF.constituents && allFF.constituents[tickerClean]) {
+                            ff = allFF.constituents[tickerClean];
                         }
-                    })
-                    .catch(() => {});
+                    }
+                } catch(e) {}
+            }
+
+            if (!history || !history.prices || history.prices.length === 0) {
                 return;
             }
 
-            // Update Foreign Flow Cards
+            // Update Quantitative Ribbon Cards
             const badgeEl = document.getElementById('deepDiveForeignBadge');
             const f1dEl = document.getElementById('deepDiveForeign1D');
             const f1dDescEl = document.getElementById('deepDiveForeign1DDesc');
@@ -3718,102 +3725,495 @@
             const f20dEl = document.getElementById('deepDiveForeign20D');
             const partEl = document.getElementById('deepDiveForeignPartRate');
 
-            const isNetBuy5d = (ff.net_foreign_5d || 0) >= 0;
-            const isNetBuy1d = (ff.net_foreign_1d || 0) >= 0;
-
-            if (badgeEl) {
-                badgeEl.innerText = (ff.status_id || ff.status || "Netral").toUpperCase();
-                badgeEl.className = isNetBuy5d
-                    ? "px-3.5 py-1 rounded-full text-xs font-black border shadow-2xs bg-emerald-50 text-emerald-800 border-emerald-200"
-                    : "px-3.5 py-1 rounded-full text-xs font-black border shadow-2xs bg-rose-50 text-rose-800 border-rose-200";
-            }
-            if (f1dEl) {
-                f1dEl.innerText = ff.net_foreign_1d_formatted || formatIDR(ff.net_foreign_1d || 0);
-                f1dEl.className = isNetBuy1d ? "text-base sm:text-lg font-black text-emerald-700 mt-0.5" : "text-base sm:text-lg font-black text-rose-700 mt-0.5";
-            }
-            if (f1dDescEl) {
-                f1dDescEl.innerText = isNetBuy1d ? "Akumulasi Harian" : "Distribusi Harian";
-                f1dDescEl.className = isNetBuy1d ? "text-[10px] text-emerald-600 font-medium mt-0.5" : "text-[10px] text-rose-600 font-medium mt-0.5";
-            }
-            if (f5dEl) {
-                f5dEl.innerText = ff.net_foreign_5d_formatted || formatIDR(ff.net_foreign_5d || 0);
-                f5dEl.className = isNetBuy5d ? "text-base sm:text-lg font-black text-emerald-700 mt-0.5" : "text-base sm:text-lg font-black text-rose-700 mt-0.5";
-            }
-            if (f5dDescEl) {
-                f5dDescEl.innerText = isNetBuy5d ? "Tren Inflow Mingguan" : "Tren Outflow Mingguan";
-                f5dDescEl.className = isNetBuy5d ? "text-[10px] text-emerald-600 font-medium mt-0.5" : "text-[10px] text-rose-600 font-medium mt-0.5";
-            }
-            if (f20dEl) {
-                f20dEl.innerText = ff.net_foreign_20d_formatted || formatIDR(ff.net_foreign_20d || 0);
-            }
-            if (partEl) {
-                partEl.innerText = `${ff.foreign_participation_pct || ff.participation_pct || 25}%`;
+            if (ff) {
+                const isNetBuy5d = (ff.net_foreign_5d || 0) >= 0;
+                const isNetBuy1d = (ff.net_foreign_1d || 0) >= 0;
+                if (badgeEl) {
+                    badgeEl.innerText = (ff.status_id || ff.status || "Netral").toUpperCase();
+                    badgeEl.className = isNetBuy5d
+                        ? "px-3.5 py-1 rounded-full text-xs font-black border shadow-2xs bg-emerald-50 text-emerald-800 border-emerald-200"
+                        : "px-3.5 py-1 rounded-full text-xs font-black border shadow-2xs bg-rose-50 text-rose-800 border-rose-200";
+                }
+                if (f1dEl) f1dEl.innerText = ff.net_foreign_1d_formatted || formatIDR(ff.net_foreign_1d || 0);
+                if (f1dDescEl) f1dDescEl.innerText = isNetBuy1d ? "Akumulasi Harian" : "Distribusi Harian";
+                if (f5dEl) f5dEl.innerText = ff.net_foreign_5d_formatted || formatIDR(ff.net_foreign_5d || 0);
+                if (f5dDescEl) f5dDescEl.innerText = isNetBuy5d ? "Tren Inflow" : "Tren Outflow";
+                if (f20dEl) f20dEl.innerText = ff.net_foreign_65d_formatted || ff.net_foreign_20d_formatted || formatIDR(ff.net_foreign_65d || 0);
+                if (partEl) partEl.innerText = `${ff.foreign_participation_pct || ff.participation_pct || 25}%`;
             }
 
-            // Render Chart.js Bar Histogram
-            const dates = ff.dates || [];
-            const dailyNet = ff.daily_net_idr || [];
-            const barColors = dailyNet.map(v => v >= 0 ? '#10b981' : '#f43f5e');
+            // Update Technical Indicators Cards
+            const rsiEl = document.getElementById('deepDiveRSI');
+            const rsiStatusEl = document.getElementById('deepDiveRSIStatus');
+            const macdEl = document.getElementById('deepDiveMACD');
+            const macdStatusEl = document.getElementById('deepDiveMACDStatus');
 
-            deepDiveForeignChartInstance = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: dates,
-                    datasets: [{
-                        label: 'Net Foreign (IDR)',
-                        data: dailyNet,
-                        backgroundColor: barColors,
-                        borderRadius: 3,
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            backgroundColor: '#0f172a',
-                            titleFont: { family: 'Plus Jakarta Sans', size: 11, weight: 'bold' },
-                            bodyFont: { family: 'Plus Jakarta Sans', size: 10 },
-                            padding: 8,
-                            cornerRadius: 8,
-                            callbacks: {
-                                label: function(context) {
-                                    const val = context.raw;
-                                    const sign = val > 0 ? "+" : "";
-                                    const abs = Math.abs(val);
-                                    let txt = abs >= 1e9 ? `${(val / 1e9).toFixed(1)} Miliar` : `${(val / 1e6).toFixed(0)} Juta`;
-                                    return `Net Foreign: ${sign}Rp ${txt}`;
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            grid: { display: false },
-                            ticks: {
-                                font: { family: 'Plus Jakarta Sans', size: 9 },
-                                color: '#94a3b8',
-                                maxRotation: 0,
-                                autoSkip: true,
-                                maxTicksLimit: 12
-                            }
-                        },
-                        y: {
-                            grid: { color: '#f1f5f9' },
-                            ticks: {
-                                font: { family: 'Plus Jakarta Sans', size: 9 },
-                                color: '#94a3b8',
-                                callback: function(val) {
-                                    if (Math.abs(val) >= 1e9) return (val / 1e9).toFixed(0) + ' M';
-                                    if (Math.abs(val) >= 1e6) return (val / 1e6).toFixed(0) + ' Jt';
-                                    return val;
-                                }
-                            }
+            const lastRsi = (history.rsi14 && history.rsi14.length) ? history.rsi14[history.rsi14.length - 1] : 50;
+            const lastMacdHist = (history.macd_hist && history.macd_hist.length) ? history.macd_hist[history.macd_hist.length - 1] : 0;
+
+            if (rsiEl) rsiEl.innerText = Number(lastRsi).toFixed(1);
+            if (rsiStatusEl) {
+                if (lastRsi >= 70) {
+                    rsiStatusEl.innerText = "Overbought (Jenuh Beli)";
+                    rsiStatusEl.className = "text-[10px] text-rose-600 font-semibold";
+                } else if (lastRsi <= 30) {
+                    rsiStatusEl.innerText = "Oversold (Zona Murah)";
+                    rsiStatusEl.className = "text-[10px] text-emerald-600 font-semibold";
+                } else {
+                    rsiStatusEl.innerText = "Zona Netral / Wajar";
+                    rsiStatusEl.className = "text-[10px] text-slate-500";
+                }
+            }
+
+            if (macdEl) {
+                const sign = lastMacdHist > 0 ? "+" : "";
+                macdEl.innerText = `${sign}${Number(lastMacdHist).toFixed(2)}`;
+            }
+            if (macdStatusEl) {
+                macdStatusEl.innerText = lastMacdHist >= 0 ? "Bullish Momentum" : "Pullback Momentum";
+                macdStatusEl.className = lastMacdHist >= 0 ? "text-[10px] text-emerald-600 font-semibold" : "text-[10px] text-rose-600 font-semibold";
+            }
+
+            // Check if LightweightCharts is ready
+            if (typeof LightweightCharts === 'undefined') {
+                console.warn("TradingView Lightweight Charts library not ready yet.");
+                return;
+            }
+
+            try {
+                destroyExistingProCharts();
+
+            // Setup Data Arrays
+            const dates = history.full_dates || [];
+            const candleData = [];
+            const lineData = [];
+            const ema10Data = [];
+            const ema20Data = [];
+            const ema50Data = [];
+            const ema200Data = [];
+            const bbUpperData = [];
+            const bbLowerData = [];
+            const tpData = [];
+            const slData = [];
+            const macdLineData = [];
+            const macdSignalData = [];
+            const macdHistData = [];
+            const rsiData = [];
+            const rsi70Data = [];
+            const rsi30Data = [];
+            const rsi50Data = [];
+            const volData = [];
+            const volSmaData = [];
+            const foreignData = [];
+
+            const cLen = dates.length;
+            for (let i = 0; i < cLen; i++) {
+                const time = dates[i];
+                const o = history.opens[i] != null ? history.opens[i] : history.prices[i];
+                const h = history.highs[i] != null ? history.highs[i] : Math.max(o, history.prices[i]);
+                const l = history.lows[i] != null ? history.lows[i] : Math.min(o, history.prices[i]);
+                const c = history.prices[i];
+                const vol = history.volumes[i] || 0;
+
+                candleData.push({ time, open: o, high: h, low: l, close: c });
+                lineData.push({ time, value: c });
+
+                if (history.ema10) ema10Data.push({ time, value: history.ema10[i] });
+                if (history.ema20) ema20Data.push({ time, value: history.ema20[i] });
+                if (history.ema50) ema50Data.push({ time, value: history.ema50[i] });
+                if (history.ema200) ema200Data.push({ time, value: history.ema200[i] });
+                if (history.bb_upper) bbUpperData.push({ time, value: history.bb_upper[i] });
+                if (history.bb_lower) bbLowerData.push({ time, value: history.bb_lower[i] });
+
+                tpData.push({ time, value: targetPrice });
+                slData.push({ time, value: stopLoss });
+
+                if (history.macd_line) macdLineData.push({ time, value: history.macd_line[i] });
+                if (history.macd_signal) macdSignalData.push({ time, value: history.macd_signal[i] });
+                if (history.macd_hist) {
+                    const mVal = history.macd_hist[i];
+                    macdHistData.push({
+                        time,
+                        value: mVal,
+                        color: mVal >= 0 ? 'rgba(38, 166, 154, 0.9)' : 'rgba(239, 83, 80, 0.9)'
+                    });
+                }
+
+                if (history.rsi14) {
+                    rsiData.push({ time, value: history.rsi14[i] });
+                    rsi70Data.push({ time, value: 70 });
+                    rsi50Data.push({ time, value: 50 });
+                    rsi30Data.push({ time, value: 30 });
+                }
+
+                volData.push({
+                    time,
+                    value: vol,
+                    color: c >= o ? 'rgba(38, 166, 154, 0.65)' : 'rgba(239, 83, 80, 0.65)'
+                });
+                if (history.vol_sma20) volSmaData.push({ time, value: history.vol_sma20[i] });
+
+                const netF = (ff && ff.daily_net_idr && ff.daily_net_idr[i] !== undefined) ? ff.daily_net_idr[i] : 0;
+                foreignData.push({
+                    time,
+                    value: netF,
+                    color: netF >= 0 ? '#10b981' : '#f43f5e'
+                });
+            }
+
+            // Save last values for default legend
+            proChartState.lastValues = {
+                ticker: tickerClean,
+                date: dates[cLen - 1] || "",
+                open: history.opens[cLen - 1] || closePrice,
+                high: history.highs[cLen - 1] || closePrice,
+                low: history.lows[cLen - 1] || closePrice,
+                close: history.prices[cLen - 1] || closePrice,
+                ema10: history.ema10 ? history.ema10[cLen - 1] : null,
+                ema20: history.ema20 ? history.ema20[cLen - 1] : null,
+                ema50: history.ema50 ? history.ema50[cLen - 1] : null,
+                ema200: history.ema200 ? history.ema200[cLen - 1] : null,
+                macdHist: history.macd_hist ? history.macd_hist[cLen - 1] : null,
+                rsi: history.rsi14 ? history.rsi14[cLen - 1] : null,
+                vol: history.volumes ? history.volumes[cLen - 1] : null,
+                foreign: (ff && ff.daily_net_idr) ? ff.daily_net_idr[cLen - 1] : null,
+            };
+
+            // 1. Build Main Price Chart Pane
+            const priceContainer = document.getElementById('proPanePrice');
+            if (priceContainer) {
+                priceContainer.innerHTML = '';
+                const pChart = LightweightCharts.createChart(priceContainer, getProChartBaseOptions(priceContainer, priceContainer.clientHeight || 360, false));
+                proCharts.price = pChart;
+
+                // Candle Series
+                proSeries.candle = pChart.addCandlestickSeries({
+                    upColor: '#26a69a',
+                    downColor: '#ef5350',
+                    borderVisible: false,
+                    wickUpColor: '#26a69a',
+                    wickDownColor: '#ef5350',
+                    visible: proChartState.mode === 'candle'
+                });
+                proSeries.candle.setData(candleData);
+
+                // Line Series (Mode Garis)
+                proSeries.line = pChart.addLineSeries({
+                    color: '#2563eb',
+                    lineWidth: 2.5,
+                    priceLineVisible: false,
+                    visible: proChartState.mode === 'line'
+                });
+                proSeries.line.setData(lineData);
+
+                // EMA Overlays
+                if (ema10Data.length) {
+                    proSeries.ema10 = pChart.addLineSeries({ color: '#ff9800', lineWidth: 1.5, priceLineVisible: false, visible: proChartState.overlays.ema10 });
+                    proSeries.ema10.setData(ema10Data);
+                }
+                if (ema20Data.length) {
+                    proSeries.ema20 = pChart.addLineSeries({ color: '#ffd600', lineWidth: 1.5, priceLineVisible: false, visible: proChartState.overlays.ema20 });
+                    proSeries.ema20.setData(ema20Data);
+                }
+                if (ema50Data.length) {
+                    proSeries.ema50 = pChart.addLineSeries({ color: '#2962ff', lineWidth: 1.5, priceLineVisible: false, visible: proChartState.overlays.ema50 });
+                    proSeries.ema50.setData(ema50Data);
+                }
+                if (ema200Data.length) {
+                    proSeries.ema200 = pChart.addLineSeries({ color: '#ab47bc', lineWidth: 1.5, priceLineVisible: false, visible: proChartState.overlays.ema200 });
+                    proSeries.ema200.setData(ema200Data);
+                }
+                if (bbUpperData.length) {
+                    proSeries.bbUpper = pChart.addLineSeries({ color: 'rgba(38, 166, 154, 0.7)', lineWidth: 1, lineStyle: 2, priceLineVisible: false, visible: proChartState.overlays.bb });
+                    proSeries.bbUpper.setData(bbUpperData);
+                }
+                if (bbLowerData.length) {
+                    proSeries.bbLower = pChart.addLineSeries({ color: 'rgba(38, 166, 154, 0.7)', lineWidth: 1, lineStyle: 2, priceLineVisible: false, visible: proChartState.overlays.bb });
+                    proSeries.bbLower.setData(bbLowerData);
+                }
+                if (tpData.length) {
+                    proSeries.tpLine = pChart.addLineSeries({ color: '#10b981', lineWidth: 2, lineStyle: 2, priceLineVisible: false, title: 'TP Target', visible: proChartState.overlays.targets });
+                    proSeries.tpLine.setData(tpData);
+                }
+                if (slData.length) {
+                    proSeries.slLine = pChart.addLineSeries({ color: '#ef4444', lineWidth: 2, lineStyle: 2, priceLineVisible: false, title: 'Stop Loss', visible: proChartState.overlays.targets });
+                    proSeries.slLine.setData(slData);
+                }
+            }
+
+            // 2. Build MACD Sub-Pane
+            const macdContainer = document.getElementById('proPaneMacd');
+            if (macdContainer) {
+                macdContainer.innerHTML = '<div class="absolute top-1 left-3 z-10 text-[10px] font-mono text-cyan-400 font-semibold pointer-events-none flex items-center gap-2"><span>MACD (12, 26, 9)</span><span id="proLegendMacd" class="text-slate-300"></span></div>';
+                const mChart = LightweightCharts.createChart(macdContainer, getProChartBaseOptions(macdContainer, 110, false));
+                proCharts.macd = mChart;
+
+                proSeries.macdHist = mChart.addHistogramSeries({ priceLineVisible: false });
+                proSeries.macdHist.setData(macdHistData);
+                proSeries.macdLine = mChart.addLineSeries({ color: '#2962ff', lineWidth: 1.5, priceLineVisible: false });
+                proSeries.macdLine.setData(macdLineData);
+                proSeries.macdSignal = mChart.addLineSeries({ color: '#ff6d00', lineWidth: 1.5, priceLineVisible: false });
+                proSeries.macdSignal.setData(macdSignalData);
+            }
+
+            // 3. Build RSI Sub-Pane
+            const rsiContainer = document.getElementById('proPaneRsi');
+            if (rsiContainer) {
+                rsiContainer.innerHTML = '<div class="absolute top-1 left-3 z-10 text-[10px] font-mono text-purple-400 font-semibold pointer-events-none flex items-center gap-2"><span>RSI (14)</span><span id="proLegendRsi" class="text-slate-300"></span></div>';
+                const rChart = LightweightCharts.createChart(rsiContainer, getProChartBaseOptions(rsiContainer, 96, false));
+                proCharts.rsi = rChart;
+
+                const r70 = rChart.addLineSeries({ color: 'rgba(239, 83, 80, 0.45)', lineWidth: 1, lineStyle: 2, priceLineVisible: false });
+                r70.setData(rsi70Data);
+                const r50 = rChart.addLineSeries({ color: 'rgba(100, 116, 139, 0.35)', lineWidth: 1, lineStyle: 3, priceLineVisible: false });
+                r50.setData(rsi50Data);
+                const r30 = rChart.addLineSeries({ color: 'rgba(38, 166, 154, 0.45)', lineWidth: 1, lineStyle: 2, priceLineVisible: false });
+                r30.setData(rsi30Data);
+
+                proSeries.rsiLine = rChart.addLineSeries({ color: '#ab47bc', lineWidth: 2, priceLineVisible: false });
+                proSeries.rsiLine.setData(rsiData);
+            }
+
+            // 4. Build Volume Sub-Pane
+            const volContainer = document.getElementById('proPaneVolume');
+            if (volContainer) {
+                volContainer.innerHTML = '<div class="absolute top-1 left-3 z-10 text-[10px] font-mono text-emerald-400 font-semibold pointer-events-none flex items-center gap-2"><span>Volume & SMA 20</span><span id="proLegendVolume" class="text-slate-300"></span></div>';
+                const vChart = LightweightCharts.createChart(volContainer, getProChartBaseOptions(volContainer, 96, false));
+                proCharts.volume = vChart;
+
+                proSeries.volBars = vChart.addHistogramSeries({
+                    priceFormat: { type: 'volume' },
+                    priceLineVisible: false
+                });
+                proSeries.volBars.setData(volData);
+                if (volSmaData.length) {
+                    proSeries.volSma = vChart.addLineSeries({ color: '#2962ff', lineWidth: 1.5, priceLineVisible: false });
+                    proSeries.volSma.setData(volSmaData);
+                }
+            }
+
+            // 5. Build Net Foreign Flow Sub-Pane (Bottom Pane with visible TimeScale)
+            const foreignContainer = document.getElementById('proPaneForeign');
+            if (foreignContainer) {
+                foreignContainer.innerHTML = '<div class="absolute top-1 left-3 z-10 text-[10px] font-mono text-rose-400 font-semibold pointer-events-none flex items-center gap-2"><span>Net Foreign Flow BEI (IDR)</span><span id="proLegendForeign" class="text-slate-300"></span></div>';
+                const fChart = LightweightCharts.createChart(foreignContainer, getProChartBaseOptions(foreignContainer, 110, true));
+                proCharts.foreign = fChart;
+
+                proSeries.foreignBars = fChart.addHistogramSeries({
+                    priceLineVisible: false,
+                    priceFormat: {
+                        type: 'custom',
+                        formatter: function(val) {
+                            if (Math.abs(val) >= 1e9) return (val / 1e9).toFixed(1) + ' M';
+                            if (Math.abs(val) >= 1e6) return (val / 1e6).toFixed(0) + ' Jt';
+                            return val;
                         }
                     }
-                }
+                });
+                proSeries.foreignBars.setData(foreignData);
+            }
+
+            // Synchronize Logical Range Across All Active Panes
+            const activePanes = Object.values(proCharts).filter(Boolean);
+            let isRangeSyncing = false;
+
+            activePanes.forEach(pane => {
+                pane.timeScale().subscribeVisibleLogicalRangeChange(range => {
+                    if (!range || isRangeSyncing) return;
+                    isRangeSyncing = true;
+                    activePanes.forEach(other => {
+                        if (other !== pane) {
+                            try { other.timeScale().setVisibleLogicalRange(range); } catch(e) {}
+                        }
+                    });
+                    isRangeSyncing = false;
+                });
             });
+
+            // Synchronize Crosshair Across All Active Panes
+            if (proCharts.price) {
+                proCharts.price.subscribeCrosshairMove(param => {
+                    if (!param.time) {
+                        resetProChartLegend();
+                        activePanes.forEach(c => { if (c !== proCharts.price) c.clearCrosshairPosition(); });
+                        return;
+                    }
+
+                    // Update Top Legend
+                    updateProChartLegend(param, history, ff, dates);
+
+                    // Sync crosshair vertical position to other sub-panes
+                    if (proSeries.macdHist && proCharts.macd) {
+                        try { proCharts.macd.setCrosshairPosition(0, param.time, proSeries.macdHist); } catch(e) {}
+                    }
+                    if (proSeries.rsiLine && proCharts.rsi) {
+                        try { proCharts.rsi.setCrosshairPosition(0, param.time, proSeries.rsiLine); } catch(e) {}
+                    }
+                    if (proSeries.volBars && proCharts.volume) {
+                        try { proCharts.volume.setCrosshairPosition(0, param.time, proSeries.volBars); } catch(e) {}
+                    }
+                    if (proSeries.foreignBars && proCharts.foreign) {
+                        try { proCharts.foreign.setCrosshairPosition(0, param.time, proSeries.foreignBars); } catch(e) {}
+                    }
+                });
+            }
+
+            // Set Initial Default Legend Values
+            resetProChartLegend();
+
+            // Trigger Resize and Fit Content after DOM paint
+            setTimeout(() => {
+                handleProChartResize();
+                Object.values(proCharts).forEach(c => {
+                    if (c && c.timeScale) {
+                        try { c.timeScale().fitContent(); } catch(e) {}
+                    }
+                });
+            }, 60);
+            } catch (err) {
+                console.error("Pro Chart Studio Error:", err);
+                const priceContainer = document.getElementById('proPanePrice');
+                if (priceContainer) {
+                    priceContainer.innerHTML = `<div class="p-6 text-rose-400 font-mono text-xs flex flex-col gap-2"><div class="font-bold text-sm text-rose-300">⚠️ Gagal Merender Terminal Teknikal:</div><div>${err.message}</div><pre class="bg-black/50 p-3 rounded text-[11px] overflow-auto max-h-48 text-slate-400">${err.stack || ''}</pre></div>`;
+                }
+            }
+        }
+
+        function resetProChartLegend() {
+            const lv = proChartState.lastValues;
+            if (!lv || !lv.ticker) return;
+
+            const tEl = document.getElementById('proChartTickerTitle');
+            const oEl = document.getElementById('proLegendOpen');
+            const hEl = document.getElementById('proLegendHigh');
+            const lEl = document.getElementById('proLegendLow');
+            const cEl = document.getElementById('proLegendClose');
+            const chgEl = document.getElementById('proLegendChange');
+            const indEl = document.getElementById('proLegendIndicators');
+            const dateEl = document.getElementById('proChartCrosshairDate');
+
+            if (tEl) tEl.innerText = lv.ticker;
+            if (oEl) oEl.innerText = formatIDR(lv.open);
+            if (hEl) hEl.innerText = formatIDR(lv.high);
+            if (lEl) lEl.innerText = formatIDR(lv.low);
+            if (cEl) cEl.innerText = formatIDR(lv.close);
+            if (dateEl) dateEl.innerText = lv.date || "1D · 3 Bulan";
+
+            if (chgEl) {
+                const diff = lv.close - lv.open;
+                const pct = lv.open > 0 ? (diff / lv.open * 100) : 0;
+                const sign = diff >= 0 ? "+" : "";
+                chgEl.innerText = `${sign}${formatIDR(diff)} (${sign}${pct.toFixed(2)}%)`;
+                chgEl.className = diff >= 0 ? "text-emerald-400 font-bold font-mono" : "text-rose-400 font-bold font-mono";
+            }
+
+            if (indEl) {
+                let html = '';
+                if (lv.ema10) html += `<span class="text-amber-400">EMA10: ${formatIDR(lv.ema10)}</span>`;
+                if (lv.ema20) html += `<span class="text-yellow-400">EMA20: ${formatIDR(lv.ema20)}</span>`;
+                if (lv.ema50) html += `<span class="text-blue-400">EMA50: ${formatIDR(lv.ema50)}</span>`;
+                if (lv.ema200) html += `<span class="text-purple-400">EMA200: ${formatIDR(lv.ema200)}</span>`;
+                indEl.innerHTML = html;
+            }
+
+            const mLeg = document.getElementById('proLegendMacd');
+            if (mLeg && lv.macdHist != null) {
+                const s = lv.macdHist >= 0 ? "+" : "";
+                mLeg.innerText = `Hist: ${s}${Number(lv.macdHist).toFixed(2)}`;
+                mLeg.className = lv.macdHist >= 0 ? "text-emerald-400" : "text-rose-400";
+            }
+            const rLeg = document.getElementById('proLegendRsi');
+            if (rLeg && lv.rsi != null) {
+                rLeg.innerText = `${Number(lv.rsi).toFixed(1)}`;
+            }
+            const vLeg = document.getElementById('proLegendVolume');
+            if (vLeg && lv.vol != null) {
+                vLeg.innerText = `${Number(lv.vol).toLocaleString('id-ID')}`;
+            }
+            const fLeg = document.getElementById('proLegendForeign');
+            if (fLeg && lv.foreign != null) {
+                const s = lv.foreign >= 0 ? "+" : "";
+                fLeg.innerText = `${s}Rp ${(lv.foreign / 1e9).toFixed(1)} Miliar`;
+                fLeg.className = lv.foreign >= 0 ? "text-emerald-400" : "text-rose-400";
+            }
+        }
+
+        function updateProChartLegend(param, history, ff, dates) {
+            const candle = param.seriesData.get(proSeries.candle) || param.seriesData.get(proSeries.line);
+            if (!candle) return;
+
+            const timeStr = param.time;
+            const idx = dates.indexOf(timeStr);
+
+            const o = candle.open !== undefined ? candle.open : (candle.value || 0);
+            const h = candle.high !== undefined ? candle.high : o;
+            const l = candle.low !== undefined ? candle.low : o;
+            const c = candle.close !== undefined ? candle.close : (candle.value || 0);
+
+            const oEl = document.getElementById('proLegendOpen');
+            const hEl = document.getElementById('proLegendHigh');
+            const lEl = document.getElementById('proLegendLow');
+            const cEl = document.getElementById('proLegendClose');
+            const chgEl = document.getElementById('proLegendChange');
+            const indEl = document.getElementById('proLegendIndicators');
+            const dateEl = document.getElementById('proChartCrosshairDate');
+
+            if (oEl) oEl.innerText = formatIDR(o);
+            if (hEl) hEl.innerText = formatIDR(h);
+            if (lEl) lEl.innerText = formatIDR(l);
+            if (cEl) cEl.innerText = formatIDR(c);
+            if (dateEl) dateEl.innerText = timeStr;
+
+            if (chgEl) {
+                const diff = c - o;
+                const pct = o > 0 ? (diff / o * 100) : 0;
+                const sign = diff >= 0 ? "+" : "";
+                chgEl.innerText = `${sign}${formatIDR(diff)} (${sign}${pct.toFixed(2)}%)`;
+                chgEl.className = diff >= 0 ? "text-emerald-400 font-bold font-mono" : "text-rose-400 font-bold font-mono";
+            }
+
+            if (indEl && idx !== -1) {
+                let html = '';
+                if (history.ema10 && history.ema10[idx]) html += `<span class="text-amber-400">EMA10: ${formatIDR(history.ema10[idx])}</span>`;
+                if (history.ema20 && history.ema20[idx]) html += `<span class="text-yellow-400">EMA20: ${formatIDR(history.ema20[idx])}</span>`;
+                if (history.ema50 && history.ema50[idx]) html += `<span class="text-blue-400">EMA50: ${formatIDR(history.ema50[idx])}</span>`;
+                if (history.ema200 && history.ema200[idx]) html += `<span class="text-purple-400">EMA200: ${formatIDR(history.ema200[idx])}</span>`;
+                indEl.innerHTML = html;
+            }
+
+            if (idx !== -1) {
+                const mLeg = document.getElementById('proLegendMacd');
+                if (mLeg && history.macd_hist) {
+                    const mVal = history.macd_hist[idx];
+                    const s = mVal >= 0 ? "+" : "";
+                    mLeg.innerText = `Hist: ${s}${Number(mVal).toFixed(2)}`;
+                    mLeg.className = mVal >= 0 ? "text-emerald-400" : "text-rose-400";
+                }
+                const rLeg = document.getElementById('proLegendRsi');
+                if (rLeg && history.rsi14) {
+                    rLeg.innerText = `${Number(history.rsi14[idx]).toFixed(1)}`;
+                }
+                const vLeg = document.getElementById('proLegendVolume');
+                if (vLeg && history.volumes) {
+                    vLeg.innerText = `${Number(history.volumes[idx]).toLocaleString('id-ID')}`;
+                }
+                const fLeg = document.getElementById('proLegendForeign');
+                if (fLeg && ff && ff.daily_net_idr) {
+                    const netF = ff.daily_net_idr[idx] || 0;
+                    const s = netF >= 0 ? "+" : "";
+                    fLeg.innerText = `${s}Rp ${(netF / 1e9).toFixed(1)} Miliar`;
+                    fLeg.className = netF >= 0 ? "text-emerald-400" : "text-rose-400";
+                }
+            }
+        }
+
+        // Backward compatibility wrappers
+        function renderDeepDivePriceChart(stock, closePrice, entryPrice, targetPrice, stopLoss) {
+            renderProTechnicalStudio(stock, closePrice, entryPrice, targetPrice, stopLoss);
+        }
+
+        function renderDeepDiveForeignFlowChart(stock) {
+            // Unification complete: Foreign Flow is directly handled inside renderProTechnicalStudio!
         }
 
         // Kalkulator Lot Khusus Emiten Deep Dive
@@ -3868,9 +4268,22 @@
 
         async function loadFinancialsSummary() {
             try {
-                const res = await fetch('/data/processed/financial_statements_summary.json');
-                if (res.ok) {
-                    financialsSummaryData = await res.json();
+                const [finRes, histRes, ffRes] = await Promise.all([
+                    fetch('/data/processed/financial_statements_summary.json').catch(() => null),
+                    fetch('/data/processed/price_history_30d.json').catch(() => null),
+                    fetch('/data/processed/foreign_flow_summary.json').catch(() => null)
+                ]);
+                if (finRes && finRes.ok) {
+                    financialsSummaryData = await finRes.json();
+                }
+                if (histRes && histRes.ok) {
+                    window.allPriceHistory = await histRes.json();
+                }
+                if (ffRes && ffRes.ok) {
+                    window.allForeignFlow = await ffRes.json();
+                    if (allRecommendations && allRecommendations.length > 0) {
+                        renderRecommendationsTable(allRecommendations);
+                    }
                 }
             } catch(e) {}
             if (!financialsSummaryData || Object.keys(financialsSummaryData).length === 0) {
@@ -3882,21 +4295,6 @@
                 } catch(e) {}
             }
             try {
-                const resHistory = await fetch('/data/processed/price_history_30d.json');
-                if (resHistory.ok) {
-                    window.allPriceHistory = await resHistory.json();
-                }
-            } catch(e) {}
-            try {
-                const resFF = await fetch('/data/processed/foreign_flow_summary.json');
-                if (resFF.ok) {
-                    window.allForeignFlow = await resFF.json();
-                    if (allRecommendations && allRecommendations.length > 0) {
-                        renderRecommendationsTable(allRecommendations);
-                    }
-                }
-            } catch(e) {}
-            try {
                 const resWA = await fetch('/data/processed/watchlist_analysis.json');
                 if (resWA.ok) {
                     const wa = await resWA.json();
@@ -3905,6 +4303,17 @@
                     }
                 }
             } catch(e) {}
+
+            if (activeDeepDiveStock) {
+                const tickerClean = (activeDeepDiveStock.Ticker || "").replace(".JK", "").toUpperCase();
+                const cp = Math.round(activeDeepDiveStock.Close || 0);
+                const ep = Math.round(activeDeepDiveStock.Entry_Price || cp);
+                const tp = Math.round(activeDeepDiveStock.Target_Price || (cp * 1.05));
+                const sl = Math.round(activeDeepDiveStock.Stop_Loss || (cp * 0.96));
+                renderProTechnicalStudio(activeDeepDiveStock, cp, ep, tp, sl);
+                renderDeepDiveFinancials(tickerClean, activeDeepDiveStock);
+                renderDeepDiveWatchlistResearch(tickerClean, activeDeepDiveStock);
+            }
         }
 
         async function renderDeepDiveFinancials(tickerClean, stock) {

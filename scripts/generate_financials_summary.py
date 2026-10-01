@@ -73,23 +73,75 @@ def build_summary():
             raw_market_df["Date"] = pd.to_datetime(raw_market_df["Date"])
             for ticker_full, grp in raw_market_df.groupby("Ticker"):
                 t_clean = str(ticker_full).replace(".JK", "").strip().upper()
-                sorted_grp = grp.sort_values("Date").tail(65).copy()
-                if sorted_grp.empty:
+                full_df = grp.sort_values("Date").copy()
+                if full_df.empty:
                     continue
 
-                # Calculate factual 20-day Simple Moving Average (SMA 20)
-                full_close = grp.sort_values("Date")["Close"]
-                sma_series = full_close.rolling(window=20, min_periods=1).mean()
-                sorted_sma = sma_series.loc[sorted_grp.index]
+                close_series = full_df["Close"]
+                vol_series = full_df["Volume"]
+
+                # 1. EMAs & SMAs
+                ema10_series = close_series.ewm(span=10, adjust=False).mean()
+                ema20_series = close_series.ewm(span=20, adjust=False).mean()
+                ema50_series = close_series.ewm(span=50, adjust=False).mean()
+                ema100_series = close_series.ewm(span=100, adjust=False).mean()
+                ema200_series = close_series.ewm(span=200, adjust=False).mean()
+                ma50_series = close_series.rolling(50, min_periods=1).mean()
+                ma200_series = close_series.rolling(200, min_periods=1).mean()
+
+                # 2. Bollinger Bands (20, 2)
+                bb_mid_series = close_series.rolling(20, min_periods=1).mean()
+                bb_std_series = close_series.rolling(20, min_periods=1).std().fillna(0)
+                bb_upper_series = bb_mid_series + 2 * bb_std_series
+                bb_lower_series = bb_mid_series - 2 * bb_std_series
+
+                # 3. MACD (12, 26, 9)
+                ema12_series = close_series.ewm(span=12, adjust=False).mean()
+                ema26_series = close_series.ewm(span=26, adjust=False).mean()
+                macd_line_series = ema12_series - ema26_series
+                macd_signal_series = macd_line_series.ewm(span=9, adjust=False).mean()
+                macd_hist_series = macd_line_series - macd_signal_series
+
+                # 4. RSI (14)
+                delta = close_series.diff()
+                gain = delta.clip(lower=0)
+                loss = -delta.clip(upper=0)
+                avg_gain = gain.ewm(com=13, adjust=False).mean()
+                avg_loss = loss.ewm(com=13, adjust=False).mean()
+                rs = avg_gain / (avg_loss + 1e-9)
+                rsi14_series = 100 - (100 / (1 + rs))
+
+                # 5. Volume SMA 20
+                vol_sma20_series = vol_series.rolling(20, min_periods=1).mean()
+
+                # Slicing the last 65 trading days (3 months)
+                sorted_grp = full_df.tail(65).copy()
+                idx = sorted_grp.index
 
                 dates_formatted = [d.strftime("%d %b") for d in sorted_grp["Date"]]
                 full_dates = [d.strftime("%Y-%m-%d") for d in sorted_grp["Date"]]
-                opens = [round(float(o)) for o in sorted_grp["Open"]]
-                prices = [round(float(p)) for p in sorted_grp["Close"]]
-                sma20 = [round(float(s)) for s in sorted_sma]
-                highs = [round(float(h)) for h in sorted_grp["High"]]
-                lows = [round(float(l)) for l in sorted_grp["Low"]]
+                opens = [round(float(o), 2) for o in sorted_grp["Open"]]
+                prices = [round(float(p), 2) for p in sorted_grp["Close"]]
+                highs = [round(float(h), 2) for h in sorted_grp["High"]]
+                lows = [round(float(l), 2) for l in sorted_grp["Low"]]
                 volumes = [int(v) if pd.notnull(v) else 0 for v in sorted_grp["Volume"]]
+
+                # Indicators aligned with last 65 days
+                ema10 = [round(float(v), 2) for v in ema10_series.loc[idx]]
+                ema20 = [round(float(v), 2) for v in ema20_series.loc[idx]]
+                ema50 = [round(float(v), 2) for v in ema50_series.loc[idx]]
+                ema100 = [round(float(v), 2) for v in ema100_series.loc[idx]]
+                ema200 = [round(float(v), 2) for v in ema200_series.loc[idx]]
+                ma50 = [round(float(v), 2) for v in ma50_series.loc[idx]]
+                ma200 = [round(float(v), 2) for v in ma200_series.loc[idx]]
+                bb_upper = [round(float(v), 2) for v in bb_upper_series.loc[idx]]
+                bb_mid = [round(float(v), 2) for v in bb_mid_series.loc[idx]]
+                bb_lower = [round(float(v), 2) for v in bb_lower_series.loc[idx]]
+                macd_line = [round(float(v), 2) for v in macd_line_series.loc[idx]]
+                macd_signal = [round(float(v), 2) for v in macd_signal_series.loc[idx]]
+                macd_hist = [round(float(v), 2) for v in macd_hist_series.loc[idx]]
+                rsi14 = [round(float(v), 2) for v in rsi14_series.loc[idx]]
+                vol_sma20 = [round(float(v), 0) for v in vol_sma20_series.loc[idx]]
 
                 price_history_map[t_clean] = {
                     "ticker": t_clean,
@@ -99,12 +151,27 @@ def build_summary():
                     "highs": highs,
                     "lows": lows,
                     "prices": prices,
-                    "sma20": sma20,
+                    "sma20": bb_mid,
                     "volumes": volumes,
+                    "ema10": ema10,
+                    "ema20": ema20,
+                    "ema50": ema50,
+                    "ema100": ema100,
+                    "ema200": ema200,
+                    "ma50": ma50,
+                    "ma200": ma200,
+                    "bb_upper": bb_upper,
+                    "bb_mid": bb_mid,
+                    "bb_lower": bb_lower,
+                    "macd_line": macd_line,
+                    "macd_signal": macd_signal,
+                    "macd_hist": macd_hist,
+                    "rsi14": rsi14,
+                    "vol_sma20": vol_sma20,
                     "last_price": prices[-1] if prices else 0,
                     "last_date": full_dates[-1] if full_dates else "",
                 }
-            logger.info(f"Extracted real 3-month OHLC price history for {len(price_history_map)} tickers.")
+            logger.info(f"Extracted real 3-month OHLC price history and technical indicators for {len(price_history_map)} tickers.")
         except Exception as e:
             logger.error(f"Error extracting price history: {e}")
 
