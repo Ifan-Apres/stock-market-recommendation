@@ -61,7 +61,7 @@ def format_idr_compact(val: float) -> str:
 def compute_foreign_flow() -> Dict[str, Any]:
     """
     Computes institutional foreign money flow across all 66 constituents
-    for the last 30 trading days, using official IDX Trading Summary data
+    for the last 3 months (~65 trading days), using official IDX Trading Summary data
     with an automated graceful fallback to the Order Flow Proxy Model.
     """
     if not RAW_MARKET_FILE.exists():
@@ -74,7 +74,7 @@ def compute_foreign_flow() -> Dict[str, Any]:
 
     # Extract recent dates to scrape / check cache
     unique_dates = sorted(df["Date"].unique())
-    recent_dates = [pd.to_datetime(d).strftime("%Y-%m-%d") for d in unique_dates[-30:]]
+    recent_dates = [pd.to_datetime(d).strftime("%Y-%m-%d") for d in unique_dates[-65:]]
 
     logger.info(f"Checking official IDX bursa feed for {len(recent_dates)} recent trading days...")
     idx_daily_data: Dict[str, Dict[str, Any]] = {}
@@ -100,7 +100,7 @@ def compute_foreign_flow() -> Dict[str, Any]:
 
     for ticker_full, grp in grouped:
         t_clean = str(ticker_full).replace(".JK", "").strip().upper()
-        sorted_grp = grp.sort_values("Date").tail(30).copy()
+        sorted_grp = grp.sort_values("Date").tail(65).copy()
         if sorted_grp.empty:
             continue
 
@@ -143,6 +143,7 @@ def compute_foreign_flow() -> Dict[str, Any]:
         net_1d = daily_net_idr[-1] if daily_net_idr else 0
         net_5d = sum(daily_net_idr[-5:]) if len(daily_net_idr) >= 5 else sum(daily_net_idr)
         net_20d = sum(daily_net_idr[-20:]) if len(daily_net_idr) >= 20 else sum(daily_net_idr)
+        net_65d = sum(daily_net_idr[-65:]) if len(daily_net_idr) >= 65 else sum(daily_net_idr)
 
         # Aggregate macro
         for d_str, flow, ret in zip(full_dates, daily_net_idr, sorted_grp["Return"]):
@@ -187,6 +188,8 @@ def compute_foreign_flow() -> Dict[str, Any]:
             "net_foreign_5d_formatted": format_idr_compact(net_5d),
             "net_foreign_20d": net_20d,
             "net_foreign_20d_formatted": format_idr_compact(net_20d),
+            "net_foreign_65d": net_65d,
+            "net_foreign_65d_formatted": format_idr_compact(net_65d),
             "status": status,
             "status_id": status_id,
             "badge_color": badge_color,
@@ -293,6 +296,8 @@ def compute_foreign_flow() -> Dict[str, Any]:
                         "net_5d_formatted": ff_data["net_foreign_5d_formatted"],
                         "net_20d": ff_data["net_foreign_20d"],
                         "net_20d_formatted": ff_data["net_foreign_20d_formatted"],
+                        "net_65d": ff_data.get("net_foreign_65d", 0),
+                        "net_65d_formatted": ff_data.get("net_foreign_65d_formatted", "Rp 0"),
                         "participation_pct": ff_data["foreign_participation_pct"],
                         "status": ff_data["status"],
                         "status_id": ff_data["status_id"],
