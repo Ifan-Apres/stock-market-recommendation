@@ -3,6 +3,9 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <meta http-equiv="Expires" content="0"/>
     <title>Stock Market Recommendation - Institutional Equity Research</title>
     <meta content="web_dashboard" name="shell-type"/>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
@@ -2787,7 +2790,7 @@
                 // 2. Jika offline / port 8080 statis, fetch data/processed/latest_recommendations.json
                 if (!loaded) {
                     try {
-                        const jsonRes = await fetch('/data/processed/latest_recommendations.json');
+                        const jsonRes = await fetch(`/data/processed/latest_recommendations.json?t=${Date.now()}`);
                         if (jsonRes && jsonRes.ok) {
                             const data = await jsonRes.json();
                             if (data && data.length > 0) {
@@ -2801,7 +2804,7 @@
                 // 3. Fallback alternatif ke data/processed/snapshot.json
                 if (!loaded) {
                     try {
-                        const snapRes = await fetch('/data/processed/snapshot.json');
+                        const snapRes = await fetch(`/data/processed/snapshot.json?t=${Date.now()}`);
                         if (snapRes && snapRes.ok) {
                             const snap = await snapRes.json();
                             const data = snap.all_recommendations || snap.recommendations_swing;
