@@ -350,12 +350,17 @@ def build_summary():
         json.dump(price_history_map, f, indent=2, ensure_ascii=False)
     logger.info(f"Saved real 30-day price history to {PRICE_HISTORY_FILE}")
 
-    # Save comprehensive financials summary file
+    # Save comprehensive financials summary file (safeguarded against empty raw folder)
     OUTPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
-    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-        json.dump(financials_summary, f, indent=2, ensure_ascii=False)
-
-    logger.info(f"Successfully generated financial statement summary for {len(financials_summary)} tickers at {OUTPUT_FILE}")
+    if financials_summary:
+        with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+            json.dump(financials_summary, f, indent=2, ensure_ascii=False)
+        logger.info(f"Successfully generated financial statement summary for {len(financials_summary)} tickers at {OUTPUT_FILE}")
+    elif OUTPUT_FILE.exists():
+        logger.info(f"Preserving existing financial statements summary at {OUTPUT_FILE} (raw financial files are private/excluded).")
+    else:
+        with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+            json.dump({}, f)
 
 if __name__ == "__main__":
     build_summary()
