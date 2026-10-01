@@ -202,29 +202,64 @@ uvicorn api.main:app --reload --port 8000
 ```
 Buka peramban (*browser*) Anda di:
 * **Dashboard Web Interaktif**: [http://localhost:8000/](http://localhost:8000/)
-* **Dokumentasi Interaktif Swagger API**: [http://localhost:8000/docs](http://localhost:8000/docs)
-* **Dokumentasi Alternatif Redoc**: [http://localhost:8000/redoc](http://localhost:8000/redoc)
+* **Dashboard Web Interaktif**: [http://localhost:8000/](http://localhost:8000/)
+* **Dokumentasi Interaktif API**: Tersedia di lingkungan lokal pengembang (`ENABLE_DOCS=true`) dan dinonaktifkan di *production* untuk mencegah *reconnaissance* publik.
 
 ---
 
-## 🌐 Dokumentasi Endpoint REST API
+## 🛡️ Arsitektur Keamanan & Pertahanan Aset Kuantitatif (Enterprise Defense Perimeter)
 
-| Method | Endpoint | Deskripsi |
-| :--- | :--- | :--- |
-| `GET` | `/` | Menampilkan antarmuka Dashboard Web interaktif. |
-| `GET` | `/morning-brief` | Mengembalikan editorial Morning Brief IHSG terkini, berita makro, dan arus modal asing makro. |
-| `GET` | `/portfolio/allocate` | Menghitung alokasi modal optimal berdasarkan input nominal modal (`?capital=50000000`). |
-| `GET` | `/recommendations` | Mengembalikan daftar rekomendasi saham (`?universe=swing`, `dividend`, `favorites`, atau `sector=Financials`). |
-| `GET` | `/models/compare/{ticker}` | Menampilkan perbandingan probabilitas model (GBDT vs LSTM vs ARIMA) untuk emiten tertentu. |
-| `GET` | `/api/foreign-flow` | Mengembalikan ringkasan arus modal asing makro IHSG dan seluruh 66 konstituen. |
-| `GET` | `/api/foreign-flow/{ticker}`| Mengembalikan deret data net foreign flow 30 hari dan status akumulasi per emiten. |
-| `GET` | `/api/financials` | Mengembalikan ringkasan laporan keuangan 5 tahun dan status kesehatan seluruh emiten. |
-| `GET` | `/api/financials/{ticker}` | Mengembalikan laporan keuangan 5 tahun, rasio, dan kartu AI Archetype per emiten. |
-| `GET` | `/api/history/{ticker}` | Mengembalikan riwayat harga faktual OHLCV 30 hari langsung dari database BEI. |
-| `GET` | `/api/analysis/{ticker}` | Menjalankan bedah emiten interaktif bertenaga Gemini 3.8 Flash. |
-| `GET` | `/sectors` | Daftar 11 sektor resmi IDX dan daftar kode saham aktif. |
-| `GET` | `/status` | Informasi status kesehatan sistem dan waktu pembaruan pipeline terakhir. |
-| `POST`| `/pipeline/run` | Menjalankan ulang seluruh pipeline kuantitatif di background secara asinkron. |
+Platform ini mengimplementasikan perimeter pertahanan berlapis (*Defense-in-Depth*) untuk melindungi kekayaan intelektual model machine learning, formula kuantitatif, dan dataset dari praktik *unauthorized scraping*, *data crawling*, dan eksfiltrasi kredensial:
+
+```mermaid
+graph TD
+    A["Request Masuk"] --> B{"1. Anti-Bot WAF"}
+    B -- "Library Scraper (requests/curl/scrapy)" --> X["403 Forbidden"]
+    B -- "Browser Sah" --> C{"2. Anti-Crawling & Burst Limiter"}
+    C -- "Burst >10 req / 2s" --> Y["429 Too Many Requests"]
+    C -- "Normal (<45 req / min)" --> D{"3. Origin & Sec-Fetch Validator"}
+    D -- "External / Untrusted Domain" --> Z["403 Unauthorized Origin"]
+    D -- "Domain Resmi / Whitelist" --> E{"4. Bearer Token Gatekeeper (HMAC-SHA256)"}
+    E -- "Tanpa Token / Tamu" --> F["Public Teaser Layer (/morning-brief)"]
+    E -- "Token Sah Terverifikasi" --> G["Full Institutional Access + Digital Canary Trace (X-Audit-Trace-ID)"]
+```
+
+1. **Anti-Bot Web Application Firewall (WAF)**:
+   - Memindai signature `User-Agent` untuk memblokir otomatis library scraping terprogram (`python-requests`, `aiohttp`, `curl`, `wget`, `scrapy`, `postmanruntime`, `go-http-client`, `httpx`).
+2. **Cryptographic Bearer Token Authentication (HMAC-SHA256)**:
+   - Seluruh endpoint data rekomendasi institusional, bedah emiten, riwayat harga, dan laporan keuangan wajib menyertakan token kriptografis berwaktu kedaluwarsa. Kata sandi pengguna diamankan dengan algoritma **PBKDF2-HMAC-SHA256 (100.000 iterasi)** dengan salt acak 128-bit.
+3. **Adaptive Behavioral Rate Limiting (Anti-Burst & Anti-Crawling)**:
+   - **Burst Protection**: Membatasi maksimal 10 request per 2 detik guna menggagalkan script *looping* otomatis.
+   - **Window Protection**: Membatasi maksimal 45 request per 60 detik (sangat lega bagi penjelajahan manusia, namun mematikan bagi bot *crawling*).
+4. **Browser-Origin & Cross-Site Protection**:
+   - Memvalidasi header `Origin` dan `Referer` untuk mencegah token yang disalin digunakan di luar domain resmi peramban.
+5. **Digital Canary Watermarking (`X-Audit-Trace-ID`)**:
+   - Menyisipkan tanda pengenal jejak audit unik berbasis user hash dan time-window pada setiap respon data terautentikasi untuk melacak dan mendeteksi sumber kebocoran data.
+6. **Zero-Trust Git Hygiene**:
+   - Dataset mentah (`data/raw/`) serta bobot biner model machine learning (`.joblib`, `.pth`) dikecualikan sepenuhnya dari pelacakan repositori publik (`.gitignore`) demi perlindungan hak cipta model kuantitatif.
+
+---
+
+## 🌐 Dokumentasi Endpoint REST API Terproteksi
+
+| Method | Endpoint | Akses / Autentikasi | Deskripsi Data |
+| :--- | :--- | :--- | :--- |
+| `GET` | `/` | **Public** | Menampilkan antarmuka Dashboard Web interaktif. |
+| `GET` | `/morning-brief` | **Public (Teaser)** | Narasi editorial Morning Brief IHSG terkini, berita makro, dan arus modal asing makro. |
+| `GET` | `/status` | **Public** | Informasi status kesehatan sistem dan waktu pembaruan pipeline terakhir. |
+| `POST`| `/api/v1/auth/login` | **Public (Rate-Limited)** | Autentikasi pengguna & pembuatan Bearer Token bertanda tangan kriptografis. |
+| `POST`| `/api/v1/auth/register` | **Public (Rate-Limited)** | Pendaftaran pengguna baru ke basis data terenkripsi PBKDF2. |
+| `GET` | `/recommendations` | **Bearer Token Wajib** | Daftar rekomendasi kuantitatif 26+ saham (`all`, `swing`, `dividend`, `favorites`). |
+| `GET` | `/watchlist-analysis` | **Bearer Token Wajib** | Analisis lengkap teknikal & fundamental seluruh konstituen BEI. |
+| `GET` | `/portfolio/allocate` | **Bearer Token Wajib** | Perhitungan alokasi modal optimal berdasarkan nominal modal (`?capital=50000000`). |
+| `GET` | `/models/compare/{ticker}` | **Bearer Token Wajib** | Konsensus perbandingan probabilitas multi-model (GBDT vs LSTM vs ARIMA). |
+| `GET` | `/api/foreign-flow` | **Bearer Token Wajib** | Ringkasan arus modal asing makro IHSG dan seluruh 66 konstituen. |
+| `GET` | `/api/foreign-flow/{ticker}`| **Bearer Token Wajib** | Deret data net foreign flow 30 hari dan status akumulasi per emiten. |
+| `GET` | `/api/financials` | **Bearer Token Wajib** | Ringkasan laporan keuangan 5 tahun dan status kesehatan seluruh emiten. |
+| `GET` | `/api/financials/{ticker}` | **Bearer Token Wajib** | Laporan keuangan 5 tahun, rasio, dan kartu AI Archetype per emiten. |
+| `GET` | `/api/history/{ticker}` | **Bearer Token Wajib** | Riwayat harga faktual OHLCV 30 hari langsung dari database BEI. |
+| `GET` | `/api/analysis/{ticker}` | **Bearer Token Wajib** | Bedah emiten mendalam bertenaga Google Gemini 3.8 Flash (Health, Fit, Verdict). |
+| `POST`| `/pipeline/run` | **Admin Secret Wajib** | Memicu eksekusi ulang seluruh pipeline kuantitatif di background. |
 
 ---
 

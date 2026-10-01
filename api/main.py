@@ -1,9 +1,12 @@
+import hashlib
+import hmac
 import importlib
 import json
 import logging
 import os
 import secrets
 import sys
+import time
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional
@@ -26,6 +29,7 @@ from pydantic import BaseModel  # type: ignore # pyrefly: ignore [missing-import
 
 # pyrefly: ignore [missing-import]
 from src.auth import (  # type: ignore # pyrefly: ignore [missing-import]
+    JWT_SECRET_KEY,
     authenticate_user,
     create_token,
     rate_limiter,
@@ -203,19 +207,33 @@ async def security_and_rate_limit_middleware(request: Request, call_next):
 
     response = await call_next(request)
 
-    # Industry-standard HTTP Security Headers
+    # Industry-standard HTTP Security & Digital IP Headers
     response.headers["X-Frame-Options"] = "SAMEORIGIN"
     response.headers["X-Content-Type-Options"] = "nosniff"
     response.headers["X-XSS-Protection"] = "1; mode=block"
     response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
     response.headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()"
+    response.headers["X-Security-Policy"] = "AlphaTech-Defense-Suite-v4.5"
+    response.headers["X-Intellectual-Property"] = "Copyright 2026 AlphaTech Quantitative Research - Proprietary & Confidential"
+
+    # Digital Canary Watermarking for Authenticated Leak Tracking
+    auth_header = request.headers.get("authorization", "")
+    if auth_header.startswith("Bearer "):
+        token = auth_header.split("Bearer ", 1)[1].strip()
+        payload = verify_token(token)
+        if payload:
+            user_sub = payload.get("sub", "analyst")
+            trace_seed = f"{user_sub}:{int(time.time() // 300)}"
+            trace_sig = hmac.new(JWT_SECRET_KEY.encode("utf-8"), trace_seed.encode("utf-8"), hashlib.sha256).hexdigest()[:16]
+            response.headers["X-Audit-Trace-ID"] = f"trc_{trace_sig}"
+
     return response
 
 # 2. Controlled CORS Configuration
 ALLOWED_ORIGINS = [
     origin.strip() for origin in os.getenv(
         "ALLOWED_ORIGINS",
-        "http://localhost:8080,http://127.0.0.1:8080,http://localhost:8000,http://127.0.0.1:8000,http://localhost:3000,http://127.0.0.1:3000"
+        "http://localhost:8080,http://127.0.0.1:8080,http://localhost:8000,http://127.0.0.1:8000,http://localhost:3000,http://127.0.0.1:3000,https://stock-market-recommendation-silk.vercel.app"
     ).split(",") if origin.strip()
 ]
 
