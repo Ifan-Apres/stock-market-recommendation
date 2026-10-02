@@ -176,7 +176,26 @@ class StockWatchlistAnalyzer:
             if not match.empty:
                 metric_row = match.iloc[0].to_dict()
 
-        close = float(metric_row.get("Close") or 3000.0)
+        close = float(metric_row.get("Close") or 0.0)
+        if close <= 0 and not self.fund_df.empty:
+            f_match = self.fund_df[self.fund_df["Ticker"] == clean_ticker]
+            if not f_match.empty:
+                close = float(f_match.iloc[0].get("Close") or 0.0)
+
+        if close <= 0:
+            try:
+                hist_path = Path(__file__).resolve().parent.parent / "data" / "processed" / "price_history_30d.json"
+                if hist_path.exists():
+                    with open(hist_path, "r", encoding="utf-8") as f:
+                        h_data = json.load(f)
+                        if short_ticker in h_data and h_data[short_ticker].get("prices"):
+                            close = float(h_data[short_ticker]["prices"][-1])
+            except Exception:
+                pass
+
+        if close <= 0:
+            close = 1000.0
+
         support1 = float(metric_row.get("Support_1") or (close * 0.97))
         support2 = float(metric_row.get("Support_2") or (close * 0.95))
         resistance1 = float(metric_row.get("Resistance_1") or (close * 1.03))
@@ -192,13 +211,13 @@ class StockWatchlistAnalyzer:
         bow_high = round_idx_tick(max(support1, support2))
         bob_low = round_idx_tick(resistance1)
         bob_high = round_idx_tick(resistance2)
-        tp1_low = round_idx_tick(resistance1 * 1.01)
-        tp1_high = round_idx_tick(resistance1 * 1.025)
-        tp2_low = round_idx_tick(resistance2 * 1.02)
-        tp2_high = round_idx_tick(resistance2 * 1.035)
-        target_utama_low = round_idx_tick(close * 1.12)
+        tp1_low = round_idx_tick(max(resistance1 * 1.01, close * 1.03))
+        tp1_high = round_idx_tick(max(resistance1 * 1.025, close * 1.05))
+        tp2_low = round_idx_tick(max(resistance2 * 1.02, close * 1.06))
+        tp2_high = round_idx_tick(max(resistance2 * 1.035, close * 1.08))
+        target_utama_low = round_idx_tick(close * 1.10)
         target_utama_high = round_idx_tick(close * 1.15)
-        cut_loss = round_idx_tick(min(support2, close * 0.94))
+        cut_loss = round_idx_tick(min(support2, close * 0.95))
 
         # 2. Extract Fundamental Indicators
         fund_row: Dict[str, Any] = {}
@@ -443,11 +462,15 @@ class StockWatchlistAnalyzer:
         """
         Generates and saves technical + fundamental analyses for all watchlist / key stocks.
         """
-        target_tickers = tickers or [
-            "ANTM.JK", "BBCA.JK", "BBRI.JK", "BMRI.JK", "BBNI.JK",
-            "ASII.JK", "ADRO.JK", "TLKM.JK", "UNTR.JK", "ISAT.JK",
-            "KLBF.JK", "MEDC.JK", "PTBA.JK", "ICBP.JK", "BRIS.JK",
-        ]
+        if tickers is None:
+            try:
+                from src.universe_manager import get_universe_manager
+                mgr = get_universe_manager()
+                target_tickers = mgr.get_active_tickers()
+            except Exception:
+                target_tickers = list(COMPANY_NAMES.keys())
+        else:
+            target_tickers = tickers
 
         logger.info(f"Generating technical and fundamental analyses for {len(target_tickers)} watchlist stocks...")
         results: Dict[str, Any] = {}

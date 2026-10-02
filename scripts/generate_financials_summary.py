@@ -298,12 +298,7 @@ def build_summary():
             else:
                 raw_eps = float(raw_eps)
                 if is_usd:
-                    if abs(raw_eps) >= 0.05:
-                        formatted_eps.append(f"${raw_eps:.2f}")
-                    elif abs(raw_eps) > 0:
-                        formatted_eps.append(f"${raw_eps:.3f}")
-                    else:
-                        formatted_eps.append("$0.00")
+                    formatted_eps.append(f"${raw_eps:.2f}")
                 else:
                     formatted_eps.append(f"{raw_eps:,.0f}")
 

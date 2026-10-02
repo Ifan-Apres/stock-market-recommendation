@@ -3340,13 +3340,39 @@
             const dropdown = document.getElementById('searchSuggestionsDropdown');
             if (dropdown) dropdown.classList.add('hidden');
 
-            // Kalkulasi metrik harga & target
-            const closePrice = Math.round(stock.Close || 0);
+            // Sinkronisasi Single Source of Truth Harga dengan Candle Terakhir Price History
+            let latestHistoryClose = null;
+            let latestHistoryDate = null;
+            let latestHistoryReturn = null;
+            const histObj = (financialsSummaryData && financialsSummaryData[tickerClean]?.price_history) || 
+                            (window.allPriceHistory && window.allPriceHistory[tickerClean]);
+            if (histObj && histObj.prices && histObj.prices.length > 0) {
+                const len = histObj.prices.length;
+                latestHistoryClose = Math.round(histObj.prices[len - 1]);
+                if (histObj.full_dates && histObj.full_dates.length >= len) {
+                    latestHistoryDate = histObj.full_dates[len - 1];
+                }
+                if (len >= 2 && histObj.prices[len - 2] > 0) {
+                    latestHistoryReturn = (histObj.prices[len - 1] - histObj.prices[len - 2]) / histObj.prices[len - 2];
+                }
+            }
+
+            const closePrice = latestHistoryClose || Math.round(stock.Close || 0);
             const entryPrice = Math.round(stock.Entry_Price || closePrice);
-            const targetPrice = Math.round(stock.Target_Price || (closePrice * 1.05));
-            const stopLoss = Math.round(stock.Stop_Loss || (closePrice * 0.96));
-            const upsidePct = (((targetPrice - closePrice) / (closePrice || 1)) * 100).toFixed(1);
-            const downsidePct = (((closePrice - stopLoss) / (closePrice || 1)) * 100).toFixed(1);
+            let targetPrice = Math.round(stock.Target_Price || (entryPrice * 1.05));
+            let stopLoss = Math.round(stock.Stop_Loss || (entryPrice * 0.96));
+            if (targetPrice <= entryPrice) targetPrice = Math.round(entryPrice * 1.05);
+            if (stopLoss >= entryPrice) stopLoss = Math.round(entryPrice * 0.95);
+
+            // Perbarui objek stock aktif agar sinkron
+            stock.Close = closePrice;
+            stock.Entry_Price = entryPrice;
+            stock.Target_Price = targetPrice;
+            stock.Stop_Loss = stopLoss;
+
+            // Persentase taktis konsisten terhadap Entry Price (Execution Benchmark)
+            const upsidePct = (((targetPrice - entryPrice) / (entryPrice || 1)) * 100).toFixed(1);
+            const downsidePct = (((entryPrice - stopLoss) / (entryPrice || 1)) * 100).toFixed(1);
             const compName = COMPANY_NAMES[tickerClean] || stock.Company || `PT ${tickerClean} Tbk`;
             const rrr = stock.Risk_Reward_Ratio ? Number(stock.Risk_Reward_Ratio).toFixed(1) : "1.5";
             const prob = Math.round((stock.Bullish_Probability !== undefined ? stock.Bullish_Probability : 0.5) * 100);
@@ -3381,25 +3407,47 @@
                 badgeEl.className = "px-3 py-1 rounded-lg text-xs font-extrabold tracking-wide uppercase bg-emerald-50 text-emerald-800 border border-emerald-200 shadow-2xs";
             }
 
-            // Market Cap & Stats
-            const marketCapT = stock.Market_Cap ? (stock.Market_Cap / 1e12).toFixed(1) + " T" : (closePrice > 5000 ? "Rp 640 T" : "Rp 85 T");
-            document.getElementById('deepDiveMarketCap').innerText = `Rp ${marketCapT}`;
+            // Market Cap & Stats (Satu sumber kebenaran fundamental)
+            let marketCapFormatted = "";
+            if (financialsSummaryData && financialsSummaryData[tickerClean]?.health?.mcap_formatted && financialsSummaryData[tickerClean].health.mcap_formatted !== "-") {
+                marketCapFormatted = financialsSummaryData[tickerClean].health.mcap_formatted;
+            } else if (stock.Market_Cap && stock.Market_Cap > 0) {
+                marketCapFormatted = `Rp ${(stock.Market_Cap / 1e12).toFixed(2)} T`;
+            } else if (closePrice > 0) {
+                marketCapFormatted = `Rp ${(closePrice * 840000000 / 1e12).toFixed(2)} T`;
+            } else {
+                marketCapFormatted = "-";
+            }
+            document.getElementById('deepDiveMarketCap').innerText = marketCapFormatted;
             document.getElementById('deepDiveBeta').innerText = stock.Beta_IHSG ? Number(stock.Beta_IHSG).toFixed(2) : "0.95";
             document.getElementById('deepDiveSharpe').innerText = stock.Sharpe_Ratio ? Number(stock.Sharpe_Ratio).toFixed(2) : "1.35";
 
             // Price & Change
             document.getElementById('deepDivePrice').innerText = formatIDR(closePrice);
-            const changePct = stock.Return_1D ? (stock.Return_1D * 100).toFixed(2) : "+0.85";
+            
+            // Return 1D: gunakan latestHistoryReturn jika ada, fallback ke stock.Return_1D
+            let rawReturn = (latestHistoryReturn !== null) ? latestHistoryReturn : stock.Return_1D;
+            let numReturn = 0;
+            if (rawReturn !== undefined && rawReturn !== null) {
+                numReturn = typeof rawReturn === 'string' ? parseFloat(rawReturn) : Number(rawReturn);
+                if (Math.abs(numReturn) < 1.0 && numReturn !== 0) {
+                    numReturn = numReturn * 100;
+                }
+            }
+            
             const priceChangeEl = document.getElementById('deepDivePriceChange');
-            if (Number(changePct) >= 0) {
+            const formattedChg = `${numReturn > 0 ? '+' : ''}${numReturn.toFixed(2)}%`;
+            if (numReturn >= 0) {
                 priceChangeEl.className = "px-2 py-0.5 rounded-lg text-xs font-extrabold bg-emerald-100 text-emerald-800";
-                priceChangeEl.innerText = `+${changePct}%`;
+                priceChangeEl.innerText = formattedChg;
             } else {
                 priceChangeEl.className = "px-2 py-0.5 rounded-lg text-xs font-extrabold bg-rose-100 text-rose-800";
-                priceChangeEl.innerText = `${changePct}%`;
+                priceChangeEl.innerText = formattedChg;
             }
-            if (stock.Date) {
-                document.getElementById('deepDivePriceDate').innerText = `Sesi Bursa: ${stock.Date}`;
+
+            const sessionDate = latestHistoryDate || stock.Date;
+            if (sessionDate) {
+                document.getElementById('deepDivePriceDate').innerText = `Sesi Bursa: ${sessionDate}`;
             }
 
             // 2. Action Plan
@@ -3992,6 +4040,7 @@
             }
 
             // Save last values for default legend
+            const prevCloseVal = (cLen >= 2 && history.prices && history.prices[cLen - 2]) ? history.prices[cLen - 2] : (history.opens[cLen - 1] || closePrice);
             proChartState.lastValues = {
                 ticker: tickerClean,
                 date: dates[cLen - 1] || "",
@@ -3999,6 +4048,7 @@
                 high: history.highs[cLen - 1] || closePrice,
                 low: history.lows[cLen - 1] || closePrice,
                 close: history.prices[cLen - 1] || closePrice,
+                prevClose: prevCloseVal,
                 ema10: history.ema10 ? history.ema10[cLen - 1] : null,
                 ema20: history.ema20 ? history.ema20[cLen - 1] : null,
                 ema50: history.ema50 ? history.ema50[cLen - 1] : null,
@@ -4230,9 +4280,10 @@
             if (dateEl) dateEl.innerText = lv.date || "1D · 3 Bulan";
 
             if (chgEl) {
-                const diff = lv.close - lv.open;
-                const pct = lv.open > 0 ? (diff / lv.open * 100) : 0;
-                const sign = diff >= 0 ? "+" : "";
+                const prevClose = (lv.prevClose !== undefined && lv.prevClose > 0) ? lv.prevClose : lv.open;
+                const diff = lv.close - prevClose;
+                const pct = prevClose > 0 ? (diff / prevClose * 100) : 0;
+                const sign = diff > 0 ? "+" : "";
                 chgEl.innerText = `${sign}${formatIDR(diff)} (${sign}${pct.toFixed(2)}%)`;
                 chgEl.className = diff >= 0 ? "text-emerald-400 font-bold font-mono" : "text-rose-400 font-bold font-mono";
             }
@@ -4295,9 +4346,10 @@
             if (dateEl) dateEl.innerText = timeStr;
 
             if (chgEl) {
-                const diff = c - o;
-                const pct = o > 0 ? (diff / o * 100) : 0;
-                const sign = diff >= 0 ? "+" : "";
+                const prevClose = (idx > 0 && history.prices && history.prices[idx - 1] > 0) ? history.prices[idx - 1] : o;
+                const diff = c - prevClose;
+                const pct = prevClose > 0 ? (diff / prevClose * 100) : 0;
+                const sign = diff > 0 ? "+" : "";
                 chgEl.innerText = `${sign}${formatIDR(diff)} (${sign}${pct.toFixed(2)}%)`;
                 chgEl.className = diff >= 0 ? "text-emerald-400 font-bold font-mono" : "text-rose-400 font-bold font-mono";
             }
@@ -4360,8 +4412,10 @@
             const capital = parseFloat(document.getElementById('deepDiveCalcCapitalInput')?.value) || 20000000;
             const closePrice = Math.round(activeDeepDiveStock.Close || 0);
             const entryPrice = Math.round(activeDeepDiveStock.Entry_Price || closePrice);
-            const targetPrice = Math.round(activeDeepDiveStock.Target_Price || (closePrice * 1.05));
-            const stopLoss = Math.round(activeDeepDiveStock.Stop_Loss || (closePrice * 0.96));
+            let targetPrice = Math.round(activeDeepDiveStock.Target_Price || (entryPrice * 1.05));
+            let stopLoss = Math.round(activeDeepDiveStock.Stop_Loss || (entryPrice * 0.96));
+            if (targetPrice <= entryPrice) targetPrice = Math.round(entryPrice * 1.05);
+            if (stopLoss >= entryPrice) stopLoss = Math.round(entryPrice * 0.95);
 
             const pricePerLot = (entryPrice > 0 ? entryPrice : closePrice) * 100;
             let lots = Math.floor(capital / pricePerLot);
@@ -4932,6 +4986,37 @@
             }
 
             currentDeepDiveWatchlistAnalysis = analysis;
+
+            // Institutional Validation Guard Rail: Validasi Konsistensi Logika Long Position
+            const entryRef = Math.round(stock.Entry_Price || stock.Close || 1000);
+            const closeRef = Math.round(stock.Close || entryRef);
+
+            if (analysis && analysis.teknikal && analysis.teknikal.levels) {
+                const lvl = analysis.teknikal.levels;
+                const parseLvlNum = (valStr) => {
+                    if (!valStr) return 0;
+                    const clean = String(valStr).replace(/[^0-9]/g, '');
+                    return parseInt(clean, 10) || 0;
+                };
+
+                const tp1Val = parseLvlNum(lvl.tp_1);
+                // Jika posisi beli (Long), Take Profit 1 tidak boleh di bawah Entry Price
+                if (tp1Val > 0 && tp1Val <= entryRef * 0.98) {
+                    const s1 = stock.Support_1 || Math.round(entryRef * 0.97);
+                    const s2 = stock.Support_2 || Math.round(entryRef * 0.95);
+                    const r1 = stock.Resistance_1 || Math.round(entryRef * 1.03);
+                    const r2 = stock.Resistance_2 || Math.round(entryRef * 1.06);
+                    const dynTarget = Math.round(stock.Target_Price && stock.Target_Price > entryRef ? stock.Target_Price : entryRef * 1.10);
+                    const dynStop = Math.round(stock.Stop_Loss && stock.Stop_Loss < entryRef ? stock.Stop_Loss : entryRef * 0.95);
+
+                    lvl.buy_on_weakness = `${formatIDR(Math.min(s1, s2))}–${formatIDR(Math.max(s1, s2))}`;
+                    lvl.buy_on_breakout = `> ${formatIDR(r1)}–${formatIDR(r2)}`;
+                    lvl.tp_1 = `${formatIDR(Math.round(entryRef * 1.03))}–${formatIDR(Math.round(entryRef * 1.05))}`;
+                    lvl.tp_2 = `${formatIDR(Math.round(entryRef * 1.06))}–${formatIDR(Math.round(entryRef * 1.08))}`;
+                    lvl.target_utama = `${formatIDR(Math.round(entryRef * 1.10))}–${formatIDR(dynTarget)}`;
+                    lvl.cut_loss = `< ${formatIDR(dynStop)}`;
+                }
+            }
 
             // 4. Render data ke elemen DOM Trading Action Plan switcher
             if (analysis.teknikal && analysis.teknikal.levels) {
