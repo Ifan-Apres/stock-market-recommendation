@@ -1,12 +1,22 @@
-name: AlphaTech Automated Daily Quantitative Pipeline
+name: AlphaTech Automated Two-Phase Quantitative Pipeline
 
 on:
   schedule:
-    # 1. Sore hari setelah bursa BEI tutup: 10:00 UTC = 17:00 WIB (Senin - Jumat)
-    - cron: '0 10 * * 1-5'
-    # 2. Pagi hari sebelum bursa buka: 22:00 UTC = 05:00 WIB (Minggu - Kamis)
-    - cron: '17 22 * * 0-4'
+    # Fase 1: 1 Jam Setelah Pasar Dibuka (10:00 WIB = 03:00 UTC, Senin - Jumat)
+    - cron: '0 3 * * 1-5'
+    # Fase 2: 1 Jam Setelah Pasar Ditutup (17:15 WIB = 10:15 UTC, Senin - Jumat)
+    - cron: '15 10 * * 1-5'
   workflow_dispatch:
+    inputs:
+      pipeline_mode:
+        description: 'Pilih Mode Eksekusi Pipeline'
+        required: true
+        default: 'auto'
+        type: choice
+        options:
+          - auto
+          - opening_pulse (10:00 WIB - Harga Open & Live Intraday)
+          - eod_settlement (17:15 WIB - EOD Settlement & Rekomendasi Penuh)
 
 permissions:
   contents: write
@@ -36,30 +46,23 @@ jobs:
           pip install torch --index-url https://download.pytorch.org/whl/cpu
           pip install -r requirements-pipeline.txt
 
-      - name: Step 1 - Ingest Market Data
-        run: python -m src.01_data_ingestion
-
-      - name: Step 2 - Feature Engineering & Alpha Extraction
-        run: python -m src.02_feature_eng
-
-      - name: Step 3 - Model Training & Alpha Inference
-        run: python -m src.03_model_inference
-
-      - name: Step 3.5 - Institutional Foreign Flow Engine
-        run: python -m src.foreign_flow
-
-      - name: Step 4 - Institutional Morning Market Brief & Watchlist Research
+      - name: Run Two-Phase Quantitative Pipeline
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: python -m src.morning_brief
+        run: |
+          RAW_MODE="${{ github.event.inputs.pipeline_mode || 'auto' }}"
+          MODE="auto"
+          if [[ "$RAW_MODE" == *"opening_pulse"* ]]; then
+            MODE="opening_pulse"
+          elif [[ "$RAW_MODE" == *"eod_settlement"* ]]; then
+            MODE="eod_settlement"
+          fi
+          echo "Executing pipeline in mode: $MODE"
+          python -m src.pipeline_runner --mode=$MODE
 
-      - name: Step 4.5 - Multi-Year Financial Statements & Stock Archetypes
-        run: python scripts/generate_financials_summary.py
-
-      - name: Commit & Push Processed Alpha Recommendations & Briefs
+      - name: Commit & Push Processed Alpha Recommendations & Market Data
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action Bot"
           git add data/processed/
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update daily alpha recommendations & market database [skip ci]" && git push)
-
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update quant data & recommendations via GitHub Actions [skip ci]" && git push)
