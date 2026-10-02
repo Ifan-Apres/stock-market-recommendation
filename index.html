@@ -8,17 +8,75 @@
     <meta http-equiv="Expires" content="0"/>
     <title>Stock Market Recommendation - Institutional Equity Research</title>
     <meta content="web_dashboard" name="shell-type"/>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
     <style>
         @layer base {
             html, body { margin: 0; padding: 0; }
             body { overscroll-behavior: none; }
         }
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #f1f5f9; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        :root {
+            /* Wall Street Institutional Design System Tokens (Agent New York) */
+            --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', 'IBM Plex Mono', monospace;
+
+            /* Hacker-Finance Deep Dark Tokens */
+            --terminal-bg: #080C14;
+            --terminal-surface: #0E1420;
+            --terminal-card: #121A29;
+            --terminal-border: rgba(255, 255, 255, 0.08);
+            --terminal-border-hover: rgba(255, 255, 255, 0.16);
+            --terminal-divider: rgba(255, 255, 255, 0.06);
+
+            /* Calibrated Financial Semantic Colors */
+            --terminal-green: #10B981;
+            --terminal-red: #EF4444;
+            --terminal-cyan: #06B6D4;
+            --terminal-amber: #F59E0B;
+            --terminal-muted: #64748B;
+        }
+
+        /* Rule 2: Institutional Monospace Numbers & Financial Metrics */
+        .font-mono-num, .font-mono, [data-ticker], .metric-num, .price-val, .table-num {
+            font-family: var(--font-mono) !important;
+            font-feature-settings: 'tnum' on, 'zero' on;
+            letter-spacing: -0.025em;
+        }
+
+        /* Rule 1: Zero Card Overload - Sharp Corners & 1px Crisp Borders */
+        .terminal-panel {
+            background-color: var(--terminal-surface);
+            border: 1px solid var(--terminal-border);
+            border-radius: 2px !important;
+        }
+        .terminal-panel:hover {
+            border-color: var(--terminal-border-hover);
+        }
+        .terminal-card {
+            background-color: var(--terminal-card);
+            border: 1px solid var(--terminal-border);
+            border-radius: 2px !important;
+        }
+        .terminal-divider {
+            border-color: var(--terminal-divider) !important;
+        }
+        .terminal-badge {
+            font-family: var(--font-mono);
+            font-feature-settings: 'tnum' on, 'zero' on;
+            border-radius: 2px !important;
+            font-size: 10.5px;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            padding: 2px 6px;
+        }
+
+        /* Terminal Crisp Scrollbar */
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: #080C14; }
+        ::-webkit-scrollbar-thumb { background: #1E293B; border-radius: 2px; }
+        ::-webkit-scrollbar-thumb:hover { background: #334155; }
         .page-view { display: none; }
         .page-view.active { display: block; }
     </style>
@@ -36,6 +94,19 @@
             theme: {
                 extend: {
                     colors: {
+                        // Wall Street Hacker-Finance Palette (Rule 5)
+                        "terminal-bg": "#080C14",
+                        "terminal-surface": "#0E1420",
+                        "terminal-card": "#121A29",
+                        "terminal-border": "rgba(255, 255, 255, 0.08)",
+                        "terminal-border-hover": "rgba(255, 255, 255, 0.16)",
+                        "terminal-green": "#10B981",
+                        "terminal-red": "#EF4444",
+                        "terminal-cyan": "#06B6D4",
+                        "terminal-amber": "#F59E0B",
+                        "terminal-muted": "#64748B",
+
+                        // Legacy tokens mapped cleanly
                         "primary": "#0f172a",
                         "primary-container": "#1e293b",
                         "secondary": "#047857",
@@ -52,6 +123,7 @@
                     },
                     fontFamily: {
                         sans: ["Plus Jakarta Sans", "sans-serif"],
+                        mono: ["JetBrains Mono", "SF Mono", "Fira Code", "IBM Plex Mono", "monospace"],
                     }
                 }
             }
@@ -261,42 +333,42 @@
                                 </h1>
                             </div>
 
-                            <!-- 4 Kartu Metrik Pasar -->
-                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mt-1 sm:mt-2">
-                                <div class="p-3.5 sm:p-4 rounded-xl bg-white/5 border border-white/10 flex flex-col justify-between">
-                                    <span class="text-[11px] sm:text-xs text-slate-400 uppercase tracking-wider font-semibold">Bursa Wall Street</span>
+                            <!-- 4 Kartu Metrik Pasar (Wall Street Institutional Density - JetBrains Mono) -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3 mt-1 sm:mt-2">
+                                <div class="p-3 sm:p-3.5 rounded-sm bg-[#0E1420]/90 border border-white/10 flex flex-col justify-between hover:border-white/20 transition-colors">
+                                    <span class="text-[10.5px] text-slate-400 uppercase tracking-wider font-semibold">Bursa Wall Street</span>
                                     <div class="my-1.5 sm:my-2">
-                                        <div class="text-base sm:text-lg font-bold text-white">S&P 500 <span class="text-emerald-400 font-extrabold" id="metricSP500">+0.65%</span></div>
-                                        <span class="text-[11px] sm:text-xs text-emerald-300 font-medium" id="metricSP500Badge">Katalis Positif</span>
+                                        <div class="text-base sm:text-lg font-bold text-white font-mono-num">S&P 500 <span class="text-emerald-400 font-extrabold" id="metricSP500">+0.65%</span></div>
+                                        <span class="text-[10px] text-emerald-400 font-bold px-1.5 py-0.5 rounded-sm bg-emerald-950/40 border border-emerald-500/30 inline-block mt-0.5" id="metricSP500Badge">Katalis Positif</span>
                                     </div>
-                                    <p class="text-[11px] sm:text-xs text-slate-300 leading-relaxed" id="metricSP500Desc">Sentimen bursa AS memberikan dorongan awal bagi IHSG.</p>
+                                    <p class="text-[11px] text-slate-400 leading-relaxed" id="metricSP500Desc">Sentimen bursa AS memberikan dorongan awal bagi IHSG.</p>
                                 </div>
 
-                                <div class="p-3.5 sm:p-4 rounded-xl bg-white/5 border border-white/10 flex flex-col justify-between">
-                                    <span class="text-[11px] sm:text-xs text-slate-400 uppercase tracking-wider font-semibold">Minyak Mentah Brent</span>
+                                <div class="p-3 sm:p-3.5 rounded-sm bg-[#0E1420]/90 border border-white/10 flex flex-col justify-between hover:border-white/20 transition-colors">
+                                    <span class="text-[10.5px] text-slate-400 uppercase tracking-wider font-semibold">Minyak Mentah Brent</span>
                                     <div class="my-1.5 sm:my-2">
-                                        <div class="text-base sm:text-lg font-bold text-white" id="metricBrent">US$ 78.50 / barel</div>
-                                        <span class="text-[11px] sm:text-xs text-slate-300 font-medium" id="metricBrentBadge">Stabil Terkendali</span>
+                                        <div class="text-base sm:text-lg font-bold text-white font-mono-num" id="metricBrent">US$ 78.50 / barel</div>
+                                        <span class="text-[10px] text-slate-300 font-medium px-1.5 py-0.5 rounded-sm bg-slate-800/40 border border-slate-700/40 inline-block mt-0.5" id="metricBrentBadge">Stabil Terkendali</span>
                                     </div>
-                                    <p class="text-[11px] sm:text-xs text-slate-300 leading-relaxed" id="metricBrentDesc">Biaya energi dan inflasi manufaktur domestik terjaga.</p>
+                                    <p class="text-[11px] text-slate-400 leading-relaxed" id="metricBrentDesc">Biaya energi dan inflasi manufaktur domestik terjaga.</p>
                                 </div>
 
-                                <div class="p-3.5 sm:p-4 rounded-xl bg-white/5 border border-white/10 flex flex-col justify-between">
-                                    <span class="text-[11px] sm:text-xs text-slate-400 uppercase tracking-wider font-semibold">Kurs USD / IDR</span>
+                                <div class="p-3 sm:p-3.5 rounded-sm bg-[#0E1420]/90 border border-white/10 flex flex-col justify-between hover:border-white/20 transition-colors">
+                                    <span class="text-[10.5px] text-slate-400 uppercase tracking-wider font-semibold">Kurs USD / IDR</span>
                                     <div class="my-1.5 sm:my-2">
-                                        <div class="text-base sm:text-lg font-bold text-white" id="metricUSDIDR">Rp 15.850 / US$</div>
-                                        <span class="text-[11px] sm:text-xs text-emerald-300 font-medium" id="metricUSDIDRBadge">Rupiah Terjaga</span>
+                                        <div class="text-base sm:text-lg font-bold text-white font-mono-num" id="metricUSDIDR">Rp 15.850 / US$</div>
+                                        <span class="text-[10px] text-emerald-400 font-bold px-1.5 py-0.5 rounded-sm bg-emerald-950/40 border border-emerald-500/30 inline-block mt-0.5" id="metricUSDIDRBadge">Rupiah Terjaga</span>
                                     </div>
-                                    <p class="text-[11px] sm:text-xs text-slate-300 leading-relaxed" id="metricUSDIDRDesc">Stabilitas nilai tukar menopang arus modal asing.</p>
+                                    <p class="text-[11px] text-slate-400 leading-relaxed" id="metricUSDIDRDesc">Stabilitas nilai tukar menopang arus modal asing.</p>
                                 </div>
 
-                                <div class="p-3.5 sm:p-4 rounded-xl bg-white/5 border border-white/10 flex flex-col justify-between">
-                                    <span class="text-[11px] sm:text-xs text-slate-400 uppercase tracking-wider font-semibold">Level Acuan IHSG</span>
+                                <div class="p-3 sm:p-3.5 rounded-sm bg-[#0E1420]/90 border border-white/10 flex flex-col justify-between hover:border-white/20 transition-colors">
+                                    <span class="text-[10.5px] text-slate-400 uppercase tracking-wider font-semibold">Level Acuan IHSG</span>
                                     <div class="my-1.5 sm:my-2">
-                                        <div class="text-base sm:text-lg font-bold text-white" id="metricIHSG">6.462,43 <span class="text-emerald-400" id="metricIHSGChange">+0.40%</span></div>
-                                        <span class="text-[11px] sm:text-xs text-slate-300 font-medium" id="metricRange">Support 6.398 • Resistance 6.540</span>
+                                        <div class="text-base sm:text-lg font-bold text-white font-mono-num" id="metricIHSG">6.462,43 <span class="text-emerald-400" id="metricIHSGChange">+0.40%</span></div>
+                                        <span class="text-[10px] text-slate-300 font-mono-num px-1.5 py-0.5 rounded-sm bg-slate-800/40 border border-slate-700/40 inline-block mt-0.5" id="metricRange">Support 6.398 • Resistance 6.540</span>
                                     </div>
-                                    <p class="text-[11px] sm:text-xs text-slate-300 leading-relaxed" id="metricIHSGDesc">Fokus akumulasi pada saham likuid berkapitalisasi besar.</p>
+                                    <p class="text-[11px] text-slate-400 leading-relaxed" id="metricIHSGDesc">Fokus akumulasi pada saham likuid berkapitalisasi besar.</p>
                                 </div>
                             </div>
 
@@ -2921,13 +2993,13 @@
                 const stopLoss = Math.round(item.Stop_Loss || (closePrice * 0.96));
                 const rec = item.Recommendation || "HOLD";
 
-                let badgeClass = "bg-emerald-50 text-emerald-800 border-emerald-200";
+                let badgeClass = "bg-emerald-50 text-emerald-800 border-emerald-300 rounded-sm";
                 if (rec.toLowerCase().includes("breakout")) {
-                    badgeClass = "bg-blue-50 text-blue-800 border-blue-200";
+                    badgeClass = "bg-cyan-50 text-cyan-800 border-cyan-300 rounded-sm";
                 } else if (rec.toLowerCase().includes("hold")) {
-                    badgeClass = "bg-slate-100 text-slate-800 border-slate-200";
+                    badgeClass = "bg-slate-100 text-slate-700 border-slate-300 rounded-sm";
                 } else if (rec.toLowerCase().includes("sell")) {
-                    badgeClass = "bg-rose-50 text-rose-800 border-rose-200";
+                    badgeClass = "bg-rose-50 text-rose-800 border-rose-300 rounded-sm";
                 }
 
                 const targetPct = (((targetPrice - closePrice) / closePrice) * 100).toFixed(1);
@@ -2941,57 +3013,57 @@
                     : (financialsSummaryData && financialsSummaryData[tickerClean]?.foreign_flow);
                 if (ffData && ffData.net_foreign_1d_formatted) {
                     const isNetBuy = (ffData.net_foreign_1d || 0) >= 0;
-                    const badgeCls = isNetBuy ? "bg-emerald-50 text-emerald-800 border-emerald-200" : "bg-rose-50 text-rose-800 border-rose-200";
-                    ffMiniBadge = `<span class="text-[9px] font-extrabold px-1.5 py-0.5 rounded border ${badgeCls}" title="Net Foreign Flow Harian">${ffData.net_foreign_1d_formatted}</span>`;
+                    const badgeCls = isNetBuy ? "bg-emerald-50 text-emerald-800 border-emerald-300" : "bg-rose-50 text-rose-800 border-rose-300";
+                    ffMiniBadge = `<span class="text-[9.5px] font-mono-num font-bold px-1.5 py-0.5 rounded-sm border ${badgeCls}" title="Net Foreign Flow Harian">${ffData.net_foreign_1d_formatted}</span>`;
                 }
 
                 html += `
-                <tr class="hover:bg-slate-50/80 transition-colors cursor-pointer group" onclick="if(!event.target.closest('button')) showStockDeepDive('${tickerClean}')">
-                    <td class="py-3.5 px-5">
-                        <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 rounded-lg bg-slate-100 border border-slate-200 text-primary flex items-center justify-center font-bold text-xs group-hover:bg-primary group-hover:text-white transition-colors">
+                <tr class="hover:bg-slate-50/80 transition-colors cursor-pointer group border-b border-slate-100" onclick="if(!event.target.closest('button')) showStockDeepDive('${tickerClean}')">
+                    <td class="py-3 px-4">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-7 h-7 rounded-sm bg-slate-100 border border-slate-200 text-primary font-mono font-bold text-xs flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors shrink-0">
                                 ${initial}
                             </div>
                             <div class="flex flex-col">
-                                <span class="font-bold text-primary group-hover:text-accent transition-colors flex items-center gap-1.5">
+                                <span class="font-mono font-bold text-primary text-xs sm:text-sm tracking-tight group-hover:text-accent transition-colors flex items-center gap-1">
                                     ${tickerClean}
-                                    <span class="material-symbols-outlined text-[14px] text-slate-300 group-hover:text-accent transition-colors opacity-0 group-hover:opacity-100">open_in_new</span>
+                                    <span class="material-symbols-outlined text-[13px] text-slate-300 group-hover:text-accent transition-colors opacity-0 group-hover:opacity-100">open_in_new</span>
                                 </span>
-                                <span class="text-[11px] text-text-muted">${item.Sector || 'General'}</span>
+                                <span class="text-[10.5px] text-text-muted truncate max-w-[120px]">${item.Sector || 'General'}</span>
                             </div>
                         </div>
                     </td>
-                    <td class="py-3.5 px-4">
-                        <span class="inline-flex px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${badgeClass}">
+                    <td class="py-3 px-3">
+                        <span class="inline-flex px-2 py-0.5 text-[10.5px] font-mono-num font-bold border tracking-tight ${badgeClass}">
                             ${rec.toUpperCase()}
                         </span>
                     </td>
-                    <td class="py-3.5 px-4 font-bold text-primary">
-                        <div class="flex items-center justify-between gap-1.5">
+                    <td class="py-3 px-3">
+                        <div class="flex items-center justify-between gap-1.5 font-mono-num font-bold text-primary text-xs sm:text-sm">
                             <span>Rp ${closePrice.toLocaleString('id-ID')}</span>
                             ${ffMiniBadge}
                         </div>
-                        <div class="w-20 bg-slate-100 rounded-full h-1 mt-1 overflow-hidden flex" title="Rentang Asimetri Potensi Gain vs Cut-Loss">
+                        <div class="w-16 bg-slate-100 rounded-none h-1 mt-1 overflow-hidden flex" title="Rentang Asimetri Potensi Gain vs Cut-Loss">
                             <div class="bg-rose-400 h-full" style="width: 35%;"></div>
                             <div class="bg-emerald-500 h-full" style="width: 65%;"></div>
                         </div>
                     </td>
-                    <td class="py-3.5 px-4 font-semibold text-text-main">Rp ${entryPrice.toLocaleString('id-ID')}</td>
-                    <td class="py-3.5 px-4 font-bold text-emerald-700">Rp ${targetPrice.toLocaleString('id-ID')} <span class="text-[11px] font-medium text-emerald-600">(+${targetPct}%)</span></td>
-                    <td class="py-3.5 px-4 font-bold text-rose-700">Rp ${stopLoss.toLocaleString('id-ID')} <span class="text-[11px] font-medium text-rose-600">(-${slPct}%)</span></td>
-                    <td class="py-3.5 px-4 text-center font-bold text-primary text-xs">${rrr}</td>
-                    <td class="py-3.5 px-4 text-center">
-                        <span class="inline-flex items-center px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800 text-xs font-black">
+                    <td class="py-3 px-3 font-mono-num font-semibold text-text-main text-xs sm:text-sm">Rp ${entryPrice.toLocaleString('id-ID')}</td>
+                    <td class="py-3 px-3 font-mono-num font-bold text-emerald-700 text-xs sm:text-sm">Rp ${targetPrice.toLocaleString('id-ID')} <span class="text-[10.5px] font-medium font-mono-num text-emerald-600">(+${targetPct}%)</span></td>
+                    <td class="py-3 px-3 font-mono-num font-bold text-rose-700 text-xs sm:text-sm">Rp ${stopLoss.toLocaleString('id-ID')} <span class="text-[10.5px] font-medium font-mono-num text-rose-600">(-${slPct}%)</span></td>
+                    <td class="py-3 px-3 text-center font-mono-num font-bold text-primary text-xs">${rrr}</td>
+                    <td class="py-3 px-3 text-center">
+                        <span class="inline-flex items-center px-1.5 py-0.5 rounded-sm bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-mono-num font-bold">
                             ${prob}%
                         </span>
                     </td>
-                    <td class="py-3.5 px-5 text-right">
-                        <div class="flex items-center justify-end gap-1.5">
-                            <button type="button" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-primary hover:text-white text-text-main text-xs font-semibold transition-colors flex items-center gap-1 shadow-2xs" onclick="showStockDeepDive('${tickerClean}')">
+                    <td class="py-3 px-4 text-right">
+                        <div class="flex items-center justify-end gap-1">
+                            <button type="button" class="px-2 py-1 rounded-sm bg-slate-100 hover:bg-primary hover:text-white border border-slate-200 text-text-main text-xs font-semibold transition-colors flex items-center gap-1 shadow-2xs" onclick="showStockDeepDive('${tickerClean}')">
                                 <span class="material-symbols-outlined text-[13px]">visibility</span>
                                 Riset
                             </button>
-                            <button type="button" class="px-2.5 py-1 rounded-lg bg-primary hover:bg-slate-800 text-white text-xs font-semibold transition-colors flex items-center gap-1 shadow-2xs" onclick="setupLotCalculation('${tickerClean}', ${closePrice}, ${targetPrice}, ${stopLoss})">
+                            <button type="button" class="px-2 py-1 rounded-sm bg-primary hover:bg-slate-800 border border-primary text-white text-xs font-semibold transition-colors flex items-center gap-1 shadow-2xs" onclick="setupLotCalculation('${tickerClean}', ${closePrice}, ${targetPrice}, ${stopLoss})">
                                 <span class="material-symbols-outlined text-[13px]">calculate</span>
                                 Hitung
                             </button>
