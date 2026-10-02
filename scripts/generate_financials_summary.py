@@ -338,8 +338,8 @@ def build_summary():
                 "badge": "💎 Blue Chip LQ45",
                 "icon": "diamond",
                 "gradient": "from-indigo-600 via-purple-600 to-pink-600",
-                "badge_bg": "bg-purple-100 text-purple-900 border-purple-300",
-                "card_bg": "bg-gradient-to-br from-indigo-50/90 via-purple-50/60 to-pink-50/40 border-indigo-200/80",
+                "badge_bg": "bg-purple-950/70 text-purple-300 border-purple-500/30",
+                "card_bg": "bg-[#0E1420] border-purple-500/30 hover:border-purple-500/60",
                 "headline": "Kapitalisasi Pasar Jumbo & Fondasi Likuiditas Institusional",
                 "desc": f"Memiliki Market Cap Rp {mcap/1e12:.1f}T dengan likuiditas harian sangat tinggi, menjadikannya pilihan utama dana pensiun dan fund manager institusi."
             })
@@ -353,8 +353,8 @@ def build_summary():
                 "badge": "⚡ Swing Trading Pick",
                 "icon": "trending_up",
                 "gradient": "from-emerald-600 via-teal-600 to-cyan-600",
-                "badge_bg": "bg-emerald-100 text-emerald-900 border-emerald-300",
-                "card_bg": "bg-gradient-to-br from-emerald-50/90 via-teal-50/60 to-cyan-50/40 border-emerald-200/80",
+                "badge_bg": "bg-emerald-950/70 text-emerald-300 border-emerald-500/30",
+                "card_bg": "bg-[#0E1420] border-emerald-500/30 hover:border-emerald-500/60",
                 "headline": f"Setup Momentum Kuantitatif: {rec_action}",
                 "desc": f"Probabilitas bullish AI {int(prob*100)}% dengan rasio Risk:Reward 1 : {rrr:.1f}. Memiliki swing range yang atraktif untuk horizon 3–15 hari kerja."
             })
@@ -368,8 +368,8 @@ def build_summary():
                 "badge": "⭐ High Quality Business",
                 "icon": "verified",
                 "gradient": "from-blue-600 via-sky-600 to-cyan-600",
-                "badge_bg": "bg-blue-100 text-blue-900 border-blue-300",
-                "card_bg": "bg-gradient-to-br from-blue-50/90 via-sky-50/60 to-cyan-50/40 border-blue-200/80",
+                "badge_bg": "bg-blue-950/70 text-blue-300 border-blue-500/30",
+                "card_bg": "bg-[#0E1420] border-blue-500/30 hover:border-blue-500/60",
                 "headline": f"Profitabilitas Superior (ROE {roe:.1f}%) & Utang Sehat",
                 "desc": f"Mampu menghasilkan imbal hasil ekuitas tinggi dengan efisiensi modal teruji 5 tahun dan neraca keuangan yang terlindung dari risiko gagal bayar."
             })
@@ -383,8 +383,8 @@ def build_summary():
                 "badge": f"💰 Yield Dividen {div_yield:.1f}%",
                 "icon": "payments",
                 "gradient": "from-amber-600 via-yellow-600 to-orange-600",
-                "badge_bg": "bg-amber-100 text-amber-900 border-amber-300",
-                "card_bg": "bg-gradient-to-br from-amber-50/90 via-yellow-50/60 to-orange-50/40 border-amber-200/80",
+                "badge_bg": "bg-amber-950/70 text-amber-300 border-amber-500/30",
+                "card_bg": "bg-[#0E1420] border-amber-500/30 hover:border-amber-500/60",
                 "headline": f"Imbal Hasil Dividen Signifikan ({div_yield:.1f}% p.a.)",
                 "desc": "Arus kas operasi yang berlimpah memungkinkan emiten membagikan dividen tunai tebal secara reguler kepada pemegang saham."
             })
@@ -398,8 +398,8 @@ def build_summary():
                 "badge": "🏷️ Margin of Safety",
                 "icon": "price_check",
                 "gradient": "from-slate-700 via-zinc-600 to-stone-600",
-                "badge_bg": "bg-slate-100 text-slate-800 border-slate-300",
-                "card_bg": "bg-gradient-to-br from-slate-50/90 via-zinc-50/60 to-stone-50/40 border-slate-200/80",
+                "badge_bg": "bg-slate-900/90 text-slate-300 border-slate-700/50",
+                "card_bg": "bg-[#0E1420] border-slate-700/40 hover:border-slate-600",
                 "headline": f"Valuasi Diskon (PBV {pbv:.2f}x / PER {pe:.1f}x)",
                 "desc": "Harga pasar saat ini diperdagangkan di bawah nilai wajar historisnya, menawarkan bantalan risiko (*downside protection*) yang menarik."
             })
@@ -411,8 +411,8 @@ def build_summary():
                 "badge": "📊 Dynamic Mid-Cap",
                 "icon": "insights",
                 "gradient": "from-teal-600 via-cyan-600 to-blue-600",
-                "badge_bg": "bg-teal-100 text-teal-800 border-teal-300",
-                "card_bg": "bg-gradient-to-br from-teal-50/90 to-cyan-50/50 border-teal-200",
+                "badge_bg": "bg-teal-950/70 text-teal-300 border-teal-500/30",
+                "card_bg": "bg-[#0E1420] border-teal-500/30 hover:border-teal-500/60",
                 "headline": "Fase Transformasi Bisnis & Pertumbuhan Sektoral",
                 "desc": "Emiten berada dalam fase konsolidasi strategis dengan potensi katalis pertumbuhan siklikal pada industrinya."
             })
@@ -436,22 +436,22 @@ def build_summary():
         solv_desc = f"solvabilitas (DER {der_display})" if der_display != "-" else "permodalan perbankan"
         if has_consecutive_neg_rev:
             health_status = "MODERAT / KONTRAKSI OMZET"
-            health_badge = "bg-amber-100 text-amber-900 border-amber-300"
+            health_badge = "bg-amber-500/10 text-amber-400 border-amber-500/30"
             health_desc = (
                 f"Meskipun {solv_desc} dan laba bersih positif, terdeteksi kontraksi omzet berturut-turut "
                 f"({consecutive_neg_rev} periode terakhir: {', '.join(neg_growths_list[-consecutive_neg_rev:])}) yang menjadi sinyal waspada perlambatan top-line."
             )
         elif roe >= 15.0 and (der <= 1.2 or is_bank) and all_positive:
             health_status = "SANGAT SEHAT & PRIMA"
-            health_badge = "bg-emerald-100 text-emerald-900 border-emerald-300"
+            health_badge = "bg-emerald-500/10 text-emerald-400 border-emerald-500/30"
             health_desc = "Neraca solid tanpa ancaman solvabilitas, laba bersih multi-tahun konsisten surplus, dan ekspansi operasional terjaga prima."
         elif all_positive and (der <= 2.0 or is_bank):
             health_status = "SEHAT & STABIL"
-            health_badge = "bg-blue-100 text-blue-900 border-blue-300"
+            health_badge = "bg-blue-500/10 text-blue-400 border-blue-500/30"
             health_desc = "Fundamental operasional berada dalam jalur stabil, struktur utang terkendali, dan kapasitas arus kas mencukupi kewajiban modal."
         else:
             health_status = "MODERAT / PERLU MONITORING"
-            health_badge = "bg-amber-100 text-amber-900 border-amber-300"
+            health_badge = "bg-amber-500/10 text-amber-400 border-amber-500/30"
             health_desc = "Terdapat fluktuasi margin laba, perlambatan pertumbuhan, atau tingkat leverage utang yang perlu dipantau ketat seiring dinamika siklus sektoral."
 
         # Structured Gemini Flash Analysis Narrative with Mandatory Revenue YoY Evaluation

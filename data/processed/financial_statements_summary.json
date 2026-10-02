@@ -55,7 +55,7 @@
     },
     "health": {
       "status": "MODERAT / KONTRAKSI OMZET",
-      "badge_class": "bg-amber-100 text-amber-900 border-amber-300",
+      "badge_class": "bg-amber-500/10 text-amber-400 border-amber-500/30",
       "desc": "Meskipun solvabilitas (DER 0.26x) dan laba bersih positif, terdeteksi kontraksi omzet berturut-turut (3 periode terakhir: -23.4%, -10.1%, -7.7%) yang menjadi sinyal waspada perlambatan top-line.",
       "roe": "23.3%",
       "der": "0.26x",
@@ -71,8 +71,8 @@
         "badge": "💎 Blue Chip LQ45",
         "icon": "diamond",
         "gradient": "from-indigo-600 via-purple-600 to-pink-600",
-        "badge_bg": "bg-purple-100 text-purple-900 border-purple-300",
-        "card_bg": "bg-gradient-to-br from-indigo-50/90 via-purple-50/60 to-pink-50/40 border-indigo-200/80",
+        "badge_bg": "bg-purple-950/70 text-purple-300 border-purple-500/30",
+        "card_bg": "bg-[#0E1420] border-purple-500/30 hover:border-purple-500/60",
         "headline": "Kapitalisasi Pasar Jumbo & Fondasi Likuiditas Institusional",
         "desc": "Memiliki Market Cap Rp 85.3T dengan likuiditas harian sangat tinggi, menjadikannya pilihan utama dana pensiun dan fund manager institusi."
       },
@@ -82,8 +82,8 @@
         "badge": "⭐ High Quality Business",
         "icon": "verified",
         "gradient": "from-blue-600 via-sky-600 to-cyan-600",
-        "badge_bg": "bg-blue-100 text-blue-900 border-blue-300",
-        "card_bg": "bg-gradient-to-br from-blue-50/90 via-sky-50/60 to-cyan-50/40 border-blue-200/80",
+        "badge_bg": "bg-blue-950/70 text-blue-300 border-blue-500/30",
+        "card_bg": "bg-[#0E1420] border-blue-500/30 hover:border-blue-500/60",
         "headline": "Profitabilitas Superior (ROE 23.3%) & Utang Sehat",
         "desc": "Mampu menghasilkan imbal hasil ekuitas tinggi dengan efisiensi modal teruji 5 tahun dan neraca keuangan yang terlindung dari risiko gagal bayar."
       },
@@ -93,8 +93,8 @@
         "badge": "💰 Yield Dividen 9.1%",
         "icon": "payments",
         "gradient": "from-amber-600 via-yellow-600 to-orange-600",
-        "badge_bg": "bg-amber-100 text-amber-900 border-amber-300",
-        "card_bg": "bg-gradient-to-br from-amber-50/90 via-yellow-50/60 to-orange-50/40 border-amber-200/80",
+        "badge_bg": "bg-amber-950/70 text-amber-300 border-amber-500/30",
+        "card_bg": "bg-[#0E1420] border-amber-500/30 hover:border-amber-500/60",
         "headline": "Imbal Hasil Dividen Signifikan (9.1% p.a.)",
         "desc": "Arus kas operasi yang berlimpah memungkinkan emiten membagikan dividen tunai tebal secara reguler kepada pemegang saham."
       }
@@ -1991,7 +1991,7 @@
     },
     "health": {
       "status": "SEHAT & STABIL",
-      "badge_class": "bg-blue-100 text-blue-900 border-blue-300",
+      "badge_class": "bg-blue-500/10 text-blue-400 border-blue-500/30",
       "desc": "Fundamental operasional berada dalam jalur stabil, struktur utang terkendali, dan kapasitas arus kas mencukupi kewajiban modal.",
       "roe": "12.1%",
       "der": "0.15x",
@@ -2007,8 +2007,8 @@
         "badge": "💰 Yield Dividen 9.4%",
         "icon": "payments",
         "gradient": "from-amber-600 via-yellow-600 to-orange-600",
-        "badge_bg": "bg-amber-100 text-amber-900 border-amber-300",
-        "card_bg": "bg-gradient-to-br from-amber-50/90 via-yellow-50/60 to-orange-50/40 border-amber-200/80",
+        "badge_bg": "bg-amber-950/70 text-amber-300 border-amber-500/30",
+        "card_bg": "bg-[#0E1420] border-amber-500/30 hover:border-amber-500/60",
         "headline": "Imbal Hasil Dividen Signifikan (9.4% p.a.)",
         "desc": "Arus kas operasi yang berlimpah memungkinkan emiten membagikan dividen tunai tebal secara reguler kepada pemegang saham."
       },
@@ -2018,8 +2018,8 @@
         "badge": "🏷️ Margin of Safety",
         "icon": "price_check",
         "gradient": "from-slate-700 via-zinc-600 to-stone-600",
-        "badge_bg": "bg-slate-100 text-slate-800 border-slate-300",
-        "card_bg": "bg-gradient-to-br from-slate-50/90 via-zinc-50/60 to-stone-50/40 border-slate-200/80",
+        "badge_bg": "bg-slate-900/90 text-slate-300 border-slate-700/50",
+        "card_bg": "bg-[#0E1420] border-slate-700/40 hover:border-slate-600",
         "headline": "Valuasi Diskon (PBV 0.90x / PER 7.5x)",
         "desc": "Harga pasar saat ini diperdagangkan di bawah nilai wajar historisnya, menawarkan bantalan risiko (*downside protection*) yang menarik."
       }
@@ -3916,7 +3916,7 @@
     },
     "health": {
       "status": "SANGAT SEHAT & PRIMA",
-      "badge_class": "bg-emerald-100 text-emerald-900 border-emerald-300",
+      "badge_class": "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
       "desc": "Neraca solid tanpa ancaman solvabilitas, laba bersih multi-tahun konsisten surplus, dan ekspansi operasional terjaga prima.",
       "roe": "17.2%",
       "der": "1.03x",
@@ -3932,8 +3932,8 @@
         "badge": "💎 Blue Chip LQ45",
         "icon": "diamond",
         "gradient": "from-indigo-600 via-purple-600 to-pink-600",
-        "badge_bg": "bg-purple-100 text-purple-900 border-purple-300",
-        "card_bg": "bg-gradient-to-br from-indigo-50/90 via-purple-50/60 to-pink-50/40 border-indigo-200/80",
+        "badge_bg": "bg-purple-950/70 text-purple-300 border-purple-500/30",
+        "card_bg": "bg-[#0E1420] border-purple-500/30 hover:border-purple-500/60",
         "headline": "Kapitalisasi Pasar Jumbo & Fondasi Likuiditas Institusional",
         "desc": "Memiliki Market Cap Rp 59.7T dengan likuiditas harian sangat tinggi, menjadikannya pilihan utama dana pensiun dan fund manager institusi."
       }
@@ -5830,7 +5830,7 @@
     },
     "health": {
       "status": "MODERAT / KONTRAKSI OMZET",
-      "badge_class": "bg-amber-100 text-amber-900 border-amber-300",
+      "badge_class": "bg-amber-500/10 text-amber-400 border-amber-500/30",
       "desc": "Meskipun solvabilitas (DER 0.38x) dan laba bersih positif, terdeteksi kontraksi omzet berturut-turut (3 periode terakhir: -73.6%, -2.7%, -9.9%) yang menjadi sinyal waspada perlambatan top-line.",
       "roe": "12.3%",
       "der": "0.38x",
@@ -5846,8 +5846,8 @@
         "badge": "💎 Blue Chip LQ45",
         "icon": "diamond",
         "gradient": "from-indigo-600 via-purple-600 to-pink-600",
-        "badge_bg": "bg-purple-100 text-purple-900 border-purple-300",
-        "card_bg": "bg-gradient-to-br from-indigo-50/90 via-purple-50/60 to-pink-50/40 border-indigo-200/80",
+        "badge_bg": "bg-purple-950/70 text-purple-300 border-purple-500/30",
+        "card_bg": "bg-[#0E1420] border-purple-500/30 hover:border-purple-500/60",
         "headline": "Kapitalisasi Pasar Jumbo & Fondasi Likuiditas Institusional",
         "desc": "Memiliki Market Cap Rp 70.0T dengan likuiditas harian sangat tinggi, menjadikannya pilihan utama dana pensiun dan fund manager institusi."
       },
@@ -5857,8 +5857,8 @@
         "badge": "💰 Yield Dividen 9.6%",
         "icon": "payments",
         "gradient": "from-amber-600 via-yellow-600 to-orange-600",
-        "badge_bg": "bg-amber-100 text-amber-900 border-amber-300",
-        "card_bg": "bg-gradient-to-br from-amber-50/90 via-yellow-50/60 to-orange-50/40 border-amber-200/80",
+        "badge_bg": "bg-amber-950/70 text-amber-300 border-amber-500/30",
+        "card_bg": "bg-[#0E1420] border-amber-500/30 hover:border-amber-500/60",
         "headline": "Imbal Hasil Dividen Signifikan (9.6% p.a.)",
         "desc": "Arus kas operasi yang berlimpah memungkinkan emiten membagikan dividen tunai tebal secara reguler kepada pemegang saham."
       },
@@ -5868,8 +5868,8 @@
         "badge": "🏷️ Margin of Safety",
         "icon": "price_check",
         "gradient": "from-slate-700 via-zinc-600 to-stone-600",
-        "badge_bg": "bg-slate-100 text-slate-800 border-slate-300",
-        "card_bg": "bg-gradient-to-br from-slate-50/90 via-zinc-50/60 to-stone-50/40 border-slate-200/80",
+        "badge_bg": "bg-slate-900/90 text-slate-300 border-slate-700/50",
+        "card_bg": "bg-[#0E1420] border-slate-700/40 hover:border-slate-600",
         "headline": "Valuasi Diskon (PBV 1.52x / PER 6.7x)",
         "desc": "Harga pasar saat ini diperdagangkan di bawah nilai wajar historisnya, menawarkan bantalan risiko (*downside protection*) yang menarik."
       }
@@ -7766,7 +7766,7 @@
     },
     "health": {
       "status": "SANGAT SEHAT & PRIMA",
-      "badge_class": "bg-emerald-100 text-emerald-900 border-emerald-300",
+      "badge_class": "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
       "desc": "Neraca solid tanpa ancaman solvabilitas, laba bersih multi-tahun konsisten surplus, dan ekspansi operasional terjaga prima.",
       "roe": "19.5%",
       "der": "0.33x",
@@ -7782,8 +7782,8 @@
         "badge": "⚡ Swing Trading Pick",
         "icon": "trending_up",
         "gradient": "from-emerald-600 via-teal-600 to-cyan-600",
-        "badge_bg": "bg-emerald-100 text-emerald-900 border-emerald-300",
-        "card_bg": "bg-gradient-to-br from-emerald-50/90 via-teal-50/60 to-cyan-50/40 border-emerald-200/80",
+        "badge_bg": "bg-emerald-950/70 text-emerald-300 border-emerald-500/30",
+        "card_bg": "bg-[#0E1420] border-emerald-500/30 hover:border-emerald-500/60",
         "headline": "Setup Momentum Kuantitatif: BUY ON WEAKNESS",
         "desc": "Probabilitas bullish AI 70% dengan rasio Risk:Reward 1 : 2.0. Memiliki swing range yang atraktif untuk horizon 3–15 hari kerja."
       },
@@ -7793,8 +7793,8 @@
         "badge": "⭐ High Quality Business",
         "icon": "verified",
         "gradient": "from-blue-600 via-sky-600 to-cyan-600",
-        "badge_bg": "bg-blue-100 text-blue-900 border-blue-300",
-        "card_bg": "bg-gradient-to-br from-blue-50/90 via-sky-50/60 to-cyan-50/40 border-blue-200/80",
+        "badge_bg": "bg-blue-950/70 text-blue-300 border-blue-500/30",
+        "card_bg": "bg-[#0E1420] border-blue-500/30 hover:border-blue-500/60",
         "headline": "Profitabilitas Superior (ROE 19.5%) & Utang Sehat",
         "desc": "Mampu menghasilkan imbal hasil ekuitas tinggi dengan efisiensi modal teruji 5 tahun dan neraca keuangan yang terlindung dari risiko gagal bayar."
       },
@@ -7804,8 +7804,8 @@
         "badge": "💰 Yield Dividen 7.0%",
         "icon": "payments",
         "gradient": "from-amber-600 via-yellow-600 to-orange-600",
-        "badge_bg": "bg-amber-100 text-amber-900 border-amber-300",
-        "card_bg": "bg-gradient-to-br from-amber-50/90 via-yellow-50/60 to-orange-50/40 border-amber-200/80",
+        "badge_bg": "bg-amber-950/70 text-amber-300 border-amber-500/30",
+        "card_bg": "bg-[#0E1420] border-amber-500/30 hover:border-amber-500/60",
         "headline": "Imbal Hasil Dividen Signifikan (7.0% p.a.)",
         "desc": "Arus kas operasi yang berlimpah memungkinkan emiten membagikan dividen tunai tebal secara reguler kepada pemegang saham."
       }
@@ -9702,7 +9702,7 @@
     },
     "health": {
       "status": "SANGAT SEHAT & PRIMA",
-      "badge_class": "bg-emerald-100 text-emerald-900 border-emerald-300",
+      "badge_class": "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
       "desc": "Neraca solid tanpa ancaman solvabilitas, laba bersih multi-tahun konsisten surplus, dan ekspansi operasional terjaga prima.",
       "roe": "16.6%",
       "der": "1.00x",
@@ -9718,8 +9718,8 @@
         "badge": "💎 Blue Chip LQ45",
         "icon": "diamond",
         "gradient": "from-indigo-600 via-purple-600 to-pink-600",
-        "badge_bg": "bg-purple-100 text-purple-900 border-purple-300",
-        "card_bg": "bg-gradient-to-br from-indigo-50/90 via-purple-50/60 to-pink-50/40 border-indigo-200/80",
+        "badge_bg": "bg-purple-950/70 text-purple-300 border-purple-500/30",
+        "card_bg": "bg-[#0E1420] border-purple-500/30 hover:border-purple-500/60",
         "headline": "Kapitalisasi Pasar Jumbo & Fondasi Likuiditas Institusional",
         "desc": "Memiliki Market Cap Rp 326.6T dengan likuiditas harian sangat tinggi, menjadikannya pilihan utama dana pensiun dan fund manager institusi."
       },
@@ -9729,8 +9729,8 @@
         "badge": "⚡ Swing Trading Pick",
         "icon": "trending_up",
         "gradient": "from-emerald-600 via-teal-600 to-cyan-600",
-        "badge_bg": "bg-emerald-100 text-emerald-900 border-emerald-300",
-        "card_bg": "bg-gradient-to-br from-emerald-50/90 via-teal-50/60 to-cyan-50/40 border-emerald-200/80",
+        "badge_bg": "bg-emerald-950/70 text-emerald-300 border-emerald-500/30",
+        "card_bg": "bg-[#0E1420] border-emerald-500/30 hover:border-emerald-500/60",
         "headline": "Setup Momentum Kuantitatif: BUY ON WEAKNESS",
         "desc": "Probabilitas bullish AI 70% dengan rasio Risk:Reward 1 : 2.0. Memiliki swing range yang atraktif untuk horizon 3–15 hari kerja."
       }
@@ -11627,7 +11627,7 @@
     },
     "health": {
       "status": "SANGAT SEHAT & PRIMA",
-      "badge_class": "bg-emerald-100 text-emerald-900 border-emerald-300",
+      "badge_class": "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
       "desc": "Neraca solid tanpa ancaman solvabilitas, laba bersih multi-tahun konsisten surplus, dan ekspansi operasional terjaga prima.",
       "roe": "20.0%",
       "der": "0.14x",
@@ -11643,8 +11643,8 @@
         "badge": "💎 Blue Chip LQ45",
         "icon": "diamond",
         "gradient": "from-indigo-600 via-purple-600 to-pink-600",
-        "badge_bg": "bg-purple-100 text-purple-900 border-purple-300",
-        "card_bg": "bg-gradient-to-br from-indigo-50/90 via-purple-50/60 to-pink-50/40 border-indigo-200/80",
+        "badge_bg": "bg-purple-950/70 text-purple-300 border-purple-500/30",
+        "card_bg": "bg-[#0E1420] border-purple-500/30 hover:border-purple-500/60",
         "headline": "Kapitalisasi Pasar Jumbo & Fondasi Likuiditas Institusional",
         "desc": "Memiliki Market Cap Rp 54.2T dengan likuiditas harian sangat tinggi, menjadikannya pilihan utama dana pensiun dan fund manager institusi."
       },
@@ -11654,8 +11654,8 @@
         "badge": "⭐ High Quality Business",
         "icon": "verified",
         "gradient": "from-blue-600 via-sky-600 to-cyan-600",
-        "badge_bg": "bg-blue-100 text-blue-900 border-blue-300",
-        "card_bg": "bg-gradient-to-br from-blue-50/90 via-sky-50/60 to-cyan-50/40 border-blue-200/80",
+        "badge_bg": "bg-blue-950/70 text-blue-300 border-blue-500/30",
+        "card_bg": "bg-[#0E1420] border-blue-500/30 hover:border-blue-500/60",
         "headline": "Profitabilitas Superior (ROE 20.0%) & Utang Sehat",
         "desc": "Mampu menghasilkan imbal hasil ekuitas tinggi dengan efisiensi modal teruji 5 tahun dan neraca keuangan yang terlindung dari risiko gagal bayar."
       }
@@ -13552,7 +13552,7 @@
     },
     "health": {
       "status": "SANGAT SEHAT & PRIMA",
-      "badge_class": "bg-emerald-100 text-emerald-900 border-emerald-300",
+      "badge_class": "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
       "desc": "Neraca solid tanpa ancaman solvabilitas, laba bersih multi-tahun konsisten surplus, dan ekspansi operasional terjaga prima.",
       "roe": "26.8%",
       "der": "0.16x",
@@ -13568,8 +13568,8 @@
         "badge": "💎 Blue Chip LQ45",
         "icon": "diamond",
         "gradient": "from-indigo-600 via-purple-600 to-pink-600",
-        "badge_bg": "bg-purple-100 text-purple-900 border-purple-300",
-        "card_bg": "bg-gradient-to-br from-indigo-50/90 via-purple-50/60 to-pink-50/40 border-indigo-200/80",
+        "badge_bg": "bg-purple-950/70 text-purple-300 border-purple-500/30",
+        "card_bg": "bg-[#0E1420] border-purple-500/30 hover:border-purple-500/60",
         "headline": "Kapitalisasi Pasar Jumbo & Fondasi Likuiditas Institusional",
         "desc": "Memiliki Market Cap Rp 76.9T dengan likuiditas harian sangat tinggi, menjadikannya pilihan utama dana pensiun dan fund manager institusi."
       },
@@ -13579,8 +13579,8 @@
         "badge": "⭐ High Quality Business",
         "icon": "verified",
         "gradient": "from-blue-600 via-sky-600 to-cyan-600",
-        "badge_bg": "bg-blue-100 text-blue-900 border-blue-300",
-        "card_bg": "bg-gradient-to-br from-blue-50/90 via-sky-50/60 to-cyan-50/40 border-blue-200/80",
+        "badge_bg": "bg-blue-950/70 text-blue-300 border-blue-500/30",
+        "card_bg": "bg-[#0E1420] border-blue-500/30 hover:border-blue-500/60",
         "headline": "Profitabilitas Superior (ROE 26.8%) & Utang Sehat",
         "desc": "Mampu menghasilkan imbal hasil ekuitas tinggi dengan efisiensi modal teruji 5 tahun dan neraca keuangan yang terlindung dari risiko gagal bayar."
       },
@@ -13590,8 +13590,8 @@
         "badge": "💰 Yield Dividen 6.7%",
         "icon": "payments",
         "gradient": "from-amber-600 via-yellow-600 to-orange-600",
-        "badge_bg": "bg-amber-100 text-amber-900 border-amber-300",
-        "card_bg": "bg-gradient-to-br from-amber-50/90 via-yellow-50/60 to-orange-50/40 border-amber-200/80",
+        "badge_bg": "bg-amber-950/70 text-amber-300 border-amber-500/30",
+        "card_bg": "bg-[#0E1420] border-amber-500/30 hover:border-amber-500/60",
         "headline": "Imbal Hasil Dividen Signifikan (6.7% p.a.)",
         "desc": "Arus kas operasi yang berlimpah memungkinkan emiten membagikan dividen tunai tebal secara reguler kepada pemegang saham."
       }
@@ -15488,7 +15488,7 @@
     },
     "health": {
       "status": "SEHAT & STABIL",
-      "badge_class": "bg-blue-100 text-blue-900 border-blue-300",
+      "badge_class": "bg-blue-500/10 text-blue-400 border-blue-500/30",
       "desc": "Fundamental operasional berada dalam jalur stabil, struktur utang terkendali, dan kapasitas arus kas mencukupi kewajiban modal.",
       "roe": "12.0%",
       "der": "0.41x",
@@ -15504,8 +15504,8 @@
         "badge": "💎 Blue Chip LQ45",
         "icon": "diamond",
         "gradient": "from-indigo-600 via-purple-600 to-pink-600",
-        "badge_bg": "bg-purple-100 text-purple-900 border-purple-300",
-        "card_bg": "bg-gradient-to-br from-indigo-50/90 via-purple-50/60 to-pink-50/40 border-indigo-200/80",
+        "badge_bg": "bg-purple-950/70 text-purple-300 border-purple-500/30",
+        "card_bg": "bg-[#0E1420] border-purple-500/30 hover:border-purple-500/60",
         "headline": "Kapitalisasi Pasar Jumbo & Fondasi Likuiditas Institusional",
         "desc": "Memiliki Market Cap Rp 183.6T dengan likuiditas harian sangat tinggi, menjadikannya pilihan utama dana pensiun dan fund manager institusi."
       },
@@ -15515,8 +15515,8 @@
         "badge": "💰 Yield Dividen 8.3%",
         "icon": "payments",
         "gradient": "from-amber-600 via-yellow-600 to-orange-600",
-        "badge_bg": "bg-amber-100 text-amber-900 border-amber-300",
-        "card_bg": "bg-gradient-to-br from-amber-50/90 via-yellow-50/60 to-orange-50/40 border-amber-200/80",
+        "badge_bg": "bg-amber-950/70 text-amber-300 border-amber-500/30",
+        "card_bg": "bg-[#0E1420] border-amber-500/30 hover:border-amber-500/60",
         "headline": "Imbal Hasil Dividen Signifikan (8.3% p.a.)",
         "desc": "Arus kas operasi yang berlimpah memungkinkan emiten membagikan dividen tunai tebal secara reguler kepada pemegang saham."
       },
@@ -15526,8 +15526,8 @@
         "badge": "🏷️ Margin of Safety",
         "icon": "price_check",
         "gradient": "from-slate-700 via-zinc-600 to-stone-600",
-        "badge_bg": "bg-slate-100 text-slate-800 border-slate-300",
-        "card_bg": "bg-gradient-to-br from-slate-50/90 via-zinc-50/60 to-stone-50/40 border-slate-200/80",
+        "badge_bg": "bg-slate-900/90 text-slate-300 border-slate-700/50",
+        "card_bg": "bg-[#0E1420] border-slate-700/40 hover:border-slate-600",
         "headline": "Valuasi Diskon (PBV 0.80x / PER 6.2x)",
         "desc": "Harga pasar saat ini diperdagangkan di bawah nilai wajar historisnya, menawarkan bantalan risiko (*downside protection*) yang menarik."
       }
@@ -17424,7 +17424,7 @@
     },
     "health": {
       "status": "SEHAT & STABIL",
-      "badge_class": "bg-blue-100 text-blue-900 border-blue-300",
+      "badge_class": "bg-blue-500/10 text-blue-400 border-blue-500/30",
       "desc": "Fundamental operasional berada dalam jalur stabil, struktur utang terkendali, dan kapasitas arus kas mencukupi kewajiban modal.",
       "roe": "18.2%",
       "der": "1.29x",
@@ -17440,8 +17440,8 @@
         "badge": "⚡ Swing Trading Pick",
         "icon": "trending_up",
         "gradient": "from-emerald-600 via-teal-600 to-cyan-600",
-        "badge_bg": "bg-emerald-100 text-emerald-900 border-emerald-300",
-        "card_bg": "bg-gradient-to-br from-emerald-50/90 via-teal-50/60 to-cyan-50/40 border-emerald-200/80",
+        "badge_bg": "bg-emerald-950/70 text-emerald-300 border-emerald-500/30",
+        "card_bg": "bg-[#0E1420] border-emerald-500/30 hover:border-emerald-500/60",
         "headline": "Setup Momentum Kuantitatif: BUY ON WEAKNESS",
         "desc": "Probabilitas bullish AI 70% dengan rasio Risk:Reward 1 : 2.0. Memiliki swing range yang atraktif untuk horizon 3–15 hari kerja."
       },
@@ -17451,8 +17451,8 @@
         "badge": "💰 Yield Dividen 8.4%",
         "icon": "payments",
         "gradient": "from-amber-600 via-yellow-600 to-orange-600",
-        "badge_bg": "bg-amber-100 text-amber-900 border-amber-300",
-        "card_bg": "bg-gradient-to-br from-amber-50/90 via-yellow-50/60 to-orange-50/40 border-amber-200/80",
+        "badge_bg": "bg-amber-950/70 text-amber-300 border-amber-500/30",
+        "card_bg": "bg-[#0E1420] border-amber-500/30 hover:border-amber-500/60",
         "headline": "Imbal Hasil Dividen Signifikan (8.4% p.a.)",
         "desc": "Arus kas operasi yang berlimpah memungkinkan emiten membagikan dividen tunai tebal secara reguler kepada pemegang saham."
       },
@@ -17462,8 +17462,8 @@
         "badge": "🏷️ Margin of Safety",
         "icon": "price_check",
         "gradient": "from-slate-700 via-zinc-600 to-stone-600",
-        "badge_bg": "bg-slate-100 text-slate-800 border-slate-300",
-        "card_bg": "bg-gradient-to-br from-slate-50/90 via-zinc-50/60 to-stone-50/40 border-slate-200/80",
+        "badge_bg": "bg-slate-900/90 text-slate-300 border-slate-700/50",
+        "card_bg": "bg-[#0E1420] border-slate-700/40 hover:border-slate-600",
         "headline": "Valuasi Diskon (PBV 0.94x / PER 5.1x)",
         "desc": "Harga pasar saat ini diperdagangkan di bawah nilai wajar historisnya, menawarkan bantalan risiko (*downside protection*) yang menarik."
       }
@@ -19360,7 +19360,7 @@
     },
     "health": {
       "status": "SANGAT SEHAT & PRIMA",
-      "badge_class": "bg-emerald-100 text-emerald-900 border-emerald-300",
+      "badge_class": "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
       "desc": "Neraca solid tanpa ancaman solvabilitas, laba bersih multi-tahun konsisten surplus, dan ekspansi operasional terjaga prima.",
       "roe": "15.3%",
       "der": "0.03x",
@@ -19376,8 +19376,8 @@
         "badge": "⭐ High Quality Business",
         "icon": "verified",
         "gradient": "from-blue-600 via-sky-600 to-cyan-600",
-        "badge_bg": "bg-blue-100 text-blue-900 border-blue-300",
-        "card_bg": "bg-gradient-to-br from-blue-50/90 via-sky-50/60 to-cyan-50/40 border-blue-200/80",
+        "badge_bg": "bg-blue-950/70 text-blue-300 border-blue-500/30",
+        "card_bg": "bg-[#0E1420] border-blue-500/30 hover:border-blue-500/60",
         "headline": "Profitabilitas Superior (ROE 15.3%) & Utang Sehat",
         "desc": "Mampu menghasilkan imbal hasil ekuitas tinggi dengan efisiensi modal teruji 5 tahun dan neraca keuangan yang terlindung dari risiko gagal bayar."
       },
@@ -19387,8 +19387,8 @@
         "badge": "💰 Yield Dividen 6.9%",
         "icon": "payments",
         "gradient": "from-amber-600 via-yellow-600 to-orange-600",
-        "badge_bg": "bg-amber-100 text-amber-900 border-amber-300",
-        "card_bg": "bg-gradient-to-br from-amber-50/90 via-yellow-50/60 to-orange-50/40 border-amber-200/80",
+        "badge_bg": "bg-amber-950/70 text-amber-300 border-amber-500/30",
+        "card_bg": "bg-[#0E1420] border-amber-500/30 hover:border-amber-500/60",
         "headline": "Imbal Hasil Dividen Signifikan (6.9% p.a.)",
         "desc": "Arus kas operasi yang berlimpah memungkinkan emiten membagikan dividen tunai tebal secara reguler kepada pemegang saham."
       }
@@ -21285,7 +21285,7 @@
     },
     "health": {
       "status": "SANGAT SEHAT & PRIMA",
-      "badge_class": "bg-emerald-100 text-emerald-900 border-emerald-300",
+      "badge_class": "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
       "desc": "Neraca solid tanpa ancaman solvabilitas, laba bersih multi-tahun konsisten surplus, dan ekspansi operasional terjaga prima.",
       "roe": "21.8%",
       "der": "-",
@@ -21301,8 +21301,8 @@
         "badge": "💎 Blue Chip LQ45",
         "icon": "diamond",
         "gradient": "from-indigo-600 via-purple-600 to-pink-600",
-        "badge_bg": "bg-purple-100 text-purple-900 border-purple-300",
-        "card_bg": "bg-gradient-to-br from-indigo-50/90 via-purple-50/60 to-pink-50/40 border-indigo-200/80",
+        "badge_bg": "bg-purple-950/70 text-purple-300 border-purple-500/30",
+        "card_bg": "bg-[#0E1420] border-purple-500/30 hover:border-purple-500/60",
         "headline": "Kapitalisasi Pasar Jumbo & Fondasi Likuiditas Institusional",
         "desc": "Memiliki Market Cap Rp 746.3T dengan likuiditas harian sangat tinggi, menjadikannya pilihan utama dana pensiun dan fund manager institusi."
       },
@@ -21312,8 +21312,8 @@
         "badge": "⭐ High Quality Business",
         "icon": "verified",
         "gradient": "from-blue-600 via-sky-600 to-cyan-600",
-        "badge_bg": "bg-blue-100 text-blue-900 border-blue-300",
-        "card_bg": "bg-gradient-to-br from-blue-50/90 via-sky-50/60 to-cyan-50/40 border-blue-200/80",
+        "badge_bg": "bg-blue-950/70 text-blue-300 border-blue-500/30",
+        "card_bg": "bg-[#0E1420] border-blue-500/30 hover:border-blue-500/60",
         "headline": "Profitabilitas Superior (ROE 21.8%) & Utang Sehat",
         "desc": "Mampu menghasilkan imbal hasil ekuitas tinggi dengan efisiensi modal teruji 5 tahun dan neraca keuangan yang terlindung dari risiko gagal bayar."
       },
@@ -21323,8 +21323,8 @@
         "badge": "💰 Yield Dividen 6.2%",
         "icon": "payments",
         "gradient": "from-amber-600 via-yellow-600 to-orange-600",
-        "badge_bg": "bg-amber-100 text-amber-900 border-amber-300",
-        "card_bg": "bg-gradient-to-br from-amber-50/90 via-yellow-50/60 to-orange-50/40 border-amber-200/80",
+        "badge_bg": "bg-amber-950/70 text-amber-300 border-amber-500/30",
+        "card_bg": "bg-[#0E1420] border-amber-500/30 hover:border-amber-500/60",
         "headline": "Imbal Hasil Dividen Signifikan (6.2% p.a.)",
         "desc": "Arus kas operasi yang berlimpah memungkinkan emiten membagikan dividen tunai tebal secara reguler kepada pemegang saham."
       }
@@ -23221,7 +23221,7 @@
     },
     "health": {
       "status": "SEHAT & STABIL",
-      "badge_class": "bg-blue-100 text-blue-900 border-blue-300",
+      "badge_class": "bg-blue-500/10 text-blue-400 border-blue-500/30",
       "desc": "Fundamental operasional berada dalam jalur stabil, struktur utang terkendali, dan kapasitas arus kas mencukupi kewajiban modal.",
       "roe": "12.4%",
       "der": "-",
@@ -23237,8 +23237,8 @@
         "badge": "💎 Blue Chip LQ45",
         "icon": "diamond",
         "gradient": "from-indigo-600 via-purple-600 to-pink-600",
-        "badge_bg": "bg-purple-100 text-purple-900 border-purple-300",
-        "card_bg": "bg-gradient-to-br from-indigo-50/90 via-purple-50/60 to-pink-50/40 border-indigo-200/80",
+        "badge_bg": "bg-purple-950/70 text-purple-300 border-purple-500/30",
+        "card_bg": "bg-[#0E1420] border-purple-500/30 hover:border-purple-500/60",
         "headline": "Kapitalisasi Pasar Jumbo & Fondasi Likuiditas Institusional",
         "desc": "Memiliki Market Cap Rp 126.3T dengan likuiditas harian sangat tinggi, menjadikannya pilihan utama dana pensiun dan fund manager institusi."
       },
@@ -23248,8 +23248,8 @@
         "badge": "💰 Yield Dividen 10.2%",
         "icon": "payments",
         "gradient": "from-amber-600 via-yellow-600 to-orange-600",
-        "badge_bg": "bg-amber-100 text-amber-900 border-amber-300",
-        "card_bg": "bg-gradient-to-br from-amber-50/90 via-yellow-50/60 to-orange-50/40 border-amber-200/80",
+        "badge_bg": "bg-amber-950/70 text-amber-300 border-amber-500/30",
+        "card_bg": "bg-[#0E1420] border-amber-500/30 hover:border-amber-500/60",
         "headline": "Imbal Hasil Dividen Signifikan (10.2% p.a.)",
         "desc": "Arus kas operasi yang berlimpah memungkinkan emiten membagikan dividen tunai tebal secara reguler kepada pemegang saham."
       },
@@ -23259,8 +23259,8 @@
         "badge": "🏷️ Margin of Safety",
         "icon": "price_check",
         "gradient": "from-slate-700 via-zinc-600 to-stone-600",
-        "badge_bg": "bg-slate-100 text-slate-800 border-slate-300",
-        "card_bg": "bg-gradient-to-br from-slate-50/90 via-zinc-50/60 to-stone-50/40 border-slate-200/80",
+        "badge_bg": "bg-slate-900/90 text-slate-300 border-slate-700/50",
+        "card_bg": "bg-[#0E1420] border-slate-700/40 hover:border-slate-600",
         "headline": "Valuasi Diskon (PBV 0.77x / PER 6.1x)",
         "desc": "Harga pasar saat ini diperdagangkan di bawah nilai wajar historisnya, menawarkan bantalan risiko (*downside protection*) yang menarik."
       }
@@ -25157,7 +25157,7 @@
     },
     "health": {
       "status": "SANGAT SEHAT & PRIMA",
-      "badge_class": "bg-emerald-100 text-emerald-900 border-emerald-300",
+      "badge_class": "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
       "desc": "Neraca solid tanpa ancaman solvabilitas, laba bersih multi-tahun konsisten surplus, dan ekspansi operasional terjaga prima.",
       "roe": "19.0%",
       "der": "-",
@@ -25173,8 +25173,8 @@
         "badge": "💎 Blue Chip LQ45",
         "icon": "diamond",
         "gradient": "from-indigo-600 via-purple-600 to-pink-600",
-        "badge_bg": "bg-purple-100 text-purple-900 border-purple-300",
-        "card_bg": "bg-gradient-to-br from-indigo-50/90 via-purple-50/60 to-pink-50/40 border-indigo-200/80",
+        "badge_bg": "bg-purple-950/70 text-purple-300 border-purple-500/30",
+        "card_bg": "bg-[#0E1420] border-purple-500/30 hover:border-purple-500/60",
         "headline": "Kapitalisasi Pasar Jumbo & Fondasi Likuiditas Institusional",
         "desc": "Memiliki Market Cap Rp 473.1T dengan likuiditas harian sangat tinggi, menjadikannya pilihan utama dana pensiun dan fund manager institusi."
       },
@@ -25184,8 +25184,8 @@
         "badge": "⭐ High Quality Business",
         "icon": "verified",
         "gradient": "from-blue-600 via-sky-600 to-cyan-600",
-        "badge_bg": "bg-blue-100 text-blue-900 border-blue-300",
-        "card_bg": "bg-gradient-to-br from-blue-50/90 via-sky-50/60 to-cyan-50/40 border-blue-200/80",
+        "badge_bg": "bg-blue-950/70 text-blue-300 border-blue-500/30",
+        "card_bg": "bg-[#0E1420] border-blue-500/30 hover:border-blue-500/60",
         "headline": "Profitabilitas Superior (ROE 19.0%) & Utang Sehat",
         "desc": "Mampu menghasilkan imbal hasil ekuitas tinggi dengan efisiensi modal teruji 5 tahun dan neraca keuangan yang terlindung dari risiko gagal bayar."
       },
@@ -25195,8 +25195,8 @@
         "badge": "💰 Yield Dividen 13.2%",
         "icon": "payments",
         "gradient": "from-amber-600 via-yellow-600 to-orange-600",
-        "badge_bg": "bg-amber-100 text-amber-900 border-amber-300",
-        "card_bg": "bg-gradient-to-br from-amber-50/90 via-yellow-50/60 to-orange-50/40 border-amber-200/80",
+        "badge_bg": "bg-amber-950/70 text-amber-300 border-amber-500/30",
+        "card_bg": "bg-[#0E1420] border-amber-500/30 hover:border-amber-500/60",
         "headline": "Imbal Hasil Dividen Signifikan (13.2% p.a.)",
         "desc": "Arus kas operasi yang berlimpah memungkinkan emiten membagikan dividen tunai tebal secara reguler kepada pemegang saham."
       }
@@ -27093,7 +27093,7 @@
     },
     "health": {
       "status": "SEHAT & STABIL",
-      "badge_class": "bg-blue-100 text-blue-900 border-blue-300",
+      "badge_class": "bg-blue-500/10 text-blue-400 border-blue-500/30",
       "desc": "Fundamental operasional berada dalam jalur stabil, struktur utang terkendali, dan kapasitas arus kas mencukupi kewajiban modal.",
       "roe": "11.7%",
       "der": "-",
@@ -27109,8 +27109,8 @@
         "badge": "⚡ Swing Trading Pick",
         "icon": "trending_up",
         "gradient": "from-emerald-600 via-teal-600 to-cyan-600",
-        "badge_bg": "bg-emerald-100 text-emerald-900 border-emerald-300",
-        "card_bg": "bg-gradient-to-br from-emerald-50/90 via-teal-50/60 to-cyan-50/40 border-emerald-200/80",
+        "badge_bg": "bg-emerald-950/70 text-emerald-300 border-emerald-500/30",
+        "card_bg": "bg-[#0E1420] border-emerald-500/30 hover:border-emerald-500/60",
         "headline": "Setup Momentum Kuantitatif: BUY ON WEAKNESS",
         "desc": "Probabilitas bullish AI 70% dengan rasio Risk:Reward 1 : 2.0. Memiliki swing range yang atraktif untuk horizon 3–15 hari kerja."
       },
@@ -27120,8 +27120,8 @@
         "badge": "🏷️ Margin of Safety",
         "icon": "price_check",
         "gradient": "from-slate-700 via-zinc-600 to-stone-600",
-        "badge_bg": "bg-slate-100 text-slate-800 border-slate-300",
-        "card_bg": "bg-gradient-to-br from-slate-50/90 via-zinc-50/60 to-stone-50/40 border-slate-200/80",
+        "badge_bg": "bg-slate-900/90 text-slate-300 border-slate-700/50",
+        "card_bg": "bg-[#0E1420] border-slate-700/40 hover:border-slate-600",
         "headline": "Valuasi Diskon (PBV 0.40x / PER 3.6x)",
         "desc": "Harga pasar saat ini diperdagangkan di bawah nilai wajar historisnya, menawarkan bantalan risiko (*downside protection*) yang menarik."
       }
@@ -29018,7 +29018,7 @@
     },
     "health": {
       "status": "SEHAT & STABIL",
-      "badge_class": "bg-blue-100 text-blue-900 border-blue-300",
+      "badge_class": "bg-blue-500/10 text-blue-400 border-blue-500/30",
       "desc": "Fundamental operasional berada dalam jalur stabil, struktur utang terkendali, dan kapasitas arus kas mencukupi kewajiban modal.",
       "roe": "10.2%",
       "der": "0.35x",
@@ -29034,8 +29034,8 @@
         "badge": "⚡ Swing Trading Pick",
         "icon": "trending_up",
         "gradient": "from-emerald-600 via-teal-600 to-cyan-600",
-        "badge_bg": "bg-emerald-100 text-emerald-900 border-emerald-300",
-        "card_bg": "bg-gradient-to-br from-emerald-50/90 via-teal-50/60 to-cyan-50/40 border-emerald-200/80",
+        "badge_bg": "bg-emerald-950/70 text-emerald-300 border-emerald-500/30",
+        "card_bg": "bg-[#0E1420] border-emerald-500/30 hover:border-emerald-500/60",
         "headline": "Setup Momentum Kuantitatif: BUY ON WEAKNESS",
         "desc": "Probabilitas bullish AI 70% dengan rasio Risk:Reward 1 : 2.0. Memiliki swing range yang atraktif untuk horizon 3–15 hari kerja."
       },
@@ -29045,8 +29045,8 @@
         "badge": "💰 Yield Dividen 10.6%",
         "icon": "payments",
         "gradient": "from-amber-600 via-yellow-600 to-orange-600",
-        "badge_bg": "bg-amber-100 text-amber-900 border-amber-300",
-        "card_bg": "bg-gradient-to-br from-amber-50/90 via-yellow-50/60 to-orange-50/40 border-amber-200/80",
+        "badge_bg": "bg-amber-950/70 text-amber-300 border-amber-500/30",
+        "card_bg": "bg-[#0E1420] border-amber-500/30 hover:border-amber-500/60",
         "headline": "Imbal Hasil Dividen Signifikan (10.6% p.a.)",
         "desc": "Arus kas operasi yang berlimpah memungkinkan emiten membagikan dividen tunai tebal secara reguler kepada pemegang saham."
       },
@@ -29056,8 +29056,8 @@
         "badge": "🏷️ Margin of Safety",
         "icon": "price_check",
         "gradient": "from-slate-700 via-zinc-600 to-stone-600",
-        "badge_bg": "bg-slate-100 text-slate-800 border-slate-300",
-        "card_bg": "bg-gradient-to-br from-slate-50/90 via-zinc-50/60 to-stone-50/40 border-slate-200/80",
+        "badge_bg": "bg-slate-900/90 text-slate-300 border-slate-700/50",
+        "card_bg": "bg-[#0E1420] border-slate-700/40 hover:border-slate-600",
         "headline": "Valuasi Diskon (PBV 0.63x / PER 6.2x)",
         "desc": "Harga pasar saat ini diperdagangkan di bawah nilai wajar historisnya, menawarkan bantalan risiko (*downside protection*) yang menarik."
       }
@@ -30954,7 +30954,7 @@
     },
     "health": {
       "status": "SEHAT & STABIL",
-      "badge_class": "bg-blue-100 text-blue-900 border-blue-300",
+      "badge_class": "bg-blue-500/10 text-blue-400 border-blue-500/30",
       "desc": "Fundamental operasional berada dalam jalur stabil, struktur utang terkendali, dan kapasitas arus kas mencukupi kewajiban modal.",
       "roe": "9.4%",
       "der": "-",
@@ -30970,8 +30970,8 @@
         "badge": "⚡ Swing Trading Pick",
         "icon": "trending_up",
         "gradient": "from-emerald-600 via-teal-600 to-cyan-600",
-        "badge_bg": "bg-emerald-100 text-emerald-900 border-emerald-300",
-        "card_bg": "bg-gradient-to-br from-emerald-50/90 via-teal-50/60 to-cyan-50/40 border-emerald-200/80",
+        "badge_bg": "bg-emerald-950/70 text-emerald-300 border-emerald-500/30",
+        "card_bg": "bg-[#0E1420] border-emerald-500/30 hover:border-emerald-500/60",
         "headline": "Setup Momentum Kuantitatif: BUY ON WEAKNESS",
         "desc": "Probabilitas bullish AI 70% dengan rasio Risk:Reward 1 : 2.0. Memiliki swing range yang atraktif untuk horizon 3–15 hari kerja."
       },
@@ -30981,8 +30981,8 @@
         "badge": "💰 Yield Dividen 11.3%",
         "icon": "payments",
         "gradient": "from-amber-600 via-yellow-600 to-orange-600",
-        "badge_bg": "bg-amber-100 text-amber-900 border-amber-300",
-        "card_bg": "bg-gradient-to-br from-amber-50/90 via-yellow-50/60 to-orange-50/40 border-amber-200/80",
+        "badge_bg": "bg-amber-950/70 text-amber-300 border-amber-500/30",
+        "card_bg": "bg-[#0E1420] border-amber-500/30 hover:border-amber-500/60",
         "headline": "Imbal Hasil Dividen Signifikan (11.3% p.a.)",
         "desc": "Arus kas operasi yang berlimpah memungkinkan emiten membagikan dividen tunai tebal secara reguler kepada pemegang saham."
       },
@@ -30992,8 +30992,8 @@
         "badge": "🏷️ Margin of Safety",
         "icon": "price_check",
         "gradient": "from-slate-700 via-zinc-600 to-stone-600",
-        "badge_bg": "bg-slate-100 text-slate-800 border-slate-300",
-        "card_bg": "bg-gradient-to-br from-slate-50/90 via-zinc-50/60 to-stone-50/40 border-slate-200/80",
+        "badge_bg": "bg-slate-900/90 text-slate-300 border-slate-700/50",
+        "card_bg": "bg-[#0E1420] border-slate-700/40 hover:border-slate-600",
         "headline": "Valuasi Diskon (PBV 0.49x / PER 5.5x)",
         "desc": "Harga pasar saat ini diperdagangkan di bawah nilai wajar historisnya, menawarkan bantalan risiko (*downside protection*) yang menarik."
       }
@@ -32890,7 +32890,7 @@
     },
     "health": {
       "status": "SEHAT & STABIL",
-      "badge_class": "bg-blue-100 text-blue-900 border-blue-300",
+      "badge_class": "bg-blue-500/10 text-blue-400 border-blue-500/30",
       "desc": "Fundamental operasional berada dalam jalur stabil, struktur utang terkendali, dan kapasitas arus kas mencukupi kewajiban modal.",
       "roe": "11.3%",
       "der": "-",
@@ -32906,8 +32906,8 @@
         "badge": "⚡ Swing Trading Pick",
         "icon": "trending_up",
         "gradient": "from-emerald-600 via-teal-600 to-cyan-600",
-        "badge_bg": "bg-emerald-100 text-emerald-900 border-emerald-300",
-        "card_bg": "bg-gradient-to-br from-emerald-50/90 via-teal-50/60 to-cyan-50/40 border-emerald-200/80",
+        "badge_bg": "bg-emerald-950/70 text-emerald-300 border-emerald-500/30",
+        "card_bg": "bg-[#0E1420] border-emerald-500/30 hover:border-emerald-500/60",
         "headline": "Setup Momentum Kuantitatif: BUY ON WEAKNESS",
         "desc": "Probabilitas bullish AI 70% dengan rasio Risk:Reward 1 : 2.0. Memiliki swing range yang atraktif untuk horizon 3–15 hari kerja."
       },
@@ -32917,8 +32917,8 @@
         "badge": "💰 Yield Dividen 11.0%",
         "icon": "payments",
         "gradient": "from-amber-600 via-yellow-600 to-orange-600",
-        "badge_bg": "bg-amber-100 text-amber-900 border-amber-300",
-        "card_bg": "bg-gradient-to-br from-amber-50/90 via-yellow-50/60 to-orange-50/40 border-amber-200/80",
+        "badge_bg": "bg-amber-950/70 text-amber-300 border-amber-500/30",
+        "card_bg": "bg-[#0E1420] border-amber-500/30 hover:border-amber-500/60",
         "headline": "Imbal Hasil Dividen Signifikan (11.0% p.a.)",
         "desc": "Arus kas operasi yang berlimpah memungkinkan emiten membagikan dividen tunai tebal secara reguler kepada pemegang saham."
       },
@@ -32928,8 +32928,8 @@
         "badge": "🏷️ Margin of Safety",
         "icon": "price_check",
         "gradient": "from-slate-700 via-zinc-600 to-stone-600",
-        "badge_bg": "bg-slate-100 text-slate-800 border-slate-300",
-        "card_bg": "bg-gradient-to-br from-slate-50/90 via-zinc-50/60 to-stone-50/40 border-slate-200/80",
+        "badge_bg": "bg-slate-900/90 text-slate-300 border-slate-700/50",
+        "card_bg": "bg-[#0E1420] border-slate-700/40 hover:border-slate-600",
         "headline": "Valuasi Diskon (PBV 0.59x / PER 4.9x)",
         "desc": "Harga pasar saat ini diperdagangkan di bawah nilai wajar historisnya, menawarkan bantalan risiko (*downside protection*) yang menarik."
       }
@@ -34826,7 +34826,7 @@
     },
     "health": {
       "status": "SANGAT SEHAT & PRIMA",
-      "badge_class": "bg-emerald-100 text-emerald-900 border-emerald-300",
+      "badge_class": "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
       "desc": "Neraca solid tanpa ancaman solvabilitas, laba bersih multi-tahun konsisten surplus, dan ekspansi operasional terjaga prima.",
       "roe": "22.4%",
       "der": "-",
@@ -34842,8 +34842,8 @@
         "badge": "💎 Blue Chip LQ45",
         "icon": "diamond",
         "gradient": "from-indigo-600 via-purple-600 to-pink-600",
-        "badge_bg": "bg-purple-100 text-purple-900 border-purple-300",
-        "card_bg": "bg-gradient-to-br from-indigo-50/90 via-purple-50/60 to-pink-50/40 border-indigo-200/80",
+        "badge_bg": "bg-purple-950/70 text-purple-300 border-purple-500/30",
+        "card_bg": "bg-[#0E1420] border-purple-500/30 hover:border-purple-500/60",
         "headline": "Kapitalisasi Pasar Jumbo & Fondasi Likuiditas Institusional",
         "desc": "Memiliki Market Cap Rp 372.8T dengan likuiditas harian sangat tinggi, menjadikannya pilihan utama dana pensiun dan fund manager institusi."
       },
@@ -34853,8 +34853,8 @@
         "badge": "⭐ High Quality Business",
         "icon": "verified",
         "gradient": "from-blue-600 via-sky-600 to-cyan-600",
-        "badge_bg": "bg-blue-100 text-blue-900 border-blue-300",
-        "card_bg": "bg-gradient-to-br from-blue-50/90 via-sky-50/60 to-cyan-50/40 border-blue-200/80",
+        "badge_bg": "bg-blue-950/70 text-blue-300 border-blue-500/30",
+        "card_bg": "bg-[#0E1420] border-blue-500/30 hover:border-blue-500/60",
         "headline": "Profitabilitas Superior (ROE 22.4%) & Utang Sehat",
         "desc": "Mampu menghasilkan imbal hasil ekuitas tinggi dengan efisiensi modal teruji 5 tahun dan neraca keuangan yang terlindung dari risiko gagal bayar."
       },
@@ -34864,8 +34864,8 @@
         "badge": "💰 Yield Dividen 13.5%",
         "icon": "payments",
         "gradient": "from-amber-600 via-yellow-600 to-orange-600",
-        "badge_bg": "bg-amber-100 text-amber-900 border-amber-300",
-        "card_bg": "bg-gradient-to-br from-amber-50/90 via-yellow-50/60 to-orange-50/40 border-amber-200/80",
+        "badge_bg": "bg-amber-950/70 text-amber-300 border-amber-500/30",
+        "card_bg": "bg-[#0E1420] border-amber-500/30 hover:border-amber-500/60",
         "headline": "Imbal Hasil Dividen Signifikan (13.5% p.a.)",
         "desc": "Arus kas operasi yang berlimpah memungkinkan emiten membagikan dividen tunai tebal secara reguler kepada pemegang saham."
       }
@@ -36762,7 +36762,7 @@
     },
     "health": {
       "status": "MODERAT / PERLU MONITORING",
-      "badge_class": "bg-amber-100 text-amber-900 border-amber-300",
+      "badge_class": "bg-amber-500/10 text-amber-400 border-amber-500/30",
       "desc": "Terdapat fluktuasi margin laba, perlambatan pertumbuhan, atau tingkat leverage utang yang perlu dipantau ketat seiring dinamika siklus sektoral.",
       "roe": "21.5%",
       "der": "2.23x",
@@ -36778,8 +36778,8 @@
         "badge": "💎 Blue Chip LQ45",
         "icon": "diamond",
         "gradient": "from-indigo-600 via-purple-600 to-pink-600",
-        "badge_bg": "bg-purple-100 text-purple-900 border-purple-300",
-        "card_bg": "bg-gradient-to-br from-indigo-50/90 via-purple-50/60 to-pink-50/40 border-indigo-200/80",
+        "badge_bg": "bg-purple-950/70 text-purple-300 border-purple-500/30",
+        "card_bg": "bg-[#0E1420] border-purple-500/30 hover:border-purple-500/60",
         "headline": "Kapitalisasi Pasar Jumbo & Fondasi Likuiditas Institusional",
         "desc": "Memiliki Market Cap Rp 388.0T dengan likuiditas harian sangat tinggi, menjadikannya pilihan utama dana pensiun dan fund manager institusi."
       },
@@ -36789,8 +36789,8 @@
         "badge": "⚡ Swing Trading Pick",
         "icon": "trending_up",
         "gradient": "from-emerald-600 via-teal-600 to-cyan-600",
-        "badge_bg": "bg-emerald-100 text-emerald-900 border-emerald-300",
-        "card_bg": "bg-gradient-to-br from-emerald-50/90 via-teal-50/60 to-cyan-50/40 border-emerald-200/80",
+        "badge_bg": "bg-emerald-950/70 text-emerald-300 border-emerald-500/30",
+        "card_bg": "bg-[#0E1420] border-emerald-500/30 hover:border-emerald-500/60",
         "headline": "Setup Momentum Kuantitatif: BUY ON WEAKNESS",
         "desc": "Probabilitas bullish AI 70% dengan rasio Risk:Reward 1 : 2.0. Memiliki swing range yang atraktif untuk horizon 3–15 hari kerja."
       },
@@ -36800,8 +36800,8 @@
         "badge": "⭐ High Quality Business",
         "icon": "verified",
         "gradient": "from-blue-600 via-sky-600 to-cyan-600",
-        "badge_bg": "bg-blue-100 text-blue-900 border-blue-300",
-        "card_bg": "bg-gradient-to-br from-blue-50/90 via-sky-50/60 to-cyan-50/40 border-blue-200/80",
+        "badge_bg": "bg-blue-950/70 text-blue-300 border-blue-500/30",
+        "card_bg": "bg-[#0E1420] border-blue-500/30 hover:border-blue-500/60",
         "headline": "Profitabilitas Superior (ROE 21.5%) & Utang Sehat",
         "desc": "Mampu menghasilkan imbal hasil ekuitas tinggi dengan efisiensi modal teruji 5 tahun dan neraca keuangan yang terlindung dari risiko gagal bayar."
       },
@@ -36811,8 +36811,8 @@
         "badge": "💰 Yield Dividen 14.0%",
         "icon": "payments",
         "gradient": "from-amber-600 via-yellow-600 to-orange-600",
-        "badge_bg": "bg-amber-100 text-amber-900 border-amber-300",
-        "card_bg": "bg-gradient-to-br from-amber-50/90 via-yellow-50/60 to-orange-50/40 border-amber-200/80",
+        "badge_bg": "bg-amber-950/70 text-amber-300 border-amber-500/30",
+        "card_bg": "bg-[#0E1420] border-amber-500/30 hover:border-amber-500/60",
         "headline": "Imbal Hasil Dividen Signifikan (14.0% p.a.)",
         "desc": "Arus kas operasi yang berlimpah memungkinkan emiten membagikan dividen tunai tebal secara reguler kepada pemegang saham."
       }
@@ -38709,7 +38709,7 @@
     },
     "health": {
       "status": "SANGAT SEHAT & PRIMA",
-      "badge_class": "bg-emerald-100 text-emerald-900 border-emerald-300",
+      "badge_class": "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
       "desc": "Neraca solid tanpa ancaman solvabilitas, laba bersih multi-tahun konsisten surplus, dan ekspansi operasional terjaga prima.",
       "roe": "16.1%",
       "der": "-",
@@ -38725,8 +38725,8 @@
         "badge": "💎 Blue Chip LQ45",
         "icon": "diamond",
         "gradient": "from-indigo-600 via-purple-600 to-pink-600",
-        "badge_bg": "bg-purple-100 text-purple-900 border-purple-300",
-        "card_bg": "bg-gradient-to-br from-indigo-50/90 via-purple-50/60 to-pink-50/40 border-indigo-200/80",
+        "badge_bg": "bg-purple-950/70 text-purple-300 border-purple-500/30",
+        "card_bg": "bg-[#0E1420] border-purple-500/30 hover:border-purple-500/60",
         "headline": "Kapitalisasi Pasar Jumbo & Fondasi Likuiditas Institusional",
         "desc": "Memiliki Market Cap Rp 65.5T dengan likuiditas harian sangat tinggi, menjadikannya pilihan utama dana pensiun dan fund manager institusi."
       },
@@ -38736,8 +38736,8 @@
         "badge": "⭐ High Quality Business",
         "icon": "verified",
         "gradient": "from-blue-600 via-sky-600 to-cyan-600",
-        "badge_bg": "bg-blue-100 text-blue-900 border-blue-300",
-        "card_bg": "bg-gradient-to-br from-blue-50/90 via-sky-50/60 to-cyan-50/40 border-blue-200/80",
+        "badge_bg": "bg-blue-950/70 text-blue-300 border-blue-500/30",
+        "card_bg": "bg-[#0E1420] border-blue-500/30 hover:border-blue-500/60",
         "headline": "Profitabilitas Superior (ROE 16.1%) & Utang Sehat",
         "desc": "Mampu menghasilkan imbal hasil ekuitas tinggi dengan efisiensi modal teruji 5 tahun dan neraca keuangan yang terlindung dari risiko gagal bayar."
       }
@@ -40634,7 +40634,7 @@
     },
     "health": {
       "status": "SEHAT & STABIL",
-      "badge_class": "bg-blue-100 text-blue-900 border-blue-300",
+      "badge_class": "bg-blue-500/10 text-blue-400 border-blue-500/30",
       "desc": "Fundamental operasional berada dalam jalur stabil, struktur utang terkendali, dan kapasitas arus kas mencukupi kewajiban modal.",
       "roe": "6.5%",
       "der": "1.33x",
@@ -40650,8 +40650,8 @@
         "badge": "💎 Blue Chip LQ45",
         "icon": "diamond",
         "gradient": "from-indigo-600 via-purple-600 to-pink-600",
-        "badge_bg": "bg-purple-100 text-purple-900 border-purple-300",
-        "card_bg": "bg-gradient-to-br from-indigo-50/90 via-purple-50/60 to-pink-50/40 border-indigo-200/80",
+        "badge_bg": "bg-purple-950/70 text-purple-300 border-purple-500/30",
+        "card_bg": "bg-[#0E1420] border-purple-500/30 hover:border-purple-500/60",
         "headline": "Kapitalisasi Pasar Jumbo & Fondasi Likuiditas Institusional",
         "desc": "Memiliki Market Cap Rp 131.7T dengan likuiditas harian sangat tinggi, menjadikannya pilihan utama dana pensiun dan fund manager institusi."
       },
@@ -40661,8 +40661,8 @@
         "badge": "💰 Yield Dividen 11.0%",
         "icon": "payments",
         "gradient": "from-amber-600 via-yellow-600 to-orange-600",
-        "badge_bg": "bg-amber-100 text-amber-900 border-amber-300",
-        "card_bg": "bg-gradient-to-br from-amber-50/90 via-yellow-50/60 to-orange-50/40 border-amber-200/80",
+        "badge_bg": "bg-amber-950/70 text-amber-300 border-amber-500/30",
+        "card_bg": "bg-[#0E1420] border-amber-500/30 hover:border-amber-500/60",
         "headline": "Imbal Hasil Dividen Signifikan (11.0% p.a.)",
         "desc": "Arus kas operasi yang berlimpah memungkinkan emiten membagikan dividen tunai tebal secara reguler kepada pemegang saham."
       }
@@ -42559,7 +42559,7 @@
     },
     "health": {
       "status": "SEHAT & STABIL",
-      "badge_class": "bg-blue-100 text-blue-900 border-blue-300",
+      "badge_class": "bg-blue-500/10 text-blue-400 border-blue-500/30",
       "desc": "Fundamental operasional berada dalam jalur stabil, struktur utang terkendali, dan kapasitas arus kas mencukupi kewajiban modal.",
       "roe": "4.2%",
       "der": "0.35x",
@@ -42575,8 +42575,8 @@
         "badge": "⚡ Swing Trading Pick",
         "icon": "trending_up",
         "gradient": "from-emerald-600 via-teal-600 to-cyan-600",
-        "badge_bg": "bg-emerald-100 text-emerald-900 border-emerald-300",
-        "card_bg": "bg-gradient-to-br from-emerald-50/90 via-teal-50/60 to-cyan-50/40 border-emerald-200/80",
+        "badge_bg": "bg-emerald-950/70 text-emerald-300 border-emerald-500/30",
+        "card_bg": "bg-[#0E1420] border-emerald-500/30 hover:border-emerald-500/60",
         "headline": "Setup Momentum Kuantitatif: BUY ON WEAKNESS",
         "desc": "Probabilitas bullish AI 70% dengan rasio Risk:Reward 1 : 2.0. Memiliki swing range yang atraktif untuk horizon 3–15 hari kerja."
       },
@@ -42586,8 +42586,8 @@
         "badge": "🏷️ Margin of Safety",
         "icon": "price_check",
         "gradient": "from-slate-700 via-zinc-600 to-stone-600",
-        "badge_bg": "bg-slate-100 text-slate-800 border-slate-300",
-        "card_bg": "bg-gradient-to-br from-slate-50/90 via-zinc-50/60 to-stone-50/40 border-slate-200/80",
+        "badge_bg": "bg-slate-900/90 text-slate-300 border-slate-700/50",
+        "card_bg": "bg-[#0E1420] border-slate-700/40 hover:border-slate-600",
         "headline": "Valuasi Diskon (PBV 0.26x / PER 6.2x)",
         "desc": "Harga pasar saat ini diperdagangkan di bawah nilai wajar historisnya, menawarkan bantalan risiko (*downside protection*) yang menarik."
       }
@@ -44484,7 +44484,7 @@
     },
     "health": {
       "status": "MODERAT / PERLU MONITORING",
-      "badge_class": "bg-amber-100 text-amber-900 border-amber-300",
+      "badge_class": "bg-amber-500/10 text-amber-400 border-amber-500/30",
       "desc": "Terdapat fluktuasi margin laba, perlambatan pertumbuhan, atau tingkat leverage utang yang perlu dipantau ketat seiring dinamika siklus sektoral.",
       "roe": "7.8%",
       "der": "0.00x",
@@ -44500,8 +44500,8 @@
         "badge": "⚡ Swing Trading Pick",
         "icon": "trending_up",
         "gradient": "from-emerald-600 via-teal-600 to-cyan-600",
-        "badge_bg": "bg-emerald-100 text-emerald-900 border-emerald-300",
-        "card_bg": "bg-gradient-to-br from-emerald-50/90 via-teal-50/60 to-cyan-50/40 border-emerald-200/80",
+        "badge_bg": "bg-emerald-950/70 text-emerald-300 border-emerald-500/30",
+        "card_bg": "bg-[#0E1420] border-emerald-500/30 hover:border-emerald-500/60",
         "headline": "Setup Momentum Kuantitatif: BUY ON WEAKNESS",
         "desc": "Probabilitas bullish AI 70% dengan rasio Risk:Reward 1 : 2.0. Memiliki swing range yang atraktif untuk horizon 3–15 hari kerja."
       },
@@ -44511,8 +44511,8 @@
         "badge": "🏷️ Margin of Safety",
         "icon": "price_check",
         "gradient": "from-slate-700 via-zinc-600 to-stone-600",
-        "badge_bg": "bg-slate-100 text-slate-800 border-slate-300",
-        "card_bg": "bg-gradient-to-br from-slate-50/90 via-zinc-50/60 to-stone-50/40 border-slate-200/80",
+        "badge_bg": "bg-slate-900/90 text-slate-300 border-slate-700/50",
+        "card_bg": "bg-[#0E1420] border-slate-700/40 hover:border-slate-600",
         "headline": "Valuasi Diskon (PBV 0.40x / PER 5.7x)",
         "desc": "Harga pasar saat ini diperdagangkan di bawah nilai wajar historisnya, menawarkan bantalan risiko (*downside protection*) yang menarik."
       }
@@ -46409,7 +46409,7 @@
     },
     "health": {
       "status": "SANGAT SEHAT & PRIMA",
-      "badge_class": "bg-emerald-100 text-emerald-900 border-emerald-300",
+      "badge_class": "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
       "desc": "Neraca solid tanpa ancaman solvabilitas, laba bersih multi-tahun konsisten surplus, dan ekspansi operasional terjaga prima.",
       "roe": "22.8%",
       "der": "0.28x",
@@ -46425,8 +46425,8 @@
         "badge": "💎 Blue Chip LQ45",
         "icon": "diamond",
         "gradient": "from-indigo-600 via-purple-600 to-pink-600",
-        "badge_bg": "bg-purple-100 text-purple-900 border-purple-300",
-        "card_bg": "bg-gradient-to-br from-indigo-50/90 via-purple-50/60 to-pink-50/40 border-indigo-200/80",
+        "badge_bg": "bg-purple-950/70 text-purple-300 border-purple-500/30",
+        "card_bg": "bg-[#0E1420] border-purple-500/30 hover:border-purple-500/60",
         "headline": "Kapitalisasi Pasar Jumbo & Fondasi Likuiditas Institusional",
         "desc": "Memiliki Market Cap Rp 48.5T dengan likuiditas harian sangat tinggi, menjadikannya pilihan utama dana pensiun dan fund manager institusi."
       },
@@ -46436,8 +46436,8 @@
         "badge": "⚡ Swing Trading Pick",
         "icon": "trending_up",
         "gradient": "from-emerald-600 via-teal-600 to-cyan-600",
-        "badge_bg": "bg-emerald-100 text-emerald-900 border-emerald-300",
-        "card_bg": "bg-gradient-to-br from-emerald-50/90 via-teal-50/60 to-cyan-50/40 border-emerald-200/80",
+        "badge_bg": "bg-emerald-950/70 text-emerald-300 border-emerald-500/30",
+        "card_bg": "bg-[#0E1420] border-emerald-500/30 hover:border-emerald-500/60",
         "headline": "Setup Momentum Kuantitatif: BUY ON WEAKNESS",
         "desc": "Probabilitas bullish AI 70% dengan rasio Risk:Reward 1 : 2.0. Memiliki swing range yang atraktif untuk horizon 3–15 hari kerja."
       },
@@ -46447,8 +46447,8 @@
         "badge": "⭐ High Quality Business",
         "icon": "verified",
         "gradient": "from-blue-600 via-sky-600 to-cyan-600",
-        "badge_bg": "bg-blue-100 text-blue-900 border-blue-300",
-        "card_bg": "bg-gradient-to-br from-blue-50/90 via-sky-50/60 to-cyan-50/40 border-blue-200/80",
+        "badge_bg": "bg-blue-950/70 text-blue-300 border-blue-500/30",
+        "card_bg": "bg-[#0E1420] border-blue-500/30 hover:border-blue-500/60",
         "headline": "Profitabilitas Superior (ROE 22.8%) & Utang Sehat",
         "desc": "Mampu menghasilkan imbal hasil ekuitas tinggi dengan efisiensi modal teruji 5 tahun dan neraca keuangan yang terlindung dari risiko gagal bayar."
       },
@@ -46458,8 +46458,8 @@
         "badge": "💰 Yield Dividen 6.1%",
         "icon": "payments",
         "gradient": "from-amber-600 via-yellow-600 to-orange-600",
-        "badge_bg": "bg-amber-100 text-amber-900 border-amber-300",
-        "card_bg": "bg-gradient-to-br from-amber-50/90 via-yellow-50/60 to-orange-50/40 border-amber-200/80",
+        "badge_bg": "bg-amber-950/70 text-amber-300 border-amber-500/30",
+        "card_bg": "bg-[#0E1420] border-amber-500/30 hover:border-amber-500/60",
         "headline": "Imbal Hasil Dividen Signifikan (6.1% p.a.)",
         "desc": "Arus kas operasi yang berlimpah memungkinkan emiten membagikan dividen tunai tebal secara reguler kepada pemegang saham."
       }
@@ -48356,7 +48356,7 @@
     },
     "health": {
       "status": "SEHAT & STABIL",
-      "badge_class": "bg-blue-100 text-blue-900 border-blue-300",
+      "badge_class": "bg-blue-500/10 text-blue-400 border-blue-500/30",
       "desc": "Fundamental operasional berada dalam jalur stabil, struktur utang terkendali, dan kapasitas arus kas mencukupi kewajiban modal.",
       "roe": "10.0%",
       "der": "0.29x",
@@ -48372,8 +48372,8 @@
         "badge": "⚡ Swing Trading Pick",
         "icon": "trending_up",
         "gradient": "from-emerald-600 via-teal-600 to-cyan-600",
-        "badge_bg": "bg-emerald-100 text-emerald-900 border-emerald-300",
-        "card_bg": "bg-gradient-to-br from-emerald-50/90 via-teal-50/60 to-cyan-50/40 border-emerald-200/80",
+        "badge_bg": "bg-emerald-950/70 text-emerald-300 border-emerald-500/30",
+        "card_bg": "bg-[#0E1420] border-emerald-500/30 hover:border-emerald-500/60",
         "headline": "Setup Momentum Kuantitatif: BUY ON WEAKNESS",
         "desc": "Probabilitas bullish AI 70% dengan rasio Risk:Reward 1 : 2.0. Memiliki swing range yang atraktif untuk horizon 3–15 hari kerja."
       },
@@ -48383,8 +48383,8 @@
         "badge": "💰 Yield Dividen 6.7%",
         "icon": "payments",
         "gradient": "from-amber-600 via-yellow-600 to-orange-600",
-        "badge_bg": "bg-amber-100 text-amber-900 border-amber-300",
-        "card_bg": "bg-gradient-to-br from-amber-50/90 via-yellow-50/60 to-orange-50/40 border-amber-200/80",
+        "badge_bg": "bg-amber-950/70 text-amber-300 border-amber-500/30",
+        "card_bg": "bg-[#0E1420] border-amber-500/30 hover:border-amber-500/60",
         "headline": "Imbal Hasil Dividen Signifikan (6.7% p.a.)",
         "desc": "Arus kas operasi yang berlimpah memungkinkan emiten membagikan dividen tunai tebal secara reguler kepada pemegang saham."
       },
@@ -48394,8 +48394,8 @@
         "badge": "🏷️ Margin of Safety",
         "icon": "price_check",
         "gradient": "from-slate-700 via-zinc-600 to-stone-600",
-        "badge_bg": "bg-slate-100 text-slate-800 border-slate-300",
-        "card_bg": "bg-gradient-to-br from-slate-50/90 via-zinc-50/60 to-stone-50/40 border-slate-200/80",
+        "badge_bg": "bg-slate-900/90 text-slate-300 border-slate-700/50",
+        "card_bg": "bg-[#0E1420] border-slate-700/40 hover:border-slate-600",
         "headline": "Valuasi Diskon (PBV 0.40x / PER 3.9x)",
         "desc": "Harga pasar saat ini diperdagangkan di bawah nilai wajar historisnya, menawarkan bantalan risiko (*downside protection*) yang menarik."
       }
@@ -50292,7 +50292,7 @@
     },
     "health": {
       "status": "MODERAT / PERLU MONITORING",
-      "badge_class": "bg-amber-100 text-amber-900 border-amber-300",
+      "badge_class": "bg-amber-500/10 text-amber-400 border-amber-500/30",
       "desc": "Terdapat fluktuasi margin laba, perlambatan pertumbuhan, atau tingkat leverage utang yang perlu dipantau ketat seiring dinamika siklus sektoral.",
       "roe": "7.6%",
       "der": "0.06x",
@@ -50308,8 +50308,8 @@
         "badge": "⚡ Swing Trading Pick",
         "icon": "trending_up",
         "gradient": "from-emerald-600 via-teal-600 to-cyan-600",
-        "badge_bg": "bg-emerald-100 text-emerald-900 border-emerald-300",
-        "card_bg": "bg-gradient-to-br from-emerald-50/90 via-teal-50/60 to-cyan-50/40 border-emerald-200/80",
+        "badge_bg": "bg-emerald-950/70 text-emerald-300 border-emerald-500/30",
+        "card_bg": "bg-[#0E1420] border-emerald-500/30 hover:border-emerald-500/60",
         "headline": "Setup Momentum Kuantitatif: BUY ON WEAKNESS",
         "desc": "Probabilitas bullish AI 70% dengan rasio Risk:Reward 1 : 2.0. Memiliki swing range yang atraktif untuk horizon 3–15 hari kerja."
       },
@@ -50319,8 +50319,8 @@
         "badge": "🏷️ Margin of Safety",
         "icon": "price_check",
         "gradient": "from-slate-700 via-zinc-600 to-stone-600",
-        "badge_bg": "bg-slate-100 text-slate-800 border-slate-300",
-        "card_bg": "bg-gradient-to-br from-slate-50/90 via-zinc-50/60 to-stone-50/40 border-slate-200/80",
+        "badge_bg": "bg-slate-900/90 text-slate-300 border-slate-700/50",
+        "card_bg": "bg-[#0E1420] border-slate-700/40 hover:border-slate-600",
         "headline": "Valuasi Diskon (PBV 0.65x / PER 10.6x)",
         "desc": "Harga pasar saat ini diperdagangkan di bawah nilai wajar historisnya, menawarkan bantalan risiko (*downside protection*) yang menarik."
       }
@@ -52217,7 +52217,7 @@
     },
     "health": {
       "status": "SANGAT SEHAT & PRIMA",
-      "badge_class": "bg-emerald-100 text-emerald-900 border-emerald-300",
+      "badge_class": "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
       "desc": "Neraca solid tanpa ancaman solvabilitas, laba bersih multi-tahun konsisten surplus, dan ekspansi operasional terjaga prima.",
       "roe": "15.5%",
       "der": "0.73x",
@@ -52233,8 +52233,8 @@
         "badge": "⚡ Swing Trading Pick",
         "icon": "trending_up",
         "gradient": "from-emerald-600 via-teal-600 to-cyan-600",
-        "badge_bg": "bg-emerald-100 text-emerald-900 border-emerald-300",
-        "card_bg": "bg-gradient-to-br from-emerald-50/90 via-teal-50/60 to-cyan-50/40 border-emerald-200/80",
+        "badge_bg": "bg-emerald-950/70 text-emerald-300 border-emerald-500/30",
+        "card_bg": "bg-[#0E1420] border-emerald-500/30 hover:border-emerald-500/60",
         "headline": "Setup Momentum Kuantitatif: BUY ON WEAKNESS",
         "desc": "Probabilitas bullish AI 70% dengan rasio Risk:Reward 1 : 2.0. Memiliki swing range yang atraktif untuk horizon 3–15 hari kerja."
       },
@@ -52244,8 +52244,8 @@
         "badge": "⭐ High Quality Business",
         "icon": "verified",
         "gradient": "from-blue-600 via-sky-600 to-cyan-600",
-        "badge_bg": "bg-blue-100 text-blue-900 border-blue-300",
-        "card_bg": "bg-gradient-to-br from-blue-50/90 via-sky-50/60 to-cyan-50/40 border-blue-200/80",
+        "badge_bg": "bg-blue-950/70 text-blue-300 border-blue-500/30",
+        "card_bg": "bg-[#0E1420] border-blue-500/30 hover:border-blue-500/60",
         "headline": "Profitabilitas Superior (ROE 15.5%) & Utang Sehat",
         "desc": "Mampu menghasilkan imbal hasil ekuitas tinggi dengan efisiensi modal teruji 5 tahun dan neraca keuangan yang terlindung dari risiko gagal bayar."
       }
@@ -54142,7 +54142,7 @@
     },
     "health": {
       "status": "MODERAT / PERLU MONITORING",
-      "badge_class": "bg-amber-100 text-amber-900 border-amber-300",
+      "badge_class": "bg-amber-500/10 text-amber-400 border-amber-500/30",
       "desc": "Terdapat fluktuasi margin laba, perlambatan pertumbuhan, atau tingkat leverage utang yang perlu dipantau ketat seiring dinamika siklus sektoral.",
       "roe": "-13.4%",
       "der": "2.04x",
@@ -54158,8 +54158,8 @@
         "badge": "💎 Blue Chip LQ45",
         "icon": "diamond",
         "gradient": "from-indigo-600 via-purple-600 to-pink-600",
-        "badge_bg": "bg-purple-100 text-purple-900 border-purple-300",
-        "card_bg": "bg-gradient-to-br from-indigo-50/90 via-purple-50/60 to-pink-50/40 border-indigo-200/80",
+        "badge_bg": "bg-purple-950/70 text-purple-300 border-purple-500/30",
+        "card_bg": "bg-[#0E1420] border-purple-500/30 hover:border-purple-500/60",
         "headline": "Kapitalisasi Pasar Jumbo & Fondasi Likuiditas Institusional",
         "desc": "Memiliki Market Cap Rp 43.9T dengan likuiditas harian sangat tinggi, menjadikannya pilihan utama dana pensiun dan fund manager institusi."
       },
@@ -54169,8 +54169,8 @@
         "badge": "⚡ Swing Trading Pick",
         "icon": "trending_up",
         "gradient": "from-emerald-600 via-teal-600 to-cyan-600",
-        "badge_bg": "bg-emerald-100 text-emerald-900 border-emerald-300",
-        "card_bg": "bg-gradient-to-br from-emerald-50/90 via-teal-50/60 to-cyan-50/40 border-emerald-200/80",
+        "badge_bg": "bg-emerald-950/70 text-emerald-300 border-emerald-500/30",
+        "card_bg": "bg-[#0E1420] border-emerald-500/30 hover:border-emerald-500/60",
         "headline": "Setup Momentum Kuantitatif: BUY ON WEAKNESS",
         "desc": "Probabilitas bullish AI 70% dengan rasio Risk:Reward 1 : 2.0. Memiliki swing range yang atraktif untuk horizon 3–15 hari kerja."
       },
@@ -54180,8 +54180,8 @@
         "badge": "💰 Yield Dividen 6.7%",
         "icon": "payments",
         "gradient": "from-amber-600 via-yellow-600 to-orange-600",
-        "badge_bg": "bg-amber-100 text-amber-900 border-amber-300",
-        "card_bg": "bg-gradient-to-br from-amber-50/90 via-yellow-50/60 to-orange-50/40 border-amber-200/80",
+        "badge_bg": "bg-amber-950/70 text-amber-300 border-amber-500/30",
+        "card_bg": "bg-[#0E1420] border-amber-500/30 hover:border-amber-500/60",
         "headline": "Imbal Hasil Dividen Signifikan (6.7% p.a.)",
         "desc": "Arus kas operasi yang berlimpah memungkinkan emiten membagikan dividen tunai tebal secara reguler kepada pemegang saham."
       }
@@ -56078,7 +56078,7 @@
     },
     "health": {
       "status": "MODERAT / PERLU MONITORING",
-      "badge_class": "bg-amber-100 text-amber-900 border-amber-300",
+      "badge_class": "bg-amber-500/10 text-amber-400 border-amber-500/30",
       "desc": "Terdapat fluktuasi margin laba, perlambatan pertumbuhan, atau tingkat leverage utang yang perlu dipantau ketat seiring dinamika siklus sektoral.",
       "roe": "-1.2%",
       "der": "0.28x",
@@ -56094,8 +56094,8 @@
         "badge": "⚡ Swing Trading Pick",
         "icon": "trending_up",
         "gradient": "from-emerald-600 via-teal-600 to-cyan-600",
-        "badge_bg": "bg-emerald-100 text-emerald-900 border-emerald-300",
-        "card_bg": "bg-gradient-to-br from-emerald-50/90 via-teal-50/60 to-cyan-50/40 border-emerald-200/80",
+        "badge_bg": "bg-emerald-950/70 text-emerald-300 border-emerald-500/30",
+        "card_bg": "bg-[#0E1420] border-emerald-500/30 hover:border-emerald-500/60",
         "headline": "Setup Momentum Kuantitatif: BUY ON WEAKNESS",
         "desc": "Probabilitas bullish AI 70% dengan rasio Risk:Reward 1 : 2.0. Memiliki swing range yang atraktif untuk horizon 3–15 hari kerja."
       }
@@ -57992,7 +57992,7 @@
     },
     "health": {
       "status": "SEHAT & STABIL",
-      "badge_class": "bg-blue-100 text-blue-900 border-blue-300",
+      "badge_class": "bg-blue-500/10 text-blue-400 border-blue-500/30",
       "desc": "Fundamental operasional berada dalam jalur stabil, struktur utang terkendali, dan kapasitas arus kas mencukupi kewajiban modal.",
       "roe": "7.3%",
       "der": "0.51x",
@@ -58008,8 +58008,8 @@
         "badge": "⚡ Swing Trading Pick",
         "icon": "trending_up",
         "gradient": "from-emerald-600 via-teal-600 to-cyan-600",
-        "badge_bg": "bg-emerald-100 text-emerald-900 border-emerald-300",
-        "card_bg": "bg-gradient-to-br from-emerald-50/90 via-teal-50/60 to-cyan-50/40 border-emerald-200/80",
+        "badge_bg": "bg-emerald-950/70 text-emerald-300 border-emerald-500/30",
+        "card_bg": "bg-[#0E1420] border-emerald-500/30 hover:border-emerald-500/60",
         "headline": "Setup Momentum Kuantitatif: BUY ON WEAKNESS",
         "desc": "Probabilitas bullish AI 70% dengan rasio Risk:Reward 1 : 2.0. Memiliki swing range yang atraktif untuk horizon 3–15 hari kerja."
       }
@@ -59906,7 +59906,7 @@
     },
     "health": {
       "status": "MODERAT / KONTRAKSI OMZET",
-      "badge_class": "bg-amber-100 text-amber-900 border-amber-300",
+      "badge_class": "bg-amber-500/10 text-amber-400 border-amber-500/30",
       "desc": "Meskipun solvabilitas (DER 0.52x) dan laba bersih positif, terdeteksi kontraksi omzet berturut-turut (3 periode terakhir: -2.9%, -14.6%, -1.4%) yang menjadi sinyal waspada perlambatan top-line.",
       "roe": "8.1%",
       "der": "0.52x",
@@ -59922,8 +59922,8 @@
         "badge": "💰 Yield Dividen 6.7%",
         "icon": "payments",
         "gradient": "from-amber-600 via-yellow-600 to-orange-600",
-        "badge_bg": "bg-amber-100 text-amber-900 border-amber-300",
-        "card_bg": "bg-gradient-to-br from-amber-50/90 via-yellow-50/60 to-orange-50/40 border-amber-200/80",
+        "badge_bg": "bg-amber-950/70 text-amber-300 border-amber-500/30",
+        "card_bg": "bg-[#0E1420] border-amber-500/30 hover:border-amber-500/60",
         "headline": "Imbal Hasil Dividen Signifikan (6.7% p.a.)",
         "desc": "Arus kas operasi yang berlimpah memungkinkan emiten membagikan dividen tunai tebal secara reguler kepada pemegang saham."
       }
@@ -61820,7 +61820,7 @@
     },
     "health": {
       "status": "SEHAT & STABIL",
-      "badge_class": "bg-blue-100 text-blue-900 border-blue-300",
+      "badge_class": "bg-blue-500/10 text-blue-400 border-blue-500/30",
       "desc": "Fundamental operasional berada dalam jalur stabil, struktur utang terkendali, dan kapasitas arus kas mencukupi kewajiban modal.",
       "roe": "7.2%",
       "der": "0.30x",
@@ -61836,8 +61836,8 @@
         "badge": "⚡ Swing Trading Pick",
         "icon": "trending_up",
         "gradient": "from-emerald-600 via-teal-600 to-cyan-600",
-        "badge_bg": "bg-emerald-100 text-emerald-900 border-emerald-300",
-        "card_bg": "bg-gradient-to-br from-emerald-50/90 via-teal-50/60 to-cyan-50/40 border-emerald-200/80",
+        "badge_bg": "bg-emerald-950/70 text-emerald-300 border-emerald-500/30",
+        "card_bg": "bg-[#0E1420] border-emerald-500/30 hover:border-emerald-500/60",
         "headline": "Setup Momentum Kuantitatif: BUY ON WEAKNESS",
         "desc": "Probabilitas bullish AI 70% dengan rasio Risk:Reward 1 : 2.0. Memiliki swing range yang atraktif untuk horizon 3–15 hari kerja."
       }
@@ -63734,7 +63734,7 @@
     },
     "health": {
       "status": "SEHAT & STABIL",
-      "badge_class": "bg-blue-100 text-blue-900 border-blue-300",
+      "badge_class": "bg-blue-500/10 text-blue-400 border-blue-500/30",
       "desc": "Fundamental operasional berada dalam jalur stabil, struktur utang terkendali, dan kapasitas arus kas mencukupi kewajiban modal.",
       "roe": "12.6%",
       "der": "0.67x",
@@ -63750,8 +63750,8 @@
         "badge": "💎 Blue Chip LQ45",
         "icon": "diamond",
         "gradient": "from-indigo-600 via-purple-600 to-pink-600",
-        "badge_bg": "bg-purple-100 text-purple-900 border-purple-300",
-        "card_bg": "bg-gradient-to-br from-indigo-50/90 via-purple-50/60 to-pink-50/40 border-indigo-200/80",
+        "badge_bg": "bg-purple-950/70 text-purple-300 border-purple-500/30",
+        "card_bg": "bg-[#0E1420] border-purple-500/30 hover:border-purple-500/60",
         "headline": "Kapitalisasi Pasar Jumbo & Fondasi Likuiditas Institusional",
         "desc": "Memiliki Market Cap Rp 77.8T dengan likuiditas harian sangat tinggi, menjadikannya pilihan utama dana pensiun dan fund manager institusi."
       },
@@ -63761,8 +63761,8 @@
         "badge": "⚡ Swing Trading Pick",
         "icon": "trending_up",
         "gradient": "from-emerald-600 via-teal-600 to-cyan-600",
-        "badge_bg": "bg-emerald-100 text-emerald-900 border-emerald-300",
-        "card_bg": "bg-gradient-to-br from-emerald-50/90 via-teal-50/60 to-cyan-50/40 border-emerald-200/80",
+        "badge_bg": "bg-emerald-950/70 text-emerald-300 border-emerald-500/30",
+        "card_bg": "bg-[#0E1420] border-emerald-500/30 hover:border-emerald-500/60",
         "headline": "Setup Momentum Kuantitatif: BUY ON WEAKNESS",
         "desc": "Probabilitas bullish AI 70% dengan rasio Risk:Reward 1 : 2.0. Memiliki swing range yang atraktif untuk horizon 3–15 hari kerja."
       }
@@ -65659,7 +65659,7 @@
     },
     "health": {
       "status": "SEHAT & STABIL",
-      "badge_class": "bg-blue-100 text-blue-900 border-blue-300",
+      "badge_class": "bg-blue-500/10 text-blue-400 border-blue-500/30",
       "desc": "Fundamental operasional berada dalam jalur stabil, struktur utang terkendali, dan kapasitas arus kas mencukupi kewajiban modal.",
       "roe": "5.6%",
       "der": "0.00x",
@@ -65675,8 +65675,8 @@
         "badge": "💎 Blue Chip LQ45",
         "icon": "diamond",
         "gradient": "from-indigo-600 via-purple-600 to-pink-600",
-        "badge_bg": "bg-purple-100 text-purple-900 border-purple-300",
-        "card_bg": "bg-gradient-to-br from-indigo-50/90 via-purple-50/60 to-pink-50/40 border-indigo-200/80",
+        "badge_bg": "bg-purple-950/70 text-purple-300 border-purple-500/30",
+        "card_bg": "bg-[#0E1420] border-purple-500/30 hover:border-purple-500/60",
         "headline": "Kapitalisasi Pasar Jumbo & Fondasi Likuiditas Institusional",
         "desc": "Memiliki Market Cap Rp 44.5T dengan likuiditas harian sangat tinggi, menjadikannya pilihan utama dana pensiun dan fund manager institusi."
       },
@@ -65686,8 +65686,8 @@
         "badge": "⚡ Swing Trading Pick",
         "icon": "trending_up",
         "gradient": "from-emerald-600 via-teal-600 to-cyan-600",
-        "badge_bg": "bg-emerald-100 text-emerald-900 border-emerald-300",
-        "card_bg": "bg-gradient-to-br from-emerald-50/90 via-teal-50/60 to-cyan-50/40 border-emerald-200/80",
+        "badge_bg": "bg-emerald-950/70 text-emerald-300 border-emerald-500/30",
+        "card_bg": "bg-[#0E1420] border-emerald-500/30 hover:border-emerald-500/60",
         "headline": "Setup Momentum Kuantitatif: BUY ON WEAKNESS",
         "desc": "Probabilitas bullish AI 70% dengan rasio Risk:Reward 1 : 2.0. Memiliki swing range yang atraktif untuk horizon 3–15 hari kerja."
       }
@@ -67584,7 +67584,7 @@
     },
     "health": {
       "status": "SEHAT & STABIL",
-      "badge_class": "bg-blue-100 text-blue-900 border-blue-300",
+      "badge_class": "bg-blue-500/10 text-blue-400 border-blue-500/30",
       "desc": "Fundamental operasional berada dalam jalur stabil, struktur utang terkendali, dan kapasitas arus kas mencukupi kewajiban modal.",
       "roe": "12.1%",
       "der": "0.64x",
@@ -67600,8 +67600,8 @@
         "badge": "💎 Blue Chip LQ45",
         "icon": "diamond",
         "gradient": "from-indigo-600 via-purple-600 to-pink-600",
-        "badge_bg": "bg-purple-100 text-purple-900 border-purple-300",
-        "card_bg": "bg-gradient-to-br from-indigo-50/90 via-purple-50/60 to-pink-50/40 border-indigo-200/80",
+        "badge_bg": "bg-purple-950/70 text-purple-300 border-purple-500/30",
+        "card_bg": "bg-[#0E1420] border-purple-500/30 hover:border-purple-500/60",
         "headline": "Kapitalisasi Pasar Jumbo & Fondasi Likuiditas Institusional",
         "desc": "Memiliki Market Cap Rp 59.0T dengan likuiditas harian sangat tinggi, menjadikannya pilihan utama dana pensiun dan fund manager institusi."
       },
@@ -67611,8 +67611,8 @@
         "badge": "⚡ Swing Trading Pick",
         "icon": "trending_up",
         "gradient": "from-emerald-600 via-teal-600 to-cyan-600",
-        "badge_bg": "bg-emerald-100 text-emerald-900 border-emerald-300",
-        "card_bg": "bg-gradient-to-br from-emerald-50/90 via-teal-50/60 to-cyan-50/40 border-emerald-200/80",
+        "badge_bg": "bg-emerald-950/70 text-emerald-300 border-emerald-500/30",
+        "card_bg": "bg-[#0E1420] border-emerald-500/30 hover:border-emerald-500/60",
         "headline": "Setup Momentum Kuantitatif: BUY ON WEAKNESS",
         "desc": "Probabilitas bullish AI 70% dengan rasio Risk:Reward 1 : 2.0. Memiliki swing range yang atraktif untuk horizon 3–15 hari kerja."
       },
@@ -67622,8 +67622,8 @@
         "badge": "🏷️ Margin of Safety",
         "icon": "price_check",
         "gradient": "from-slate-700 via-zinc-600 to-stone-600",
-        "badge_bg": "bg-slate-100 text-slate-800 border-slate-300",
-        "card_bg": "bg-gradient-to-br from-slate-50/90 via-zinc-50/60 to-stone-50/40 border-slate-200/80",
+        "badge_bg": "bg-slate-900/90 text-slate-300 border-slate-700/50",
+        "card_bg": "bg-[#0E1420] border-slate-700/40 hover:border-slate-600",
         "headline": "Valuasi Diskon (PBV 0.77x / PER 6.2x)",
         "desc": "Harga pasar saat ini diperdagangkan di bawah nilai wajar historisnya, menawarkan bantalan risiko (*downside protection*) yang menarik."
       }
@@ -69520,7 +69520,7 @@
     },
     "health": {
       "status": "MODERAT / KONTRAKSI OMZET",
-      "badge_class": "bg-amber-100 text-amber-900 border-amber-300",
+      "badge_class": "bg-amber-500/10 text-amber-400 border-amber-500/30",
       "desc": "Meskipun solvabilitas (DER 0.94x) dan laba bersih positif, terdeteksi kontraksi omzet berturut-turut (3 periode terakhir: -30.2%, -19.2%, -17.0%) yang menjadi sinyal waspada perlambatan top-line.",
       "roe": "3.1%",
       "der": "0.94x",
@@ -69536,8 +69536,8 @@
         "badge": "⚡ Swing Trading Pick",
         "icon": "trending_up",
         "gradient": "from-emerald-600 via-teal-600 to-cyan-600",
-        "badge_bg": "bg-emerald-100 text-emerald-900 border-emerald-300",
-        "card_bg": "bg-gradient-to-br from-emerald-50/90 via-teal-50/60 to-cyan-50/40 border-emerald-200/80",
+        "badge_bg": "bg-emerald-950/70 text-emerald-300 border-emerald-500/30",
+        "card_bg": "bg-[#0E1420] border-emerald-500/30 hover:border-emerald-500/60",
         "headline": "Setup Momentum Kuantitatif: BUY ON WEAKNESS",
         "desc": "Probabilitas bullish AI 70% dengan rasio Risk:Reward 1 : 2.0. Memiliki swing range yang atraktif untuk horizon 3–15 hari kerja."
       },
@@ -69547,8 +69547,8 @@
         "badge": "💰 Yield Dividen 39.0%",
         "icon": "payments",
         "gradient": "from-amber-600 via-yellow-600 to-orange-600",
-        "badge_bg": "bg-amber-100 text-amber-900 border-amber-300",
-        "card_bg": "bg-gradient-to-br from-amber-50/90 via-yellow-50/60 to-orange-50/40 border-amber-200/80",
+        "badge_bg": "bg-amber-950/70 text-amber-300 border-amber-500/30",
+        "card_bg": "bg-[#0E1420] border-amber-500/30 hover:border-amber-500/60",
         "headline": "Imbal Hasil Dividen Signifikan (39.0% p.a.)",
         "desc": "Arus kas operasi yang berlimpah memungkinkan emiten membagikan dividen tunai tebal secara reguler kepada pemegang saham."
       }
@@ -71445,7 +71445,7 @@
     },
     "health": {
       "status": "MODERAT / KONTRAKSI OMZET",
-      "badge_class": "bg-amber-100 text-amber-900 border-amber-300",
+      "badge_class": "bg-amber-500/10 text-amber-400 border-amber-500/30",
       "desc": "Meskipun solvabilitas (DER 0.72x) dan laba bersih positif, terdeteksi kontraksi omzet berturut-turut (3 periode terakhir: -13.1%, -8.1%, -0.8%) yang menjadi sinyal waspada perlambatan top-line.",
       "roe": "9.6%",
       "der": "0.72x",
@@ -71461,8 +71461,8 @@
         "badge": "💎 Blue Chip LQ45",
         "icon": "diamond",
         "gradient": "from-indigo-600 via-purple-600 to-pink-600",
-        "badge_bg": "bg-purple-100 text-purple-900 border-purple-300",
-        "card_bg": "bg-gradient-to-br from-indigo-50/90 via-purple-50/60 to-pink-50/40 border-indigo-200/80",
+        "badge_bg": "bg-purple-950/70 text-purple-300 border-purple-500/30",
+        "card_bg": "bg-[#0E1420] border-purple-500/30 hover:border-purple-500/60",
         "headline": "Kapitalisasi Pasar Jumbo & Fondasi Likuiditas Institusional",
         "desc": "Memiliki Market Cap Rp 45.0T dengan likuiditas harian sangat tinggi, menjadikannya pilihan utama dana pensiun dan fund manager institusi."
       },
@@ -71472,8 +71472,8 @@
         "badge": "⚡ Swing Trading Pick",
         "icon": "trending_up",
         "gradient": "from-emerald-600 via-teal-600 to-cyan-600",
-        "badge_bg": "bg-emerald-100 text-emerald-900 border-emerald-300",
-        "card_bg": "bg-gradient-to-br from-emerald-50/90 via-teal-50/60 to-cyan-50/40 border-emerald-200/80",
+        "badge_bg": "bg-emerald-950/70 text-emerald-300 border-emerald-500/30",
+        "card_bg": "bg-[#0E1420] border-emerald-500/30 hover:border-emerald-500/60",
         "headline": "Setup Momentum Kuantitatif: BUY ON WEAKNESS",
         "desc": "Probabilitas bullish AI 70% dengan rasio Risk:Reward 1 : 2.0. Memiliki swing range yang atraktif untuk horizon 3–15 hari kerja."
       },
@@ -71483,8 +71483,8 @@
         "badge": "💰 Yield Dividen 93.0%",
         "icon": "payments",
         "gradient": "from-amber-600 via-yellow-600 to-orange-600",
-        "badge_bg": "bg-amber-100 text-amber-900 border-amber-300",
-        "card_bg": "bg-gradient-to-br from-amber-50/90 via-yellow-50/60 to-orange-50/40 border-amber-200/80",
+        "badge_bg": "bg-amber-950/70 text-amber-300 border-amber-500/30",
+        "card_bg": "bg-[#0E1420] border-amber-500/30 hover:border-amber-500/60",
         "headline": "Imbal Hasil Dividen Signifikan (93.0% p.a.)",
         "desc": "Arus kas operasi yang berlimpah memungkinkan emiten membagikan dividen tunai tebal secara reguler kepada pemegang saham."
       },
@@ -71494,8 +71494,8 @@
         "badge": "🏷️ Margin of Safety",
         "icon": "price_check",
         "gradient": "from-slate-700 via-zinc-600 to-stone-600",
-        "badge_bg": "bg-slate-100 text-slate-800 border-slate-300",
-        "card_bg": "bg-gradient-to-br from-slate-50/90 via-zinc-50/60 to-stone-50/40 border-slate-200/80",
+        "badge_bg": "bg-slate-900/90 text-slate-300 border-slate-700/50",
+        "card_bg": "bg-[#0E1420] border-slate-700/40 hover:border-slate-600",
         "headline": "Valuasi Diskon (PBV 0.63x / PER 3.8x)",
         "desc": "Harga pasar saat ini diperdagangkan di bawah nilai wajar historisnya, menawarkan bantalan risiko (*downside protection*) yang menarik."
       }
@@ -73392,7 +73392,7 @@
     },
     "health": {
       "status": "SEHAT & STABIL",
-      "badge_class": "bg-blue-100 text-blue-900 border-blue-300",
+      "badge_class": "bg-blue-500/10 text-blue-400 border-blue-500/30",
       "desc": "Fundamental operasional berada dalam jalur stabil, struktur utang terkendali, dan kapasitas arus kas mencukupi kewajiban modal.",
       "roe": "20.2%",
       "der": "1.76x",
@@ -73408,8 +73408,8 @@
         "badge": "💎 Blue Chip LQ45",
         "icon": "diamond",
         "gradient": "from-indigo-600 via-purple-600 to-pink-600",
-        "badge_bg": "bg-purple-100 text-purple-900 border-purple-300",
-        "card_bg": "bg-gradient-to-br from-indigo-50/90 via-purple-50/60 to-pink-50/40 border-indigo-200/80",
+        "badge_bg": "bg-purple-950/70 text-purple-300 border-purple-500/30",
+        "card_bg": "bg-[#0E1420] border-purple-500/30 hover:border-purple-500/60",
         "headline": "Kapitalisasi Pasar Jumbo & Fondasi Likuiditas Institusional",
         "desc": "Memiliki Market Cap Rp 72.9T dengan likuiditas harian sangat tinggi, menjadikannya pilihan utama dana pensiun dan fund manager institusi."
       },
@@ -73419,8 +73419,8 @@
         "badge": "⭐ High Quality Business",
         "icon": "verified",
         "gradient": "from-blue-600 via-sky-600 to-cyan-600",
-        "badge_bg": "bg-blue-100 text-blue-900 border-blue-300",
-        "card_bg": "bg-gradient-to-br from-blue-50/90 via-sky-50/60 to-cyan-50/40 border-blue-200/80",
+        "badge_bg": "bg-blue-950/70 text-blue-300 border-blue-500/30",
+        "card_bg": "bg-[#0E1420] border-blue-500/30 hover:border-blue-500/60",
         "headline": "Profitabilitas Superior (ROE 20.2%) & Utang Sehat",
         "desc": "Mampu menghasilkan imbal hasil ekuitas tinggi dengan efisiensi modal teruji 5 tahun dan neraca keuangan yang terlindung dari risiko gagal bayar."
       }
@@ -75317,7 +75317,7 @@
     },
     "health": {
       "status": "MODERAT / KONTRAKSI OMZET",
-      "badge_class": "bg-amber-100 text-amber-900 border-amber-300",
+      "badge_class": "bg-amber-500/10 text-amber-400 border-amber-500/30",
       "desc": "Meskipun solvabilitas (DER 0.05x) dan laba bersih positif, terdeteksi kontraksi omzet berturut-turut (3 periode terakhir: -34.7%, -2.9%, -18.4%) yang menjadi sinyal waspada perlambatan top-line.",
       "roe": "11.1%",
       "der": "0.05x",
@@ -75333,8 +75333,8 @@
         "badge": "⚡ Swing Trading Pick",
         "icon": "trending_up",
         "gradient": "from-emerald-600 via-teal-600 to-cyan-600",
-        "badge_bg": "bg-emerald-100 text-emerald-900 border-emerald-300",
-        "card_bg": "bg-gradient-to-br from-emerald-50/90 via-teal-50/60 to-cyan-50/40 border-emerald-200/80",
+        "badge_bg": "bg-emerald-950/70 text-emerald-300 border-emerald-500/30",
+        "card_bg": "bg-[#0E1420] border-emerald-500/30 hover:border-emerald-500/60",
         "headline": "Setup Momentum Kuantitatif: BUY ON WEAKNESS",
         "desc": "Probabilitas bullish AI 70% dengan rasio Risk:Reward 1 : 2.0. Memiliki swing range yang atraktif untuk horizon 3–15 hari kerja."
       },
@@ -75344,8 +75344,8 @@
         "badge": "💰 Yield Dividen 6.9%",
         "icon": "payments",
         "gradient": "from-amber-600 via-yellow-600 to-orange-600",
-        "badge_bg": "bg-amber-100 text-amber-900 border-amber-300",
-        "card_bg": "bg-gradient-to-br from-amber-50/90 via-yellow-50/60 to-orange-50/40 border-amber-200/80",
+        "badge_bg": "bg-amber-950/70 text-amber-300 border-amber-500/30",
+        "card_bg": "bg-[#0E1420] border-amber-500/30 hover:border-amber-500/60",
         "headline": "Imbal Hasil Dividen Signifikan (6.9% p.a.)",
         "desc": "Arus kas operasi yang berlimpah memungkinkan emiten membagikan dividen tunai tebal secara reguler kepada pemegang saham."
       },
@@ -75355,8 +75355,8 @@
         "badge": "🏷️ Margin of Safety",
         "icon": "price_check",
         "gradient": "from-slate-700 via-zinc-600 to-stone-600",
-        "badge_bg": "bg-slate-100 text-slate-800 border-slate-300",
-        "card_bg": "bg-gradient-to-br from-slate-50/90 via-zinc-50/60 to-stone-50/40 border-slate-200/80",
+        "badge_bg": "bg-slate-900/90 text-slate-300 border-slate-700/50",
+        "card_bg": "bg-[#0E1420] border-slate-700/40 hover:border-slate-600",
         "headline": "Valuasi Diskon (PBV 1.46x / PER 7.4x)",
         "desc": "Harga pasar saat ini diperdagangkan di bawah nilai wajar historisnya, menawarkan bantalan risiko (*downside protection*) yang menarik."
       }
@@ -77253,7 +77253,7 @@
     },
     "health": {
       "status": "SEHAT & STABIL",
-      "badge_class": "bg-blue-100 text-blue-900 border-blue-300",
+      "badge_class": "bg-blue-500/10 text-blue-400 border-blue-500/30",
       "desc": "Fundamental operasional berada dalam jalur stabil, struktur utang terkendali, dan kapasitas arus kas mencukupi kewajiban modal.",
       "roe": "14.8%",
       "der": "0.03x",
@@ -77269,8 +77269,8 @@
         "badge": "💎 Blue Chip LQ45",
         "icon": "diamond",
         "gradient": "from-indigo-600 via-purple-600 to-pink-600",
-        "badge_bg": "bg-purple-100 text-purple-900 border-purple-300",
-        "card_bg": "bg-gradient-to-br from-indigo-50/90 via-purple-50/60 to-pink-50/40 border-indigo-200/80",
+        "badge_bg": "bg-purple-950/70 text-purple-300 border-purple-500/30",
+        "card_bg": "bg-[#0E1420] border-purple-500/30 hover:border-purple-500/60",
         "headline": "Kapitalisasi Pasar Jumbo & Fondasi Likuiditas Institusional",
         "desc": "Memiliki Market Cap Rp 33.0T dengan likuiditas harian sangat tinggi, menjadikannya pilihan utama dana pensiun dan fund manager institusi."
       },
@@ -77280,8 +77280,8 @@
         "badge": "⚡ Swing Trading Pick",
         "icon": "trending_up",
         "gradient": "from-emerald-600 via-teal-600 to-cyan-600",
-        "badge_bg": "bg-emerald-100 text-emerald-900 border-emerald-300",
-        "card_bg": "bg-gradient-to-br from-emerald-50/90 via-teal-50/60 to-cyan-50/40 border-emerald-200/80",
+        "badge_bg": "bg-emerald-950/70 text-emerald-300 border-emerald-500/30",
+        "card_bg": "bg-[#0E1420] border-emerald-500/30 hover:border-emerald-500/60",
         "headline": "Setup Momentum Kuantitatif: BUY ON WEAKNESS",
         "desc": "Probabilitas bullish AI 70% dengan rasio Risk:Reward 1 : 2.0. Memiliki swing range yang atraktif untuk horizon 3–15 hari kerja."
       }
@@ -79178,7 +79178,7 @@
     },
     "health": {
       "status": "SANGAT SEHAT & PRIMA",
-      "badge_class": "bg-emerald-100 text-emerald-900 border-emerald-300",
+      "badge_class": "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
       "desc": "Neraca solid tanpa ancaman solvabilitas, laba bersih multi-tahun konsisten surplus, dan ekspansi operasional terjaga prima.",
       "roe": "17.6%",
       "der": "0.48x",
@@ -79194,8 +79194,8 @@
         "badge": "⚡ Swing Trading Pick",
         "icon": "trending_up",
         "gradient": "from-emerald-600 via-teal-600 to-cyan-600",
-        "badge_bg": "bg-emerald-100 text-emerald-900 border-emerald-300",
-        "card_bg": "bg-gradient-to-br from-emerald-50/90 via-teal-50/60 to-cyan-50/40 border-emerald-200/80",
+        "badge_bg": "bg-emerald-950/70 text-emerald-300 border-emerald-500/30",
+        "card_bg": "bg-[#0E1420] border-emerald-500/30 hover:border-emerald-500/60",
         "headline": "Setup Momentum Kuantitatif: BUY ON WEAKNESS",
         "desc": "Probabilitas bullish AI 70% dengan rasio Risk:Reward 1 : 2.0. Memiliki swing range yang atraktif untuk horizon 3–15 hari kerja."
       },
@@ -79205,8 +79205,8 @@
         "badge": "⭐ High Quality Business",
         "icon": "verified",
         "gradient": "from-blue-600 via-sky-600 to-cyan-600",
-        "badge_bg": "bg-blue-100 text-blue-900 border-blue-300",
-        "card_bg": "bg-gradient-to-br from-blue-50/90 via-sky-50/60 to-cyan-50/40 border-blue-200/80",
+        "badge_bg": "bg-blue-950/70 text-blue-300 border-blue-500/30",
+        "card_bg": "bg-[#0E1420] border-blue-500/30 hover:border-blue-500/60",
         "headline": "Profitabilitas Superior (ROE 17.6%) & Utang Sehat",
         "desc": "Mampu menghasilkan imbal hasil ekuitas tinggi dengan efisiensi modal teruji 5 tahun dan neraca keuangan yang terlindung dari risiko gagal bayar."
       },
@@ -79216,8 +79216,8 @@
         "badge": "💰 Yield Dividen 65.0%",
         "icon": "payments",
         "gradient": "from-amber-600 via-yellow-600 to-orange-600",
-        "badge_bg": "bg-amber-100 text-amber-900 border-amber-300",
-        "card_bg": "bg-gradient-to-br from-amber-50/90 via-yellow-50/60 to-orange-50/40 border-amber-200/80",
+        "badge_bg": "bg-amber-950/70 text-amber-300 border-amber-500/30",
+        "card_bg": "bg-[#0E1420] border-amber-500/30 hover:border-amber-500/60",
         "headline": "Imbal Hasil Dividen Signifikan (65.0% p.a.)",
         "desc": "Arus kas operasi yang berlimpah memungkinkan emiten membagikan dividen tunai tebal secara reguler kepada pemegang saham."
       }
@@ -81114,7 +81114,7 @@
     },
     "health": {
       "status": "SEHAT & STABIL",
-      "badge_class": "bg-blue-100 text-blue-900 border-blue-300",
+      "badge_class": "bg-blue-500/10 text-blue-400 border-blue-500/30",
       "desc": "Fundamental operasional berada dalam jalur stabil, struktur utang terkendali, dan kapasitas arus kas mencukupi kewajiban modal.",
       "roe": "9.2%",
       "der": "0.53x",
@@ -81130,8 +81130,8 @@
         "badge": "💎 Blue Chip LQ45",
         "icon": "diamond",
         "gradient": "from-indigo-600 via-purple-600 to-pink-600",
-        "badge_bg": "bg-purple-100 text-purple-900 border-purple-300",
-        "card_bg": "bg-gradient-to-br from-indigo-50/90 via-purple-50/60 to-pink-50/40 border-indigo-200/80",
+        "badge_bg": "bg-purple-950/70 text-purple-300 border-purple-500/30",
+        "card_bg": "bg-[#0E1420] border-purple-500/30 hover:border-purple-500/60",
         "headline": "Kapitalisasi Pasar Jumbo & Fondasi Likuiditas Institusional",
         "desc": "Memiliki Market Cap Rp 52.2T dengan likuiditas harian sangat tinggi, menjadikannya pilihan utama dana pensiun dan fund manager institusi."
       }
@@ -83028,7 +83028,7 @@
     },
     "health": {
       "status": "MODERAT / PERLU MONITORING",
-      "badge_class": "bg-amber-100 text-amber-900 border-amber-300",
+      "badge_class": "bg-amber-500/10 text-amber-400 border-amber-500/30",
       "desc": "Terdapat fluktuasi margin laba, perlambatan pertumbuhan, atau tingkat leverage utang yang perlu dipantau ketat seiring dinamika siklus sektoral.",
       "roe": "7.5%",
       "der": "0.86x",
@@ -83044,8 +83044,8 @@
         "badge": "💎 Blue Chip LQ45",
         "icon": "diamond",
         "gradient": "from-indigo-600 via-purple-600 to-pink-600",
-        "badge_bg": "bg-purple-100 text-purple-900 border-purple-300",
-        "card_bg": "bg-gradient-to-br from-indigo-50/90 via-purple-50/60 to-pink-50/40 border-indigo-200/80",
+        "badge_bg": "bg-purple-950/70 text-purple-300 border-purple-500/30",
+        "card_bg": "bg-[#0E1420] border-purple-500/30 hover:border-purple-500/60",
         "headline": "Kapitalisasi Pasar Jumbo & Fondasi Likuiditas Institusional",
         "desc": "Memiliki Market Cap Rp 70.3T dengan likuiditas harian sangat tinggi, menjadikannya pilihan utama dana pensiun dan fund manager institusi."
       },
@@ -83055,8 +83055,8 @@
         "badge": "⚡ Swing Trading Pick",
         "icon": "trending_up",
         "gradient": "from-emerald-600 via-teal-600 to-cyan-600",
-        "badge_bg": "bg-emerald-100 text-emerald-900 border-emerald-300",
-        "card_bg": "bg-gradient-to-br from-emerald-50/90 via-teal-50/60 to-cyan-50/40 border-emerald-200/80",
+        "badge_bg": "bg-emerald-950/70 text-emerald-300 border-emerald-500/30",
+        "card_bg": "bg-[#0E1420] border-emerald-500/30 hover:border-emerald-500/60",
         "headline": "Setup Momentum Kuantitatif: BUY ON WEAKNESS",
         "desc": "Probabilitas bullish AI 70% dengan rasio Risk:Reward 1 : 2.0. Memiliki swing range yang atraktif untuk horizon 3–15 hari kerja."
       },
@@ -83066,8 +83066,8 @@
         "badge": "💰 Yield Dividen 42.0%",
         "icon": "payments",
         "gradient": "from-amber-600 via-yellow-600 to-orange-600",
-        "badge_bg": "bg-amber-100 text-amber-900 border-amber-300",
-        "card_bg": "bg-gradient-to-br from-amber-50/90 via-yellow-50/60 to-orange-50/40 border-amber-200/80",
+        "badge_bg": "bg-amber-950/70 text-amber-300 border-amber-500/30",
+        "card_bg": "bg-[#0E1420] border-amber-500/30 hover:border-amber-500/60",
         "headline": "Imbal Hasil Dividen Signifikan (42.0% p.a.)",
         "desc": "Arus kas operasi yang berlimpah memungkinkan emiten membagikan dividen tunai tebal secara reguler kepada pemegang saham."
       }
@@ -84964,7 +84964,7 @@
     },
     "health": {
       "status": "SEHAT & STABIL",
-      "badge_class": "bg-blue-100 text-blue-900 border-blue-300",
+      "badge_class": "bg-blue-500/10 text-blue-400 border-blue-500/30",
       "desc": "Fundamental operasional berada dalam jalur stabil, struktur utang terkendali, dan kapasitas arus kas mencukupi kewajiban modal.",
       "roe": "15.1%",
       "der": "1.72x",
@@ -84980,8 +84980,8 @@
         "badge": "⚡ Swing Trading Pick",
         "icon": "trending_up",
         "gradient": "from-emerald-600 via-teal-600 to-cyan-600",
-        "badge_bg": "bg-emerald-100 text-emerald-900 border-emerald-300",
-        "card_bg": "bg-gradient-to-br from-emerald-50/90 via-teal-50/60 to-cyan-50/40 border-emerald-200/80",
+        "badge_bg": "bg-emerald-950/70 text-emerald-300 border-emerald-500/30",
+        "card_bg": "bg-[#0E1420] border-emerald-500/30 hover:border-emerald-500/60",
         "headline": "Setup Momentum Kuantitatif: BUY ON WEAKNESS",
         "desc": "Probabilitas bullish AI 70% dengan rasio Risk:Reward 1 : 2.0. Memiliki swing range yang atraktif untuk horizon 3–15 hari kerja."
       },
@@ -84991,8 +84991,8 @@
         "badge": "🏷️ Margin of Safety",
         "icon": "price_check",
         "gradient": "from-slate-700 via-zinc-600 to-stone-600",
-        "badge_bg": "bg-slate-100 text-slate-800 border-slate-300",
-        "card_bg": "bg-gradient-to-br from-slate-50/90 via-zinc-50/60 to-stone-50/40 border-slate-200/80",
+        "badge_bg": "bg-slate-900/90 text-slate-300 border-slate-700/50",
+        "card_bg": "bg-[#0E1420] border-slate-700/40 hover:border-slate-600",
         "headline": "Valuasi Diskon (PBV 1.48x / PER 5.5x)",
         "desc": "Harga pasar saat ini diperdagangkan di bawah nilai wajar historisnya, menawarkan bantalan risiko (*downside protection*) yang menarik."
       }
@@ -86889,7 +86889,7 @@
     },
     "health": {
       "status": "SANGAT SEHAT & PRIMA",
-      "badge_class": "bg-emerald-100 text-emerald-900 border-emerald-300",
+      "badge_class": "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
       "desc": "Neraca solid tanpa ancaman solvabilitas, laba bersih multi-tahun konsisten surplus, dan ekspansi operasional terjaga prima.",
       "roe": "19.0%",
       "der": "0.00x",
@@ -86905,8 +86905,8 @@
         "badge": "⚡ Swing Trading Pick",
         "icon": "trending_up",
         "gradient": "from-emerald-600 via-teal-600 to-cyan-600",
-        "badge_bg": "bg-emerald-100 text-emerald-900 border-emerald-300",
-        "card_bg": "bg-gradient-to-br from-emerald-50/90 via-teal-50/60 to-cyan-50/40 border-emerald-200/80",
+        "badge_bg": "bg-emerald-950/70 text-emerald-300 border-emerald-500/30",
+        "card_bg": "bg-[#0E1420] border-emerald-500/30 hover:border-emerald-500/60",
         "headline": "Setup Momentum Kuantitatif: BUY ON WEAKNESS",
         "desc": "Probabilitas bullish AI 70% dengan rasio Risk:Reward 1 : 2.0. Memiliki swing range yang atraktif untuk horizon 3–15 hari kerja."
       },
@@ -86916,8 +86916,8 @@
         "badge": "⭐ High Quality Business",
         "icon": "verified",
         "gradient": "from-blue-600 via-sky-600 to-cyan-600",
-        "badge_bg": "bg-blue-100 text-blue-900 border-blue-300",
-        "card_bg": "bg-gradient-to-br from-blue-50/90 via-sky-50/60 to-cyan-50/40 border-blue-200/80",
+        "badge_bg": "bg-blue-950/70 text-blue-300 border-blue-500/30",
+        "card_bg": "bg-[#0E1420] border-blue-500/30 hover:border-blue-500/60",
         "headline": "Profitabilitas Superior (ROE 19.0%) & Utang Sehat",
         "desc": "Mampu menghasilkan imbal hasil ekuitas tinggi dengan efisiensi modal teruji 5 tahun dan neraca keuangan yang terlindung dari risiko gagal bayar."
       }
@@ -88814,7 +88814,7 @@
     },
     "health": {
       "status": "SEHAT & STABIL",
-      "badge_class": "bg-blue-100 text-blue-900 border-blue-300",
+      "badge_class": "bg-blue-500/10 text-blue-400 border-blue-500/30",
       "desc": "Fundamental operasional berada dalam jalur stabil, struktur utang terkendali, dan kapasitas arus kas mencukupi kewajiban modal.",
       "roe": "9.1%",
       "der": "0.01x",
@@ -88830,8 +88830,8 @@
         "badge": "💰 Yield Dividen 16.8%",
         "icon": "payments",
         "gradient": "from-amber-600 via-yellow-600 to-orange-600",
-        "badge_bg": "bg-amber-100 text-amber-900 border-amber-300",
-        "card_bg": "bg-gradient-to-br from-amber-50/90 via-yellow-50/60 to-orange-50/40 border-amber-200/80",
+        "badge_bg": "bg-amber-950/70 text-amber-300 border-amber-500/30",
+        "card_bg": "bg-[#0E1420] border-amber-500/30 hover:border-amber-500/60",
         "headline": "Imbal Hasil Dividen Signifikan (16.8% p.a.)",
         "desc": "Arus kas operasi yang berlimpah memungkinkan emiten membagikan dividen tunai tebal secara reguler kepada pemegang saham."
       },
@@ -88841,8 +88841,8 @@
         "badge": "🏷️ Margin of Safety",
         "icon": "price_check",
         "gradient": "from-slate-700 via-zinc-600 to-stone-600",
-        "badge_bg": "bg-slate-100 text-slate-800 border-slate-300",
-        "card_bg": "bg-gradient-to-br from-slate-50/90 via-zinc-50/60 to-stone-50/40 border-slate-200/80",
+        "badge_bg": "bg-slate-900/90 text-slate-300 border-slate-700/50",
+        "card_bg": "bg-[#0E1420] border-slate-700/40 hover:border-slate-600",
         "headline": "Valuasi Diskon (PBV 0.80x / PER 8.7x)",
         "desc": "Harga pasar saat ini diperdagangkan di bawah nilai wajar historisnya, menawarkan bantalan risiko (*downside protection*) yang menarik."
       }
@@ -90739,7 +90739,7 @@
     },
     "health": {
       "status": "SANGAT SEHAT & PRIMA",
-      "badge_class": "bg-emerald-100 text-emerald-900 border-emerald-300",
+      "badge_class": "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
       "desc": "Neraca solid tanpa ancaman solvabilitas, laba bersih multi-tahun konsisten surplus, dan ekspansi operasional terjaga prima.",
       "roe": "19.6%",
       "der": "0.25x",
@@ -90755,8 +90755,8 @@
         "badge": "⚡ Swing Trading Pick",
         "icon": "trending_up",
         "gradient": "from-emerald-600 via-teal-600 to-cyan-600",
-        "badge_bg": "bg-emerald-100 text-emerald-900 border-emerald-300",
-        "card_bg": "bg-gradient-to-br from-emerald-50/90 via-teal-50/60 to-cyan-50/40 border-emerald-200/80",
+        "badge_bg": "bg-emerald-950/70 text-emerald-300 border-emerald-500/30",
+        "card_bg": "bg-[#0E1420] border-emerald-500/30 hover:border-emerald-500/60",
         "headline": "Setup Momentum Kuantitatif: BUY ON WEAKNESS",
         "desc": "Probabilitas bullish AI 70% dengan rasio Risk:Reward 1 : 2.0. Memiliki swing range yang atraktif untuk horizon 3–15 hari kerja."
       },
@@ -90766,8 +90766,8 @@
         "badge": "⭐ High Quality Business",
         "icon": "verified",
         "gradient": "from-blue-600 via-sky-600 to-cyan-600",
-        "badge_bg": "bg-blue-100 text-blue-900 border-blue-300",
-        "card_bg": "bg-gradient-to-br from-blue-50/90 via-sky-50/60 to-cyan-50/40 border-blue-200/80",
+        "badge_bg": "bg-blue-950/70 text-blue-300 border-blue-500/30",
+        "card_bg": "bg-[#0E1420] border-blue-500/30 hover:border-blue-500/60",
         "headline": "Profitabilitas Superior (ROE 19.6%) & Utang Sehat",
         "desc": "Mampu menghasilkan imbal hasil ekuitas tinggi dengan efisiensi modal teruji 5 tahun dan neraca keuangan yang terlindung dari risiko gagal bayar."
       }
@@ -92664,7 +92664,7 @@
     },
     "health": {
       "status": "SEHAT & STABIL",
-      "badge_class": "bg-blue-100 text-blue-900 border-blue-300",
+      "badge_class": "bg-blue-500/10 text-blue-400 border-blue-500/30",
       "desc": "Fundamental operasional berada dalam jalur stabil, struktur utang terkendali, dan kapasitas arus kas mencukupi kewajiban modal.",
       "roe": "14.8%",
       "der": "0.25x",
@@ -92680,8 +92680,8 @@
         "badge": "⚡ Swing Trading Pick",
         "icon": "trending_up",
         "gradient": "from-emerald-600 via-teal-600 to-cyan-600",
-        "badge_bg": "bg-emerald-100 text-emerald-900 border-emerald-300",
-        "card_bg": "bg-gradient-to-br from-emerald-50/90 via-teal-50/60 to-cyan-50/40 border-emerald-200/80",
+        "badge_bg": "bg-emerald-950/70 text-emerald-300 border-emerald-500/30",
+        "card_bg": "bg-[#0E1420] border-emerald-500/30 hover:border-emerald-500/60",
         "headline": "Setup Momentum Kuantitatif: BUY ON WEAKNESS",
         "desc": "Probabilitas bullish AI 70% dengan rasio Risk:Reward 1 : 2.0. Memiliki swing range yang atraktif untuk horizon 3–15 hari kerja."
       },
@@ -92691,8 +92691,8 @@
         "badge": "💰 Yield Dividen 7.5%",
         "icon": "payments",
         "gradient": "from-amber-600 via-yellow-600 to-orange-600",
-        "badge_bg": "bg-amber-100 text-amber-900 border-amber-300",
-        "card_bg": "bg-gradient-to-br from-amber-50/90 via-yellow-50/60 to-orange-50/40 border-amber-200/80",
+        "badge_bg": "bg-amber-950/70 text-amber-300 border-amber-500/30",
+        "card_bg": "bg-[#0E1420] border-amber-500/30 hover:border-amber-500/60",
         "headline": "Imbal Hasil Dividen Signifikan (7.5% p.a.)",
         "desc": "Arus kas operasi yang berlimpah memungkinkan emiten membagikan dividen tunai tebal secara reguler kepada pemegang saham."
       },
@@ -92702,8 +92702,8 @@
         "badge": "🏷️ Margin of Safety",
         "icon": "price_check",
         "gradient": "from-slate-700 via-zinc-600 to-stone-600",
-        "badge_bg": "bg-slate-100 text-slate-800 border-slate-300",
-        "card_bg": "bg-gradient-to-br from-slate-50/90 via-zinc-50/60 to-stone-50/40 border-slate-200/80",
+        "badge_bg": "bg-slate-900/90 text-slate-300 border-slate-700/50",
+        "card_bg": "bg-[#0E1420] border-slate-700/40 hover:border-slate-600",
         "headline": "Valuasi Diskon (PBV 0.98x / PER 6.9x)",
         "desc": "Harga pasar saat ini diperdagangkan di bawah nilai wajar historisnya, menawarkan bantalan risiko (*downside protection*) yang menarik."
       }
@@ -94600,7 +94600,7 @@
     },
     "health": {
       "status": "SEHAT & STABIL",
-      "badge_class": "bg-blue-100 text-blue-900 border-blue-300",
+      "badge_class": "bg-blue-500/10 text-blue-400 border-blue-500/30",
       "desc": "Fundamental operasional berada dalam jalur stabil, struktur utang terkendali, dan kapasitas arus kas mencukupi kewajiban modal.",
       "roe": "10.1%",
       "der": "0.29x",
@@ -94616,8 +94616,8 @@
         "badge": "⚡ Swing Trading Pick",
         "icon": "trending_up",
         "gradient": "from-emerald-600 via-teal-600 to-cyan-600",
-        "badge_bg": "bg-emerald-100 text-emerald-900 border-emerald-300",
-        "card_bg": "bg-gradient-to-br from-emerald-50/90 via-teal-50/60 to-cyan-50/40 border-emerald-200/80",
+        "badge_bg": "bg-emerald-950/70 text-emerald-300 border-emerald-500/30",
+        "card_bg": "bg-[#0E1420] border-emerald-500/30 hover:border-emerald-500/60",
         "headline": "Setup Momentum Kuantitatif: BUY ON WEAKNESS",
         "desc": "Probabilitas bullish AI 70% dengan rasio Risk:Reward 1 : 2.0. Memiliki swing range yang atraktif untuk horizon 3–15 hari kerja."
       },
@@ -94627,8 +94627,8 @@
         "badge": "💰 Yield Dividen 8.8%",
         "icon": "payments",
         "gradient": "from-amber-600 via-yellow-600 to-orange-600",
-        "badge_bg": "bg-amber-100 text-amber-900 border-amber-300",
-        "card_bg": "bg-gradient-to-br from-amber-50/90 via-yellow-50/60 to-orange-50/40 border-amber-200/80",
+        "badge_bg": "bg-amber-950/70 text-amber-300 border-amber-500/30",
+        "card_bg": "bg-[#0E1420] border-amber-500/30 hover:border-amber-500/60",
         "headline": "Imbal Hasil Dividen Signifikan (8.8% p.a.)",
         "desc": "Arus kas operasi yang berlimpah memungkinkan emiten membagikan dividen tunai tebal secara reguler kepada pemegang saham."
       },
@@ -94638,8 +94638,8 @@
         "badge": "🏷️ Margin of Safety",
         "icon": "price_check",
         "gradient": "from-slate-700 via-zinc-600 to-stone-600",
-        "badge_bg": "bg-slate-100 text-slate-800 border-slate-300",
-        "card_bg": "bg-gradient-to-br from-slate-50/90 via-zinc-50/60 to-stone-50/40 border-slate-200/80",
+        "badge_bg": "bg-slate-900/90 text-slate-300 border-slate-700/50",
+        "card_bg": "bg-[#0E1420] border-slate-700/40 hover:border-slate-600",
         "headline": "Valuasi Diskon (PBV 1.19x / PER 7.8x)",
         "desc": "Harga pasar saat ini diperdagangkan di bawah nilai wajar historisnya, menawarkan bantalan risiko (*downside protection*) yang menarik."
       }
@@ -96536,7 +96536,7 @@
     },
     "health": {
       "status": "SEHAT & STABIL",
-      "badge_class": "bg-blue-100 text-blue-900 border-blue-300",
+      "badge_class": "bg-blue-500/10 text-blue-400 border-blue-500/30",
       "desc": "Fundamental operasional berada dalam jalur stabil, struktur utang terkendali, dan kapasitas arus kas mencukupi kewajiban modal.",
       "roe": "7.5%",
       "der": "0.37x",
@@ -96552,8 +96552,8 @@
         "badge": "💎 Blue Chip LQ45",
         "icon": "diamond",
         "gradient": "from-indigo-600 via-purple-600 to-pink-600",
-        "badge_bg": "bg-purple-100 text-purple-900 border-purple-300",
-        "card_bg": "bg-gradient-to-br from-indigo-50/90 via-purple-50/60 to-pink-50/40 border-indigo-200/80",
+        "badge_bg": "bg-purple-950/70 text-purple-300 border-purple-500/30",
+        "card_bg": "bg-[#0E1420] border-purple-500/30 hover:border-purple-500/60",
         "headline": "Kapitalisasi Pasar Jumbo & Fondasi Likuiditas Institusional",
         "desc": "Memiliki Market Cap Rp 40.9T dengan likuiditas harian sangat tinggi, menjadikannya pilihan utama dana pensiun dan fund manager institusi."
       },
@@ -96563,8 +96563,8 @@
         "badge": "⚡ Swing Trading Pick",
         "icon": "trending_up",
         "gradient": "from-emerald-600 via-teal-600 to-cyan-600",
-        "badge_bg": "bg-emerald-100 text-emerald-900 border-emerald-300",
-        "card_bg": "bg-gradient-to-br from-emerald-50/90 via-teal-50/60 to-cyan-50/40 border-emerald-200/80",
+        "badge_bg": "bg-emerald-950/70 text-emerald-300 border-emerald-500/30",
+        "card_bg": "bg-[#0E1420] border-emerald-500/30 hover:border-emerald-500/60",
         "headline": "Setup Momentum Kuantitatif: BUY ON WEAKNESS",
         "desc": "Probabilitas bullish AI 70% dengan rasio Risk:Reward 1 : 2.0. Memiliki swing range yang atraktif untuk horizon 3–15 hari kerja."
       }
@@ -98461,7 +98461,7 @@
     },
     "health": {
       "status": "SEHAT & STABIL",
-      "badge_class": "bg-blue-100 text-blue-900 border-blue-300",
+      "badge_class": "bg-blue-500/10 text-blue-400 border-blue-500/30",
       "desc": "Fundamental operasional berada dalam jalur stabil, struktur utang terkendali, dan kapasitas arus kas mencukupi kewajiban modal.",
       "roe": "9.9%",
       "der": "0.49x",
@@ -98477,8 +98477,8 @@
         "badge": "⚡ Swing Trading Pick",
         "icon": "trending_up",
         "gradient": "from-emerald-600 via-teal-600 to-cyan-600",
-        "badge_bg": "bg-emerald-100 text-emerald-900 border-emerald-300",
-        "card_bg": "bg-gradient-to-br from-emerald-50/90 via-teal-50/60 to-cyan-50/40 border-emerald-200/80",
+        "badge_bg": "bg-emerald-950/70 text-emerald-300 border-emerald-500/30",
+        "card_bg": "bg-[#0E1420] border-emerald-500/30 hover:border-emerald-500/60",
         "headline": "Setup Momentum Kuantitatif: BUY ON WEAKNESS",
         "desc": "Probabilitas bullish AI 70% dengan rasio Risk:Reward 1 : 2.0. Memiliki swing range yang atraktif untuk horizon 3–15 hari kerja."
       },
@@ -98488,8 +98488,8 @@
         "badge": "💰 Yield Dividen 8.0%",
         "icon": "payments",
         "gradient": "from-amber-600 via-yellow-600 to-orange-600",
-        "badge_bg": "bg-amber-100 text-amber-900 border-amber-300",
-        "card_bg": "bg-gradient-to-br from-amber-50/90 via-yellow-50/60 to-orange-50/40 border-amber-200/80",
+        "badge_bg": "bg-amber-950/70 text-amber-300 border-amber-500/30",
+        "card_bg": "bg-[#0E1420] border-amber-500/30 hover:border-amber-500/60",
         "headline": "Imbal Hasil Dividen Signifikan (8.0% p.a.)",
         "desc": "Arus kas operasi yang berlimpah memungkinkan emiten membagikan dividen tunai tebal secara reguler kepada pemegang saham."
       }
@@ -100386,7 +100386,7 @@
     },
     "health": {
       "status": "SANGAT SEHAT & PRIMA",
-      "badge_class": "bg-emerald-100 text-emerald-900 border-emerald-300",
+      "badge_class": "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
       "desc": "Neraca solid tanpa ancaman solvabilitas, laba bersih multi-tahun konsisten surplus, dan ekspansi operasional terjaga prima.",
       "roe": "21.1%",
       "der": "0.12x",
@@ -100402,8 +100402,8 @@
         "badge": "⭐ High Quality Business",
         "icon": "verified",
         "gradient": "from-blue-600 via-sky-600 to-cyan-600",
-        "badge_bg": "bg-blue-100 text-blue-900 border-blue-300",
-        "card_bg": "bg-gradient-to-br from-blue-50/90 via-sky-50/60 to-cyan-50/40 border-blue-200/80",
+        "badge_bg": "bg-blue-950/70 text-blue-300 border-blue-500/30",
+        "card_bg": "bg-[#0E1420] border-blue-500/30 hover:border-blue-500/60",
         "headline": "Profitabilitas Superior (ROE 21.1%) & Utang Sehat",
         "desc": "Mampu menghasilkan imbal hasil ekuitas tinggi dengan efisiensi modal teruji 5 tahun dan neraca keuangan yang terlindung dari risiko gagal bayar."
       }
@@ -102300,7 +102300,7 @@
     },
     "health": {
       "status": "SEHAT & STABIL",
-      "badge_class": "bg-blue-100 text-blue-900 border-blue-300",
+      "badge_class": "bg-blue-500/10 text-blue-400 border-blue-500/30",
       "desc": "Fundamental operasional berada dalam jalur stabil, struktur utang terkendali, dan kapasitas arus kas mencukupi kewajiban modal.",
       "roe": "10.0%",
       "der": "0.22x",
@@ -102316,8 +102316,8 @@
         "badge": "⚡ Swing Trading Pick",
         "icon": "trending_up",
         "gradient": "from-emerald-600 via-teal-600 to-cyan-600",
-        "badge_bg": "bg-emerald-100 text-emerald-900 border-emerald-300",
-        "card_bg": "bg-gradient-to-br from-emerald-50/90 via-teal-50/60 to-cyan-50/40 border-emerald-200/80",
+        "badge_bg": "bg-emerald-950/70 text-emerald-300 border-emerald-500/30",
+        "card_bg": "bg-[#0E1420] border-emerald-500/30 hover:border-emerald-500/60",
         "headline": "Setup Momentum Kuantitatif: BUY ON WEAKNESS",
         "desc": "Probabilitas bullish AI 70% dengan rasio Risk:Reward 1 : 2.0. Memiliki swing range yang atraktif untuk horizon 3–15 hari kerja."
       },
@@ -102327,8 +102327,8 @@
         "badge": "🏷️ Margin of Safety",
         "icon": "price_check",
         "gradient": "from-slate-700 via-zinc-600 to-stone-600",
-        "badge_bg": "bg-slate-100 text-slate-800 border-slate-300",
-        "card_bg": "bg-gradient-to-br from-slate-50/90 via-zinc-50/60 to-stone-50/40 border-slate-200/80",
+        "badge_bg": "bg-slate-900/90 text-slate-300 border-slate-700/50",
+        "card_bg": "bg-[#0E1420] border-slate-700/40 hover:border-slate-600",
         "headline": "Valuasi Diskon (PBV 0.54x / PER 5.6x)",
         "desc": "Harga pasar saat ini diperdagangkan di bawah nilai wajar historisnya, menawarkan bantalan risiko (*downside protection*) yang menarik."
       }
@@ -104225,7 +104225,7 @@
     },
     "health": {
       "status": "SANGAT SEHAT & PRIMA",
-      "badge_class": "bg-emerald-100 text-emerald-900 border-emerald-300",
+      "badge_class": "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
       "desc": "Neraca solid tanpa ancaman solvabilitas, laba bersih multi-tahun konsisten surplus, dan ekspansi operasional terjaga prima.",
       "roe": "30.4%",
       "der": "0.00x",
@@ -104241,8 +104241,8 @@
         "badge": "⭐ High Quality Business",
         "icon": "verified",
         "gradient": "from-blue-600 via-sky-600 to-cyan-600",
-        "badge_bg": "bg-blue-100 text-blue-900 border-blue-300",
-        "card_bg": "bg-gradient-to-br from-blue-50/90 via-sky-50/60 to-cyan-50/40 border-blue-200/80",
+        "badge_bg": "bg-blue-950/70 text-blue-300 border-blue-500/30",
+        "card_bg": "bg-[#0E1420] border-blue-500/30 hover:border-blue-500/60",
         "headline": "Profitabilitas Superior (ROE 30.4%) & Utang Sehat",
         "desc": "Mampu menghasilkan imbal hasil ekuitas tinggi dengan efisiensi modal teruji 5 tahun dan neraca keuangan yang terlindung dari risiko gagal bayar."
       },
@@ -104252,8 +104252,8 @@
         "badge": "💰 Yield Dividen 10.6%",
         "icon": "payments",
         "gradient": "from-amber-600 via-yellow-600 to-orange-600",
-        "badge_bg": "bg-amber-100 text-amber-900 border-amber-300",
-        "card_bg": "bg-gradient-to-br from-amber-50/90 via-yellow-50/60 to-orange-50/40 border-amber-200/80",
+        "badge_bg": "bg-amber-950/70 text-amber-300 border-amber-500/30",
+        "card_bg": "bg-[#0E1420] border-amber-500/30 hover:border-amber-500/60",
         "headline": "Imbal Hasil Dividen Signifikan (10.6% p.a.)",
         "desc": "Arus kas operasi yang berlimpah memungkinkan emiten membagikan dividen tunai tebal secara reguler kepada pemegang saham."
       }
@@ -106150,7 +106150,7 @@
     },
     "health": {
       "status": "SEHAT & STABIL",
-      "badge_class": "bg-blue-100 text-blue-900 border-blue-300",
+      "badge_class": "bg-blue-500/10 text-blue-400 border-blue-500/30",
       "desc": "Fundamental operasional berada dalam jalur stabil, struktur utang terkendali, dan kapasitas arus kas mencukupi kewajiban modal.",
       "roe": "13.1%",
       "der": "0.23x",
@@ -106166,8 +106166,8 @@
         "badge": "⚡ Swing Trading Pick",
         "icon": "trending_up",
         "gradient": "from-emerald-600 via-teal-600 to-cyan-600",
-        "badge_bg": "bg-emerald-100 text-emerald-900 border-emerald-300",
-        "card_bg": "bg-gradient-to-br from-emerald-50/90 via-teal-50/60 to-cyan-50/40 border-emerald-200/80",
+        "badge_bg": "bg-emerald-950/70 text-emerald-300 border-emerald-500/30",
+        "card_bg": "bg-[#0E1420] border-emerald-500/30 hover:border-emerald-500/60",
         "headline": "Setup Momentum Kuantitatif: BUY ON WEAKNESS",
         "desc": "Probabilitas bullish AI 70% dengan rasio Risk:Reward 1 : 2.0. Memiliki swing range yang atraktif untuk horizon 3–15 hari kerja."
       }
@@ -108064,7 +108064,7 @@
     },
     "health": {
       "status": "SEHAT & STABIL",
-      "badge_class": "bg-blue-100 text-blue-900 border-blue-300",
+      "badge_class": "bg-blue-500/10 text-blue-400 border-blue-500/30",
       "desc": "Fundamental operasional berada dalam jalur stabil, struktur utang terkendali, dan kapasitas arus kas mencukupi kewajiban modal.",
       "roe": "10.3%",
       "der": "0.67x",
@@ -108080,8 +108080,8 @@
         "badge": "⚡ Swing Trading Pick",
         "icon": "trending_up",
         "gradient": "from-emerald-600 via-teal-600 to-cyan-600",
-        "badge_bg": "bg-emerald-100 text-emerald-900 border-emerald-300",
-        "card_bg": "bg-gradient-to-br from-emerald-50/90 via-teal-50/60 to-cyan-50/40 border-emerald-200/80",
+        "badge_bg": "bg-emerald-950/70 text-emerald-300 border-emerald-500/30",
+        "card_bg": "bg-[#0E1420] border-emerald-500/30 hover:border-emerald-500/60",
         "headline": "Setup Momentum Kuantitatif: BUY ON WEAKNESS",
         "desc": "Probabilitas bullish AI 70% dengan rasio Risk:Reward 1 : 2.0. Memiliki swing range yang atraktif untuk horizon 3–15 hari kerja."
       },
@@ -108091,8 +108091,8 @@
         "badge": "🏷️ Margin of Safety",
         "icon": "price_check",
         "gradient": "from-slate-700 via-zinc-600 to-stone-600",
-        "badge_bg": "bg-slate-100 text-slate-800 border-slate-300",
-        "card_bg": "bg-gradient-to-br from-slate-50/90 via-zinc-50/60 to-stone-50/40 border-slate-200/80",
+        "badge_bg": "bg-slate-900/90 text-slate-300 border-slate-700/50",
+        "card_bg": "bg-[#0E1420] border-slate-700/40 hover:border-slate-600",
         "headline": "Valuasi Diskon (PBV 1.15x / PER 7.2x)",
         "desc": "Harga pasar saat ini diperdagangkan di bawah nilai wajar historisnya, menawarkan bantalan risiko (*downside protection*) yang menarik."
       }
@@ -109989,7 +109989,7 @@
     },
     "health": {
       "status": "MODERAT / KONTRAKSI OMZET",
-      "badge_class": "bg-amber-100 text-amber-900 border-amber-300",
+      "badge_class": "bg-amber-500/10 text-amber-400 border-amber-500/30",
       "desc": "Meskipun solvabilitas (DER 0.17x) dan laba bersih positif, terdeteksi kontraksi omzet berturut-turut (2 periode terakhir: -6.4%, -2.6%) yang menjadi sinyal waspada perlambatan top-line.",
       "roe": "0.7%",
       "der": "0.17x",
@@ -110005,8 +110005,8 @@
         "badge": "🏷️ Margin of Safety",
         "icon": "price_check",
         "gradient": "from-slate-700 via-zinc-600 to-stone-600",
-        "badge_bg": "bg-slate-100 text-slate-800 border-slate-300",
-        "card_bg": "bg-gradient-to-br from-slate-50/90 via-zinc-50/60 to-stone-50/40 border-slate-200/80",
+        "badge_bg": "bg-slate-900/90 text-slate-300 border-slate-700/50",
+        "card_bg": "bg-[#0E1420] border-slate-700/40 hover:border-slate-600",
         "headline": "Valuasi Diskon (PBV 0.22x / PER 25.9x)",
         "desc": "Harga pasar saat ini diperdagangkan di bawah nilai wajar historisnya, menawarkan bantalan risiko (*downside protection*) yang menarik."
       }
@@ -111903,7 +111903,7 @@
     },
     "health": {
       "status": "SEHAT & STABIL",
-      "badge_class": "bg-blue-100 text-blue-900 border-blue-300",
+      "badge_class": "bg-blue-500/10 text-blue-400 border-blue-500/30",
       "desc": "Fundamental operasional berada dalam jalur stabil, struktur utang terkendali, dan kapasitas arus kas mencukupi kewajiban modal.",
       "roe": "6.8%",
       "der": "0.92x",
@@ -111919,8 +111919,8 @@
         "badge": "⚡ Swing Trading Pick",
         "icon": "trending_up",
         "gradient": "from-emerald-600 via-teal-600 to-cyan-600",
-        "badge_bg": "bg-emerald-100 text-emerald-900 border-emerald-300",
-        "card_bg": "bg-gradient-to-br from-emerald-50/90 via-teal-50/60 to-cyan-50/40 border-emerald-200/80",
+        "badge_bg": "bg-emerald-950/70 text-emerald-300 border-emerald-500/30",
+        "card_bg": "bg-[#0E1420] border-emerald-500/30 hover:border-emerald-500/60",
         "headline": "Setup Momentum Kuantitatif: BUY ON WEAKNESS",
         "desc": "Probabilitas bullish AI 70% dengan rasio Risk:Reward 1 : 2.0. Memiliki swing range yang atraktif untuk horizon 3–15 hari kerja."
       },
@@ -111930,8 +111930,8 @@
         "badge": "🏷️ Margin of Safety",
         "icon": "price_check",
         "gradient": "from-slate-700 via-zinc-600 to-stone-600",
-        "badge_bg": "bg-slate-100 text-slate-800 border-slate-300",
-        "card_bg": "bg-gradient-to-br from-slate-50/90 via-zinc-50/60 to-stone-50/40 border-slate-200/80",
+        "badge_bg": "bg-slate-900/90 text-slate-300 border-slate-700/50",
+        "card_bg": "bg-[#0E1420] border-slate-700/40 hover:border-slate-600",
         "headline": "Valuasi Diskon (PBV 0.34x / PER 6.8x)",
         "desc": "Harga pasar saat ini diperdagangkan di bawah nilai wajar historisnya, menawarkan bantalan risiko (*downside protection*) yang menarik."
       }
@@ -113828,7 +113828,7 @@
     },
     "health": {
       "status": "SANGAT SEHAT & PRIMA",
-      "badge_class": "bg-emerald-100 text-emerald-900 border-emerald-300",
+      "badge_class": "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
       "desc": "Neraca solid tanpa ancaman solvabilitas, laba bersih multi-tahun konsisten surplus, dan ekspansi operasional terjaga prima.",
       "roe": "28.8%",
       "der": "0.04x",
@@ -113844,8 +113844,8 @@
         "badge": "⭐ High Quality Business",
         "icon": "verified",
         "gradient": "from-blue-600 via-sky-600 to-cyan-600",
-        "badge_bg": "bg-blue-100 text-blue-900 border-blue-300",
-        "card_bg": "bg-gradient-to-br from-blue-50/90 via-sky-50/60 to-cyan-50/40 border-blue-200/80",
+        "badge_bg": "bg-blue-950/70 text-blue-300 border-blue-500/30",
+        "card_bg": "bg-[#0E1420] border-blue-500/30 hover:border-blue-500/60",
         "headline": "Profitabilitas Superior (ROE 28.8%) & Utang Sehat",
         "desc": "Mampu menghasilkan imbal hasil ekuitas tinggi dengan efisiensi modal teruji 5 tahun dan neraca keuangan yang terlindung dari risiko gagal bayar."
       },
@@ -113855,8 +113855,8 @@
         "badge": "💰 Yield Dividen 9.6%",
         "icon": "payments",
         "gradient": "from-amber-600 via-yellow-600 to-orange-600",
-        "badge_bg": "bg-amber-100 text-amber-900 border-amber-300",
-        "card_bg": "bg-gradient-to-br from-amber-50/90 via-yellow-50/60 to-orange-50/40 border-amber-200/80",
+        "badge_bg": "bg-amber-950/70 text-amber-300 border-amber-500/30",
+        "card_bg": "bg-[#0E1420] border-amber-500/30 hover:border-amber-500/60",
         "headline": "Imbal Hasil Dividen Signifikan (9.6% p.a.)",
         "desc": "Arus kas operasi yang berlimpah memungkinkan emiten membagikan dividen tunai tebal secara reguler kepada pemegang saham."
       }
@@ -115753,7 +115753,7 @@
     },
     "health": {
       "status": "MODERAT / PERLU MONITORING",
-      "badge_class": "bg-amber-100 text-amber-900 border-amber-300",
+      "badge_class": "bg-amber-500/10 text-amber-400 border-amber-500/30",
       "desc": "Terdapat fluktuasi margin laba, perlambatan pertumbuhan, atau tingkat leverage utang yang perlu dipantau ketat seiring dinamika siklus sektoral.",
       "roe": "12.4%",
       "der": "2.21x",
@@ -115769,8 +115769,8 @@
         "badge": "⚡ Swing Trading Pick",
         "icon": "trending_up",
         "gradient": "from-emerald-600 via-teal-600 to-cyan-600",
-        "badge_bg": "bg-emerald-100 text-emerald-900 border-emerald-300",
-        "card_bg": "bg-gradient-to-br from-emerald-50/90 via-teal-50/60 to-cyan-50/40 border-emerald-200/80",
+        "badge_bg": "bg-emerald-950/70 text-emerald-300 border-emerald-500/30",
+        "card_bg": "bg-[#0E1420] border-emerald-500/30 hover:border-emerald-500/60",
         "headline": "Setup Momentum Kuantitatif: BUY ON WEAKNESS",
         "desc": "Probabilitas bullish AI 70% dengan rasio Risk:Reward 1 : 2.0. Memiliki swing range yang atraktif untuk horizon 3–15 hari kerja."
       }
@@ -117667,7 +117667,7 @@
     },
     "health": {
       "status": "SANGAT SEHAT & PRIMA",
-      "badge_class": "bg-emerald-100 text-emerald-900 border-emerald-300",
+      "badge_class": "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
       "desc": "Neraca solid tanpa ancaman solvabilitas, laba bersih multi-tahun konsisten surplus, dan ekspansi operasional terjaga prima.",
       "roe": "17.7%",
       "der": "0.60x",
@@ -117683,8 +117683,8 @@
         "badge": "💎 Blue Chip LQ45",
         "icon": "diamond",
         "gradient": "from-indigo-600 via-purple-600 to-pink-600",
-        "badge_bg": "bg-purple-100 text-purple-900 border-purple-300",
-        "card_bg": "bg-gradient-to-br from-indigo-50/90 via-purple-50/60 to-pink-50/40 border-indigo-200/80",
+        "badge_bg": "bg-purple-950/70 text-purple-300 border-purple-500/30",
+        "card_bg": "bg-[#0E1420] border-purple-500/30 hover:border-purple-500/60",
         "headline": "Kapitalisasi Pasar Jumbo & Fondasi Likuiditas Institusional",
         "desc": "Memiliki Market Cap Rp 225.8T dengan likuiditas harian sangat tinggi, menjadikannya pilihan utama dana pensiun dan fund manager institusi."
       },
@@ -117694,8 +117694,8 @@
         "badge": "⭐ High Quality Business",
         "icon": "verified",
         "gradient": "from-blue-600 via-sky-600 to-cyan-600",
-        "badge_bg": "bg-blue-100 text-blue-900 border-blue-300",
-        "card_bg": "bg-gradient-to-br from-blue-50/90 via-sky-50/60 to-cyan-50/40 border-blue-200/80",
+        "badge_bg": "bg-blue-950/70 text-blue-300 border-blue-500/30",
+        "card_bg": "bg-[#0E1420] border-blue-500/30 hover:border-blue-500/60",
         "headline": "Profitabilitas Superior (ROE 17.7%) & Utang Sehat",
         "desc": "Mampu menghasilkan imbal hasil ekuitas tinggi dengan efisiensi modal teruji 5 tahun dan neraca keuangan yang terlindung dari risiko gagal bayar."
       },
@@ -117705,8 +117705,8 @@
         "badge": "💰 Yield Dividen 9.4%",
         "icon": "payments",
         "gradient": "from-amber-600 via-yellow-600 to-orange-600",
-        "badge_bg": "bg-amber-100 text-amber-900 border-amber-300",
-        "card_bg": "bg-gradient-to-br from-amber-50/90 via-yellow-50/60 to-orange-50/40 border-amber-200/80",
+        "badge_bg": "bg-amber-950/70 text-amber-300 border-amber-500/30",
+        "card_bg": "bg-[#0E1420] border-amber-500/30 hover:border-amber-500/60",
         "headline": "Imbal Hasil Dividen Signifikan (9.4% p.a.)",
         "desc": "Arus kas operasi yang berlimpah memungkinkan emiten membagikan dividen tunai tebal secara reguler kepada pemegang saham."
       }
@@ -119603,7 +119603,7 @@
     },
     "health": {
       "status": "SEHAT & STABIL",
-      "badge_class": "bg-blue-100 text-blue-900 border-blue-300",
+      "badge_class": "bg-blue-500/10 text-blue-400 border-blue-500/30",
       "desc": "Fundamental operasional berada dalam jalur stabil, struktur utang terkendali, dan kapasitas arus kas mencukupi kewajiban modal.",
       "roe": "16.1%",
       "der": "1.57x",
@@ -119619,8 +119619,8 @@
         "badge": "🏷️ Margin of Safety",
         "icon": "price_check",
         "gradient": "from-slate-700 via-zinc-600 to-stone-600",
-        "badge_bg": "bg-slate-100 text-slate-800 border-slate-300",
-        "card_bg": "bg-gradient-to-br from-slate-50/90 via-zinc-50/60 to-stone-50/40 border-slate-200/80",
+        "badge_bg": "bg-slate-900/90 text-slate-300 border-slate-700/50",
+        "card_bg": "bg-[#0E1420] border-slate-700/40 hover:border-slate-600",
         "headline": "Valuasi Diskon (PBV 0.81x / PER 5.9x)",
         "desc": "Harga pasar saat ini diperdagangkan di bawah nilai wajar historisnya, menawarkan bantalan risiko (*downside protection*) yang menarik."
       }
@@ -121517,7 +121517,7 @@
     },
     "health": {
       "status": "MODERAT / PERLU MONITORING",
-      "badge_class": "bg-amber-100 text-amber-900 border-amber-300",
+      "badge_class": "bg-amber-500/10 text-amber-400 border-amber-500/30",
       "desc": "Terdapat fluktuasi margin laba, perlambatan pertumbuhan, atau tingkat leverage utang yang perlu dipantau ketat seiring dinamika siklus sektoral.",
       "roe": "3.9%",
       "der": "1.19x",
@@ -121533,8 +121533,8 @@
         "badge": "💎 Blue Chip LQ45",
         "icon": "diamond",
         "gradient": "from-indigo-600 via-purple-600 to-pink-600",
-        "badge_bg": "bg-purple-100 text-purple-900 border-purple-300",
-        "card_bg": "bg-gradient-to-br from-indigo-50/90 via-purple-50/60 to-pink-50/40 border-indigo-200/80",
+        "badge_bg": "bg-purple-950/70 text-purple-300 border-purple-500/30",
+        "card_bg": "bg-[#0E1420] border-purple-500/30 hover:border-purple-500/60",
         "headline": "Kapitalisasi Pasar Jumbo & Fondasi Likuiditas Institusional",
         "desc": "Memiliki Market Cap Rp 150.0T dengan likuiditas harian sangat tinggi, menjadikannya pilihan utama dana pensiun dan fund manager institusi."
       },
@@ -121544,8 +121544,8 @@
         "badge": "⚡ Swing Trading Pick",
         "icon": "trending_up",
         "gradient": "from-emerald-600 via-teal-600 to-cyan-600",
-        "badge_bg": "bg-emerald-100 text-emerald-900 border-emerald-300",
-        "card_bg": "bg-gradient-to-br from-emerald-50/90 via-teal-50/60 to-cyan-50/40 border-emerald-200/80",
+        "badge_bg": "bg-emerald-950/70 text-emerald-300 border-emerald-500/30",
+        "card_bg": "bg-[#0E1420] border-emerald-500/30 hover:border-emerald-500/60",
         "headline": "Setup Momentum Kuantitatif: BUY ON WEAKNESS",
         "desc": "Probabilitas bullish AI 70% dengan rasio Risk:Reward 1 : 2.0. Memiliki swing range yang atraktif untuk horizon 3–15 hari kerja."
       },
@@ -121555,8 +121555,8 @@
         "badge": "💰 Yield Dividen 35.0%",
         "icon": "payments",
         "gradient": "from-amber-600 via-yellow-600 to-orange-600",
-        "badge_bg": "bg-amber-100 text-amber-900 border-amber-300",
-        "card_bg": "bg-gradient-to-br from-amber-50/90 via-yellow-50/60 to-orange-50/40 border-amber-200/80",
+        "badge_bg": "bg-amber-950/70 text-amber-300 border-amber-500/30",
+        "card_bg": "bg-[#0E1420] border-amber-500/30 hover:border-amber-500/60",
         "headline": "Imbal Hasil Dividen Signifikan (35.0% p.a.)",
         "desc": "Arus kas operasi yang berlimpah memungkinkan emiten membagikan dividen tunai tebal secara reguler kepada pemegang saham."
       }
@@ -123453,7 +123453,7 @@
     },
     "health": {
       "status": "SEHAT & STABIL",
-      "badge_class": "bg-blue-100 text-blue-900 border-blue-300",
+      "badge_class": "bg-blue-500/10 text-blue-400 border-blue-500/30",
       "desc": "Fundamental operasional berada dalam jalur stabil, struktur utang terkendali, dan kapasitas arus kas mencukupi kewajiban modal.",
       "roe": "7.4%",
       "der": "0.28x",
@@ -123469,8 +123469,8 @@
         "badge": "💎 Blue Chip LQ45",
         "icon": "diamond",
         "gradient": "from-indigo-600 via-purple-600 to-pink-600",
-        "badge_bg": "bg-purple-100 text-purple-900 border-purple-300",
-        "card_bg": "bg-gradient-to-br from-indigo-50/90 via-purple-50/60 to-pink-50/40 border-indigo-200/80",
+        "badge_bg": "bg-purple-950/70 text-purple-300 border-purple-500/30",
+        "card_bg": "bg-[#0E1420] border-purple-500/30 hover:border-purple-500/60",
         "headline": "Kapitalisasi Pasar Jumbo & Fondasi Likuiditas Institusional",
         "desc": "Memiliki Market Cap Rp 94.6T dengan likuiditas harian sangat tinggi, menjadikannya pilihan utama dana pensiun dan fund manager institusi."
       },
@@ -123480,8 +123480,8 @@
         "badge": "💰 Yield Dividen 8.7%",
         "icon": "payments",
         "gradient": "from-amber-600 via-yellow-600 to-orange-600",
-        "badge_bg": "bg-amber-100 text-amber-900 border-amber-300",
-        "card_bg": "bg-gradient-to-br from-amber-50/90 via-yellow-50/60 to-orange-50/40 border-amber-200/80",
+        "badge_bg": "bg-amber-950/70 text-amber-300 border-amber-500/30",
+        "card_bg": "bg-[#0E1420] border-amber-500/30 hover:border-amber-500/60",
         "headline": "Imbal Hasil Dividen Signifikan (8.7% p.a.)",
         "desc": "Arus kas operasi yang berlimpah memungkinkan emiten membagikan dividen tunai tebal secara reguler kepada pemegang saham."
       }
@@ -125378,7 +125378,7 @@
     },
     "health": {
       "status": "SANGAT SEHAT & PRIMA",
-      "badge_class": "bg-emerald-100 text-emerald-900 border-emerald-300",
+      "badge_class": "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
       "desc": "Neraca solid tanpa ancaman solvabilitas, laba bersih multi-tahun konsisten surplus, dan ekspansi operasional terjaga prima.",
       "roe": "133.4%",
       "der": "0.18x",
@@ -125394,8 +125394,8 @@
         "badge": "💎 Blue Chip LQ45",
         "icon": "diamond",
         "gradient": "from-indigo-600 via-purple-600 to-pink-600",
-        "badge_bg": "bg-purple-100 text-purple-900 border-purple-300",
-        "card_bg": "bg-gradient-to-br from-indigo-50/90 via-purple-50/60 to-pink-50/40 border-indigo-200/80",
+        "badge_bg": "bg-purple-950/70 text-purple-300 border-purple-500/30",
+        "card_bg": "bg-[#0E1420] border-purple-500/30 hover:border-purple-500/60",
         "headline": "Kapitalisasi Pasar Jumbo & Fondasi Likuiditas Institusional",
         "desc": "Memiliki Market Cap Rp 61.5T dengan likuiditas harian sangat tinggi, menjadikannya pilihan utama dana pensiun dan fund manager institusi."
       },
@@ -125405,8 +125405,8 @@
         "badge": "⭐ High Quality Business",
         "icon": "verified",
         "gradient": "from-blue-600 via-sky-600 to-cyan-600",
-        "badge_bg": "bg-blue-100 text-blue-900 border-blue-300",
-        "card_bg": "bg-gradient-to-br from-blue-50/90 via-sky-50/60 to-cyan-50/40 border-blue-200/80",
+        "badge_bg": "bg-blue-950/70 text-blue-300 border-blue-500/30",
+        "card_bg": "bg-[#0E1420] border-blue-500/30 hover:border-blue-500/60",
         "headline": "Profitabilitas Superior (ROE 133.4%) & Utang Sehat",
         "desc": "Mampu menghasilkan imbal hasil ekuitas tinggi dengan efisiensi modal teruji 5 tahun dan neraca keuangan yang terlindung dari risiko gagal bayar."
       },
@@ -125416,8 +125416,8 @@
         "badge": "💰 Yield Dividen 13.9%",
         "icon": "payments",
         "gradient": "from-amber-600 via-yellow-600 to-orange-600",
-        "badge_bg": "bg-amber-100 text-amber-900 border-amber-300",
-        "card_bg": "bg-gradient-to-br from-amber-50/90 via-yellow-50/60 to-orange-50/40 border-amber-200/80",
+        "badge_bg": "bg-amber-950/70 text-amber-300 border-amber-500/30",
+        "card_bg": "bg-[#0E1420] border-amber-500/30 hover:border-amber-500/60",
         "headline": "Imbal Hasil Dividen Signifikan (13.9% p.a.)",
         "desc": "Arus kas operasi yang berlimpah memungkinkan emiten membagikan dividen tunai tebal secara reguler kepada pemegang saham."
       }

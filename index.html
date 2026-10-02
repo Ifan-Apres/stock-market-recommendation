@@ -4499,8 +4499,8 @@
                             label: "BLUE CHIP / BIG CAP",
                             badge: "💎 Blue Chip LQ45",
                             icon: "diamond",
-                            badge_bg: "bg-purple-100 text-purple-900 border-purple-300",
-                            card_bg: "bg-gradient-to-br from-indigo-50/90 via-purple-50/60 to-pink-50/40 border-indigo-200/80",
+                            badge_bg: "bg-purple-950/70 text-purple-300 border-purple-500/30",
+                            card_bg: "bg-[#0E1420] border-purple-500/30 hover:border-purple-500/60",
                             headline: "Pilar Utama IHSG & Likuiditas Institusional Tertinggi",
                             desc: "Menjadi aset jangkar bagi dana pensiun dan manajer investasi dengan volatilitas terkendali."
                         },
@@ -4509,8 +4509,8 @@
                             label: "PRIME SWING TRADING",
                             badge: "⚡ Swing Trading Pick",
                             icon: "trending_up",
-                            badge_bg: "bg-emerald-100 text-emerald-900 border-emerald-300",
-                            card_bg: "bg-gradient-to-br from-emerald-50/90 via-teal-50/60 to-cyan-50/40 border-emerald-200/80",
+                            badge_bg: "bg-emerald-950/70 text-emerald-300 border-emerald-500/30",
+                            card_bg: "bg-[#0E1420] border-emerald-500/30 hover:border-emerald-500/60",
                             headline: `Setup Momentum Kuantitatif: ${recAction}`,
                             desc: `Probabilitas bullish ${prob}% dengan rasio potensi untung lebih besar dari batas risiko.`
                         },
@@ -4519,8 +4519,8 @@
                             label: "FUNDAMENTAL KOKOH",
                             badge: "⭐ High Quality Business",
                             icon: "verified",
-                            badge_bg: "bg-blue-100 text-blue-900 border-blue-300",
-                            card_bg: "bg-gradient-to-br from-blue-50/90 via-sky-50/60 to-cyan-50/40 border-blue-200/80",
+                            badge_bg: "bg-blue-950/70 text-blue-300 border-blue-500/30",
+                            card_bg: "bg-[#0E1420] border-blue-500/30 hover:border-blue-500/60",
                             headline: `Profitabilitas Superior (ROE ${roeNum}%) & Utang Rendah`,
                             desc: "Kemampuan menghasilkan laba bersih tinggi dengan solvabilitas neraca yang terlindung dari risiko gagal bayar."
                         }
@@ -4533,20 +4533,41 @@
                 };
             }
 
-            // 1. Render Kartu Archetype Menonjol
+            // 1. Render Kartu Archetype Menonjol (Institutional Dark Contrast)
             const archContainer = document.getElementById('deepDiveArchetypeContainer');
             if (archContainer) {
                 let archHtml = "";
                 (data.archetypes || []).forEach(arch => {
+                    // Normalisasi style kartu agar selalu berlatar gelap institusional dan teks terbaca sempurna
+                    let cardBorder = arch.card_bg || "border-white/10";
+                    if (cardBorder.includes("-50") || cardBorder.includes("gradient")) {
+                        if (arch.id === "blue_chip") cardBorder = "border-purple-500/30 hover:border-purple-500/60";
+                        else if (arch.id === "swing_trading") cardBorder = "border-emerald-500/30 hover:border-emerald-500/60";
+                        else if (arch.id === "fundamental_strong") cardBorder = "border-blue-500/30 hover:border-blue-500/60";
+                        else if (arch.id === "dividend_cow") cardBorder = "border-amber-500/30 hover:border-amber-500/60";
+                        else if (arch.id === "value_play") cardBorder = "border-rose-500/30 hover:border-rose-500/60";
+                        else cardBorder = "border-teal-500/30 hover:border-teal-500/60";
+                    }
+
+                    let badgeTheme = arch.badge_bg || "border-white/10 text-white";
+                    if (badgeTheme.includes("-100")) {
+                        if (arch.id === "blue_chip") badgeTheme = "bg-purple-950/70 text-purple-300 border-purple-500/30";
+                        else if (arch.id === "swing_trading") badgeTheme = "bg-emerald-950/70 text-emerald-300 border-emerald-500/30";
+                        else if (arch.id === "fundamental_strong") badgeTheme = "bg-blue-950/70 text-blue-300 border-blue-500/30";
+                        else if (arch.id === "dividend_cow") badgeTheme = "bg-amber-950/70 text-amber-300 border-amber-500/30";
+                        else if (arch.id === "value_play") badgeTheme = "bg-rose-950/70 text-rose-300 border-rose-500/30";
+                        else badgeTheme = "bg-teal-950/70 text-teal-300 border-teal-500/30";
+                    }
+
                     archHtml += `
-                    <div class="p-3 sm:p-3.5 rounded-sm border ${arch.card_bg || 'bg-[#0E1420] border-white/10'} flex flex-col justify-between transition-colors">
+                    <div class="p-3 sm:p-3.5 rounded-sm border bg-[#0E1420] ${cardBorder} flex flex-col justify-between transition-colors shadow-2xs">
                         <div>
                             <div class="flex items-center justify-between mb-2.5">
-                                <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-sm text-xs font-mono font-bold border ${arch.badge_bg}">
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-sm text-xs font-mono font-bold border ${badgeTheme}">
                                     <span class="material-symbols-outlined text-[16px]">${arch.icon || 'star'}</span>
                                     ${arch.badge}
                                 </span>
-                                <span class="text-[10px] font-mono uppercase tracking-wider text-slate-400">${arch.label}</span>
+                                <span class="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400">${arch.label}</span>
                             </div>
                             <h4 class="text-xs sm:text-sm font-bold text-white font-mono mb-1 leading-snug">${arch.headline}</h4>
                             <p class="text-xs text-slate-300 leading-relaxed">${arch.desc}</p>
@@ -4577,7 +4598,17 @@
             const healthBadgeEl = document.getElementById('deepDiveFinancialHealthBadge');
             if (healthBadgeEl && data.health) {
                 healthBadgeEl.innerText = data.health.status || "SANGAT SEHAT & PRIMA";
-                healthBadgeEl.className = `px-3.5 py-1 rounded-full text-xs font-black border shadow-2xs ${data.health.badge_class || 'bg-emerald-100 text-emerald-900 border-emerald-300'}`;
+                let badgeStyle = data.health.badge_class || "";
+                if (badgeStyle.includes("-100") || !badgeStyle) {
+                    if ((data.health.status || "").includes("KONTRAKSI") || (data.health.status || "").includes("MODERAT")) {
+                        badgeStyle = "bg-amber-500/10 text-amber-400 border-amber-500/30";
+                    } else if ((data.health.status || "").includes("PRIMA") || (data.health.status || "").includes("SANGAT SEHAT")) {
+                        badgeStyle = "bg-emerald-500/10 text-emerald-400 border-emerald-500/30";
+                    } else {
+                        badgeStyle = "bg-blue-500/10 text-blue-400 border-blue-500/30";
+                    }
+                }
+                healthBadgeEl.className = `px-3.5 py-1 rounded-full text-xs font-mono font-black border shadow-2xs ${badgeStyle}`;
             }
 
             const finRoeEl = document.getElementById('deepDiveFinROE');
@@ -4599,12 +4630,12 @@
                 currencyNoteEl.innerText = data.is_usd ? "Mata Uang Laporan: USD (Dolar Amerika Serikat)" : "Mata Uang Laporan: IDR (Rupiah Indonesia)";
             }
 
-            // 4. Render Tabel Laporan Keuangan Historis
+            // 4. Render Tabel Laporan Keuangan Historis (Institutional High Contrast Dark Terminal)
             const years = data.years || ["2022", "2023", "2024", "2025"];
-            let headHtml = `<th class="py-3 px-4 font-bold text-slate-900 dark:text-slate-100 text-left">Pos Laporan Keuangan</th>`;
+            let headHtml = `<th class="py-2.5 px-3.5 font-mono font-bold text-slate-400 text-left uppercase text-[10px] tracking-wider">Pos Laporan Keuangan</th>`;
             years.forEach((yr, idx) => {
                 const isLatest = idx === years.length - 1;
-                headHtml += `<th class="py-3 px-3 text-right ${isLatest ? 'bg-slate-100/90 dark:bg-slate-800/60 font-black text-slate-900 dark:text-slate-100' : 'text-slate-500 dark:text-slate-400 font-bold'}">${yr}${isLatest ? ' (TTM)' : ''}</th>`;
+                headHtml += `<th class="py-2.5 px-3 text-right font-mono text-[11px] ${isLatest ? 'bg-white/5 font-black text-white border-l border-white/10' : 'text-slate-400 font-bold'}">${yr}${isLatest ? ' (TTM)' : ''}</th>`;
             });
             const tableHeadEl = document.getElementById('deepDiveFinTableHead');
             if (tableHeadEl) tableHeadEl.innerHTML = headHtml;
@@ -4622,11 +4653,14 @@
             let bodyHtml = "";
             metricsDef.forEach(m => {
                 const rowValues = (data.metrics && data.metrics[m.key]) ? data.metrics[m.key] : [];
-                const isHighlight = m.highlight ? "bg-emerald-500/10 font-bold dark:bg-emerald-950/20" : (m.isBold ? "font-bold text-slate-900 dark:text-slate-100" : "text-slate-700 dark:text-slate-300");
+                const rowBg = m.highlight ? "bg-emerald-500/10 border-y border-emerald-500/30" : "hover:bg-white/[0.03]";
+                const labelColor = m.highlight ? "text-emerald-300 font-bold" : (m.isBold ? "font-bold text-white" : "text-slate-300");
+                const iconColor = m.highlight ? "text-emerald-400" : "text-slate-500";
+
                 bodyHtml += `
-                <tr class="hover:bg-slate-100/80 dark:hover:bg-slate-800/50 transition-colors ${isHighlight}">
-                    <td class="py-3 px-4 flex items-center gap-2 text-slate-800 dark:text-slate-200">
-                        <span class="material-symbols-outlined text-[16px] text-slate-400">${m.icon}</span>
+                <tr class="transition-colors ${rowBg}">
+                    <td class="py-2.5 px-3.5 flex items-center gap-2 ${labelColor}">
+                        <span class="material-symbols-outlined text-[16px] ${iconColor}">${m.icon}</span>
                         <span>${m.label}</span>
                     </td>`;
                 years.forEach((yr, i) => {
@@ -4634,17 +4668,17 @@
                     const isLatest = i === years.length - 1;
                     const isNullVal = val === "-" || val === "N/A" || val === "" || val === null || val === undefined;
 
-                    let colorClass = isLatest ? "font-black text-slate-900 dark:text-slate-100 bg-slate-100/50 dark:bg-slate-800/40" : "text-slate-700 dark:text-slate-300";
+                    let cellClass = isLatest ? "font-black text-white bg-white/[0.04] border-l border-white/10" : "text-slate-300 font-medium";
                     if (isNullVal) {
                         val = "-";
-                        colorClass = isLatest ? "text-slate-400 dark:text-slate-500 font-medium bg-slate-100/50 dark:bg-slate-800/40" : "text-slate-400 dark:text-slate-500 font-normal";
+                        cellClass = isLatest ? "text-slate-500 font-medium bg-white/[0.04] border-l border-white/10" : "text-slate-500 font-normal";
                     } else if (m.isGrowth) {
-                        if (String(val).startsWith("+")) colorClass = "text-emerald-600 dark:text-emerald-400 font-extrabold";
-                        else if (String(val).startsWith("-")) colorClass = "text-rose-600 dark:text-rose-400 font-extrabold";
+                        if (String(val).startsWith("+")) cellClass = isLatest ? "text-emerald-400 font-black bg-white/[0.04] border-l border-white/10" : "text-emerald-400 font-extrabold";
+                        else if (String(val).startsWith("-")) cellClass = isLatest ? "text-rose-400 font-black bg-white/[0.04] border-l border-white/10" : "text-rose-400 font-extrabold";
                     } else if (m.highlight) {
-                        colorClass = isLatest ? "text-emerald-700 dark:text-emerald-300 font-black bg-emerald-500/15" : "text-emerald-600 dark:text-emerald-400 font-bold";
+                        cellClass = isLatest ? "text-emerald-300 font-black bg-emerald-500/20 border-l border-emerald-500/30" : "text-emerald-400 font-bold";
                     }
-                    bodyHtml += `<td class="py-3 px-3 text-right ${colorClass}">${val}</td>`;
+                    bodyHtml += `<td class="py-2.5 px-3 text-right font-mono text-xs ${cellClass}">${val}</td>`;
                 });
                 bodyHtml += `</tr>`;
             });
