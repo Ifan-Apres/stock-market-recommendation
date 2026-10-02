@@ -35,17 +35,30 @@ BIG_CAP_BLUE_CHIPS = {
 def format_curr_val(val, is_usd=False):
     if pd.isnull(val) or val == 0:
         return "-"
-    prefix = "$" if is_usd else "Rp "
     abs_val = abs(val)
     sign = "-" if val < 0 else ""
-    if abs_val >= 1e12:
-        return f"{sign}{prefix}{abs_val / 1e12:.2f} T"
-    elif abs_val >= 1e9:
-        return f"{sign}{prefix}{abs_val / 1e9:.2f} M"
-    elif abs_val >= 1e6:
-        return f"{sign}{prefix}{abs_val / 1e6:.2f} Jt"
+    if is_usd:
+        # Institutional US standards: T = Trillion, B = Billion, M = Million, K = Thousand
+        if abs_val >= 1e12:
+            return f"{sign}${abs_val / 1e12:.2f} T"
+        elif abs_val >= 1e9:
+            return f"{sign}${abs_val / 1e9:.2f} B"
+        elif abs_val >= 1e6:
+            return f"{sign}${abs_val / 1e6:.2f} M"
+        elif abs_val >= 1e3:
+            return f"{sign}${abs_val / 1e3:.2f} K"
+        else:
+            return f"{sign}${abs_val:,.2f}"
     else:
-        return f"{sign}{prefix}{abs_val:,.0f}"
+        # IDX / Indonesian standards: T = Triliun, M = Miliar, Jt = Juta
+        if abs_val >= 1e12:
+            return f"{sign}Rp {abs_val / 1e12:.2f} T"
+        elif abs_val >= 1e9:
+            return f"{sign}Rp {abs_val / 1e9:.2f} M"
+        elif abs_val >= 1e6:
+            return f"{sign}Rp {abs_val / 1e6:.2f} Jt"
+        else:
+            return f"{sign}Rp {abs_val:,.0f}"
 
 def build_summary():
     fund_df = pd.read_csv(FUND_FILE) if FUND_FILE.exists() else pd.DataFrame()
@@ -203,6 +216,23 @@ def build_summary():
         raw_years = [c for c in df.columns if "-" in str(c) or str(c).isdigit()]
         # Sort chronologically ascending
         sorted_year_cols = sorted(raw_years, key=lambda x: str(x)[:4])
+
+        # Filter out years that have no active revenue or income data (e.g. 2021 with all NaNs)
+        active_year_cols = []
+        for c in sorted_year_cols:
+            has_financial_data = False
+            for check_metric in ["Total Revenue", "Operating Revenue", "Net Income", "Net Income Common Stockholders", "Operating Income", "Gross Profit"]:
+                if check_metric in df.index and c in df.columns:
+                    val_c = df.loc[check_metric, c]
+                    if val_c is not None and not pd.isnull(val_c) and float(val_c) != 0:
+                        has_financial_data = True
+                        break
+            if has_financial_data:
+                active_year_cols.append(c)
+
+        if len(active_year_cols) >= 2:
+            sorted_year_cols = active_year_cols
+
         years_labels = [str(c)[:4] for c in sorted_year_cols]
 
         def get_series(row_names):
@@ -217,11 +247,65 @@ def build_summary():
         operating_income_list = get_series(["Operating Income", "EBIT"])
         net_income_list = get_series(["Net Income", "Net Income Common Stockholders", "Normalized Income"])
         eps_list = get_series(["Basic EPS", "Diluted EPS"])
+        shares_list = get_series(["Basic Average Shares", "Diluted Average Shares"])
         operating_expense_list = get_series(["Operating Expense", "Total Expenses"])
 
-        # Detect if numbers are in USD (e.g. ADRO, AADI, MEDC where revenue < 50 billion nominal)
+        # Detect if numbers are in USD (< 50 billion nominal vs IDR >= 2.4 trillion nominal)
         max_rev = max([abs(v) for v in revenue_list if v is not None] or [0])
-        is_usd = bool(max_rev > 0 and max_rev < 50e9 and ticker in ["ADRO", "AADI", "MEDC", "AMMN", "MBMA"])
+        is_usd = bool(max_rev > 0 and max_rev < 50e9)
+
+        # Health Scoring & Archetypes
+        mcap = float(fund.get("Market_Cap") or 0.0)
+        close_price = float(fund.get("Close") or rec.get("Close") or 1000.0)
+        roe = float(fund.get("ROE") or 0.0) * 100.0
+        
+        is_bank = ticker in ["BBCA", "BBRI", "BMRI", "BBNI", "BBTN", "BRIS"]
+        der_raw = fund.get("Debt_to_Equity")
+        if is_bank or pd.isna(der_raw) or der_raw is None:
+            der = 0.0
+            der_display = "-"
+        else:
+            der = float(der_raw)
+            der_display = f"{der:.2f}x"
+
+        div_yield = float(fund.get("Dividend_Yield") or 0.0)
+        pe = float(fund.get("PE_Ratio") or 0.0)
+        pbv = float(fund.get("PB_Ratio") or 0.0)
+        rec_action = str(rec.get("Recommendation") or "BUY ON WEAKNESS").upper()
+        prob = float(rec.get("Bullish_Probability") or 0.70)
+        rrr = float(rec.get("Risk_Reward_Ratio") or 2.0)
+
+        # Secondary estimated shares if not in statement: Market_Cap / Close
+        est_shares = (mcap / close_price) if (mcap > 0 and close_price > 0) else None
+
+        # Format EPS with precision and fallback: (Net Income / Total Shares)
+        formatted_eps = []
+        for i in range(len(sorted_year_cols)):
+            raw_eps = eps_list[i]
+            net_inc = net_income_list[i]
+
+            # Check if raw_eps is valid (not null and not 0)
+            is_valid_eps = (raw_eps is not None and not pd.isnull(raw_eps) and float(raw_eps) != 0)
+
+            if not is_valid_eps and net_inc is not None and not pd.isnull(net_inc):
+                # Fallback calculation: Net Income / Total Outstanding Shares
+                sh = shares_list[i] if (shares_list and i < len(shares_list) and shares_list[i] and shares_list[i] > 0) else est_shares
+                if sh and sh > 0:
+                    raw_eps = net_inc / sh
+
+            if raw_eps is None or pd.isnull(raw_eps):
+                formatted_eps.append("-")
+            else:
+                raw_eps = float(raw_eps)
+                if is_usd:
+                    if abs(raw_eps) >= 0.05:
+                        formatted_eps.append(f"${raw_eps:.2f}")
+                    elif abs(raw_eps) > 0:
+                        formatted_eps.append(f"${raw_eps:.3f}")
+                    else:
+                        formatted_eps.append("$0.00")
+                else:
+                    formatted_eps.append(f"{raw_eps:,.0f}")
 
         # Calculate revenue growth YoY
         rev_growth = []
@@ -241,17 +325,6 @@ def build_summary():
                 net_margins.append(round((n_val / r_val) * 100, 1))
             else:
                 net_margins.append(None)
-
-        # Health Scoring & Archetypes
-        mcap = float(fund.get("Market_Cap") or 0.0)
-        roe = float(fund.get("ROE") or 0.0) * 100.0
-        der = float(fund.get("Debt_to_Equity") or 0.0)
-        div_yield = float(fund.get("Dividend_Yield") or 0.0)
-        pe = float(fund.get("PE_Ratio") or 0.0)
-        pbv = float(fund.get("PB_Ratio") or 0.0)
-        rec_action = str(rec.get("Recommendation") or "BUY ON WEAKNESS").upper()
-        prob = float(rec.get("Bullish_Probability") or 0.70)
-        rrr = float(rec.get("Risk_Reward_Ratio") or 2.0)
 
         # Determine Archetypes (Kartu Mencolok)
         archetypes = []
@@ -344,32 +417,65 @@ def build_summary():
                 "desc": "Emiten berada dalam fase konsolidasi strategis dengan potensi katalis pertumbuhan siklikal pada industrinya."
             })
 
-        # 5-Year Financial Health Status
-        # Check net income consistency
+        # 5-Year Financial Health Status with YoY Revenue Contraction Guard
         valid_profits = [p for p in net_income_list if p is not None]
         all_positive = all([p > 0 for p in valid_profits]) if valid_profits else True
-        if roe >= 15.0 and der <= 1.2 and all_positive:
+
+        # Detect consecutive negative revenue growth in the latest reporting years
+        valid_growths = [g for g in rev_growth if g is not None]
+        consecutive_neg_rev = 0
+        for g in reversed(valid_growths):
+            if g < 0:
+                consecutive_neg_rev += 1
+            else:
+                break
+
+        neg_growths_list = [f"{g:+.1f}%" for g in valid_growths if g < 0]
+        has_consecutive_neg_rev = consecutive_neg_rev >= 2
+
+        solv_desc = f"solvabilitas (DER {der_display})" if der_display != "-" else "permodalan perbankan"
+        if has_consecutive_neg_rev:
+            health_status = "MODERAT / KONTRAKSI OMZET"
+            health_badge = "bg-amber-100 text-amber-900 border-amber-300"
+            health_desc = (
+                f"Meskipun {solv_desc} dan laba bersih positif, terdeteksi kontraksi omzet berturut-turut "
+                f"({consecutive_neg_rev} periode terakhir: {', '.join(neg_growths_list[-consecutive_neg_rev:])}) yang menjadi sinyal waspada perlambatan top-line."
+            )
+        elif roe >= 15.0 and (der <= 1.2 or is_bank) and all_positive:
             health_status = "SANGAT SEHAT & PRIMA"
             health_badge = "bg-emerald-100 text-emerald-900 border-emerald-300"
-            health_desc = "Neraca solid tanpa ancaman solvabilitas, laba bersih 5 tahun konsisten surplus, dan efisiensi operasional kelas satu."
-        elif all_positive and der <= 2.0:
+            health_desc = "Neraca solid tanpa ancaman solvabilitas, laba bersih multi-tahun konsisten surplus, dan ekspansi operasional terjaga prima."
+        elif all_positive and (der <= 2.0 or is_bank):
             health_status = "SEHAT & STABIL"
             health_badge = "bg-blue-100 text-blue-900 border-blue-300"
             health_desc = "Fundamental operasional berada dalam jalur stabil, struktur utang terkendali, dan kapasitas arus kas mencukupi kewajiban modal."
         else:
             health_status = "MODERAT / PERLU MONITORING"
             health_badge = "bg-amber-100 text-amber-900 border-amber-300"
-            health_desc = "Terdapat fluktuasi margin laba atau tingkat leverage utang yang perlu dipantau ketat seiring dinamika siklus komoditas / suku bunga."
+            health_desc = "Terdapat fluktuasi margin laba, perlambatan pertumbuhan, atau tingkat leverage utang yang perlu dipantau ketat seiring dinamika siklus sektoral."
 
-        # Structured Gemini Flash Analysis Narrative
-        # Generates an institutional 3-part brief based on actual metrics
+        # Structured Gemini Flash Analysis Narrative with Mandatory Revenue YoY Evaluation
+        if has_consecutive_neg_rev:
+            rev_trend_analysis = (
+                f"Namun demikian, terdapat sinyal waspada berupa penurunan pendapatan usaha (YoY) berturut-turut "
+                f"selama {consecutive_neg_rev} periode terakhir ({', '.join(neg_growths_list[-consecutive_neg_rev:])}). "
+                f"Meskipun profitabilitas bersih tetap surplus, kontraksi top-line menuntut kehati-hatian atas potensi normalisasi laba di masa depan."
+            )
+            tone_performance = "bertahan dengan profitabilitas tinggi namun menghadapi kontraksi top-line"
+        elif roe >= 18 and all_positive:
+            rev_trend_analysis = "Pertumbuhan top-line dan ekspansi arus kas operasional terjaga prima untuk menopang ekspansi bisnis secara mandiri."
+            tone_performance = "bertumbuh impresif"
+        else:
+            rev_trend_analysis = "Pertumbuhan pendapatan dan struktur modal bertahan defensif dengan manajemen efisiensi biaya yang terukur."
+            tone_performance = "solid dan defensif"
+
+        der_narrative = f"serta rasio utang terhadap ekuitas (DER) {der_display}" if der_display != "-" else "serta rasio kecukupan modal perbankan yang prima"
+
         gemini_summary = {
             "health_evaluation": (
-                f"Selama periode historis 4–5 tahun terakhir, {ticker} mempertahankan kinerja "
-                f"{'bertumbuh impresif' if roe >= 18 else 'solid dan defensif'}. "
-                f"Dengan Margin of Return on Equity (ROE) {roe:.1f}% serta rasio utang terhadap ekuitas (DER) {der:.2f}x, "
-                f"kesehatan finansial emiten dinilai {health_status.lower()}. "
-                f"{'Pertumbuhan arus kas operasional mampu menopang belanja modal secara mandiri.' if der < 1.0 else 'Struktur modal memerlukan disiplin alokasi utang yang ketat.'}"
+                f"Selama periode historis 4–5 tahun terakhir, {ticker} mempertahankan kinerja {tone_performance}. "
+                f"Dengan Margin of Return on Equity (ROE) {roe:.1f}% {der_narrative}, "
+                f"kesehatan finansial emiten dinilai {health_status.lower()}. {rev_trend_analysis}"
             ),
             "investor_fit": (
                 f"Dari sisi profil investor: Saham ini {'sangat direkomendasikan untuk swing trader aktif' if is_swing else 'ideal untuk portofolio jangka panjang'} "
@@ -392,7 +498,7 @@ def build_summary():
                 "gross_profit": [format_curr_val(v, is_usd) for v in gross_profit_list],
                 "operating_income": [format_curr_val(v, is_usd) for v in operating_income_list],
                 "net_income": [format_curr_val(v, is_usd) for v in net_income_list],
-                "eps": [f"{v:.0f}" if (v is not None and not pd.isnull(v)) else "-" for v in eps_list],
+                "eps": formatted_eps,
                 "revenue_growth": [f"{v:+.1f}%" if v is not None else "-" for v in rev_growth],
                 "net_margin": [f"{v:.1f}%" if v is not None else "-" for v in net_margins],
             },
@@ -401,11 +507,11 @@ def build_summary():
                 "badge_class": health_badge,
                 "desc": health_desc,
                 "roe": f"{roe:.1f}%",
-                "der": f"{der:.2f}x",
+                "der": der_display,
                 "pe": f"{pe:.1f}x" if pe > 0 else "-",
                 "pbv": f"{pbv:.2f}x" if pbv > 0 else "-",
                 "div_yield": f"{div_yield:.1f}%",
-                "mcap_formatted": format_curr_val(mcap),
+                "mcap_formatted": format_curr_val(mcap, is_usd=False),
             },
             "archetypes": archetypes,
             "gemini_analysis": gemini_summary,

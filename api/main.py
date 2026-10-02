@@ -878,6 +878,7 @@ def analyze_emiten_with_gemini(
         f"Rasio Fundamental: ROE {health.get('roe', 'N/A')}, DER {health.get('der', 'N/A')}, PER {health.get('pe', 'N/A')}, PBV {health.get('pbv', 'N/A')}, Dividend Yield {health.get('div_yield', 'N/A')}\n"
         f"Riwayat Laba Bersih Multi-Tahun: {fin_data.get('metrics', {}).get('net_income', [])}\n"
         f"Riwayat Pendapatan Usaha: {fin_data.get('metrics', {}).get('revenue', [])}\n"
+        f"Riwayat Pertumbuhan Pendapatan YoY: {fin_data.get('metrics', {}).get('revenue_growth', [])}\n"
     )
 
     prompt = (
@@ -885,7 +886,7 @@ def analyze_emiten_with_gemini(
         f"Analisis data faktual berikut untuk saham {clean_ticker}:\n\n"
         f"{context_str}\n\n"
         f"Berikan analisis tajam, elegan, dan objektif dalam format JSON murni (tanpa pembungkus markdown ```json) dengan persis 3 kunci string:\n"
-        f"1. \"health_evaluation\": Ulas apakah kinerja keuangan 5 tahun terakhir sehat atau berisiko, konsistensi laba bersih, dan keamanan beban utang (DER).\n"
+        f"1. \"health_evaluation\": Ulas apakah kinerja keuangan 4–5 tahun terakhir sehat atau berisiko, konsistensi laba bersih, beban utang (DER), serta WAJIB mengevaluasi tren Pertumbuhan Pendapatan YoY. Jika mendeteksi pertumbuhan pendapatan yang negatif berturut-turut (kontraksi omzet), berikan konteks peringatan risiko objektif terhadap top-line dan jangan menyimpulkan emiten bertumbuh impresif secara buta.\n"
         f"2. \"investor_fit\": Jelaskan apakah saham ini tergolong Blue Chip / Big Cap aman, fundamental kokoh untuk dividen/investasi panjang, atau sangat prima bagi swing trader aktif berdasarkan sinyal teknikal saat ini.\n"
         f"3. \"verdict\": Kesimpulan eksekutif mengenai rencana tindakan, level entry, target profit, dan proteksi stop loss.\n"
         f"Gunakan Bahasa Indonesia profesional standar institusi sekuritas kelas atas. Jangan gunakan kata 'dan' berulang, hindari tanda bintang tebal (**)."
