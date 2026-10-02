@@ -77,6 +77,22 @@
         ::-webkit-scrollbar-track { background: #080C14; }
         ::-webkit-scrollbar-thumb { background: #1E293B; border-radius: 2px; }
         ::-webkit-scrollbar-thumb:hover { background: #334155; }
+
+        /* Wall Street Continuous Ticker Tape Marquee (Agent New York) */
+        @keyframes tickerTapeAnimation {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-50%, 0, 0); }
+        }
+        .ticker-track {
+            display: inline-flex;
+            width: max-content;
+            animation: tickerTapeAnimation 45s linear infinite;
+            will-change: transform;
+        }
+        .ticker-track:hover {
+            animation-play-state: paused;
+        }
+
         .page-view { display: none; }
         .page-view.active { display: block; }
     </style>
@@ -223,74 +239,75 @@
 
     <!-- ==================== HEADER ATAS & WRAPPER KONTEN ==================== -->
     <div class="pl-0 lg:pl-64 min-h-screen flex flex-col">
-        <header class="fixed top-0 left-0 lg:left-64 right-0 h-16 lg:h-20 bg-white/95 backdrop-blur-md z-30 border-b border-surface-border px-3 sm:px-6 lg:px-8 flex items-center justify-between gap-2.5 sm:gap-6">
+        <!-- ==================== WALL STREET COMPRESSED HEADER (TAHAP 2) ==================== -->
+        <header class="fixed top-0 left-0 lg:left-64 right-0 h-12 bg-[#080C14]/95 backdrop-blur-md z-30 border-b border-white/10 px-3 sm:px-6 flex items-center justify-between gap-2.5 sm:gap-4">
             <!-- Hamburger Button untuk Mobile -->
-            <button type="button" class="lg:hidden p-2 rounded-xl text-slate-700 hover:bg-slate-100 active:bg-slate-200 transition-colors flex items-center justify-center shrink-0" onclick="toggleSidebar()" aria-label="Buka Menu Navigasi">
-                <span class="material-symbols-outlined text-[22px]">menu</span>
+            <button type="button" class="lg:hidden p-1.5 rounded-sm text-slate-300 hover:bg-white/5 active:bg-white/10 transition-colors flex items-center justify-center shrink-0 border border-white/10" onclick="toggleSidebar()" aria-label="Buka Menu Navigasi">
+                <span class="material-symbols-outlined text-[20px]">menu</span>
             </button>
 
-            <!-- Search bar fungsional dengan Autocomplete Dropdown -->
-            <div class="flex-1 max-w-lg relative" id="globalSearchContainer">
+            <!-- Search bar fungsional dengan Autocomplete Dropdown (Bloomberg / Koyfin Style) -->
+            <div class="flex-1 max-w-md relative" id="globalSearchContainer">
                 <div class="relative flex items-center w-full">
-                    <span class="material-symbols-outlined absolute left-3 text-slate-400 text-[18px] lg:text-[20px] pointer-events-none">search</span>
-                    <input class="w-full bg-slate-100 border border-transparent focus:border-slate-300 text-xs sm:text-sm text-text-main placeholder:text-slate-400 rounded-xl pl-9 lg:pl-10 pr-9 py-2 sm:py-2.5 focus:outline-none focus:bg-white transition-all shadow-2xs" id="globalSearchInput" placeholder="Cari saham / emiten (cth: BBCA, AADI, Telkom)..." type="text" autocomplete="off" oninput="handleGlobalSearch(this.value)" onkeydown="handleGlobalSearchKeydown(event)"/>
-                    <button type="button" id="clearSearchBtn" class="absolute right-2.5 p-1 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-200/60 hidden transition-colors" onclick="clearGlobalSearch()" aria-label="Hapus Pencarian">
-                        <span class="material-symbols-outlined text-[16px] block">close</span>
+                    <span class="material-symbols-outlined absolute left-2.5 text-slate-400 text-[17px] pointer-events-none">search</span>
+                    <input class="w-full bg-[#0E1420] border border-white/15 focus:border-cyan-400 text-xs text-slate-100 placeholder:text-slate-500 rounded-sm pl-8 pr-8 py-1.5 focus:outline-none transition-all shadow-inner font-mono" id="globalSearchInput" placeholder="Cari emiten (BBCA, AADI, TLKM)..." type="text" autocomplete="off" oninput="handleGlobalSearch(this.value)" onkeydown="handleGlobalSearchKeydown(event)"/>
+                    <button type="button" id="clearSearchBtn" class="absolute right-2 p-0.5 rounded-sm text-slate-400 hover:text-slate-200 hover:bg-white/10 hidden transition-colors" onclick="clearGlobalSearch()" aria-label="Hapus Pencarian">
+                        <span class="material-symbols-outlined text-[15px] block">close</span>
                     </button>
                 </div>
 
                 <!-- Autocomplete Suggestions Popover Dropdown -->
-                <div id="searchSuggestionsDropdown" class="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl border border-surface-border shadow-2xl overflow-hidden z-50 hidden max-h-96 overflow-y-auto animate-in fade-in zoom-in-95 duration-150">
-                    <div class="p-2 border-b border-slate-100 flex items-center justify-between text-[11px] text-text-muted px-3">
-                        <span class="font-bold uppercase tracking-wider text-slate-400 text-[10px]">Saran Emiten Terpilih</span>
-                        <span class="text-[10px] text-slate-400">Tekan Enter atau Klik</span>
+                <div id="searchSuggestionsDropdown" class="absolute top-full left-0 right-0 mt-1 bg-[#0E1420] rounded-sm border border-white/15 shadow-2xl overflow-hidden z-50 hidden max-h-96 overflow-y-auto">
+                    <div class="p-2 border-b border-white/10 flex items-center justify-between text-[10.5px] text-slate-400 px-3 font-mono">
+                        <span class="font-bold uppercase tracking-wider text-cyan-400 text-[10px]">Emiten Terpilih</span>
+                        <span class="text-[10px] text-slate-500">Enter / Klik</span>
                     </div>
-                    <div id="searchSuggestionsList" class="p-1.5 flex flex-col gap-1">
+                    <div id="searchSuggestionsList" class="p-1 flex flex-col gap-0.5 font-mono text-xs">
                         <!-- Saran hasil pencarian dinamis diisi JS -->
                     </div>
                 </div>
             </div>
 
             <!-- Info Pasar dan Profil Analis -->
-            <div class="flex items-center gap-2 sm:gap-4 shrink-0">
-                <div class="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full bg-rose-50 border border-rose-200 text-rose-800" id="marketPill">
-                    <span class="w-2 h-2 rounded-full bg-rose-500 shrink-0" id="marketDot"></span>
-                    <span class="text-[11px] sm:text-xs font-bold whitespace-nowrap" id="marketStatusText">Pasar Tutup</span>
+            <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+                <div class="flex items-center gap-1.5 px-2 py-0.5 rounded-sm bg-rose-950/40 border border-rose-500/30 text-rose-300 font-mono text-[11px]" id="marketPill">
+                    <span class="w-1.5 h-1.5 rounded-full bg-rose-500 shrink-0" id="marketDot"></span>
+                    <span class="font-bold whitespace-nowrap tracking-wide" id="marketStatusText">PASAR TUTUP</span>
                 </div>
 
-                <div class="hidden sm:block h-7 w-px bg-slate-200"></div>
+                <div class="hidden sm:block h-5 w-px bg-white/10"></div>
 
                 <!-- Profil Analis dengan Dropdown Menu Interaktif (Jika Terautentikasi) -->
                 <div class="relative hidden" id="headerUserLoggedInWrap">
-                    <button type="button" class="flex items-center gap-2 p-1 sm:p-1.5 rounded-xl hover:bg-slate-100 transition-colors focus:outline-none" onclick="toggleUserDropdown()" id="userProfileBtn">
-                        <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-primary text-white flex items-center justify-center font-bold text-xs shadow-sm" id="headerUserAvatar">
+                    <button type="button" class="flex items-center gap-2 p-1 rounded-sm hover:bg-white/5 transition-colors focus:outline-none border border-transparent hover:border-white/10" onclick="toggleUserDropdown()" id="userProfileBtn">
+                        <div class="w-7 h-7 rounded-sm bg-cyan-950/70 border border-cyan-500/40 text-cyan-300 flex items-center justify-center font-mono font-bold text-xs shadow-sm" id="headerUserAvatar">
                             NY
                         </div>
                         <div class="flex flex-col text-left hidden md:flex">
-                            <span class="text-sm font-bold text-primary leading-tight" id="headerUserName">TIM New York</span>
-                            <span class="text-xs text-text-muted leading-tight font-medium" id="headerUserRole">Ifan Apres & Sekar W.</span>
+                            <span class="text-xs font-mono font-bold text-slate-100 leading-tight" id="headerUserName">TIM New York</span>
+                            <span class="text-[10px] font-mono text-slate-400 leading-tight font-medium" id="headerUserRole">Ifan Apres & Sekar W.</span>
                         </div>
-                        <span class="material-symbols-outlined text-[16px] sm:text-[18px] text-slate-400 hidden sm:inline-block">expand_more</span>
+                        <span class="material-symbols-outlined text-[16px] text-slate-400 hidden sm:inline-block">expand_more</span>
                     </button>
 
                     <!-- Dropdown Menu Sesi Pengguna -->
-                    <div class="absolute right-0 top-full mt-2 w-56 sm:w-64 bg-white rounded-2xl border border-surface-border shadow-xl p-3 hidden flex-col gap-2 z-50 animate-in fade-in zoom-in-95 duration-150" id="userDropdownMenu">
-                        <div class="p-3 rounded-xl bg-slate-50 border border-slate-100 flex flex-col gap-0.5">
+                    <div class="absolute right-0 top-full mt-1 w-56 sm:w-60 bg-[#0E1420] rounded-sm border border-white/15 shadow-2xl p-2.5 hidden flex-col gap-1.5 z-50 animate-in fade-in zoom-in-95 duration-150" id="userDropdownMenu">
+                        <div class="p-2.5 rounded-sm bg-[#131B2B] border border-white/10 flex flex-col gap-0.5">
                             <div class="flex items-center gap-2">
-                                <span class="text-xs font-bold text-primary" id="dropdownUserName">TIM New York</span>
-                                <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold">Aktif</span>
+                                <span class="text-xs font-mono font-bold text-white" id="dropdownUserName">TIM New York</span>
+                                <span class="px-1.5 py-0.2 rounded-sm bg-emerald-950 text-emerald-400 text-[9.5px] font-mono font-bold border border-emerald-500/30">Aktif</span>
                             </div>
-                            <span class="text-[11px] text-text-muted" id="dropdownUserEmail">team.newyork@stockmarket.id</span>
-                            <span class="text-[10px] text-slate-400 mt-1">Ifan Apres & Sekar Widhastri (BEI Quant)</span>
+                            <span class="text-[10.5px] font-mono text-slate-400" id="dropdownUserEmail">team.newyork@stockmarket.id</span>
+                            <span class="text-[10px] text-slate-500 mt-0.5">Ifan Apres & Sekar Widhastri (BEI Quant)</span>
                         </div>
 
-                        <div class="flex flex-col gap-1 pt-1 border-t border-slate-100">
-                            <a href="/login.html" class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-text-main hover:bg-slate-100 transition-colors">
-                                <span class="material-symbols-outlined text-[18px] text-slate-500">switch_account</span>
+                        <div class="flex flex-col gap-0.5 pt-1 border-t border-white/10">
+                            <a href="/login.html" class="flex items-center gap-2 px-2.5 py-1.5 rounded-sm text-xs font-mono text-slate-300 hover:bg-white/5 transition-colors">
+                                <span class="material-symbols-outlined text-[16px] text-slate-400">switch_account</span>
                                 <span>Ganti Akun / Halaman Login</span>
                             </a>
-                            <button type="button" class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-rose-600 hover:bg-rose-50 transition-colors text-left w-full" onclick="logoutUser()">
-                                <span class="material-symbols-outlined text-[18px]">logout</span>
+                            <button type="button" class="flex items-center gap-2 px-2.5 py-1.5 rounded-sm text-xs font-mono text-rose-400 hover:bg-rose-950/30 transition-colors text-left w-full" onclick="logoutUser()">
+                                <span class="material-symbols-outlined text-[16px]">logout</span>
                                 <span>Keluar (Logout)</span>
                             </button>
                         </div>
@@ -299,16 +316,59 @@
 
                 <!-- Tombol Masuk / Daftar Pengunjung Tamu (Default untuk Tamu) -->
                 <div id="headerGuestWrap" class="flex items-center gap-2">
-                    <a href="/login.html" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition-all shadow-sm active:scale-95">
-                        <span class="material-symbols-outlined text-[16px]">login</span>
+                    <a href="/login.html" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-sm bg-emerald-600 hover:bg-emerald-500 text-white font-mono font-bold text-xs transition-all shadow-sm active:scale-95 border border-emerald-400/40">
+                        <span class="material-symbols-outlined text-[15px]">login</span>
                         <span>Masuk / Daftar</span>
                     </a>
                 </div>
             </div>
         </header>
 
+        <!-- ==================== WALL STREET STREAMING TICKER TAPE (TAHAP 2) ==================== -->
+        <div class="fixed top-12 left-0 lg:left-64 right-0 h-7 bg-[#05080E] border-b border-white/10 z-20 flex items-center overflow-hidden font-mono text-[11px]" id="marketTickerTape">
+            <div class="h-full px-2.5 bg-[#090D18] border-r border-white/10 text-cyan-400 font-extrabold flex items-center gap-1.5 shrink-0 z-10">
+                <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+                <span class="tracking-wider text-[10px] uppercase font-bold">IDX Pulse</span>
+            </div>
+            
+            <div class="flex-1 overflow-hidden relative h-full flex items-center">
+                <div class="ticker-track flex items-center gap-6 whitespace-nowrap pl-4" id="tickerItemsContainer">
+                    <span class="inline-flex items-center gap-1.5 text-slate-300"><strong class="text-white">IHSG</strong> <span class="font-mono-num text-emerald-400">6,462.43 (+0.40%)</span></span>
+                    <span class="inline-flex items-center gap-1.5 text-slate-300"><strong class="text-white">LQ45</strong> <span class="font-mono-num text-emerald-400">842.10 (+0.35%)</span></span>
+                    <span class="inline-flex items-center gap-1.5 text-slate-300"><strong class="text-white">BBCA</strong> <span class="font-mono-num text-emerald-400">Rp 10,425 (+1.21%)</span></span>
+                    <span class="inline-flex items-center gap-1.5 text-slate-300"><strong class="text-white">BBRI</strong> <span class="font-mono-num text-rose-400">Rp 4,820 (-0.41%)</span></span>
+                    <span class="inline-flex items-center gap-1.5 text-slate-300"><strong class="text-white">BMRI</strong> <span class="font-mono-num text-emerald-400">Rp 6,950 (+0.72%)</span></span>
+                    <span class="inline-flex items-center gap-1.5 text-slate-300"><strong class="text-white">BBNI</strong> <span class="font-mono-num text-emerald-400">Rp 5,300 (+0.95%)</span></span>
+                    <span class="inline-flex items-center gap-1.5 text-slate-300"><strong class="text-white">TLKM</strong> <span class="font-mono-num text-rose-400">Rp 2,890 (-0.34%)</span></span>
+                    <span class="inline-flex items-center gap-1.5 text-slate-300"><strong class="text-white">ASII</strong> <span class="font-mono-num text-emerald-400">Rp 5,125 (+1.48%)</span></span>
+                    <span class="inline-flex items-center gap-1.5 text-slate-300"><strong class="text-white">ADRO</strong> <span class="font-mono-num text-emerald-400">Rp 3,680 (+2.22%)</span></span>
+                    <span class="inline-flex items-center gap-1.5 text-slate-300"><strong class="text-white">AADI</strong> <span class="font-mono-num text-emerald-400">Rp 6,850 (+3.79%)</span></span>
+                    <span class="inline-flex items-center gap-1.5 text-slate-300"><strong class="text-white">ICBP</strong> <span class="font-mono-num text-slate-400">Rp 11,800 (0.00%)</span></span>
+                    <span class="inline-flex items-center gap-1.5 text-slate-300"><strong class="text-white">AMMN</strong> <span class="font-mono-num text-rose-400">Rp 8,675 (-1.14%)</span></span>
+                    <!-- Seamless loop copy -->
+                    <span class="inline-flex items-center gap-1.5 text-slate-300"><strong class="text-white">IHSG</strong> <span class="font-mono-num text-emerald-400">6,462.43 (+0.40%)</span></span>
+                    <span class="inline-flex items-center gap-1.5 text-slate-300"><strong class="text-white">LQ45</strong> <span class="font-mono-num text-emerald-400">842.10 (+0.35%)</span></span>
+                    <span class="inline-flex items-center gap-1.5 text-slate-300"><strong class="text-white">BBCA</strong> <span class="font-mono-num text-emerald-400">Rp 10,425 (+1.21%)</span></span>
+                    <span class="inline-flex items-center gap-1.5 text-slate-300"><strong class="text-white">BBRI</strong> <span class="font-mono-num text-rose-400">Rp 4,820 (-0.41%)</span></span>
+                    <span class="inline-flex items-center gap-1.5 text-slate-300"><strong class="text-white">BMRI</strong> <span class="font-mono-num text-emerald-400">Rp 6,950 (+0.72%)</span></span>
+                    <span class="inline-flex items-center gap-1.5 text-slate-300"><strong class="text-white">BBNI</strong> <span class="font-mono-num text-emerald-400">Rp 5,300 (+0.95%)</span></span>
+                    <span class="inline-flex items-center gap-1.5 text-slate-300"><strong class="text-white">TLKM</strong> <span class="font-mono-num text-rose-400">Rp 2,890 (-0.34%)</span></span>
+                    <span class="inline-flex items-center gap-1.5 text-slate-300"><strong class="text-white">ASII</strong> <span class="font-mono-num text-emerald-400">Rp 5,125 (+1.48%)</span></span>
+                    <span class="inline-flex items-center gap-1.5 text-slate-300"><strong class="text-white">ADRO</strong> <span class="font-mono-num text-emerald-400">Rp 3,680 (+2.22%)</span></span>
+                    <span class="inline-flex items-center gap-1.5 text-slate-300"><strong class="text-white">AADI</strong> <span class="font-mono-num text-emerald-400">Rp 6,850 (+3.79%)</span></span>
+                    <span class="inline-flex items-center gap-1.5 text-slate-300"><strong class="text-white">ICBP</strong> <span class="font-mono-num text-slate-400">Rp 11,800 (0.00%)</span></span>
+                    <span class="inline-flex items-center gap-1.5 text-slate-300"><strong class="text-white">AMMN</strong> <span class="font-mono-num text-rose-400">Rp 8,675 (-1.14%)</span></span>
+                </div>
+            </div>
+
+            <div class="h-full px-2.5 bg-[#090D18] border-l border-white/10 text-slate-400 text-[10px] font-mono hidden md:flex items-center gap-1.5 shrink-0 z-10">
+                <span class="text-slate-500">SETTLEMENT:</span>
+                <span class="text-emerald-400 font-bold" id="tickerSettlementStatus">17:15 WIB</span>
+            </div>
+        </div>
+
         <!-- ==================== MAIN CONTENT AREA (5 PAGES) ==================== -->
-        <main class="pt-20 lg:pt-24 px-3 sm:px-6 lg:px-8 pb-24 lg:pb-16 flex-1 w-full max-w-7xl mx-auto">
+        <main class="pt-[84px] px-3 sm:px-6 lg:px-8 pb-24 lg:pb-16 flex-1 w-full max-w-7xl mx-auto">
 
             <!-- PAGE 1: RINGKASAN PASAR -->
             <div class="page-view active" id="page-ringkasan">
@@ -2971,7 +3031,37 @@
                 updateRecommendationCharts(allRecommendations);
                 populateCalculatorStockDropdown(allRecommendations);
                 updatePortfolioCalculations();
+                updateTickerTape(allRecommendations);
             }
+        }
+
+        function updateTickerTape(items) {
+            const container = document.getElementById('tickerItemsContainer');
+            if (!container || !items || items.length === 0) return;
+
+            const sample = items.slice(0, 16);
+            let tickerHtml = "";
+
+            tickerHtml += `<span class="inline-flex items-center gap-1.5 text-slate-300 cursor-pointer"><strong class="text-white font-mono font-bold">IHSG</strong> <span class="font-mono-num font-bold text-emerald-400">6,462.43 (+0.40%)</span></span>`;
+            tickerHtml += `<span class="inline-flex items-center gap-1.5 text-slate-300 cursor-pointer"><strong class="text-white font-mono font-bold">LQ45</strong> <span class="font-mono-num font-bold text-emerald-400">842.10 (+0.35%)</span></span>`;
+
+            sample.forEach(item => {
+                const ticker = (item.Ticker || '').replace('.JK', '');
+                const close = Math.round(item.Close || 0);
+                const ret = item.Return_1D !== undefined && item.Return_1D !== null ? Number(item.Return_1D) : 0;
+                const isPos = ret >= 0;
+                const retFormatted = (isPos ? '+' : '') + (ret * (Math.abs(ret) < 0.5 ? 100 : 1)).toFixed(2) + '%';
+                const colorCls = isPos ? 'text-emerald-400' : 'text-rose-400';
+
+                tickerHtml += `
+                    <span class="inline-flex items-center gap-1.5 text-slate-300 cursor-pointer hover:text-cyan-300 transition-colors" onclick="showStockDeepDive('${ticker}')">
+                        <strong class="text-white font-mono font-bold">${ticker}</strong>
+                        <span class="font-mono-num font-bold ${colorCls}">Rp ${close.toLocaleString('id-ID')} (${retFormatted})</span>
+                    </span>
+                `;
+            });
+
+            container.innerHTML = tickerHtml + tickerHtml;
         }
 
         function renderRecommendationsTable(items) {
