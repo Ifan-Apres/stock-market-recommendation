@@ -1,10 +1,10 @@
 {
   "macro": {
     "date": "2026-10-01",
-    "ihsg_net_foreign_1d": -186882486453,
-    "ihsg_net_foreign_1d_formatted": "-Rp 186.9 M",
-    "ihsg_net_foreign_5d": -648132068405,
-    "ihsg_net_foreign_5d_formatted": "-Rp 648.1 M",
+    "ihsg_net_foreign_1d": -214241428129,
+    "ihsg_net_foreign_1d_formatted": "-Rp 214.2 M",
+    "ihsg_net_foreign_5d": -675491010081,
+    "ihsg_net_foreign_5d_formatted": "-Rp 675.5 M",
     "status": "Net Outflow",
     "sentiment": "Distribusi / Rotasi Keluar Asing",
     "advances": 7,
@@ -45,6 +45,12 @@
     ],
     "top_foreign_sell": [
       {
+        "ticker": "GOTO",
+        "net_1d": -49247666286,
+        "net_1d_formatted": "-Rp 49.2 M",
+        "status": "Distribusi Besar Asing"
+      },
+      {
         "ticker": "BBCA",
         "net_1d": -36069275000,
         "net_1d_formatted": "-Rp 36.1 M",
@@ -61,12 +67,6 @@
         "net_1d": -25658371783,
         "net_1d_formatted": "-Rp 25.7 M",
         "status": "Distribusi Besar Asing"
-      },
-      {
-        "ticker": "GOTO",
-        "net_1d": -21888724610,
-        "net_1d_formatted": "-Rp 21.9 M",
-        "status": "Outflow Asing"
       },
       {
         "ticker": "BBRI",
@@ -8319,16 +8319,16 @@
     "GOTO": {
       "ticker": "GOTO",
       "foreign_participation_pct": 35.0,
-      "net_foreign_1d": -21888724610,
-      "net_foreign_1d_formatted": "-Rp 21.9 M",
-      "net_foreign_5d": -30997327386,
-      "net_foreign_5d_formatted": "-Rp 31.0 M",
-      "net_foreign_20d": -30997327386,
-      "net_foreign_20d_formatted": "-Rp 31.0 M",
-      "net_foreign_65d": -30997327386,
-      "net_foreign_65d_formatted": "-Rp 31.0 M",
-      "status": "Moderate Outflow",
-      "status_id": "Outflow Asing",
+      "net_foreign_1d": -49247666286,
+      "net_foreign_1d_formatted": "-Rp 49.2 M",
+      "net_foreign_5d": -58356269062,
+      "net_foreign_5d_formatted": "-Rp 58.4 M",
+      "net_foreign_20d": -58356269062,
+      "net_foreign_20d_formatted": "-Rp 58.4 M",
+      "net_foreign_65d": -58356269062,
+      "net_foreign_65d_formatted": "-Rp 58.4 M",
+      "status": "Heavy Distribution",
+      "status_id": "Distribusi Besar Asing",
       "badge_color": "rose",
       "dates": [
         "01 Jul",
@@ -8529,7 +8529,7 @@
         -1300497289,
         -1567516951,
         -6240588536,
-        -21888724610
+        -49247666286
       ],
       "daily_prices": [
         50,
