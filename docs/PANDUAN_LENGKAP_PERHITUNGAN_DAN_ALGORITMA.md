@@ -119,9 +119,16 @@ Dana investor asing menguasai proporsi kepemilikan saham beredar (*free-float*) 
 - **Data Primer**: Nilai beli bersih asing (*Net Foreign Buy/Sell IDR*) yang diambil langsung dari tabel ringkasan BEI.
 - **Foreign Ownership Weighting ($w_{foreign}$)**:
   Setiap emiten dikalibrasi dengan bobot partisipasi asing historis:
-  $$\text{BBCA} = 0.55, \quad \text{BBRI} = 0.48, \quad \text{BMRI} = 0.45, \quad \text{TLKM} = 0.42, \quad \text{ADRO} = 0.38$$
+
+  $$
+  \text{BBCA} = 0.55, \quad \text{BBRI} = 0.48, \quad \text{BMRI} = 0.45, \quad \text{TLKM} = 0.42, \quad \text{ADRO} = 0.38
+  $$
+
 - **Proxy Model Cadangan**: Jika data resmi BEI belum dirilis pada akhir pekan/libur bursa, sistem menggunakan formulasi proxy:
-  $$\text{Net Foreign Flow} = \text{Value}_t \times w_{foreign} \times \text{clip}\left(\text{Return}_{1D} \times 7.5, -0.65, 0.65\right)$$
+
+  $$
+  \text{Net Foreign Flow} = \text{Value}_t \times w_{foreign} \times \text{clip}\left(\text{Return}_{1D} \times 7.5, -0.65, 0.65\right)
+  $$
 
 ### 2.4 Data Laporan Keuangan Fundamental
 Disinkronisasikan dari ringkasan laporan keuangan BEI & RTI:
@@ -152,38 +159,89 @@ Diimplementasikan dalam modul `src/02_feature_eng.py`, setiap data bar harian di
 
 #### 1. Log Return (Pengembalian Logaritmik)
 Mengukur perubahan harga kontinu:
-$$r_t = \ln\left(\frac{P_t}{P_{t-1}}\right)$$
+
+$$
+r_t = \ln\left(\frac{P_t}{P_{t-1}}\right)
+$$
 
 #### 2. Jarak Rata-rata Bergerak (Distance to SMA)
 Mengukur deviasi persentase harga relatif terhadap tren jangka pendek (20 hari) dan jangka panjang (200 hari):
-$$\text{Dist\_SMA\_20}_t = \frac{P_t - \text{SMA}_{20}(P)_t}{\text{SMA}_{20}(P)_t}$$
-$$\text{Dist\_SMA\_200}_t = \frac{P_t - \text{SMA}_{200}(P)_t}{\text{SMA}_{200}(P)_t}$$
+
+$$
+\text{Dist\_SMA\_20}_t = \frac{P_t - \text{SMA}_{20}(P)_t}{\text{SMA}_{20}(P)_t}
+$$
+
+$$
+\text{Dist\_SMA\_200}_t = \frac{P_t - \text{SMA}_{200}(P)_t}{\text{SMA}_{200}(P)_t}
+$$
 
 #### 3. Moving Average Convergence Divergence (MACD)
 Mengukur pergeseran momentum tren:
-$$\text{EMA}_{12}(P)_t = \alpha_{12} P_t + (1 - \alpha_{12}) \text{EMA}_{12}(P)_{t-1}, \quad \text{di mana } \alpha = \frac{2}{N + 1}$$
-$$\text{MACD}_t = \text{EMA}_{12}(P)_t - \text{EMA}_{26}(P)_t$$
-$$\text{MACD\_Signal}_t = \text{EMA}_9(\text{MACD})_t$$
-$$\text{MACD\_Hist}_t = \text{MACD}_t - \text{MACD\_Signal}_t$$
+
+$$
+\text{EMA}_{12}(P)_t = \alpha_{12} P_t + (1 - \alpha_{12}) \text{EMA}_{12}(P)_{t-1}, \quad \text{di mana } \alpha = \frac{2}{N + 1}
+$$
+
+$$
+\text{MACD}_t = \text{EMA}_{12}(P)_t - \text{EMA}_{26}(P)_t
+$$
+
+$$
+\text{MACD\_Signal}_t = \text{EMA}_9(\text{MACD})_t
+$$
+
+$$
+\text{MACD\_Hist}_t = \text{MACD}_t - \text{MACD\_Signal}_t
+$$
 
 #### 4. Relative Strength Index (RSI 14-Hari)
 Mengukur kecepatan dan besaran perubahan harga untuk mendeteksi *overbought* ($>70$) atau *oversold* ($<30$):
-$$\Delta P_t = P_t - P_{t-1}$$
-$$\text{Gain}_t = \max(\Delta P_t, 0), \quad \text{Loss}_t = \max(-\Delta P_t, 0)$$
-$$\text{RS} = \frac{\text{RollingMean}(\text{Gain}, 14)}{\text{RollingMean}(\text{Loss}, 14) + 10^{-9}}$$
-$$\text{RSI}_{14} = 100 - \left(\frac{100}{1 + \text{RS}}\right)$$
+
+$$
+\Delta P_t = P_t - P_{t-1}
+$$
+
+$$
+\text{Gain}_t = \max(\Delta P_t, 0), \quad \text{Loss}_t = \max(-\Delta P_t, 0)
+$$
+
+$$
+\text{RS} = \frac{\text{RollingMean}(\text{Gain}, 14)}{\text{RollingMean}(\text{Loss}, 14) + 10^{-9}}
+$$
+
+$$
+\text{RSI}_{14} = 100 - \left(\frac{100}{1 + \text{RS}}\right)
+$$
 
 #### 5. Chaikin Money Flow (CMF 20-Hari)
 Mengukur akumulasi/distribusi volume institusional:
-$$\text{Money Flow Multiplier}_t = \frac{(Close_t - Low_t) - (High_t - Close_t)}{(High_t - Low_t) + 10^{-9}}$$
-$$\text{Money Flow Volume}_t = \text{Multiplier}_t \times Volume_t$$
-$$\text{CMF}_{20} = \frac{\sum_{i=0}^{19} \text{Money Flow Volume}_{t-i}}{\sum_{i=0}^{19} Volume_{t-i} + 10^{-9}}$$
+
+$$
+\text{Money Flow Multiplier}_t = \frac{(Close_t - Low_t) - (High_t - Close_t)}{(High_t - Low_t) + 10^{-9}}
+$$
+
+$$
+\text{Money Flow Volume}_t = \text{Multiplier}_t \times Volume_t
+$$
+
+$$
+\text{CMF}_{20} = \frac{\sum_{i=0}^{19} \text{Money Flow Volume}_{t-i}}{\sum_{i=0}^{19} Volume_{t-i} + 10^{-9}}
+$$
 
 #### 6. Money Flow Index (MFI 14-Hari)
 Osilator harga berbobot volume:
-$$\text{Typical Price}_t = \frac{High_t + Low_t + Close_t}{3}$$
-$$\text{Raw Money Flow}_t = \text{Typical Price}_t \times Volume_t$$
-$$\text{MFI}_{14} = 100 - \left(\frac{100}{1 + \frac{\text{Pos Flow}_{14}}{\text{Neg Flow}_{14} + 10^{-9}}}\right)$$
+
+$$
+\text{Typical Price}_t = \frac{High_t + Low_t + Close_t}{3}
+$$
+
+$$
+\text{Raw Money Flow}_t = \text{Typical Price}_t \times Volume_t
+$$
+
+$$
+\text{MFI}_{14} = 100 - \left(\frac{100}{1 + \frac{\text{Pos Flow}_{14}}{\text{Neg Flow}_{14} + 10^{-9}}}\right)
+$$
 
 ---
 
@@ -191,18 +249,30 @@ $$\text{MFI}_{14} = 100 - \left(\frac{100}{1 + \frac{\text{Pos Flow}_{14}}{\text
 
 #### 1. Foreign Flow Normalized 1D
 Menstandarisasi nilai beli bersih asing terhadap rata-rata transaksi 20 hari emiten:
-$$\text{Foreign\_Flow\_Norm\_1D}_t = \text{clip}\left(\frac{\text{Net Foreign IDR}_t}{\text{SMA}_{20}(\text{Value})_t + 10^{-9}}, -3.0, 3.0\right)$$
+
+$$
+\text{Foreign\_Flow\_Norm\_1D}_t = \text{clip}\left(\frac{\text{Net Foreign IDR}_t}{\text{SMA}_{20}(\text{Value})_t + 10^{-9}}, -3.0, 3.0\right)
+$$
 
 #### 2. Akumulasi Asing 5-Hari (Foreign Flow 5D Accumulation)
 Mengukur ketahanan akumulasi modal asing selama 1 pekan perdagangan:
-$$\text{Foreign\_Flow\_5D\_Accum}_t = \text{clip}\left(\frac{\sum_{i=0}^4 \text{Net Foreign IDR}_{t-i}}{5 \times \text{SMA}_{20}(\text{Value})_t + 10^{-9}}, -3.0, 3.0\right)$$
+
+$$
+\text{Foreign\_Flow\_5D\_Accum}_t = \text{clip}\left(\frac{\sum_{i=0}^4 \text{Net Foreign IDR}_{t-i}}{5 \times \text{SMA}_{20}(\text{Value})_t + 10^{-9}}, -3.0, 3.0\right)
+$$
 
 #### 3. Foreign Accumulation Divergence (Divergensi Arus Asing)
 Mendeteksi anomali di mana investor asing melakukan akumulasi masif saat harga saham sedang turun/konsolidasi (sinyal *Smart Money Accumulation*):
-$$\text{Foreign\_Accum\_Divergence}_t = \text{clip}\left(\text{Foreign\_Flow\_5D\_Accum}_t - \text{Return\_5D}_t, -3.0, 3.0\right)$$
+
+$$
+\text{Foreign\_Accum\_Divergence}_t = \text{clip}\left(\text{Foreign\_Flow\_5D\_Accum}_t - \text{Return\_5D}_t, -3.0, 3.0\right)
+$$
 
 #### 4. Foreign Flow Intensity
-$$\text{Foreign\_Flow\_Intensity}_t = \text{clip}\left(\text{Foreign\_Flow\_Norm\_1D}_t \times \text{Foreign\_Participation}, -3.0, 3.0\right)$$
+
+$$
+\text{Foreign\_Flow\_Intensity}_t = \text{clip}\left(\text{Foreign\_Flow\_Norm\_1D}_t \times \text{Foreign\_Participation}, -3.0, 3.0\right)
+$$
 
 ---
 
@@ -214,37 +284,78 @@ Bursa Efek Indonesia memiliki siklus musiman pembagian dividen yang sangat terat
   - ADRO: Januari, Mei, Juni, Desember
   - ASII: Mei, Oktober
 - **Fitur Boolean & Momentum**:
-  $$\text{Is\_Dividend\_Season}_t = \begin{cases} 1.0 & \text{jika } \text{Bulan}_t \in \text{Musim Dividen Emiten} \\ 0.0 & \text{lainnya} \end{cases}$$
-  $$\text{Dividend\_Season\_Momentum}_t = \text{Is\_Dividend\_Season}_t \times \text{Return\_20D}_t$$
+
+  $$
+  \text{Is\_Dividend\_Season}_t = \begin{cases} 1.0 & \text{jika } \text{Bulan}_t \in \text{Musim Dividen Emiten} \\ 0.0 & \text{lainnya} \end{cases}
+  $$
+
+  $$
+  \text{Dividend\_Season\_Momentum}_t = \text{Is\_Dividend\_Season}_t \times \text{Return\_20D}_t
+  $$
 
 ---
 
 ### 3.4 Interaksi Sensitivitas Sektor-Makro
 Mengkorelasikan variabel makroekonomi global secara spesifik dengan sektor yang relevan di BEI:
 1. **Oil Energy Tailwind**:
-   $$\text{Oil\_Energy\_Tailwind}_t = \begin{cases} \text{Brent Oil Return}_{1D} & \text{jika Sektor} = \text{Energy} \\ 0.0 & \text{lainnya} \end{cases}$$
+
+   $$
+   \text{Oil\_Energy\_Tailwind}_t = \begin{cases} \text{Brent Oil Return}_{1D} & \text{jika Sektor} = \text{Energy} \\ 0.0 & \text{lainnya} \end{cases}
+   $$
+
 2. **Rate Bank Sensitivity**:
-   $$\text{Rate\_Bank\_Sensitivity}_t = \begin{cases} \Delta\text{US 10Y Yield} & \text{jika Sektor} = \text{Financials} \\ 0.0 & \text{lainnya} \end{cases}$$
+
+   $$
+   \text{Rate\_Bank\_Sensitivity}_t = \begin{cases} \Delta\text{US 10Y Yield} & \text{jika Sektor} = \text{Financials} \\ 0.0 & \text{lainnya} \end{cases}
+   $$
+
 3. **FX Consumer Headwind**:
-   $$\text{FX\_Consumer\_Headwind}_t = \begin{cases} \text{USD/IDR Return}_{1D} & \text{jika Sektor} \in \{\text{Consumer}, \text{Healthcare}\} \\ 0.0 & \text{lainnya} \end{cases}$$
+
+   $$
+   \text{FX\_Consumer\_Headwind}_t = \begin{cases} \text{USD/IDR Return}_{1D} & \text{jika Sektor} \in \{\text{Consumer}, \text{Healthcare}\} \\ 0.0 & \text{lainnya} \end{cases}
+   $$
 
 ---
 
 ### 3.5 Level Lantai Pivot (Support & Resistance)
 Dihitung dari harga sesi harian sebelumnya untuk menentukan level batas beli (*Breakout/Weakness*) dan target harga:
-$$\text{Pivot Point (PP)} = \frac{High + Low + Close}{3}$$
-$$\text{Support 1 (S1)} = (2 \times PP) - High$$
-$$\text{Support 2 (S2)} = PP - (High - Low)$$
-$$\text{Resistance 1 (R1)} = (2 \times PP) - Low$$
-$$\text{Resistance 2 (R2)} = PP + (High - Low)$$
+
+$$
+\text{Pivot Point (PP)} = \frac{High + Low + Close}{3}
+$$
+
+$$
+\text{Support 1 (S1)} = (2 \times PP) - High
+$$
+
+$$
+\text{Support 2 (S2)} = PP - (High - Low)
+$$
+
+$$
+\text{Resistance 1 (R1)} = (2 \times PP) - Low
+$$
+
+$$
+\text{Resistance 2 (R2)} = PP + (High - Low)
+$$
 
 ---
 
 ### 3.6 Label Target Pembelajaran: Forward Excess Return 5-Hari
 Target prediksi Machine Learning **bukan** sekadar kenaikan harga nominal, melainkan **Excess Alpha** (kemampuan saham mengalahkan IHSG):
-$$\text{Target Return 5D}_t = \ln\left(\frac{P_{t+5}}{P_t}\right)$$
-$$\text{Target Excess Return 5D}_t = \text{Target Return 5D}_t - \text{Benchmark Return 5D}_t$$
-$$\text{Target Class 5D}_t = \begin{cases} 1 & \text{jika } \text{Target Excess Return 5D}_t > 0 \\ 0 & \text{lainnya} \end{cases}$$
+
+$$
+\text{Target Return 5D}_t = \ln\left(\frac{P_{t+5}}{P_t}\right)
+$$
+
+$$
+\text{Target Excess Return 5D}_t = \text{Target Return 5D}_t - \text{Benchmark Return 5D}_t
+$$
+
+$$
+\text{Target Class 5D}_t = \begin{cases} 1 & \text{jika } \text{Target Excess Return 5D}_t > 0 \\ 0 & \text{lainnya} \end{cases}
+$$
 
 ---
 
@@ -305,7 +416,10 @@ Model pohon tabular terbukti paling unggul dalam memproses data tabular finansia
    - Keunggulan penanganan fitur kategorikal sektor dan regularisasi simetris (*oblivious trees*) yang sangat tahan terhadap *overfitting*.
    - Hyperparameter: `iterations = 250`, `learning_rate = 0.03`, `depth = 5`, `l2_leaf_reg = 5.0`.
 3. **Kombinasi Tree Blend**:
-   $$P_{\text{Tree\_Blend}} = 0.50 \times P_{\text{HistGB}} + 0.50 \times P_{\text{CatBoost}}$$
+
+   $$
+   P_{\text{Tree\_Blend}} = 0.50 \times P_{\text{HistGB}} + 0.50 \times P_{\text{CatBoost}}
+   $$
 
 ### 4.2 PyTorch Deep Learning LSTM Sequence Model
 Menangkap dinamika temporal dan ketergantungan urutan (*sequence dependency*) pergerakan harga selama 20 hari perdagangan bursa:
@@ -320,24 +434,44 @@ Menangkap dinamika temporal dan ketergantungan urutan (*sequence dependency*) pe
 ### 4.3 ARIMA Statistical Time-Series Predictor
 Model ekonometrika autoregresif murni untuk memprediksi arah tren harga tanpa fitur eksternal:
 - **Spesifikasi**: $\text{ARIMA}(p=1, d=1, q=1)$ dengan fallback ke $\text{ARIMA}(1, 0, 0)$:
-  $$\Delta P_t = c + \phi_1 \Delta P_{t-1} + \theta_1 \epsilon_{t-1} + \epsilon_t$$
+
+  $$
+  \Delta P_t = c + \phi_1 \Delta P_{t-1} + \theta_1 \epsilon_{t-1} + \epsilon_t
+  $$
+
 - **Transformasi Probabilitas**: Pengembalian ekspektasi 5-hari diubah menjadi probabilitas kontinu via kurva logistik curam:
-  $$P_{\text{ARIMA}} = \text{clip}\left(\frac{1}{1 + e^{-25 \times \text{Expected\_Return}}}, 0.10, 0.90\right)$$
+
+  $$
+  P_{\text{ARIMA}} = \text{clip}\left(\frac{1}{1 + e^{-25 \times \text{Expected\_Return}}}, 0.10, 0.90\right)
+  $$
 
 ### 4.4 Model Volatilitas Kondisional GARCH(1,1) Student-t & Fallback EWMA
 Volatilitas pasar saham tidak pernah konstan melainkan berkelompok (*volatility clustering*).
 - **Formulasi GARCH(1,1)**:
-  $$r_t = \mu + \epsilon_t, \quad \epsilon_t = \sigma_t z_t, \quad z_t \sim \text{Student-}t(\nu)$$
-  $$\sigma_t^2 = \omega + \alpha \epsilon_{t-1}^2 + \beta \sigma_{t-1}^2$$
+
+  $$
+  r_t = \mu + \epsilon_t, \quad \epsilon_t = \sigma_t z_t, \quad z_t \sim \text{Student-}t(\nu)
+  $$
+
+  $$
+  \sigma_t^2 = \omega + \alpha \epsilon_{t-1}^2 + \beta \sigma_{t-1}^2
+  $$
+
   - Persyaratan Stabilitas (*Stationarity*): $\alpha > 0, \beta > 0, \alpha + \beta < 0.999$.
   - Derajat Kebebasan ($\nu$): Menangkap fenomena ekor tebal (*fat tails / leptokurtic*).
 - **Penyaring Anomali & Fallback RiskMetrics EWMA**:
   Jika model GARCH gagal konvergen atau nilai $\nu$ tidak wajar ($<2.5$ atau $>60$), sistem otomatis mengalihkan ke model RiskMetrics Exponentially Weighted Moving Average (EWMA, $\lambda = 0.94$):
-  $$\sigma_t^2 = 0.94 \sigma_{t-1}^2 + 0.06 r_{t-1}^2$$
+
+  $$
+  \sigma_t^2 = 0.94 \sigma_{t-1}^2 + 0.06 r_{t-1}^2
+  $$
 
 ### 4.5 Bobot Konsensus Blending Multi-Engine
 Probabilitas komposit akhir (*Composite Bullish Probability*) dihitung melalui bobot teruji:
-$$P_{\text{Bullish}} = 0.60 \times P_{\text{Tree\_Blend}} + 0.25 \times P_{\text{LSTM}} + 0.15 \times P_{\text{ARIMA}}$$
+
+$$
+P_{\text{Bullish}} = 0.60 \times P_{\text{Tree\_Blend}} + 0.25 \times P_{\text{LSTM}} + 0.15 \times P_{\text{ARIMA}}
+$$
 
 ### 4.6 Perisai Konsensus (Consensus Shield) & Ambang Batas Eksekusi
 Untuk memitigasi sinyal palsu (*false positives*), emiten hanya berhak menerima sinyal **BUY** jika lolos 3 lapis proteksi:
@@ -364,42 +498,81 @@ Jika emiten lolos *Perisai Konsensus*, jenis aksi teknikal diklasifikasikan berd
 
 ### 5.2 Rumus Target Price (TP) & Stop Loss (SL) Berbasis ATR-14
 Average True Range 14-Hari ($\text{ATR}_{14}$) digunakan sebagai pengukur volatilitas riil pergerakan harga saham untuk menentukan jarak batas rugi dan target profit yang dinamis:
-$$\text{TR}_t = \max\left(High_t - Low_t, \, |High_t - Close_{t-1}|, \, |Low_t - Close_{t-1}|\right)$$
-$$\text{ATR}_{14} = \text{RollingMean}(\text{TR}, 14)$$
+
+$$
+\text{TR}_t = \max\left(High_t - Low_t, \, |High_t - Close_{t-1}|, \, |Low_t - Close_{t-1}|\right)
+$$
+
+$$
+\text{ATR}_{14} = \text{RollingMean}(\text{TR}, 14)
+$$
 
 Untuk sinyal **BUY (BoW, BoB, Trading Buy)**:
 1. **Stop Loss (Batas Pengaman Kerugian)**:
-   $$\text{Raw\_SL} = \max\left(Support_1, \, Close - 1.5 \times \text{ATR}_{14}\right)$$
-   $$\text{Raw\_SL} = \min\left(\text{Raw\_SL}, \, Close - 0.8 \times \text{ATR}_{14}\right)$$
-   $$\text{Stop Loss} = \text{RoundToTick}(\text{Raw\_SL})$$
+
+   $$
+   \text{Raw\_SL} = \max\left(Support_1, \, Close - 1.5 \times \text{ATR}_{14}\right)
+   $$
+
+   $$
+   \text{Raw\_SL} = \min\left(\text{Raw\_SL}, \, Close - 0.8 \times \text{ATR}_{14}\right)
+   $$
+
+   $$
+   \text{Stop Loss} = \text{RoundToTick}(\text{Raw\_SL})
+   $$
+
 2. **Target Price (Target Ambil Untung)**:
-   $$\text{Raw\_TP} = \min\left(Resistance_1, \, Close + 2.0 \times \text{ATR}_{14}\right)$$
-   $$\text{Raw\_TP} = \max\left(\text{Raw\_TP}, \, Close + 1.2 \times \text{ATR}_{14}\right)$$
-   $$\text{Target Price} = \text{RoundToTick}(\text{Raw\_TP})$$
+
+   $$
+   \text{Raw\_TP} = \min\left(Resistance_1, \, Close + 2.0 \times \text{ATR}_{14}\right)
+   $$
+
+   $$
+   \text{Raw\_TP} = \max\left(\text{Raw\_TP}, \, Close + 1.2 \times \text{ATR}_{14}\right)
+   $$
+
+   $$
+   \text{Target Price} = \text{RoundToTick}(\text{Raw\_TP})
+   $$
 
 ---
 
 ### 5.3 Fraksi Harga Resmi BEI (IDX Tick Size Rounding)
 Seluruh level harga (*Entry*, *TP*, *SL*) wajib dibulatkan ke fraksi harga resmi Bursa Efek Indonesia sesuai SK Direksi PT Bursa Efek Indonesia:
 
-$$\text{Fraksi Harga (Tick)} = \begin{cases} 
+$$
+\text{Fraksi Harga (Tick)} = \begin{cases} 
 \text{Rp 1} & \text{jika } P < \text{Rp 200} \\ 
 \text{Rp 2} & \text{jika } \text{Rp 200} \le P < \text{Rp 500} \\ 
 \text{Rp 5} & \text{jika } \text{Rp 500} \le P < \text{Rp 2.000} \\ 
 \text{Rp 10} & \text{jika } \text{Rp 2.000} \le P < \text{Rp 5.000} \\ 
 \text{Rp 25} & \text{jika } P \ge \text{Rp 5.000} 
-\end{cases}$$
+\end{cases}
+$$
 
 Implementasi kode:
-$$\text{Harga Bulat} = \max\left(50, \, \text{round}\left(\frac{P}{\text{Tick}}\right) \times \text{Tick}\right)$$
+
+$$
+\text{Harga Bulat} = \max\left(50, \, \text{round}\left(\frac{P}{\text{Tick}}\right) \times \text{Tick}\right)
+$$
 
 ---
 
 ### 5.4 Risk-to-Reward Ratio (RRR)
 Rasio yang membandingkan potensi keuntungan terhadap risiko kerugian:
-$$\text{Potential Gain} = \text{Target Price} - \text{Entry Price}$$
-$$\text{Potential Risk} = |\text{Entry Price} - \text{Stop Loss}|$$
-$$\text{RRR} = \frac{\text{Potential Gain}}{\text{Potential Risk}}$$
+
+$$
+\text{Potential Gain} = \text{Target Price} - \text{Entry Price}
+$$
+
+$$
+\text{Potential Risk} = |\text{Entry Price} - \text{Stop Loss}|
+$$
+
+$$
+\text{RRR} = \frac{\text{Potential Gain}}{\text{Potential Risk}}
+$$
 *Standar Institusional: Sistem menargetkan sinyal dengan RRR $\ge 1.5$ (keuntungan minimal 1,5x lipat dari risiko).*
 
 ---
@@ -410,7 +583,10 @@ Diimplementasikan dalam modul `src/03_model_inference.py` (`optimize_portfolio_a
 
 ### 6.1 Formula Pembobotan Sharpe-to-Volatility
 Kandidat saham dipilih dari maksimal 5 emiten bersinyal BUY dengan Sharpe Ratio tertinggi. Skor masing-masing aset dihitung dengan membagi rasio Sharpe terhadap estimasi volatilitas tahunan GARCH(1,1):
-$$Score_i = \frac{\max(Sharpe_i, \, 0.05)}{GARCH\_Vol_i + 0.05}$$
+
+$$
+Score_i = \frac{\max(Sharpe_i, \, 0.05)}{\text{GARCH\_Vol}_i + 0.05}
+$$
 
 ### 6.2 Algoritma Capped Weights & Proteksi Kas Siaga
 Untuk mencegah konsentrasi modal berlebih pada satu saham, bobot dialokasikan menggunakan algoritma konveks *cap-and-redistribute*:
@@ -421,21 +597,46 @@ Untuk mencegah konsentrasi modal berlebih pada satu saham, bobot dialokasikan me
 
 ### 6.3 Pembulatan Lot Saham Resmi (1 Lot = 100 Lembar)
 Modal target untuk tiap emiten dihitung dalam Rupiah, kemudian dikonversikan ke dalam satuan lot resmi BEI menggunakan pembulatan ke bawah (*floor*):
-$$\text{Nominal Target}_i = \text{Modal Total} \times w_i$$
-$$\text{Harga Per Lot}_i = Close_i \times 100$$
-$$\text{Jumlah Lot}_i = \left\lfloor \frac{\text{Nominal Target}_i}{\text{Harga Per Lot}_i} \right\rfloor$$
-$$\text{Nilai Pembelian Riil}_i = \text{Jumlah Lot}_i \times \text{Harga Per Lot}_i$$
+
+$$
+\text{Nominal Target}_i = \text{Modal Total} \times w_i
+$$
+
+$$
+\text{Harga Per Lot}_i = Close_i \times 100
+$$
+
+$$
+\text{Jumlah Lot}_i = \left\lfloor \frac{\text{Nominal Target}_i}{\text{Harga Per Lot}_i} \right\rfloor
+$$
+
+$$
+\text{Nilai Pembelian Riil}_i = \text{Jumlah Lot}_i \times \text{Harga Per Lot}_i
+$$
 
 ### 6.4 Rekonsiliasi Kembalian Sisa Lot ke Kas Siaga
 Karena lot saham tidak bisa dibeli dalam angka desimal, selisih sisa uang yang tidak terpakai dari pembulatan lot (*residual cash*) **100% dialihkan kembali ke Kas Siaga**:
-$$\text{Kas Siaga Riil} = \text{Modal Total} - \sum_{i=1}^N \text{Nilai Pembelian Riil}_i$$
+
+$$
+\text{Kas Siaga Riil} = \text{Modal Total} - \sum_{i=1}^N \text{Nilai Pembelian Riil}_i
+$$
+
 Dengan demikian:
-$$\text{Total Ekuitas Saham Riil} + \text{Total Kas Siaga Riil} \equiv \text{Modal Total (100.0\% Sempurna)}$$
+
+$$
+\text{Total Ekuitas Saham Riil} + \text{Total Kas Siaga Riil} \equiv \text{Modal Total (100.0\% Sempurna)}
+$$
 
 ### 6.5 Simulasi Arus Kas Dividen Tahunan
 Mengestimasi pemasukan kas pasif tahunan kotor (*Gross Estimated Annual Dividend*) yang dihasilkan oleh emiten konstituen portofolio:
-$$\text{Estimasi Dividen Kas (IDR)} = \sum_{i=1}^N \left( \text{Nilai Pembelian Riil}_i \times \frac{\text{Dividend Yield}_i}{100} \right)$$
-$$\text{Rata-rata Yield Portofolio (\% p.a.)} = \frac{\text{Estimasi Dividen Kas}}{\sum \text{Nilai Pembelian Riil}} \times 100\%$$
+
+$$
+\text{Estimasi Dividen Kas (IDR)} = \sum_{i=1}^N \left( \text{Nilai Pembelian Riil}_i \times \frac{\text{Dividend Yield}_i}{100} \right)
+$$
+
+$$
+\text{Rata-rata Yield Portofolio (\% p.a.)} = \frac{\text{Estimasi Dividen Kas}}{\sum \text{Nilai Pembelian Riil}} \times 100\%
+$$
 
 ---
 
@@ -443,27 +644,56 @@ $$\text{Rata-rata Yield Portofolio (\% p.a.)} = \frac{\text{Estimasi Dividen Kas
 
 ### 7.1 Sharpe Ratio & Return Disetahunkan
 Mengukur efisiensi imbal hasil portofolio per unit risiko total terhadap suku bunga acuan bebas risiko Bank Indonesia (BI-Rate = 6.0% p.a.):
-$$\text{Annualized Return (1Y)} = \frac{P_t - P_{t-252}}{P_{t-252}}$$
-$$\text{Annualized Volatility (1Y)} = \text{StdDev}(r_t, 252) \times \sqrt{252}$$
-$$\text{Sharpe Ratio} = \frac{\text{Annualized Return} - R_f}{\text{Annualized Volatility}}, \quad \text{di mana } R_f = 0.06$$
+
+$$
+\text{Annualized Return (1Y)} = \frac{P_t - P_{t-252}}{P_{t-252}}
+$$
+
+$$
+\text{Annualized Volatility (1Y)} = \text{StdDev}(r_t, 252) \times \sqrt{252}
+$$
+
+$$
+\text{Sharpe Ratio} = \frac{\text{Annualized Return} - R_f}{\text{Annualized Volatility}}, \quad \text{di mana } R_f = 0.06
+$$
 
 ### 7.2 Beta IHSG (Sensitivitas Risiko Sistemik)
 Mengukur kovariansi pergerakan saham terhadap pergerakan Indeks Harga Saham Gabungan (IHSG):
-$$\beta_i = \frac{\text{Cov}(R_i, \, R_{\text{IHSG}})}{\text{Var}(R_{\text{IHSG}})}$$
+
+$$
+\beta_i = \frac{\text{Cov}(R_i, \, R_{\text{IHSG}})}{\text{Var}(R_{\text{IHSG}})}
+$$
+
 - $\beta = 1.0$: Volatilitas saham bergerak seirama dengan IHSG.
 - $\beta > 1.0$: Saham agresif (lebih bergejolak dibanding IHSG).
 - $\beta < 1.0$: Saham defensif (lebih tahan banting saat pasar turun).
 
 ### 7.3 Maximum Drawdown 1 Tahun (Max DD)
 Mengukur penurunan persentase terbesar dari titik puncak historis (*peak*) ke lembah terendah (*trough*) selama 252 hari bursa:
-$$\text{Peak}_t = \max_{s \le t} (P_s)$$
-$$\text{Drawdown}_t = \frac{P_t - \text{Peak}_t}{\text{Peak}_t}$$
-$$\text{Max Drawdown (1Y)} = \min_{t \in [0, 252]} (\text{Drawdown}_t)$$
+
+$$
+\text{Peak}_t = \max_{s \le t} (P_s)
+$$
+
+$$
+\text{Drawdown}_t = \frac{P_t - \text{Peak}_t}{\text{Peak}_t}
+$$
+
+$$
+\text{Max Drawdown (1Y)} = \min_{t \in [0, 252]} (\text{Drawdown}_t)
+$$
 
 ### 7.4 Value at Risk (VaR 95% & 99% 1-Day) & Expected Shortfall (ES)
 Mengestimasi batas potensi kerugian maksimal dalam 1 hari perdagangan pada tingkat keyakinan (*confidence level*) 95% dan 99% menggunakan parameter Student-t GARCH:
-$$\text{VaR}_{95, 1D} = -\left(\mu + \sigma_{t+1} \sqrt{\frac{\nu - 2}{\nu}} \, t_{\nu}(0.05)\right)$$
-$$\text{Expected Shortfall (ES)}_{95} = E\left[R \mid R \le -\text{VaR}_{95}\right]$$
+
+$$
+\text{VaR}_{95, 1D} = -\left(\mu + \sigma_{t+1} \sqrt{\frac{\nu - 2}{\nu}} \, t_{\nu}(0.05)\right)
+$$
+
+$$
+\text{Expected Shortfall (ES)}_{95} = E\left[R \mid R \le -\text{VaR}_{95}\right]
+$$
+
 *Arti Praktis: Jika portofolio memiliki VaR 95% sebesar -1.42%, artinya dalam kondisi pasar normal, terdapat probabilitas 95% bahwa kerugian harian tidak akan melebihi 1.42% dari modal.*
 
 ---
@@ -488,15 +718,34 @@ Fitur kalkulator interaktif pada menu antarmuka web menerapkan formula manajemen
 ```
 
 1. **Maksimal Toleransi Kerugian (IDR)**:
-   $$\text{Max Risk IDR} = \text{Modal} \times \left(\frac{\text{Risk Pct}}{100}\right)$$
+
+   $$
+   \text{Max Risk IDR} = \text{Modal} \times \left(\frac{\text{Risk Pct}}{100}\right)
+   $$
+
 2. **Risiko Riil Per Lembar Saham**:
-   $$\text{Risk Per Share} = \text{Entry Price} - \text{Stop Loss}$$
+
+   $$
+   \text{Risk Per Share} = \text{Entry Price} - \text{Stop Loss}
+   $$
+
 3. **Jumlah Lembar Saham Maksimal**:
-   $$\text{Max Shares} = \frac{\text{Max Risk IDR}}{\text{Risk Per Share}}$$
+
+   $$
+   \text{Max Shares} = \frac{\text{Max Risk IDR}}{\text{Risk Per Share}}
+   $$
+
 4. **Jumlah Lot Rekomendasi (Pembulatan ke Bawah)**:
-   $$\text{Recommended Lots} = \left\lfloor \frac{\text{Max Shares}}{100} \right\rfloor$$
+
+   $$
+   \text{Recommended Lots} = \left\lfloor \frac{\text{Max Shares}}{100} \right\rfloor
+   $$
+
 5. **Modal Investasi yang Dibutuhkan**:
-   $$\text{Invested Capital} = \text{Recommended Lots} \times 100 \times \text{Entry Price}$$
+
+   $$
+   \text{Invested Capital} = \text{Recommended Lots} \times 100 \times \text{Entry Price}
+   $$
 
 ---
 
