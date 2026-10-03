@@ -1,8 +1,11 @@
 -r requirements.txt
 yfinance
 scikit-learn
+catboost
+optuna
 torch
 statsmodels
 arch
 scipy
 openpyxl
+curl_cffi

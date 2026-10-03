@@ -1,10 +1,24 @@
 # Vercel Deployment Exclusions
-# Exclude heavy raw market data, intermediate feature matrices, and training checkpoints
+# Exclude heavy raw market data, intermediate feature matrices, training checkpoints, and model weights
 
 data/raw/**
 data/processed/processed_market_features.csv
 data/processed/*.joblib
 data/processed/*.pth
+data/processed/*.cbm
+data/processed/benchmark_*.json
+catboost_info/**
+
+# Experiments, reports, documentation, and local scripts
+experiments/**
+docs/**
+tests/**
+scripts/**
+run_daily.ps1
+run_daily.sh
+*.md
+
+# Git & CI/CD
 .github/**
 scratch/**
 .env*
