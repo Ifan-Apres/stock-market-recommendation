@@ -1,4 +1,4 @@
-# 📘 PANDUAN LENGKAP METODOLOGI KUANTITATIF, FORMULA PERHITUNGAN, ALGORITMA MACHINE LEARNING, DAN GLOSARIUM ISTILAH
+<img width="903" height="235" alt="image" src="https://github.com/user-attachments/assets/f7bd900a-abfe-4cf6-a106-9ff8b9de881d" /># 📘 PANDUAN LENGKAP METODOLOGI KUANTITATIF, FORMULA PERHITUNGAN, ALGORITMA MACHINE LEARNING, DAN GLOSARIUM ISTILAH
 
 > **Dokumen Resmi Arsitektur & Fundamental Sistem**  
 > **Platform Rekomendasi Saham & Riset Ekuitas Kuantitatif Institusional**  
@@ -121,7 +121,8 @@ Dana investor asing menguasai proporsi kepemilikan saham beredar (*free-float*) 
   Setiap emiten dikalibrasi dengan bobot partisipasi asing historis:
   $\text{BBCA} = 0.55, \quad \text{BBRI} = 0.48, \quad \text{BMRI} = 0.45, \quad \text{TLKM} = 0.42, \quad \text{ADRO} = 0.38$
 - **Proxy Model Cadangan**: Jika data resmi BEI belum dirilis pada akhir pekan/libur bursa, sistem menggunakan formulasi proxy:
-  $\text{Net Foreign Flow} = \text{Value}_t \times w_{foreign} \times \text{clip}\left(\text{Return}_{1D} \times 7.5, -0.65, 0.65\right)$
+
+$$\text{Net Foreign Flow} = \text{Value}_t \times w_{foreign} \times\text{clip}\left(\text{Return}_{1D} \times 7.5, -0.65, 0.65\right)$$
 
 ### 2.4 Data Laporan Keuangan Fundamental
 Disinkronisasikan dari ringkasan laporan keuangan BEI & RTI:
@@ -158,9 +159,9 @@ $$r_t = \ln\left(\frac{P_t}{P_{t-1}}\right)$$
 #### 2. Jarak Rata-rata Bergerak (Distance to SMA)
 Mengukur deviasi persentase harga relatif terhadap tren jangka pendek (20 hari) dan jangka panjang (200 hari):
 
-$$\text{Dist}\_\text{SMA}\_\text{20}_t = \frac{P_t - \text{SMA}_{20}(P)_t}{\text{SMA}_{20}(P)_t}$$
+$$\text{Dist\\_SMA\\_20}_t = \frac{P_t - \text{SMA}_{20}(P)_t}{\text{SMA}_{20}(P)_t}$$
 
-$$\text{Dist}\_\text{SMA}\_\text{200}_t = \frac{P_t - \text{SMA}_{200}(P)_t}{\text{SMA}_{200}(P)_t}$$
+$$\text{Dist\\_SMA\\_200}_t = \frac{P_t - \text{SMA}_{200}(P)_t}{\text{SMA}_{200}(P)_t}$$
 
 #### 3. Moving Average Convergence Divergence (MACD)
 Mengukur pergeseran momentum tren:
@@ -169,9 +170,9 @@ $$\text{EMA}_{12}(P)_t = \alpha_{12} P_t + (1 - \alpha_{12}) \text{EMA}_{12}(P)_
 
 $$\text{MACD}_t = \text{EMA}_{12}(P)_t - \text{EMA}_{26}(P)_t$$
 
-$$\text{MACD}\_\text{Signal}_t = \text{EMA}_9(\text{MACD})_t$$
+$$\text{MACD}\\_\text{Signal}_t = \text{EMA}_9(\text{MACD})_t$$
 
-$$\text{MACD}\_\text{Hist}_t = \text{MACD}_t - \text{MACD}\_\text{Signal}_t$$
+$$\text{MACD}\\_\text{Hist}_t = \text{MACD}_t - \text{MACD}\\_\text{Signal}_t$$
 
 #### 4. Relative Strength Index (RSI 14-Hari)
 Mengukur kecepatan dan besaran perubahan harga untuk mendeteksi *overbought* ($>70$) atau *oversold* ($<30$):
@@ -209,21 +210,21 @@ $$\text{MFI}_{14} = 100 - \left(\frac{100}{1 + \frac{\text{Pos Flow}_{14}}{\text
 #### 1. Foreign Flow Normalized 1D
 Menstandarisasi nilai beli bersih asing terhadap rata-rata transaksi 20 hari emiten:
 
-$$\text{Foreign}\_\text{Flow}\_\text{Norm}\_\text{1D}_t = \text{clip}\left(\frac{\text{Net Foreign IDR}_t}{\text{SMA}_{20}(\text{Value})_t + 10^{-9}}, -3.0, 3.0\right)$$
+$$\text{Foreign Flow Norm 1D}_t = \mathrm{clip}\left(\frac{\text{Net Foreign IDR}_t}{\text{SMA}_{20}(\text{Value})_t + 10^{-9}}, -3.0, 3.0\right)$$
 
 #### 2. Akumulasi Asing 5-Hari (Foreign Flow 5D Accumulation)
 Mengukur ketahanan akumulasi modal asing selama 1 pekan perdagangan:
 
-$$\text{Foreign}\_\text{Flow}\_\text{5D}\_\text{Accum}_t = \text{clip}\left(\frac{\sum_{i=0}^4 \text{Net Foreign IDR}_{t-i}}{5 \times \text{SMA}_{20}(\text{Value})_t + 10^{-9}}, -3.0, 3.0\right)$$
+$$\text{Foreign}\\_\text{Flow}\\_\text{5D}\\_\text{Accum}_t = \text{clip}\left(\frac{\sum_{i=0}^4 \text{Net Foreign IDR}_{t-i}}{5 \times \text{SMA}_{20}(\text{Value})_t + 10^{-9}}, -3.0, 3.0\right)$$
 
 #### 3. Foreign Accumulation Divergence (Divergensi Arus Asing)
 Mendeteksi anomali di mana investor asing melakukan akumulasi masif saat harga saham sedang turun/konsolidasi (sinyal *Smart Money Accumulation*):
 
-$$\text{Foreign}\_\text{Accum}\_\text{Divergence}_t = \text{clip}\left(\text{Foreign}\_\text{Flow}\_\text{5D}\_\text{Accum}_t - \text{Return}\_\text{5D}_t, -3.0, 3.0\right)$$
+$$\text{Foreign}\\_\text{Accum}\\_\text{Divergence}_t = \text{clip}\left(\text{Foreign}\\_\text{Flow}\\_\text{5D}\\_\text{Accum}_t - \text{Return}\\_\text{5D}_t, -3.0, 3.0\right)$$
 
 #### 4. Foreign Flow Intensity
 
-$$\text{Foreign}\_\text{Flow}\_\text{Intensity}_t = \text{clip}\left(\text{Foreign}\_\text{Flow}\_\text{Norm}\_\text{1D}_t \times \text{Foreign}\_\text{Participation}, -3.0, 3.0\right)$$
+$$\text{Foreign}\\_\text{Flow}\\_\text{Intensity}_t = \text{clip}\left(\text{Foreign}\\_\text{Flow}\\_\text{Norm}\\_\text{1D}_t \times \text{Foreign}\\_\text{Participation}, -3.0, 3.0\right)$$
 
 ---
 
@@ -236,9 +237,9 @@ Bursa Efek Indonesia memiliki siklus musiman pembagian dividen yang sangat terat
   - ASII: Mei, Oktober
 - **Fitur Boolean & Momentum**:
 
-$$\text{Is}\_\text{Dividend}\_\text{Season}_t = \begin{cases} 1.0 & \text{jika } \text{Bulan}_t \in \text{Musim Dividen Emiten} \\ 0.0 & \text{lainnya} \end{cases}$$
+$$\text{Is Dividend Season}_t = \begin{cases} 1.0 & \text{jika } \text{Bulan}_t \in \text{Musim Dividen Emiten} \\\\ 0.0 & \text{lainnya} \end{cases}$$
 
-$$\text{Dividend}\_\text{Season}\_\text{Momentum}_t = \text{Is}\_\text{Dividend}\_\text{Season}_t \times \text{Return}\_\text{20D}_t$$
+$$\text{Dividend Season Momentum}_t = \text{Is Dividend Season}_t \times \text{Return 20D}_t$$
 
 ---
 
@@ -246,15 +247,15 @@ $$\text{Dividend}\_\text{Season}\_\text{Momentum}_t = \text{Is}\_\text{Dividend}
 Mengkorelasikan variabel makroekonomi global secara spesifik dengan sektor yang relevan di BEI:
 1. **Oil Energy Tailwind**:
 
-$$\text{Oil}\_\text{Energy}\_\text{Tailwind}_t = \begin{cases} \text{Brent Oil Return}_{1D} & \text{jika Sektor} = \text{Energy} \\ 0.0 & \text{lainnya} \end{cases}$$
+$$\text{Oil Energy Tailwind}_t = \begin{cases} \text{Brent Oil Return}_{1D} & \text{jika Sektor} = \text{Energy} \\\\ 0.0 & \text{lainnya} \end{cases}$$
 
 2. **Rate Bank Sensitivity**:
 
-$$\text{Rate}\_\text{Bank}\_\text{Sensitivity}_t = \begin{cases} \Delta\text{US 10Y Yield} & \text{jika Sektor} = \text{Financials} \\ 0.0 & \text{lainnya} \end{cases}$$
+$$\text{Rate Bank Sensitivity}_t = \begin{cases} \Delta\text{US 10Y Yield} & \text{jika Sektor} = \text{Financials} \\\\ 0.0 & \text{lainnya} \end{cases}$$
 
 3. **FX Consumer Headwind**:
 
-$$\text{FX}\_\text{Consumer}\_\text{Headwind}_t = \begin{cases} \text{USD/IDR Return}_{1D} & \text{jika Sektor} \in \{\text{Consumer}, \text{Healthcare}\} \\ 0.0 & \text{lainnya} \end{cases}$$
+$$\text{FX Consumer Headwind}_t = \begin{cases} \text{USD/IDR Return}_{1D} & \text{jika Sektor} \in \{\text{Consumer}, \text{Healthcare}\} \\\\ 0.0 & \text{lainnya} \end{cases}$$
 
 ---
 
@@ -280,7 +281,7 @@ $$\text{Target Return 5D}_t = \ln\left(\frac{P_{t+5}}{P_t}\right)$$
 
 $$\text{Target Excess Return 5D}_t = \text{Target Return 5D}_t - \text{Benchmark Return 5D}_t$$
 
-$$\text{Target Class 5D}_t = \begin{cases} 1 & \text{jika } \text{Target Excess Return 5D}_t > 0 \\ 0 & \text{lainnya} \end{cases}$$
+$$\text{Target Class 5D}_t = \begin{cases} 1 & \text{jika } \text{Target Excess Return 5D}_t > 0 \\\\ 0 & \text{lainnya} \end{cases}$$
 
 ---
 
@@ -437,7 +438,7 @@ Untuk sinyal **BUY (BoW, BoB, Trading Buy)**:
 ### 5.3 Fraksi Harga Resmi BEI (IDX Tick Size Rounding)
 Seluruh level harga (*Entry*, *TP*, *SL*) wajib dibulatkan ke fraksi harga resmi Bursa Efek Indonesia sesuai SK Direksi PT Bursa Efek Indonesia:
 
-$$\text{Fraksi Harga (Tick)} = \begin{cases} \text{Rp 1} & \text{jika } P < \text{Rp 200} \\ \text{Rp 2} & \text{jika } \text{Rp 200} \le P < \text{Rp 500} \\ \text{Rp 5} & \text{jika } \text{Rp 500} \le P < \text{Rp 2.000} \\ \text{Rp 10} & \text{jika } \text{Rp 2.000} \le P < \text{Rp 5.000} \\ \text{Rp 25} & \text{jika } P \ge \text{Rp 5.000} \end{cases}$$
+$$\text{Fraksi Harga (Tick)} = \begin{cases} \text{Rp 1} & \text{jika } P < \text{Rp 200} \\\\ \text{Rp 2} & \text{jika } \text{Rp 200} \le P < \text{Rp 500} \\\\ \text{Rp 5} & \text{jika } \text{Rp 500} \le P < \text{Rp 2.000} \\\\ \text{Rp 10} & \text{jika } \text{Rp 2.000} \le P < \text{Rp 5.000} \\\\ \text{Rp 25} & \text{jika } P \ge \text{Rp 5.000} \end{cases}$$
 
 Implementasi kode:
 
@@ -464,7 +465,7 @@ Diimplementasikan dalam modul `src/03_model_inference.py` (`optimize_portfolio_a
 ### 6.1 Formula Pembobotan Sharpe-to-Volatility
 Kandidat saham dipilih dari maksimal 5 emiten bersinyal BUY dengan Sharpe Ratio tertinggi. Skor masing-masing aset dihitung dengan membagi rasio Sharpe terhadap estimasi volatilitas tahunan GARCH(1,1):
 
-$$Score_i = \frac{\max(Sharpe_i, \, 0.05)}{\text{GARCH}\_\text{Vol}_i + 0.05}$$
+$$\text{Score}_i = \frac{\max(\text{Sharpe}_i, 0.05)}{\text{GARCH Vol}_i + 0.05}$$
 
 ### 6.2 Algoritma Capped Weights & Proteksi Kas Siaga
 Untuk mencegah konsentrasi modal berlebih pada satu saham, bobot dialokasikan menggunakan algoritma konveks *cap-and-redistribute*:
