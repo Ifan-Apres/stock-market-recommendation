@@ -727,13 +727,17 @@
                         </div>
 
                         <div class="flex items-center gap-2 self-end sm:self-auto">
-                            <button type="button" onclick="openStockInPortfolio()" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-sm bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 text-xs font-mono font-bold transition-all active:scale-95 cursor-pointer" title="Simulasikan emiten ini ke portofolio modal">
-                                <span class="material-symbols-outlined text-[15px]">pie_chart</span>
-                                <span>⚡ Simulasikan Alokasi</span>
+                            <button type="button" onclick="openTrackStockModal()" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-sm bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 text-xs font-mono font-bold transition-all active:scale-95 cursor-pointer" title="Pantau sinyal aksi saham ini di Saham Saya">
+                                <span class="material-symbols-outlined text-[15px]">inventory_2</span>
+                                <span>+ Track di Saham Saya</span>
                             </button>
-                            <button type="button" onclick="scrollToDeepDiveCalc()" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-sm bg-primary hover:bg-slate-800 text-emerald-400 border border-emerald-500/30 text-xs font-mono font-bold transition-colors cursor-pointer">
+                            <button type="button" onclick="openStockInPortfolio()" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-sm bg-white/5 hover:bg-white/10 text-cyan-400 border border-cyan-500/30 text-xs font-mono font-bold transition-all active:scale-95 cursor-pointer" title="Simulasikan emiten ini ke portofolio modal">
+                                <span class="material-symbols-outlined text-[15px]">pie_chart</span>
+                                <span>⚡ Alokasikan Modal</span>
+                            </button>
+                            <button type="button" onclick="scrollToDeepDiveCalc()" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-sm bg-primary hover:bg-slate-800 text-slate-300 border border-white/10 text-xs font-mono font-bold transition-colors cursor-pointer">
                                 <span class="material-symbols-outlined text-[15px]">calculate</span>
-                                <span>Order Position Sizer</span>
+                                <span>Position Sizer</span>
                             </button>
                         </div>
                     </div>
@@ -866,10 +870,16 @@
                                             <span>Disiplin Risiko:</span>
                                             <span class="font-bold text-emerald-200">Strict Stop Loss</span>
                                         </div>
-                                        <button type="button" onclick="openStockInPortfolio()" class="w-full py-1 px-2.5 rounded-sm bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-400/40 text-[11px] font-mono font-bold flex items-center justify-center gap-1.5 transition-all active:scale-95 cursor-pointer">
-                                            <span class="material-symbols-outlined text-[14px]">pie_chart</span>
-                                            <span>⚡ Alokasikan ke Portofolio</span>
-                                        </button>
+                                        <div class="grid grid-cols-2 gap-2">
+                                            <button type="button" onclick="openTrackStockModal()" class="w-full py-1.5 px-2 rounded-sm bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-400/40 text-[11px] font-mono font-bold flex items-center justify-center gap-1 transition-all active:scale-95 cursor-pointer">
+                                                <span class="material-symbols-outlined text-[14px]">inventory_2</span>
+                                                <span>+ Track Saham</span>
+                                            </button>
+                                            <button type="button" onclick="openStockInPortfolio()" class="w-full py-1.5 px-2 rounded-sm bg-white/5 hover:bg-white/10 text-cyan-300 border border-white/15 text-[11px] font-mono font-bold flex items-center justify-center gap-1 transition-all active:scale-95 cursor-pointer">
+                                                <span class="material-symbols-outlined text-[14px]">pie_chart</span>
+                                                <span>Alokasikan</span>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -1235,10 +1245,16 @@
                                         <span>Sisa Kas Siaga:</span>
                                         <span class="text-slate-300 font-mono-num" id="deepDiveCalcRemainingCash">Rp 715.000</span>
                                     </div>
-                                    <button type="button" onclick="openStockInPortfolio()" class="w-full mt-1 py-1.5 px-2 rounded-sm bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 text-[11px] font-mono font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer">
-                                        <span class="material-symbols-outlined text-[14px]">pie_chart</span>
-                                        <span>Simulasikan di Alokasi Portofolio</span>
-                                    </button>
+                                    <div class="grid grid-cols-2 gap-2 mt-1">
+                                        <button type="button" onclick="openTrackStockModal()" class="w-full py-1.5 px-2 rounded-sm bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[11px] font-mono font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer">
+                                            <span class="material-symbols-outlined text-[14px]">inventory_2</span>
+                                            <span>+ Track Saham</span>
+                                        </button>
+                                        <button type="button" onclick="openStockInPortfolio()" class="w-full py-1.5 px-2 rounded-sm bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 text-[11px] font-mono font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer">
+                                            <span class="material-symbols-outlined text-[14px]">pie_chart</span>
+                                            <span>Alokasi Modal</span>
+                                        </button>
+                                    </div>
                                 </div>
 
                                 <!-- Proyeksi Untung vs Rugi -->
@@ -1514,7 +1530,7 @@
                             <button type="button" id="portTabTrackerBtn" onclick="switchPortfolioSubTab('tracker')" class="px-3 py-1.5 rounded-sm text-xs font-mono font-semibold bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white border border-white/10 flex items-center gap-1.5 transition-all cursor-pointer">
                                 <span class="material-symbols-outlined text-[15px] text-emerald-400">inventory</span>
                                 <span>Saham Saya (Action Advisor)</span>
-                                <span class="px-1.5 py-0.2 rounded-xs bg-emerald-500/20 text-emerald-400 text-[9px] font-mono font-bold border border-emerald-500/30">Tahap 2</span>
+                                <span class="px-1.5 py-0.2 rounded-xs bg-emerald-500/20 text-emerald-400 text-[9px] font-mono font-bold border border-emerald-500/30" id="portTabTrackerBadge">Zero-Privacy</span>
                             </button>
                         </div>
                         <div class="hidden sm:flex items-center gap-2 text-xs font-mono text-slate-400">
@@ -1756,59 +1772,196 @@
                         </div>
                     </div>
 
-                    <!-- CONTAINER TAB 2: SAHAM SAYA (ACTION ADVISOR • TAHAP 2 PREVIEW) -->
-                    <div id="portTabTrackerContent" class="hidden flex flex-col gap-4">
-                        <div class="bg-[#0E1420] rounded-sm p-5 border border-emerald-500/30 flex flex-col gap-4">
-                            <div class="flex items-center justify-between border-b border-white/10 pb-3">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 rounded-sm bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
-                                        <span class="material-symbols-outlined text-[24px]">inventory_2</span>
+                    <!-- CONTAINER TAB 2: SAHAM SAYA (ACTION ADVISOR • ZERO-PRIVACY PORTFOLIO TRACKER) -->
+                    <div id="portTabTrackerContent" class="hidden flex flex-col gap-4 sm:gap-5">
+                        <!-- Top Banner & Controls -->
+                        <div class="bg-[#0E1420] rounded-sm p-4 border border-white/10 flex flex-col md:flex-row md:items-center justify-between gap-3">
+                            <div class="flex items-start sm:items-center gap-3">
+                                <div class="w-10 h-10 rounded-sm bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+                                    <span class="material-symbols-outlined text-[24px]">inventory_2</span>
+                                </div>
+                                <div>
+                                    <div class="flex flex-wrap items-center gap-2">
+                                        <h3 class="text-xs sm:text-sm font-bold text-white font-mono">Saham Saya (Action Advisor • Zero-Privacy Tracker)</h3>
+                                        <span class="px-1.5 py-0.5 rounded-xs bg-emerald-500/20 text-emerald-400 text-[9px] font-mono font-bold border border-emerald-500/30 flex items-center gap-1">
+                                            <span class="material-symbols-outlined text-[11px]">lock</span>
+                                            100% Client-Side Privacy
+                                        </span>
                                     </div>
-                                    <div>
-                                        <div class="flex items-center gap-2">
-                                            <h3 class="text-sm sm:text-base font-bold text-white font-mono">Saham Saya (Action Advisor • Zero-Privacy Tracker)</h3>
-                                            <span class="px-2 py-0.5 rounded-sm bg-emerald-500/20 text-emerald-400 text-[10px] font-mono font-bold border border-emerald-500/30">Tahap 2 Segera Hadir</span>
-                                        </div>
-                                        <p class="text-xs text-slate-400 font-mono mt-0.5">
-                                            Pantau sinyal aksi beli/jual/cutloss saham milik Anda tanpa membagikan informasi nominal uang atau jumlah lot.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                                <div class="p-3.5 rounded-sm bg-[#080C14] border border-white/10 flex flex-col gap-2">
-                                    <span class="material-symbols-outlined text-cyan-400 text-[20px]">security</span>
-                                    <h4 class="text-xs font-mono font-bold text-white">Privasi Finansial 100% Terjaga</h4>
-                                    <p class="text-[11px] font-mono text-slate-400 leading-relaxed">
-                                        Anda hanya memasukkan kode emiten, harga beli rata-rata, dan tanggal pembelian. Sistem tidak pernah meminta atau menyimpan saldo uang Anda.
-                                    </p>
-                                </div>
-                                <div class="p-3.5 rounded-sm bg-[#080C14] border border-white/10 flex flex-col gap-2">
-                                    <span class="material-symbols-outlined text-amber-400 text-[20px]">history_edu</span>
-                                    <h4 class="text-xs font-mono font-bold text-white">Evaluasi Durasi Kepemilikan</h4>
-                                    <p class="text-[11px] font-mono text-slate-400 leading-relaxed">
-                                        Sistem mengukur rentang waktu (misal 1 minggu atau 6 bulan) untuk membedakan antara fluktuasi minor harian vs sinyal cutloss/take profit struktural.
-                                    </p>
-                                </div>
-                                <div class="p-3.5 rounded-sm bg-[#080C14] border border-white/10 flex flex-col gap-2">
-                                    <span class="material-symbols-outlined text-emerald-400 text-[20px]">lightbulb</span>
-                                    <h4 class="text-xs font-mono font-bold text-white">Sinyal Aksi Berbasis Ilmu Saham</h4>
-                                    <p class="text-[11px] font-mono text-slate-400 leading-relaxed">
-                                        Rekomendasi tindakan objektif (Hold, Amankan Profit bertahap, atau Cut Loss Disiplin) berdasarkan kondisi terkini dan batas volatilitas GARCH.
+                                    <p class="text-[11px] text-slate-400 font-mono mt-0.5">
+                                        Evaluasi rasional durasi kepemilikan saham vs dinamika harga historis. Memberikan saran aksi berbasis analisis teknikal & volatilitas GARCH tanpa meminta saldo uang atau lot Anda.
                                     </p>
                                 </div>
                             </div>
-
-                            <div class="p-4 rounded-sm bg-white/5 border border-white/10 flex items-center justify-between">
-                                <div class="flex items-center gap-2 text-xs font-mono text-slate-300">
-                                    <span class="material-symbols-outlined text-cyan-400 text-[18px]">build_circle</span>
-                                    <span>Fitur Tracker Saham Saya akan diimplementasikan penuh pada <strong>Tahap 2</strong> berikutnya.</span>
-                                </div>
-                                <button type="button" onclick="switchPortfolioSubTab('alloc')" class="px-3 py-1 rounded-sm bg-primary hover:bg-slate-800 text-cyan-400 border border-cyan-500/30 text-xs font-mono font-bold transition-colors cursor-pointer">
-                                    Kembali ke Alokasi Modal Baru
+                            <div class="flex flex-wrap items-center gap-2 self-start md:self-auto shrink-0">
+                                <button type="button" onclick="toggleTrackerAddForm()" class="px-3 py-1.5 rounded-sm bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 text-xs font-mono font-bold flex items-center gap-1.5 transition-all cursor-pointer">
+                                    <span class="material-symbols-outlined text-[15px]">add_circle</span>
+                                    <span>+ Tambah Saham</span>
+                                </button>
+                                <button type="button" onclick="copyTrackerSummaryText()" class="px-2.5 py-1.5 rounded-sm bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 text-xs font-mono font-semibold flex items-center gap-1.5 transition-all cursor-pointer" title="Salin ringkasan evaluasi pantauan ke clipboard">
+                                    <span class="material-symbols-outlined text-[15px]">content_copy</span>
+                                    <span class="hidden sm:inline">Salin Evaluasi</span>
+                                </button>
+                                <button type="button" onclick="resetTrackedStocksToStarter()" class="px-2.5 py-1.5 rounded-sm bg-white/5 hover:bg-white/10 text-slate-400 hover:text-slate-200 border border-white/10 text-xs font-mono font-semibold flex items-center gap-1 transition-all cursor-pointer" title="Muat data contoh starter kit">
+                                    <span class="material-symbols-outlined text-[15px]">restart_alt</span>
+                                    <span class="hidden sm:inline">Contoh Starter</span>
+                                </button>
+                                <button type="button" onclick="clearAllTrackedStocks()" class="p-1.5 rounded-sm bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 text-xs font-mono transition-colors cursor-pointer" title="Bersihkan seluruh pantauan">
+                                    <span class="material-symbols-outlined text-[15px]">delete_sweep</span>
                                 </button>
                             </div>
+                        </div>
+
+                        <!-- 4 Dynamic Tracker KPI Scorecards -->
+                        <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3">
+                            <!-- KPI 1: Total Dipantau -->
+                            <div class="p-3 rounded-sm bg-[#0E1420] border border-white/10 flex flex-col justify-between">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-wider">Total Saham Dipantau</span>
+                                    <span class="material-symbols-outlined text-cyan-400 text-[16px]">visibility</span>
+                                </div>
+                                <div class="mt-2 mb-1">
+                                    <span class="text-xl sm:text-2xl font-black text-white font-mono-num" id="trkKpiTotal">0</span>
+                                </div>
+                                <div class="flex items-center justify-between text-[10px] font-mono text-slate-400 border-t border-white/5 pt-1.5">
+                                    <span>Penyimpanan</span>
+                                    <span class="text-emerald-400 font-bold">Lokal (Browser)</span>
+                                </div>
+                            </div>
+
+                            <!-- KPI 2: Floating Gain Positions -->
+                            <div class="p-3 rounded-sm bg-[#0E1420] border border-white/10 flex flex-col justify-between">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-wider">Posisi Floating Gain</span>
+                                    <span class="material-symbols-outlined text-emerald-400 text-[16px]">trending_up</span>
+                                </div>
+                                <div class="mt-2 mb-1">
+                                    <span class="text-xl sm:text-2xl font-black text-emerald-400 font-mono-num" id="trkKpiGain">0</span>
+                                </div>
+                                <div class="flex items-center justify-between text-[10px] font-mono text-slate-400 border-t border-white/5 pt-1.5">
+                                    <span>Status Tren</span>
+                                    <span class="text-emerald-400 font-bold" id="trkKpiGainPct">0% Portofolio</span>
+                                </div>
+                            </div>
+
+                            <!-- KPI 3: Warning / Cut Loss Positions -->
+                            <div class="p-3 rounded-sm bg-[#0E1420] border border-white/10 flex flex-col justify-between">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-wider">Perlu Tindakan / Waspada</span>
+                                    <span class="material-symbols-outlined text-rose-400 text-[16px]">warning</span>
+                                </div>
+                                <div class="mt-2 mb-1">
+                                    <span class="text-xl sm:text-2xl font-black text-rose-400 font-mono-num" id="trkKpiWarning">0</span>
+                                </div>
+                                <div class="flex items-center justify-between text-[10px] font-mono text-slate-400 border-t border-white/5 pt-1.5">
+                                    <span>Disiplin Modal</span>
+                                    <span class="text-rose-400 font-bold" id="trkKpiWarningDesc">Stop Loss Ketat</span>
+                                </div>
+                            </div>
+
+                            <!-- KPI 4: Rata-Rata Durasi Simpan -->
+                            <div class="p-3 rounded-sm bg-[#0E1420] border border-white/10 flex flex-col justify-between">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-wider">Rata-Rata Durasi Simpan</span>
+                                    <span class="material-symbols-outlined text-amber-400 text-[16px]">schedule</span>
+                                </div>
+                                <div class="mt-2 mb-1">
+                                    <span class="text-xl sm:text-2xl font-black text-amber-400 font-mono-num" id="trkKpiAvgDuration">0 Hari</span>
+                                </div>
+                                <div class="flex items-center justify-between text-[10px] font-mono text-slate-400 border-t border-white/5 pt-1.5">
+                                    <span>Evaluasi Waktu</span>
+                                    <span class="text-slate-300 font-bold" id="trkKpiDurationType">Multi-Horizon</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Compact Zero-Privacy Input Card (Collapsible) -->
+                        <div id="trackerAddFormCard" class="hidden bg-[#0E1420] rounded-sm p-4 border border-emerald-500/30 flex flex-col gap-3 transition-all">
+                            <div class="flex items-center justify-between border-b border-white/10 pb-2">
+                                <div class="flex items-center gap-1.5 text-xs font-mono font-bold text-white">
+                                    <span class="material-symbols-outlined text-emerald-400 text-[17px]">add_task</span>
+                                    <span>Input Saham Pantauan (Zero-Privacy)</span>
+                                </div>
+                                <button type="button" onclick="toggleTrackerAddForm(false)" class="text-slate-400 hover:text-white p-1 rounded-sm text-xs cursor-pointer">
+                                    <span class="material-symbols-outlined text-[16px]">close</span>
+                                </button>
+                            </div>
+
+                            <form id="trackerAddInlineForm" onsubmit="event.preventDefault(); addTrackedStockFromForm();" class="grid grid-cols-1 md:grid-cols-12 gap-3 text-xs font-mono">
+                                <!-- Ticker Dropdown -->
+                                <div class="md:col-span-3 flex flex-col gap-1">
+                                    <label class="text-[11px] text-slate-400">Pilih Kode Emiten</label>
+                                    <select id="trackerFormTicker" onchange="onTrackerFormTickerChange(this.value)" class="w-full bg-[#080C14] border border-white/10 rounded-sm px-2.5 py-2 text-white font-bold font-mono focus:outline-none focus:border-emerald-400 cursor-pointer">
+                                        <!-- Diisi otomatis dari allRecommendations -->
+                                    </select>
+                                </div>
+
+                                <!-- Harga Beli (Rp) -->
+                                <div class="md:col-span-3 flex flex-col gap-1">
+                                    <label class="text-[11px] text-slate-400">Harga Beli Rata-Rata (IDR)</label>
+                                    <div class="relative flex items-center">
+                                        <span class="absolute left-2.5 text-slate-400 font-bold font-mono">Rp</span>
+                                        <input type="number" id="trackerFormPrice" step="5" required class="w-full bg-[#080C14] border border-white/10 rounded-sm pl-8 pr-2.5 py-2 text-white font-bold font-mono-num focus:outline-none focus:border-emerald-400" placeholder="Contoh: 3450"/>
+                                    </div>
+                                </div>
+
+                                <!-- Tanggal Beli & Quick Chips -->
+                                <div class="md:col-span-4 flex flex-col gap-1">
+                                    <div class="flex items-center justify-between">
+                                        <label class="text-[11px] text-slate-400">Tanggal Pembelian</label>
+                                        <span class="text-[10px] text-emerald-400 font-mono" id="trackerFormHoldingLabel">Hari Ini</span>
+                                    </div>
+                                    <input type="date" id="trackerFormDate" required onchange="updateTrackerFormHoldingLabel(this.value)" class="w-full bg-[#080C14] border border-white/10 rounded-sm px-2.5 py-1.5 text-white font-mono focus:outline-none focus:border-emerald-400 cursor-pointer"/>
+                                    <!-- Quick offset chips -->
+                                    <div class="flex flex-wrap items-center gap-1 pt-1">
+                                        <button type="button" onclick="setTrackerFormDateOffset(0)" class="px-1.5 py-0.5 rounded-xs bg-white/5 hover:bg-white/10 text-[9px] font-mono text-slate-300 border border-white/10">0h</button>
+                                        <button type="button" onclick="setTrackerFormDateOffset(7)" class="px-1.5 py-0.5 rounded-xs bg-white/5 hover:bg-white/10 text-[9px] font-mono text-slate-300 border border-white/10">7h</button>
+                                        <button type="button" onclick="setTrackerFormDateOffset(14)" class="px-1.5 py-0.5 rounded-xs bg-white/5 hover:bg-white/10 text-[9px] font-mono text-slate-300 border border-white/10">14h</button>
+                                        <button type="button" onclick="setTrackerFormDateOffset(30)" class="px-1.5 py-0.5 rounded-xs bg-white/5 hover:bg-white/10 text-[9px] font-mono text-slate-300 border border-white/10">30h</button>
+                                        <button type="button" onclick="setTrackerFormDateOffset(90)" class="px-1.5 py-0.5 rounded-xs bg-white/5 hover:bg-white/10 text-[9px] font-mono text-slate-300 border border-white/10">3bln</button>
+                                        <button type="button" onclick="setTrackerFormDateOffset(180)" class="px-1.5 py-0.5 rounded-xs bg-white/5 hover:bg-white/10 text-[9px] font-mono text-slate-300 border border-white/10">6bln</button>
+                                    </div>
+                                </div>
+
+                                <!-- Horizon & Action Button -->
+                                <div class="md:col-span-2 flex flex-col justify-between gap-1">
+                                    <div>
+                                        <label class="text-[11px] text-slate-400">Horizon Rencana</label>
+                                        <select id="trackerFormHorizon" class="w-full bg-[#080C14] border border-white/10 rounded-sm px-2 py-2 text-white font-mono focus:outline-none focus:border-emerald-400 cursor-pointer">
+                                            <option value="swing">⚡ Swing (&lt; 1-2 Bln)</option>
+                                            <option value="invest">🏛️ Investasi (&gt; 1 Bln)</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="w-full mt-1 py-2 px-3 rounded-sm bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold font-mono text-xs flex items-center justify-center gap-1 transition-all active:scale-95 cursor-pointer">
+                                        <span class="material-symbols-outlined text-[15px]">check</span>
+                                        <span>Simpan</span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Filter & Sorter Toolbar -->
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-1">
+                            <div class="flex flex-wrap items-center gap-1.5" id="trackerFilterButtons">
+                                <button type="button" onclick="setTrackerFilter('all')" id="trkFilterAll" class="px-2.5 py-1 rounded-sm text-xs font-mono font-bold bg-[#121A29] text-white border border-white/20 transition-all cursor-pointer">Semua (<span id="trkFilterAllCount">0</span>)</button>
+                                <button type="button" onclick="setTrackerFilter('action')" id="trkFilterAction" class="px-2.5 py-1 rounded-sm text-xs font-mono font-semibold bg-white/5 hover:bg-white/10 text-rose-300 border border-white/10 transition-all cursor-pointer">Perlu Aksi Segera (<span id="trkFilterActionCount">0</span>)</button>
+                                <button type="button" onclick="setTrackerFilter('gain')" id="trkFilterGain" class="px-2.5 py-1 rounded-sm text-xs font-mono font-semibold bg-white/5 hover:bg-white/10 text-emerald-300 border border-white/10 transition-all cursor-pointer">Floating Gain (<span id="trkFilterGainCount">0</span>)</button>
+                                <button type="button" onclick="setTrackerFilter('loss')" id="trkFilterLoss" class="px-2.5 py-1 rounded-sm text-xs font-mono font-semibold bg-white/5 hover:bg-white/10 text-slate-400 border border-white/10 transition-all cursor-pointer">Floating Minus (<span id="trkFilterLossCount">0</span>)</button>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-[10px] font-mono text-slate-400">Urutkan:</span>
+                                <select id="trackerSortSelect" onchange="renderTrackedStocks()" class="bg-[#0E1420] border border-white/10 rounded-sm px-2 py-1 text-slate-300 text-xs font-mono cursor-pointer focus:outline-none">
+                                    <option value="duration_desc">Durasi Simpan Terlama</option>
+                                    <option value="duration_asc">Durasi Simpan Teranyar</option>
+                                    <option value="pnl_desc">Floating PnL Tertinggi</option>
+                                    <option value="pnl_asc">Floating PnL Terendah</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Action Advisor Cards Container -->
+                        <div id="trackedStocksContainer" class="flex flex-col gap-3.5">
+                            <!-- Diisi dinamis oleh renderTrackedStocks() -->
                         </div>
                     </div>
                 </div>
@@ -2593,11 +2746,15 @@
                 </div>
             </div>
 
-            <div class="p-4 border-t border-surface-border bg-slate-50 flex items-center justify-end gap-2.5 shrink-0">
+            <div class="p-4 border-t border-surface-border bg-slate-50 flex flex-wrap items-center justify-end gap-2 shrink-0">
                 <button type="button" class="px-3.5 py-2 rounded-xl text-text-muted hover:text-text-main font-semibold text-xs" onclick="closeStockDetailModal()">
                     Tutup
                 </button>
-                <button type="button" class="px-4 py-2 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-800 border border-emerald-500/30 font-bold text-xs flex items-center gap-1.5 transition-colors cursor-pointer" onclick="openStockInPortfolio(); closeStockDetailModal();">
+                <button type="button" class="px-3.5 py-2 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-800 border border-emerald-500/30 font-bold text-xs flex items-center gap-1.5 transition-colors cursor-pointer" onclick="openTrackStockModal(); closeStockDetailModal();">
+                    <span class="material-symbols-outlined text-[16px]">inventory_2</span>
+                    + Track Saham Saya
+                </button>
+                <button type="button" class="px-3.5 py-2 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 font-bold text-xs flex items-center gap-1.5 transition-colors cursor-pointer" onclick="openStockInPortfolio(); closeStockDetailModal();">
                     <span class="material-symbols-outlined text-[16px]">pie_chart</span>
                     Alokasi Portofolio
                 </button>
@@ -2606,6 +2763,106 @@
                     Hitung di Kalkulator Lot
                 </button>
             </div>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL: TRACK SAHAM SAYA (ZERO-PRIVACY) ==================== -->
+    <div class="fixed inset-0 bg-slate-900/80 backdrop-blur-xs z-50 hidden items-center justify-center p-3 sm:p-4" id="modalTrackStock">
+        <div class="bg-[#0E1420] border border-white/10 rounded-sm w-full max-w-md overflow-hidden flex flex-col shadow-2xl">
+            <!-- Header -->
+            <div class="p-4 bg-[#080C14] border-b border-white/10 flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-sm bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+                        <span class="material-symbols-outlined text-[20px]">inventory_2</span>
+                    </div>
+                    <div>
+                        <h3 class="text-xs sm:text-sm font-bold text-white font-mono">+ Track di Saham Saya</h3>
+                        <p class="text-[10px] text-slate-400 font-mono">Zero-Privacy • Tanpa membagikan lot/modal</p>
+                    </div>
+                </div>
+                <button type="button" onclick="closeTrackStockModal()" class="text-slate-400 hover:text-white p-1 rounded-sm text-xs cursor-pointer">
+                    <span class="material-symbols-outlined text-[18px]">close</span>
+                </button>
+            </div>
+
+            <!-- Body Form -->
+            <form id="modalTrackForm" onsubmit="event.preventDefault(); saveTrackedStockFromModal();" class="p-4 flex flex-col gap-3.5 text-xs font-mono">
+                <!-- Emiten Display -->
+                <div class="flex flex-col gap-1">
+                    <label class="text-[11px] text-slate-400 font-semibold">Kode Emiten</label>
+                    <div class="flex items-center justify-between p-2.5 rounded-sm bg-[#080C14] border border-white/10">
+                        <div class="flex items-center gap-2">
+                            <span class="text-base font-black text-white font-mono tracking-tight" id="modalTrackTickerDisplay">HEXA</span>
+                            <span class="text-[11px] text-slate-400 font-mono" id="modalTrackSectorDisplay">• Energy</span>
+                        </div>
+                        <span class="text-xs font-mono-num font-bold text-emerald-400" id="modalTrackCurrentPrice">Rp 3.510</span>
+                    </div>
+                    <input type="hidden" id="modalTrackTicker" value="HEXA"/>
+                </div>
+
+                <!-- Harga Beli (Rp) -->
+                <div class="flex flex-col gap-1">
+                    <div class="flex items-center justify-between">
+                        <label class="text-[11px] text-slate-400 font-semibold">Harga Beli Rata-Rata (IDR)</label>
+                        <button type="button" onclick="setModalPriceToCurrent()" class="text-[10px] text-cyan-400 hover:underline cursor-pointer">Gunakan Harga Terkini</button>
+                    </div>
+                    <div class="relative flex items-center">
+                        <span class="absolute left-3 text-slate-400 font-bold font-mono">Rp</span>
+                        <input type="number" id="modalTrackBuyPrice" step="5" required class="w-full bg-[#080C14] border border-white/10 rounded-sm pl-9 pr-3 py-2 text-white font-bold font-mono-num focus:outline-none focus:border-emerald-400 text-sm" placeholder="Contoh: 3450"/>
+                    </div>
+                </div>
+
+                <!-- Tanggal Beli & Quick Chips -->
+                <div class="flex flex-col gap-1">
+                    <div class="flex items-center justify-between">
+                        <label class="text-[11px] text-slate-400 font-semibold">Tanggal Pembelian</label>
+                        <span class="text-[10px] text-emerald-400 font-mono" id="modalTrackHoldingLabel">Hari Ini (0 Hari)</span>
+                    </div>
+                    <input type="date" id="modalTrackDate" required onchange="updateModalTrackHoldingLabel(this.value)" class="w-full bg-[#080C14] border border-white/10 rounded-sm px-3 py-2 text-white font-mono focus:outline-none focus:border-emerald-400 cursor-pointer"/>
+                    
+                    <!-- Quick offset chips -->
+                    <div class="flex flex-wrap items-center gap-1.5 pt-1">
+                        <button type="button" onclick="setModalDateOffset(0)" class="px-2 py-0.5 rounded-xs bg-white/5 hover:bg-white/10 text-[10px] font-mono text-slate-300 border border-white/10 cursor-pointer">Hari ini</button>
+                        <button type="button" onclick="setModalDateOffset(7)" class="px-2 py-0.5 rounded-xs bg-white/5 hover:bg-white/10 text-[10px] font-mono text-slate-300 border border-white/10 cursor-pointer">7h lalu</button>
+                        <button type="button" onclick="setModalDateOffset(14)" class="px-2 py-0.5 rounded-xs bg-white/5 hover:bg-white/10 text-[10px] font-mono text-slate-300 border border-white/10 cursor-pointer">14h lalu</button>
+                        <button type="button" onclick="setModalDateOffset(30)" class="px-2 py-0.5 rounded-xs bg-white/5 hover:bg-white/10 text-[10px] font-mono text-slate-300 border border-white/10 cursor-pointer">1 bln lalu</button>
+                        <button type="button" onclick="setModalDateOffset(90)" class="px-2 py-0.5 rounded-xs bg-white/5 hover:bg-white/10 text-[10px] font-mono text-slate-300 border border-white/10 cursor-pointer">3 bln lalu</button>
+                        <button type="button" onclick="setModalDateOffset(180)" class="px-2 py-0.5 rounded-xs bg-white/5 hover:bg-white/10 text-[10px] font-mono text-slate-300 border border-white/10 cursor-pointer">6 bln lalu</button>
+                    </div>
+                </div>
+
+                <!-- Horizon Rencana -->
+                <div class="flex flex-col gap-1">
+                    <label class="text-[11px] text-slate-400 font-semibold">Horizon / Strategi Rencana</label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <label class="flex items-center gap-2 p-2 rounded-sm bg-[#080C14] border border-white/10 cursor-pointer hover:border-emerald-500/40">
+                            <input type="radio" name="modalHorizon" value="swing" checked class="accent-emerald-400"/>
+                            <div>
+                                <div class="font-bold text-white text-[11px]">⚡ Swing Trading</div>
+                                <div class="text-[9px] text-slate-400">&lt; 1-2 Bulan (Ketat)</div>
+                            </div>
+                        </label>
+                        <label class="flex items-center gap-2 p-2 rounded-sm bg-[#080C14] border border-white/10 cursor-pointer hover:border-emerald-500/40">
+                            <input type="radio" name="modalHorizon" value="invest" class="accent-emerald-400"/>
+                            <div>
+                                <div class="font-bold text-white text-[11px]">🏛️ Investasi / Trend</div>
+                                <div class="text-[9px] text-slate-400">&gt; 1 Bulan (Run Profit)</div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Footer Action Buttons -->
+                <div class="pt-2 border-t border-white/10 flex items-center justify-end gap-2">
+                    <button type="button" onclick="closeTrackStockModal()" class="px-3 py-1.5 rounded-sm bg-white/5 hover:bg-white/10 text-slate-300 text-xs font-mono font-semibold transition-colors cursor-pointer">
+                        Batal
+                    </button>
+                    <button type="submit" class="px-4 py-1.5 rounded-sm bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-mono font-bold flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer">
+                        <span class="material-symbols-outlined text-[16px]">save</span>
+                        <span>Simpan & Buka Action Advisor</span>
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -3249,7 +3506,9 @@
                 renderRecommendationsTable(allRecommendations);
                 updateRecommendationCharts(allRecommendations);
                 populateCalculatorStockDropdown(allRecommendations);
+                populateTrackerStockDropdowns();
                 updatePortfolioCalculations();
+                renderTrackedStocks();
                 updateTickerTape(allRecommendations);
             }
         }
@@ -5629,6 +5888,8 @@
                 if (trackerBtn) trackerBtn.className = "px-3 py-1.5 rounded-sm text-xs font-mono font-bold bg-[#121A29] text-white border border-emerald-500/40 text-emerald-300 flex items-center gap-1.5 transition-all cursor-pointer";
                 if (allocContent) allocContent.classList.add('hidden');
                 if (trackerContent) trackerContent.classList.remove('hidden');
+                renderTrackedStocks();
+                populateTrackerStockDropdowns();
             }
         }
 
@@ -6113,6 +6374,730 @@
             a.click();
             URL.revokeObjectURL(url);
             showToast("File CSV portofolio berhasil diunduh!");
+        }
+
+        // =========================================================================
+        // 8B. SAHAM SAYA (ACTION ADVISOR • ZERO-PRIVACY PORTFOLIO TRACKER - TAHAP 2)
+        // =========================================================================
+        window.currentTrackerFilter = 'all';
+
+        function getOffsetDateString(daysAgo) {
+            const d = new Date();
+            d.setDate(d.getDate() - (daysAgo || 0));
+            return d.toISOString().split('T')[0];
+        }
+
+        function getDaysDifference(dateStr) {
+            if (!dateStr) return 0;
+            const target = new Date(dateStr + "T00:00:00");
+            const now = new Date();
+            const nowMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const targetMidnight = new Date(target.getFullYear(), target.getMonth(), target.getDate());
+            const diffTime = nowMidnight - targetMidnight;
+            return Math.max(0, Math.floor(diffTime / (1000 * 60 * 60 * 24)));
+        }
+
+        function getInitialStarterTrackedStocks() {
+            return [
+                {
+                    id: "trk_starter_hexa",
+                    ticker: "HEXA",
+                    buyPrice: 3450,
+                    buyDate: getOffsetDateString(14), // 14 hari lalu (~2 minggu)
+                    horizon: "swing"
+                },
+                {
+                    id: "trk_starter_bbca",
+                    ticker: "BBCA",
+                    buyPrice: 5800,
+                    buyDate: getOffsetDateString(90), // 90 hari lalu (~3 bulan)
+                    horizon: "invest"
+                },
+                {
+                    id: "trk_starter_ptba",
+                    ticker: "PTBA",
+                    buyPrice: 3250,
+                    buyDate: getOffsetDateString(30), // 30 hari lalu (~1 bulan)
+                    horizon: "swing"
+                }
+            ];
+        }
+
+        function getTrackedStocks() {
+            try {
+                const raw = localStorage.getItem('tracked_portfolio_stocks');
+                if (!raw) {
+                    const starter = getInitialStarterTrackedStocks();
+                    localStorage.setItem('tracked_portfolio_stocks', JSON.stringify(starter));
+                    return starter;
+                }
+                const parsed = JSON.parse(raw);
+                return Array.isArray(parsed) ? parsed : [];
+            } catch (e) {
+                console.warn("Gagal membaca tracked_portfolio_stocks:", e);
+                return getInitialStarterTrackedStocks();
+            }
+        }
+
+        function saveTrackedStocks(items) {
+            try {
+                localStorage.setItem('tracked_portfolio_stocks', JSON.stringify(items));
+            } catch (e) {
+                console.error("Gagal menyimpan tracked_portfolio_stocks:", e);
+            }
+        }
+
+        function findStockData(tickerClean) {
+            if (!tickerClean) return null;
+            const t = tickerClean.toUpperCase().replace(".JK", "");
+            let found = (allRecommendations || []).find(x => (x.Ticker || "").toUpperCase().replace(".JK", "") === t);
+            if (!found) {
+                found = fallbackDefaultStocks.find(x => (x.Ticker || "").toUpperCase().replace(".JK", "") === t);
+            }
+            return found;
+        }
+
+        function getTrackedStockActionAdvice(item, stockData) {
+            const holdingDays = getDaysDifference(item.buyDate);
+            const buyPrice = Number(item.buyPrice) || 1000;
+            const currentPrice = stockData ? Math.round(Number(stockData.Close) || buyPrice) : buyPrice;
+            const targetPrice = stockData ? Math.round(Number(stockData.Target_Price) || (buyPrice * 1.05)) : Math.round(buyPrice * 1.05);
+            const stopLoss = stockData ? Math.round(Number(stockData.Stop_Loss) || (buyPrice * 0.95)) : Math.round(buyPrice * 0.95);
+            const pnlPct = ((currentPrice - buyPrice) / buyPrice) * 100;
+            const pnlDiff = currentPrice - buyPrice;
+            const horizon = item.horizon || 'swing';
+
+            let statusKey = 'HOLD';
+            let title = '';
+            let actionTag = '';
+            let icon = '';
+            let boxClass = '';
+            let iconClass = '';
+            let titleClass = '';
+            let badgeClass = '';
+            let textClass = '';
+            let narrative = '';
+            let step1 = '';
+            let step2 = '';
+            let step3 = '';
+
+            const isSwing = horizon === 'swing';
+            const tpThreshold = isSwing ? 4.5 : 12.0;
+            const cutLossThreshold = isSwing ? -4.5 : -7.0;
+
+            if (pnlPct >= tpThreshold || (currentPrice >= targetPrice * 0.98 && pnlPct >= 2.5)) {
+                // Skenario A: TAKE PROFIT BERTAHAP
+                statusKey = 'TAKE_PROFIT';
+                title = 'Take Profit Bertahap (Amankan Keuntungan)';
+                actionTag = 'SEGERA REALISASI 50%';
+                icon = 'paid';
+                boxClass = 'bg-emerald-500/10 border-emerald-500/30';
+                iconClass = 'text-emerald-400';
+                titleClass = 'text-emerald-300';
+                badgeClass = 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40';
+                textClass = 'text-emerald-100/90';
+                narrative = `Dalam durasi ${holdingDays} hari, posisi menghasilkan floating gain +${pnlPct.toFixed(2)}% dan menyentuh area target taktis. Sesuai prinsip proteksi profit institusional, realisasikan 50% profit ke kas siaga untuk mengunci gain nyata, dan pasang trailing stop pada sisa posisi.`;
+                step1 = `Jual 50% porsi kepemilikan Anda di harga pasar terkini (Rp ${currentPrice.toLocaleString('id-ID')}).`;
+                step2 = `Pasang Trailing Stop ketat pada Rp ${Math.round(buyPrice * 1.01).toLocaleString('id-ID')} (mengunci status impas/BEP).`;
+                step3 = isSwing ? `Maksimal durasi swing tersisa 3-5 hari sebelum rotasi sektor.` : `Biarkan 50% sisanya bergerak mengikuti tren selama di atas MA-20.`;
+
+            } else if (pnlPct <= cutLossThreshold || currentPrice <= stopLoss || (pnlPct <= -3.5 && holdingDays >= (isSwing ? 20 : 45))) {
+                // Skenario B: DISIPLIN CUT LOSS (PROTEKSI MODAL)
+                statusKey = 'CUT_LOSS';
+                title = 'Disiplin Cut Loss (Proteksi Modal Struktural)';
+                actionTag = 'PROTEKSI MODAL WAJIB';
+                icon = 'fmd_bad';
+                boxClass = 'bg-rose-500/10 border-rose-500/30';
+                iconClass = 'text-rose-400';
+                titleClass = 'text-rose-300';
+                badgeClass = 'bg-rose-500/20 text-rose-300 border border-rose-500/40';
+                textClass = 'text-rose-100/90';
+                narrative = `Posisi mengalami tekanan ${pnlPct.toFixed(2)}% dan telah menembus batas toleransi risiko teknikal (Stop Loss Rp ${stopLoss.toLocaleString('id-ID')}) setelah disimpan selama ${holdingDays} hari. Mempertahankan posisi yang breakdown berisiko capital bleed yang melumpuhkan portofolio Anda.`;
+                step1 = `Eksekusi jual cut loss seluruh posisi tanpa ragu untuk memutus risiko berlanjut.`;
+                step2 = `Alihkan modal tersisa langsung ke Kas Siaga / RDPU pasar uang.`;
+                step3 = `Jangan average-down pada emiten yang sedang kehilangan support struktural.`;
+
+            } else if (Math.abs(pnlPct) <= 2.2 && holdingDays >= (isSwing ? 25 : 60)) {
+                // Skenario C: EVALUASI ROTASI MODAL (DEAD CAPITAL)
+                statusKey = 'ROTASI';
+                title = 'Evaluasi Rotasi Modal (Dead Capital Stagnan)';
+                actionTag = 'PERTIMBANGKAN ROTASI';
+                icon = 'swap_horiz';
+                boxClass = 'bg-amber-500/10 border-amber-500/30';
+                iconClass = 'text-amber-400';
+                titleClass = 'text-amber-300';
+                badgeClass = 'bg-amber-500/20 text-amber-300 border border-amber-500/40';
+                textClass = 'text-amber-100/90';
+                narrative = `Saham telah disimpan selama ${holdingDays} hari namun pergerakan harga relatif stagnan (${pnlPct >= 0 ? '+' : ''}${pnlPct.toFixed(2)}%). Modal Anda terperangkap pada kondisi sideways (opportunity cost tinggi) saat sektor lain sedang bergerak aktif.`;
+                step1 = `Pasang order jual antre di area harga beli (BEP Rp ${buyPrice.toLocaleString('id-ID')}).`;
+                step2 = `Beri toleransi waktu (time-stop) maksimal 3 hari bursa ke depan.`;
+                step3 = `Jika volume transaksi tetap rendah, pindahkan modal ke emiten bertaraf Alpha tinggi.`;
+
+            } else if (pnlPct >= 1.2) {
+                // Skenario D: HOLD & RUN PROFIT (TREND SEHAT)
+                statusKey = 'HOLD_RUN';
+                title = 'Hold & Run The Profit (Tren Bullish Sehat)';
+                actionTag = 'PERTAHANKAN POSISI';
+                icon = 'trending_up';
+                boxClass = 'bg-cyan-500/10 border-cyan-500/30';
+                iconClass = 'text-cyan-400';
+                titleClass = 'text-cyan-300';
+                badgeClass = 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40';
+                textClass = 'text-cyan-100/90';
+                narrative = `Posisi berada dalam tren naik yang teratur (+${pnlPct.toFixed(2)}%) selama ${holdingDays} hari simpan. Harga bertahan kokoh di atas level support dan belum ada sinyal divergence pelemahan volume.`;
+                step1 = `Pertahankan posisi penuh, hindari keluar prematur agar rasio Risk/Reward maksimal.`;
+                step2 = `Naikkan batas proteksi stop-loss ke area Rp ${Math.round(buyPrice * 0.99).toLocaleString('id-ID')}.`;
+                step3 = `Pantau resistensi berikutnya di Rp ${targetPrice.toLocaleString('id-ID')} sebagai area take profit.`;
+
+            } else {
+                // Skenario E: MONITORING TEKNIKAL (FLUKTUASI WAJAR)
+                statusKey = 'MONITOR';
+                title = 'Monitoring Teknikal (Fluktuasi Wajar Pasar)';
+                actionTag = 'PANTAU LEVEL SUPPORT';
+                icon = 'hourglass_empty';
+                boxClass = 'bg-[#121A29] border-white/10';
+                iconClass = 'text-slate-300';
+                titleClass = 'text-slate-200';
+                badgeClass = 'bg-white/10 text-slate-300 border border-white/15';
+                textClass = 'text-slate-300';
+                narrative = `Pergerakan harga (${pnlPct >= 0 ? '+' : ''}${pnlPct.toFixed(2)}%) dalam ${holdingDays} hari masih berada dalam batas volatilitas statistik harian normal (GARCH VaR). Struktur support utama belum ditembus sehingga belum memerlukan aksi jual darurat.`;
+                step1 = `Tetap tenang menghadapi koreksi minor harian; jangan tergesa-gesa cutloss tanpa sinyal breakdown.`;
+                step2 = `Awasi level batas pengaman Stop Loss di Rp ${stopLoss.toLocaleString('id-ID')}.`;
+                step3 = `Evaluasi ulang jika harga tidak kunjung memantul dalam 7 hari bursa berikutnya.`;
+            }
+
+            return {
+                statusKey,
+                title,
+                actionTag,
+                icon,
+                boxClass,
+                iconClass,
+                titleClass,
+                badgeClass,
+                textClass,
+                narrative,
+                step1,
+                step2,
+                step3,
+                holdingDays,
+                pnlPct,
+                pnlDiff,
+                currentPrice,
+                targetPrice,
+                stopLoss
+            };
+        }
+
+        function populateTrackerStockDropdowns() {
+            const select = document.getElementById('trackerFormTicker');
+            if (!select) return;
+
+            const currentVal = select.value;
+            let optionsHtml = '';
+            const list = (allRecommendations && allRecommendations.length > 0) ? allRecommendations : fallbackDefaultStocks;
+            
+            list.forEach(s => {
+                const tick = (s.Ticker || '').replace('.JK', '').toUpperCase();
+                const name = s.Name || s.Sector || 'General';
+                optionsHtml += `<option value="${tick}">${tick} - ${name} (Rp ${Math.round(s.Close || 1000).toLocaleString('id-ID')})</option>`;
+            });
+
+            select.innerHTML = optionsHtml;
+            if (currentVal && list.some(x => (x.Ticker || '').replace('.JK', '').toUpperCase() === currentVal)) {
+                select.value = currentVal;
+            } else if (list.length > 0) {
+                select.value = (list[0].Ticker || '').replace('.JK', '').toUpperCase();
+            }
+            onTrackerFormTickerChange(select.value);
+        }
+
+        function onTrackerFormTickerChange(val) {
+            const stock = findStockData(val);
+            const priceInput = document.getElementById('trackerFormPrice');
+            if (stock && priceInput && !priceInput.value) {
+                priceInput.value = Math.round(stock.Close || 1000);
+            }
+        }
+
+        function toggleTrackerAddForm(forceShow) {
+            const card = document.getElementById('trackerAddFormCard');
+            if (!card) return;
+            const isCurrentlyHidden = card.classList.contains('hidden');
+            const shouldShow = forceShow !== undefined ? forceShow : isCurrentlyHidden;
+
+            if (shouldShow) {
+                card.classList.remove('hidden');
+                populateTrackerStockDropdowns();
+                const dateInput = document.getElementById('trackerFormDate');
+                if (dateInput && !dateInput.value) {
+                    dateInput.value = getOffsetDateString(0);
+                    updateTrackerFormHoldingLabel(dateInput.value);
+                }
+            } else {
+                card.classList.add('hidden');
+            }
+        }
+
+        function setTrackerFormDateOffset(days) {
+            const dateInput = document.getElementById('trackerFormDate');
+            if (dateInput) {
+                dateInput.value = getOffsetDateString(days);
+                updateTrackerFormHoldingLabel(dateInput.value);
+            }
+        }
+
+        function updateTrackerFormHoldingLabel(dateStr) {
+            const label = document.getElementById('trackerFormHoldingLabel');
+            if (!label) return;
+            const days = getDaysDifference(dateStr);
+            label.innerText = days === 0 ? "Hari Ini (0 Hari)" : `${days} Hari Lalu (~${(days/7).toFixed(1)} Mgg)`;
+        }
+
+        function addTrackedStockFromForm() {
+            const tickerSelect = document.getElementById('trackerFormTicker');
+            const priceInput = document.getElementById('trackerFormPrice');
+            const dateInput = document.getElementById('trackerFormDate');
+            const horizonSelect = document.getElementById('trackerFormHorizon');
+
+            const ticker = (tickerSelect ? tickerSelect.value : '').toUpperCase().replace('.JK', '').trim();
+            const buyPrice = parseFloat(priceInput ? priceInput.value : 0);
+            const buyDate = dateInput ? dateInput.value : getOffsetDateString(0);
+            const horizon = horizonSelect ? horizonSelect.value : 'swing';
+
+            if (!ticker) {
+                showToast("Pilih kode emiten terlebih dahulu!", "error");
+                return;
+            }
+            if (!buyPrice || buyPrice <= 0) {
+                showToast("Masukkan harga beli yang valid!", "error");
+                return;
+            }
+
+            const items = getTrackedStocks();
+            const newItem = {
+                id: "trk_" + Date.now() + "_" + Math.random().toString(36).substr(2, 4),
+                ticker,
+                buyPrice,
+                buyDate,
+                horizon
+            };
+
+            // Tambahkan di awal daftar
+            items.unshift(newItem);
+            saveTrackedStocks(items);
+            renderTrackedStocks();
+            toggleTrackerAddForm(false);
+
+            // Reset form
+            if (priceInput) priceInput.value = '';
+            showToast(`⚡ Emiten ${ticker} berhasil ditambahkan ke pantauan Saham Saya!`, 'success');
+        }
+
+        function deleteTrackedStock(id) {
+            let items = getTrackedStocks();
+            const found = items.find(x => x.id === id);
+            const tick = found ? found.ticker : 'Saham';
+            items = items.filter(x => x.id !== id);
+            saveTrackedStocks(items);
+            renderTrackedStocks();
+            showToast(`Emiten ${tick} dihapus dari pantauan Saham Saya.`);
+        }
+
+        function setTrackerFilter(filter) {
+            window.currentTrackerFilter = filter;
+            const filters = ['all', 'action', 'gain', 'loss'];
+            filters.forEach(f => {
+                const btn = document.getElementById('trkFilter' + f.charAt(0).toUpperCase() + f.slice(1));
+                if (btn) {
+                    if (f === filter) {
+                        btn.className = "px-2.5 py-1 rounded-sm text-xs font-mono font-bold bg-[#121A29] text-white border border-white/20 transition-all cursor-pointer";
+                    } else {
+                        btn.className = "px-2.5 py-1 rounded-sm text-xs font-mono font-semibold bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white border border-white/10 transition-all cursor-pointer";
+                    }
+                }
+            });
+            renderTrackedStocks();
+        }
+
+        function renderTrackedStocks() {
+            const container = document.getElementById('trackedStocksContainer');
+            if (!container) return;
+
+            const allItems = getTrackedStocks();
+
+            // 1. Hitung ringkasan metrik scorecard
+            const totalCount = allItems.length;
+            let gainCount = 0;
+            let actionCount = 0;
+            let totalHoldingDays = 0;
+
+            const evaluatedList = allItems.map(item => {
+                const stockData = findStockData(item.ticker);
+                const advice = getTrackedStockActionAdvice(item, stockData);
+                if (advice.pnlPct >= 0) gainCount++;
+                if (advice.statusKey === 'TAKE_PROFIT' || advice.statusKey === 'CUT_LOSS' || advice.statusKey === 'ROTASI') {
+                    actionCount++;
+                }
+                totalHoldingDays += advice.holdingDays;
+                return { item, stockData, advice };
+            });
+
+            const avgDuration = totalCount > 0 ? (totalHoldingDays / totalCount) : 0;
+
+            // Update KPI Scorecards
+            const kpiTotalEl = document.getElementById('trkKpiTotal');
+            if (kpiTotalEl) kpiTotalEl.innerText = `${totalCount} Posisi`;
+            const kpiGainEl = document.getElementById('trkKpiGain');
+            if (kpiGainEl) kpiGainEl.innerText = `${gainCount} Posisi`;
+            const kpiGainPctEl = document.getElementById('trkKpiGainPct');
+            if (kpiGainPctEl) kpiGainPctEl.innerText = totalCount > 0 ? `${((gainCount/totalCount)*100).toFixed(0)}% Hijau` : '0% Portofolio';
+            const kpiWarningEl = document.getElementById('trkKpiWarning');
+            if (kpiWarningEl) kpiWarningEl.innerText = `${actionCount} Posisi`;
+            const kpiWarningDescEl = document.getElementById('trkKpiWarningDesc');
+            if (kpiWarningDescEl) kpiWarningDescEl.innerText = actionCount > 0 ? `${actionCount} Perlu Ditinjau` : 'Terkontrol Aman';
+            const kpiAvgDurEl = document.getElementById('trkKpiAvgDuration');
+            if (kpiAvgDurEl) kpiAvgDurEl.innerText = `${Math.round(avgDuration)} Hari`;
+            const kpiDurTypeEl = document.getElementById('trkKpiDurationType');
+            if (kpiDurTypeEl) kpiDurTypeEl.innerText = totalCount > 0 ? `~${(avgDuration/7).toFixed(1)} Minggu` : 'Multi-Horizon';
+
+            // Update Filter Button Badges
+            const fAllCount = document.getElementById('trkFilterAllCount');
+            if (fAllCount) fAllCount.innerText = totalCount;
+            const fActCount = document.getElementById('trkFilterActionCount');
+            if (fActCount) fActCount.innerText = actionCount;
+            const fGainCount = document.getElementById('trkFilterGainCount');
+            if (fGainCount) fGainCount.innerText = gainCount;
+            const fLossCount = document.getElementById('trkFilterLossCount');
+            if (fLossCount) fLossCount.innerText = totalCount - gainCount;
+
+            // Filter List
+            let filteredList = evaluatedList;
+            if (window.currentTrackerFilter === 'action') {
+                filteredList = evaluatedList.filter(x => x.advice.statusKey === 'TAKE_PROFIT' || x.advice.statusKey === 'CUT_LOSS' || x.advice.statusKey === 'ROTASI');
+            } else if (window.currentTrackerFilter === 'gain') {
+                filteredList = evaluatedList.filter(x => x.advice.pnlPct >= 0);
+            } else if (window.currentTrackerFilter === 'loss') {
+                filteredList = evaluatedList.filter(x => x.advice.pnlPct < 0);
+            }
+
+            // Sort List
+            const sortSelect = document.getElementById('trackerSortSelect');
+            const sortVal = sortSelect ? sortSelect.value : 'duration_desc';
+
+            filteredList.sort((a, b) => {
+                if (sortVal === 'duration_desc') return b.advice.holdingDays - a.advice.holdingDays;
+                if (sortVal === 'duration_asc') return a.advice.holdingDays - b.advice.holdingDays;
+                if (sortVal === 'pnl_desc') return b.advice.pnlPct - a.advice.pnlPct;
+                if (sortVal === 'pnl_asc') return a.advice.pnlPct - b.advice.pnlPct;
+                return 0;
+            });
+
+            // 2. Render Cards atau Empty State
+            if (allItems.length === 0) {
+                container.innerHTML = `
+                <div class="bg-[#0E1420] rounded-sm p-8 border border-white/10 flex flex-col items-center justify-center text-center gap-3">
+                    <div class="w-12 h-12 rounded-sm bg-white/5 border border-white/10 flex items-center justify-center text-slate-400">
+                        <span class="material-symbols-outlined text-[28px]">inventory_2</span>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-bold text-white font-mono">Belum Ada Saham Yang Dipantau</h4>
+                        <p class="text-xs text-slate-400 font-mono mt-1 max-w-md">
+                            Mulai pantau saham Anda tanpa risiko privasi (tanpa data lot & modal). Dapatkan tips aksi rasional berbasis durasi kepemilikan dan batas risiko teknikal.
+                        </p>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-2 mt-2">
+                        <button type="button" onclick="resetTrackedStocksToStarter()" class="px-3.5 py-2 rounded-sm bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 text-xs font-mono font-bold flex items-center gap-1.5 transition-all cursor-pointer">
+                            <span class="material-symbols-outlined text-[16px]">restart_alt</span>
+                            <span>Muat Starter Kit (HEXA, BBCA, PTBA)</span>
+                        </button>
+                        <button type="button" onclick="toggleTrackerAddForm(true)" class="px-3.5 py-2 rounded-sm bg-white/5 hover:bg-white/10 text-white border border-white/15 text-xs font-mono font-semibold flex items-center gap-1.5 transition-all cursor-pointer">
+                            <span class="material-symbols-outlined text-[16px]">add_circle</span>
+                            <span>+ Tambah Saham Sendiri</span>
+                        </button>
+                    </div>
+                </div>`;
+                return;
+            }
+
+            if (filteredList.length === 0) {
+                container.innerHTML = `
+                <div class="bg-[#0E1420] rounded-sm p-6 border border-white/10 flex flex-col items-center justify-center text-center gap-2">
+                    <span class="material-symbols-outlined text-slate-500 text-[24px]">filter_list_off</span>
+                    <p class="text-xs text-slate-400 font-mono">Tidak ada emiten dengan kriteria filter saat ini.</p>
+                    <button type="button" onclick="setTrackerFilter('all')" class="text-xs text-cyan-400 hover:underline font-mono cursor-pointer">Tampilkan Semua Posisi</button>
+                </div>`;
+                return;
+            }
+
+            let cardsHtml = '';
+            filteredList.forEach(({ item, stockData, advice }) => {
+                const ticker = item.ticker.toUpperCase();
+                const sector = stockData ? (stockData.Sector || 'General') : 'General';
+                const buyPrice = Number(item.buyPrice) || 1000;
+                const currentPrice = advice.currentPrice;
+                const pnlPct = advice.pnlPct;
+                const pnlDiff = advice.pnlDiff;
+                const pnlSign = pnlPct >= 0 ? '+' : '';
+                const holdingDays = advice.holdingDays;
+                const isGain = pnlPct >= 0;
+
+                const horizonBadgeStyle = item.horizon === 'invest' 
+                    ? 'bg-blue-500/20 text-blue-300 border border-blue-500/40' 
+                    : 'bg-amber-500/20 text-amber-300 border border-amber-500/40';
+                const horizonLabel = item.horizon === 'invest' ? '🏛️ Investasi (> 1 Bln)' : '⚡ Swing (< 1-2 Bln)';
+
+                const pnlBoxStyle = isGain ? 'bg-emerald-500/10 border-emerald-500/30' : 'bg-rose-500/10 border-rose-500/30';
+                const pnlLabelStyle = isGain ? 'text-emerald-400' : 'text-rose-400';
+                const pnlValStyle = isGain ? 'text-emerald-300' : 'text-rose-300';
+
+                cardsHtml += `
+                <div class="bg-[#0E1420] rounded-sm p-4 border border-white/10 flex flex-col gap-3 hover:border-white/20 transition-all">
+                    <!-- Row 1: Header Info -->
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/5 pb-2.5">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <span class="text-base sm:text-lg font-black text-white font-mono tracking-tight cursor-pointer hover:text-cyan-300" onclick="showStockDeepDive('${ticker}')">${ticker}</span>
+                            <span class="text-xs text-slate-400 font-mono">• ${sector}</span>
+                            <span class="px-1.5 py-0.5 rounded-xs ${horizonBadgeStyle} text-[9px] font-mono font-bold">${horizonLabel}</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-xs bg-[#080C14] border border-white/10 text-[10px] font-mono font-bold text-slate-300">
+                                <span class="material-symbols-outlined text-[13px] text-amber-400">schedule</span>
+                                <span>${holdingDays} Hari Simpan (~${(holdingDays/7).toFixed(1)} Mgg)</span>
+                            </span>
+                            <span class="text-[10px] font-mono text-slate-500 hidden md:inline">Beli: ${item.buyDate}</span>
+                            <div class="flex items-center gap-1 ml-1">
+                                <button type="button" onclick="showStockDeepDive('${ticker}')" title="Buka Deep Dive Riset" class="p-1 rounded-sm bg-white/5 hover:bg-white/10 text-cyan-400 border border-white/10 transition-colors cursor-pointer">
+                                    <span class="material-symbols-outlined text-[14px]">visibility</span>
+                                </button>
+                                <button type="button" onclick="deleteTrackedStock('${item.id}')" title="Hapus dari pantauan" class="p-1 rounded-sm bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 transition-colors cursor-pointer">
+                                    <span class="material-symbols-outlined text-[14px]">delete</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Row 2: Metrics Grid -->
+                    <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 text-xs font-mono">
+                        <div class="p-2 rounded-sm bg-[#080C14] border border-white/5 flex flex-col gap-0.5">
+                            <span class="text-[10px] text-slate-400">Harga Beli (Avg)</span>
+                            <span class="font-bold text-white font-mono-num">Rp ${buyPrice.toLocaleString('id-ID')}</span>
+                        </div>
+                        <div class="p-2 rounded-sm bg-[#080C14] border border-white/5 flex flex-col gap-0.5">
+                            <span class="text-[10px] text-slate-400">Harga Pasar (C)</span>
+                            <span class="font-bold text-white font-mono-num">Rp ${currentPrice.toLocaleString('id-ID')}</span>
+                        </div>
+                        <div class="p-2 rounded-sm ${pnlBoxStyle} border flex flex-col gap-0.5 col-span-2 sm:col-span-1">
+                            <span class="text-[10px] ${pnlLabelStyle}">Floating PnL (%)</span>
+                            <span class="font-bold font-mono-num ${pnlValStyle}">${pnlSign}${pnlPct.toFixed(2)}% (${pnlSign}Rp ${Math.abs(pnlDiff).toLocaleString('id-ID')})</span>
+                        </div>
+                        <div class="p-2 rounded-sm bg-[#080C14] border border-white/5 flex flex-col gap-0.5">
+                            <span class="text-[10px] text-emerald-400">Target TP Acuan</span>
+                            <span class="font-bold text-emerald-300 font-mono-num">Rp ${advice.targetPrice.toLocaleString('id-ID')}</span>
+                        </div>
+                        <div class="p-2 rounded-sm bg-[#080C14] border border-white/5 flex flex-col gap-0.5">
+                            <span class="text-[10px] text-rose-400">Batas Stop Loss</span>
+                            <span class="font-bold text-rose-300 font-mono-num">Rp ${advice.stopLoss.toLocaleString('id-ID')}</span>
+                        </div>
+                    </div>
+
+                    <!-- Row 3: Action Advisor Recommendation Panel -->
+                    <div class="p-3 sm:p-3.5 rounded-sm ${advice.boxClass} border flex flex-col gap-2.5">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 border-b border-white/10 pb-2">
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-[18px] ${advice.iconClass}">${advice.icon}</span>
+                                <span class="text-xs sm:text-sm font-bold font-mono uppercase tracking-wide ${advice.titleClass}">${advice.title}</span>
+                            </div>
+                            <span class="px-2 py-0.5 rounded-xs ${advice.badgeClass} text-[10px] font-mono font-bold self-start sm:self-auto">${advice.actionTag}</span>
+                        </div>
+
+                        <!-- Quantitative Narrative -->
+                        <p class="text-[11px] sm:text-xs font-mono ${advice.textClass} leading-relaxed">
+                            ${advice.narrative}
+                        </p>
+
+                        <!-- Tactical Checklist -->
+                        <div class="mt-1 pt-2 border-t border-white/10 flex flex-col gap-1.5 text-[11px] font-mono">
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[13px] text-cyan-400">checklist</span>
+                                <span>Checklist Saran & Tips Tindakan Institusional:</span>
+                            </span>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-2 pt-0.5">
+                                <div class="p-2 rounded-xs bg-black/30 border border-white/5 flex flex-col gap-0.5">
+                                    <span class="text-[9px] text-slate-400 font-bold">1. EKSEKUSI UTAMA</span>
+                                    <span class="text-slate-200">${advice.step1}</span>
+                                </div>
+                                <div class="p-2 rounded-xs bg-black/30 border border-white/5 flex flex-col gap-0.5">
+                                    <span class="text-[9px] text-slate-400 font-bold">2. MANAJEMEN RISIKO</span>
+                                    <span class="text-slate-200">${advice.step2}</span>
+                                </div>
+                                <div class="p-2 rounded-xs bg-black/30 border border-white/5 flex flex-col gap-0.5">
+                                    <span class="text-[9px] text-slate-400 font-bold">3. EVALUASI WAKTU</span>
+                                    <span class="text-slate-200">${advice.step3}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+            });
+
+            container.innerHTML = cardsHtml;
+        }
+
+        function resetTrackedStocksToStarter() {
+            const starter = getInitialStarterTrackedStocks();
+            saveTrackedStocks(starter);
+            renderTrackedStocks();
+            showToast("Data contoh Starter Kit (HEXA, BBCA, PTBA) berhasil dimuat ulang!", "success");
+        }
+
+        function clearAllTrackedStocks() {
+            if (confirm("Bersihkan seluruh daftar pantauan saham Anda dari penyimpanan browser?")) {
+                saveTrackedStocks([]);
+                renderTrackedStocks();
+                showToast("Seluruh daftar pantauan saham telah dibersihkan.");
+            }
+        }
+
+        function copyTrackerSummaryText() {
+            const items = getTrackedStocks();
+            if (items.length === 0) {
+                showToast("Belum ada saham dalam pantauan untuk disalin.", "error");
+                return;
+            }
+
+            let text = `==================================================\nEVALUASI AKSI SAHAM SAYA (ZERO-PRIVACY ADVISOR)\nStock Market Recommendation • Institutional Engine\n==================================================\n`;
+            text += `Total Dipantau : ${items.length} Posisi\nTanggal Evaluasi: ${new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}\n\n`;
+
+            items.forEach((item, idx) => {
+                const stock = findStockData(item.ticker);
+                const adv = getTrackedStockActionAdvice(item, stock);
+                const sign = adv.pnlPct >= 0 ? '+' : '';
+                text += `${idx + 1}. ${item.ticker} (${item.horizon === 'invest' ? 'Investasi' : 'Swing'} • ${adv.holdingDays} Hari Simpan)\n`;
+                text += `   - Beli: Rp ${Number(item.buyPrice).toLocaleString('id-ID')} | Pasar: Rp ${adv.currentPrice.toLocaleString('id-ID')}\n`;
+                text += `   - Floating PnL: ${sign}${adv.pnlPct.toFixed(2)}% (${sign}Rp ${Math.abs(adv.pnlDiff).toLocaleString('id-ID')})\n`;
+                text += `   - Status Aksi: ${adv.title.toUpperCase()}\n`;
+                text += `   - Tips Taktis: ${adv.step1} ${adv.step2}\n\n`;
+            });
+
+            text += `Catatan: Pantauan ini bersifat Zero-Privacy tanpa menyimpan lot/modal finansial pengguna.\n==================================================`;
+            navigator.clipboard.writeText(text);
+            showToast("Ringkasan evaluasi pantauan saham berhasil disalin ke clipboard!");
+        }
+
+        // =========================================================================
+        // MODAL TRACK STOCK DI SAHAM SAYA SHORTCUT HANDLERS
+        // =========================================================================
+        function openTrackStockModal(ticker) {
+            let tClean = ticker;
+            if (!tClean && activeDeepDiveStock) {
+                tClean = (activeDeepDiveStock.Ticker || "").replace(".JK", "");
+            }
+            if (!tClean && activeModalStock) {
+                tClean = (activeModalStock.Ticker || "").replace(".JK", "");
+            }
+            if (!tClean) {
+                tClean = "HEXA";
+            }
+            tClean = tClean.toUpperCase().replace(".JK", "");
+
+            const stock = findStockData(tClean);
+            const modal = document.getElementById('modalTrackStock');
+            if (!modal) return;
+
+            const dispTick = document.getElementById('modalTrackTickerDisplay');
+            const dispSec = document.getElementById('modalTrackSectorDisplay');
+            const dispPrice = document.getElementById('modalTrackCurrentPrice');
+            const hiddenTick = document.getElementById('modalTrackTicker');
+            const buyPriceInput = document.getElementById('modalTrackBuyPrice');
+            const dateInput = document.getElementById('modalTrackDate');
+
+            if (dispTick) dispTick.innerText = tClean;
+            if (hiddenTick) hiddenTick.value = tClean;
+            if (dispSec) dispSec.innerText = `• ${stock ? (stock.Sector || 'General') : 'General'}`;
+
+            const closeP = stock ? Math.round(stock.Close || 1000) : 1000;
+            if (dispPrice) dispPrice.innerText = `Rp ${closeP.toLocaleString('id-ID')}`;
+            if (buyPriceInput) buyPriceInput.value = closeP;
+
+            if (dateInput) {
+                dateInput.value = getOffsetDateString(0);
+                updateModalTrackHoldingLabel(dateInput.value);
+            }
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeTrackStockModal() {
+            const modal = document.getElementById('modalTrackStock');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+        }
+
+        function setModalDateOffset(days) {
+            const dateInput = document.getElementById('modalTrackDate');
+            if (dateInput) {
+                dateInput.value = getOffsetDateString(days);
+                updateModalTrackHoldingLabel(dateInput.value);
+            }
+        }
+
+        function updateModalTrackHoldingLabel(dateStr) {
+            const label = document.getElementById('modalTrackHoldingLabel');
+            if (!label) return;
+            const days = getDaysDifference(dateStr);
+            label.innerText = days === 0 ? "Hari Ini (0 Hari)" : `${days} Hari Lalu (~${(days/7).toFixed(1)} Mgg)`;
+        }
+
+        function setModalPriceToCurrent() {
+            const ticker = (document.getElementById('modalTrackTicker').value || 'HEXA').toUpperCase();
+            const stock = findStockData(ticker);
+            const buyPriceInput = document.getElementById('modalTrackBuyPrice');
+            if (stock && buyPriceInput) {
+                buyPriceInput.value = Math.round(stock.Close || 1000);
+                showToast(`Harga beli diisi sesuai harga pasar terkini Rp ${buyPriceInput.value}`);
+            }
+        }
+
+        function saveTrackedStockFromModal() {
+            const ticker = (document.getElementById('modalTrackTicker').value || '').toUpperCase().trim();
+            const buyPrice = parseFloat(document.getElementById('modalTrackBuyPrice').value);
+            const buyDate = document.getElementById('modalTrackDate').value || getOffsetDateString(0);
+            const horizonRadios = document.getElementsByName('modalHorizon');
+            let horizon = 'swing';
+            for (let r of horizonRadios) {
+                if (r.checked) horizon = r.value;
+            }
+
+            if (!ticker) {
+                showToast("Kode emiten tidak valid!", "error");
+                return;
+            }
+            if (!buyPrice || buyPrice <= 0) {
+                showToast("Masukkan harga beli yang valid!", "error");
+                return;
+            }
+
+            const items = getTrackedStocks();
+            // Tambahkan di awal
+            items.unshift({
+                id: "trk_" + Date.now() + "_" + Math.random().toString(36).substr(2, 4),
+                ticker,
+                buyPrice,
+                buyDate,
+                horizon
+            });
+            saveTrackedStocks(items);
+
+            closeTrackStockModal();
+            navigateTo('page-portofolio');
+            switchPortfolioSubTab('tracker');
+            renderTrackedStocks();
+
+            showToast(`⚡ Emiten ${ticker} berhasil ditambahkan ke pantauan Saham Saya!`, 'success');
         }
 
         // 9. Status Jam Perdagangan BEI (Waktu Indonesia Barat / Asia:Jakarta)
