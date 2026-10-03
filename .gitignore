@@ -16,6 +16,7 @@ data/processed/processed_market_features.csv
 data/processed/advanced_quant_metrics.csv
 data/processed/*.joblib
 data/processed/*.pth
+data/processed/*.cbm
 
 # Raw market feeds & financial statements
 data/raw/financial_statements/*.xlsx

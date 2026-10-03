@@ -38,6 +38,7 @@ RAW_DIR = DATA_DIR / "raw"
 
 SENSITIVE_TARGETS = [
     PROCESSED_DIR / "alpha_model.joblib",
+    PROCESSED_DIR / "catboost_model.cbm",
     PROCESSED_DIR / "lstm_model.pth",
     PROCESSED_DIR / "processed_market_features.csv",
     PROCESSED_DIR / "advanced_quant_metrics.csv",
@@ -130,7 +131,7 @@ def sync_to_huggingface(hf_token: str, repo_id: str) -> None:
     except Exception as e:
         logger.warning(f"Repo check warning: {e}")
 
-    for target in [PROCESSED_DIR / "alpha_model.joblib", PROCESSED_DIR / "lstm_model.pth"]:
+    for target in [PROCESSED_DIR / "alpha_model.joblib", PROCESSED_DIR / "catboost_model.cbm", PROCESSED_DIR / "lstm_model.pth"]:
         if target.exists():
             logger.info(f"Uploading {target.name} to Hugging Face...")
             api.upload_file(

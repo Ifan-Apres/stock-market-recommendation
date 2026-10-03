@@ -17,6 +17,7 @@ import joblib  # type: ignore # pyrefly: ignore [missing-import]
 import numpy as np  # type: ignore # pyrefly: ignore [missing-import]
 import pandas as pd  # type: ignore # pyrefly: ignore [missing-import]
 from sklearn.ensemble import HistGradientBoostingClassifier  # type: ignore # pyrefly: ignore [missing-import]
+from catboost import CatBoostClassifier  # type: ignore # pyrefly: ignore [missing-import]
 from sklearn.metrics import accuracy_score, precision_score, roc_auc_score  # type: ignore # pyrefly: ignore [missing-import]
 from statsmodels.tsa.arima.model import ARIMA  # type: ignore # pyrefly: ignore [missing-import]
 import torch  # type: ignore # pyrefly: ignore [missing-import]
@@ -104,6 +105,7 @@ LSTM_FEATURE_COLS = [
 ]
 TARGET_COLUMN = "Target_Class_5D"
 MODEL_PATH = DATA_DIR / "processed" / "alpha_model.joblib"
+CATBOOST_MODEL_PATH = DATA_DIR / "processed" / "catboost_model.cbm"
 LSTM_MODEL_PATH = DATA_DIR / "processed" / "lstm_model.pth"
 
 
@@ -321,6 +323,14 @@ class QuantitativeAlphaModel:
             l2_regularization=3.0,
             random_state=42,
         )
+        self.catboost_model = CatBoostClassifier(
+            iterations=250,
+            learning_rate=0.03,
+            depth=5,
+            l2_leaf_reg=5.0,
+            random_seed=42,
+            verbose=False,
+        )
         self.lstm_trainer = PyTorchLSTMTrainer()
         self.arima_predictor = ARIMAPredictor()
         self.ticker_to_sector = {t: sector for sector, tickers in SECTOR_MAP.items() for t in tickers}
@@ -348,10 +358,13 @@ class QuantitativeAlphaModel:
         X_train, y_train = train_df[FEATURE_COLUMNS], train_df[TARGET_COLUMN].astype(int)
         X_test, y_test = test_df[FEATURE_COLUMNS], test_df[TARGET_COLUMN].astype(int)
 
-        logger.info("Fitting Tabular GBDT Model with Macro Context...")
+        logger.info("Fitting Tree Blend Ensemble (HistGB + CatBoost) with Macro & Corporate Context...")
         self.gbdt_model.fit(X_train, y_train)
+        self.catboost_model.fit(X_train, y_train)
 
-        test_probs = self.gbdt_model.predict_proba(X_test)[:, 1]
+        gbdt_probs = self.gbdt_model.predict_proba(X_test)[:, 1]
+        cat_probs = self.catboost_model.predict_proba(X_test)[:, 1]
+        test_probs = 0.50 * gbdt_probs + 0.50 * cat_probs
         test_preds = (test_probs >= 0.5).astype(int)
 
         acc = accuracy_score(y_test, test_preds)
@@ -389,8 +402,12 @@ class QuantitativeAlphaModel:
 
         MODEL_PATH.parent.mkdir(parents=True, exist_ok=True)
         joblib.dump(self.gbdt_model, MODEL_PATH)
+        self.catboost_model.save_model(str(CATBOOST_MODEL_PATH))
 
         return {
+            "Tree_Blend_Accuracy": round(float(acc), 4),
+            "Tree_Blend_Precision": round(float(prec), 4),
+            "Tree_Blend_ROC_AUC": round(float(auc), 4),
             "GBDT_Accuracy": round(float(acc), 4),
             "GBDT_Precision": round(float(prec), 4),
             "GBDT_ROC_AUC": round(float(auc), 4),
@@ -422,12 +439,18 @@ class QuantitativeAlphaModel:
 
             feat_vector = pd.DataFrame([latest_row])[FEATURE_COLUMNS]
             gbdt_prob = float(self.gbdt_model.predict_proba(feat_vector)[:, 1][0])
+            cat_prob = float(self.catboost_model.predict_proba(feat_vector)[:, 1][0])
+            tree_prob = round(0.50 * gbdt_prob + 0.50 * cat_prob, 4)
+
             arima_ret, arima_prob = self.arima_predictor.predict_ticker(grp["Close"], steps=5)
             lstm_prob = self.lstm_trainer.predict_latest_ticker(grp)
 
-            blended_prob = round(0.50 * gbdt_prob + 0.30 * lstm_prob + 0.20 * arima_prob, 4)
+            # Consensus blend: 60% Tree Blend (HistGB + CatBoost) + 25% LSTM + 15% ARIMA
+            blended_prob = round(0.60 * tree_prob + 0.25 * lstm_prob + 0.15 * arima_prob, 4)
 
             latest_row["GBDT_Prob"] = round(gbdt_prob, 4)
+            latest_row["CatBoost_Prob"] = round(cat_prob, 4)
+            latest_row["Tree_Blend_Prob"] = tree_prob
             latest_row["ARIMA_Prob"] = arima_prob
             latest_row["ARIMA_Expected_Return"] = arima_ret
             latest_row["LSTM_Prob"] = lstm_prob
@@ -471,12 +494,12 @@ class QuantitativeAlphaModel:
             # 1. Hard threshold: blended_prob must be >= 0.55 (no loose 0.52 floor)
             # 2. Majority model consensus: at least 2 out of 3 models must be bullish (>= 0.50)
             # 3. Model divergence guard: no individual model should be bearish (< 0.48)
-            gbdt_p = float(latest_row.get("GBDT_Prob", 0.50))
+            tree_p = float(latest_row.get("Tree_Blend_Prob", latest_row.get("GBDT_Prob", 0.50)))
             lstm_p = float(latest_row.get("LSTM_Prob", 0.50))
             arima_p = float(latest_row.get("ARIMA_Prob", 0.50))
 
-            models_bullish_count = sum([p >= 0.50 for p in [gbdt_p, lstm_p, arima_p]])
-            min_model_prob = min(gbdt_p, lstm_p, arima_p)
+            models_bullish_count = sum([p >= 0.50 for p in [tree_p, lstm_p, arima_p]])
+            min_model_prob = min(tree_p, lstm_p, arima_p)
             has_model_divergence = (min_model_prob < 0.48)
 
             is_buy_eligible = (
