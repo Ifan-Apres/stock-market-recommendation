@@ -6,6 +6,7 @@ for all IDX constituents and macro IHSG levels.
 
 import json
 import logging
+import sys
 from pathlib import Path
 from typing import Dict, Any, List
 import pandas as pd
@@ -15,6 +16,9 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(
 logger = logging.getLogger("ForeignFlowEngine")
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+if str(BASE_DIR) not in sys.path:
+    sys.path.insert(0, str(BASE_DIR))
+
 DATA_DIR = BASE_DIR / "data"
 RAW_MARKET_FILE = DATA_DIR / "raw" / "raw_market_data.csv"
 PROCESSED_DIR = DATA_DIR / "processed"
