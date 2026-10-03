@@ -1,0 +1,90 @@
+{
+  "deep_learning_standalone": {
+    "standard_lstm": {
+      "Accuracy": 0.5008,
+      "Precision": 0.0,
+      "Recall": 0.0,
+      "F1_Score": 0.0,
+      "ROC_AUC": 0.5,
+      "High_Conviction_Precision_55": 0.0,
+      "Top_Decile_Precision": 0.0,
+      "Train_Time_Sec": 236.17,
+      "Parameters": 14881,
+      "Sample_Size_Test": 15614
+    },
+    "bilstm": {
+      "Accuracy": 0.5008,
+      "Precision": 0.0,
+      "Recall": 0.0,
+      "F1_Score": 0.0,
+      "ROC_AUC": 0.5,
+      "High_Conviction_Precision_55": 0.0,
+      "Top_Decile_Precision": 0.0,
+      "Train_Time_Sec": 1160.34,
+      "Parameters": 40001,
+      "Sample_Size_Test": 15614
+    },
+    "attention_lstm": {
+      "Accuracy": 0.5008,
+      "Precision": 0.0,
+      "Recall": 0.0,
+      "F1_Score": 0.0,
+      "ROC_AUC": 0.5,
+      "High_Conviction_Precision_55": 0.0,
+      "Top_Decile_Precision": 0.0,
+      "Train_Time_Sec": 274.48,
+      "Parameters": 15426,
+      "Sample_Size_Test": 15614
+    }
+  },
+  "multi_engine_consensus": {
+    "tree_blend_only": {
+      "Accuracy": 0.5216,
+      "Precision": 0.5485,
+      "Recall": 0.236,
+      "F1_Score": 0.33,
+      "ROC_AUC": 0.5433,
+      "High_Conviction_Precision_55": 0.5323,
+      "Top_Decile_Precision": 0.557,
+      "Train_Time_Sec": 3.15,
+      "Parameters": 0,
+      "Sample_Size_Test": 15614
+    },
+    "multi_engine_std_lstm": {
+      "Accuracy": 0.5126,
+      "Precision": 0.5571,
+      "Recall": 0.1152,
+      "F1_Score": 0.1909,
+      "ROC_AUC": 0.5433,
+      "High_Conviction_Precision_55": 0.1,
+      "Top_Decile_Precision": 0.557,
+      "Train_Time_Sec": 239.32,
+      "Parameters": 14881,
+      "Sample_Size_Test": 15614
+    },
+    "multi_engine_bilstm": {
+      "Accuracy": 0.5126,
+      "Precision": 0.5602,
+      "Recall": 0.1098,
+      "F1_Score": 0.1837,
+      "ROC_AUC": 0.5433,
+      "High_Conviction_Precision_55": 0.1111,
+      "Top_Decile_Precision": 0.5602,
+      "Train_Time_Sec": 1163.49,
+      "Parameters": 40001,
+      "Sample_Size_Test": 15614
+    },
+    "multi_engine_attention_lstm": {
+      "Accuracy": 0.512,
+      "Precision": 0.5591,
+      "Recall": 0.1056,
+      "F1_Score": 0.1776,
+      "ROC_AUC": 0.5433,
+      "High_Conviction_Precision_55": 0.0,
+      "Top_Decile_Precision": 0.5591,
+      "Train_Time_Sec": 277.63,
+      "Parameters": 15426,
+      "Sample_Size_Test": 15614
+    }
+  }
+}
