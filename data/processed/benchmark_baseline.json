@@ -1,0 +1,41 @@
+{
+  "metrics": {
+    "Accuracy": 0.5355,
+    "Precision": 0.5489,
+    "Recall": 0.2137,
+    "F1_Score": 0.3076,
+    "ROC_AUC": 0.5438,
+    "High_Conviction_Precision_55": 0.5766,
+    "Top_Decile_Precision": 0.5571,
+    "Sample_Size_Test": 17581,
+    "Feature_Count": 26
+  },
+  "feature_importance": {
+    "Dist_SMA_20": 0.00803,
+    "Volume_Ratio": 0.00574,
+    "Oil_Energy_Tailwind": 0.00531,
+    "Brent_Oil_Return_1D": 0.00326,
+    "CMF_20": 0.00293,
+    "Volatility_20D": 0.00292,
+    "Dist_SMA_200": 0.00263,
+    "USD_IDR_Return_1D": 0.00241,
+    "Log_Return": 0.0022,
+    "Foreign_Participation": 0.00204,
+    "EMA_12": 0.00163,
+    "MACD_Hist": 0.00143,
+    "FX_Consumer_Headwind": 0.00141,
+    "Market_Cap": 0.00125,
+    "Dividend_Yield": 0.00102,
+    "IHSG_Return_1D": 0.00086,
+    "Foreign_Flow_Norm_1D": 0.00076,
+    "Profit_Margin": 0.00051,
+    "PB_Ratio": 0.00044,
+    "Foreign_Flow_5D_Accum": 0.0003,
+    "US_10Y_Yield_Delta": 0.00015,
+    "Rate_Bank_Sensitivity": -9e-05,
+    "Bollinger_Upper": -0.00028,
+    "Foreign_Flow_Momentum": -0.00039,
+    "MACD_Signal": -0.0011,
+    "Volume_SMA_20": -0.0011
+  }
+}

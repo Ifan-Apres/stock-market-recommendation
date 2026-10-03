@@ -60,6 +60,9 @@ FEATURE_COLUMNS = [
     "Bollinger_Upper",
     "Volume_Ratio",
     "Dividend_Yield",
+    "Dividend_Yield_Norm",
+    "Is_Dividend_Season",
+    "Dividend_Season_Momentum",
     "MACD_Hist",
     "Volume_SMA_20",
     "Market_Cap",
@@ -76,6 +79,9 @@ FEATURE_COLUMNS = [
     "Foreign_Flow_5D_Accum",
     "Foreign_Participation",
     "Foreign_Flow_Momentum",
+    "Foreign_Accum_Divergence",
+    "Foreign_Flow_Intensity",
+    "Foreign_Consistent_Buy_5D",
 ]
 
 LSTM_FEATURE_COLS = [
@@ -93,6 +99,8 @@ LSTM_FEATURE_COLS = [
     "FX_Consumer_Headwind",
     "Foreign_Flow_Norm_1D",
     "Foreign_Flow_5D_Accum",
+    "Foreign_Accum_Divergence",
+    "Is_Dividend_Season",
 ]
 TARGET_COLUMN = "Target_Class_5D"
 MODEL_PATH = DATA_DIR / "processed" / "alpha_model.joblib"

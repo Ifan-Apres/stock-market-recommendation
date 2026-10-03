@@ -34,6 +34,34 @@ from src.foreign_flow import FOREIGN_WEIGHTS, DEFAULT_FOREIGN_WEIGHT
 logging.basicConfig(level=logging.INFO, format=LOG_FORMAT)
 logger = logging.getLogger("FeatureEngineering")
 
+# BEI Seasonality Dividend Calendar (Historical distribution windows: Interim & Final)
+BEI_DIVIDEND_MONTHS = {
+    "BBCA": [3, 4, 12],
+    "BBRI": [1, 3],
+    "BMRI": [3, 4],
+    "BBNI": [3, 4],
+    "ASII": [5, 10],
+    "HEXA": [9, 10],
+    "PTBA": [6],
+    "ADRO": [1, 5, 6, 12],
+    "ITMG": [4, 9],
+    "UNTR": [4, 5, 10],
+    "TLKM": [6, 7],
+    "ICBP": [7, 8],
+    "INDF": [7, 8],
+    "BRIS": [5],
+    "ISAT": [6],
+    "AADI": [5, 12],
+    "KLBF": [5, 6],
+    "CPIN": [6],
+    "AMRT": [5],
+    "PGAS": [6],
+    "MEDC": [7, 11],
+    "INKP": [7],
+    "ANTM": [6],
+}
+DEFAULT_DIVIDEND_MONTHS = [4, 5, 6]
+
 
 class QuantitativeFeatureEngineer:
     """
@@ -342,6 +370,17 @@ class QuantitativeFeatureEngineer:
         df["Foreign_Flow_5D_Accum"] = np.clip(df["Net_Foreign_IDR"].rolling(5).sum() / ((df["Value_SMA_20"] * 5.0) + 1e-9), -3.0, 3.0).fillna(0.0)
         df["Foreign_Flow_Momentum"] = (df["Foreign_Flow_Norm_1D"] - df["Foreign_Flow_Norm_1D"].shift(3)).fillna(0.0)
 
+        # 4.2 Enhanced Smart Money Flow & Divergence (RND Features)
+        df["Foreign_Accum_Divergence"] = np.clip(df["Foreign_Flow_5D_Accum"] - df["Return_5D"], -3.0, 3.0).fillna(0.0)
+        df["Foreign_Flow_Intensity"] = np.clip(df["Foreign_Flow_Norm_1D"] * df["Foreign_Participation"], -3.0, 3.0).fillna(0.0)
+        df["Foreign_Consistent_Buy_5D"] = (df["Net_Foreign_IDR"] > 0).astype(float).rolling(5).mean().fillna(0.5)
+
+        # 4.3 Dividend Seasonality & Cyclical Dynamics (RND Features)
+        season_months = BEI_DIVIDEND_MONTHS.get(ticker_clean, DEFAULT_DIVIDEND_MONTHS)
+        row_months = df["Date"].dt.month
+        df["Is_Dividend_Season"] = row_months.isin(season_months).astype(float)
+        df["Dividend_Season_Momentum"] = df["Is_Dividend_Season"] * df["Return_20D"].fillna(0.0)
+
         # 5. Technical Floor Pivot Levels (Support & Resistance for BoW & BoB)
         # Next-day pivot levels (projected from completed session t for next session t+1)
         curr_h = df["High"]
@@ -462,6 +501,10 @@ class QuantitativeFeatureEngineer:
             feature_df = feature_df.merge(fund_df, on="Ticker", how="left")
             feature_df["Market_Cap"] = feature_df["Market_Cap"].astype(float).fillna(1e9)
             feature_df["Log_Market_Cap"] = np.log(feature_df["Market_Cap"] + 1e-9)
+            raw_dy = feature_df.get("Dividend_Yield", pd.Series(0.0, index=feature_df.index)).fillna(0.0)
+            feature_df["Dividend_Yield_Norm"] = np.clip(raw_dy / (15.0 if raw_dy.max() > 1.0 else 0.15), 0.0, 2.0).fillna(0.0)
+        else:
+            feature_df["Dividend_Yield_Norm"] = 0.0
 
         clean_df = feature_df.dropna(subset=["SMA_200", "RSI_14"]).copy()
         clean_df.reset_index(drop=True, inplace=True)
@@ -491,8 +534,10 @@ class QuantitativeFeatureEngineer:
             "Beta_IHSG", "Sharpe_Ratio", "Max_Drawdown_1Y", "GARCH_Vol", "VaR_95_1D",
             "VaR_99_1D", "ES_95_1D", "GARCH_Model",
             "Pivot_Point", "Support_1", "Resistance_1", "PE_Ratio", "PB_Ratio", "ROE",
-            "Dividend_Yield", "Debt_to_Equity", "Current_Ratio",
-            "Foreign_Flow_Norm_1D", "Foreign_Participation", "Foreign_Flow_5D_Accum", "Foreign_Flow_Momentum"
+            "Dividend_Yield", "Dividend_Yield_Norm", "Is_Dividend_Season", "Dividend_Season_Momentum",
+            "Debt_to_Equity", "Current_Ratio",
+            "Foreign_Flow_Norm_1D", "Foreign_Participation", "Foreign_Flow_5D_Accum", "Foreign_Flow_Momentum",
+            "Foreign_Accum_Divergence", "Foreign_Flow_Intensity", "Foreign_Consistent_Buy_5D"
         ]
         available_cols = [c for c in cols if c in latest_df.columns]
         snapshot_df = latest_df[available_cols].copy()
