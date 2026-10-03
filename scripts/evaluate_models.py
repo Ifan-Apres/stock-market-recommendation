@@ -2,11 +2,12 @@
 """
 scripts/evaluate_models.py
 Quantitative Model Evaluation & Comparative Benchmark Harness.
-Compares Baseline (Main) vs Candidate (RND) Machine Learning Models.
+Compares HistGradientBoosting (Baseline) vs CatBoost (Candidate) vs Blend Ensemble.
 """
 
 import sys
 import json
+import time
 import logging
 import numpy as np
 import pandas as pd
@@ -14,6 +15,7 @@ from pathlib import Path
 from typing import Dict, Any, Tuple
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score
 from sklearn.ensemble import HistGradientBoostingClassifier
+from catboost import CatBoostClassifier
 
 # Ensure project root in sys.path
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -30,13 +32,79 @@ logger = logging.getLogger("ModelEvaluator")
 
 BASELINE_METRICS_FILE = DATA_DIR / "processed" / "benchmark_baseline.json"
 CANDIDATE_METRICS_FILE = DATA_DIR / "processed" / "benchmark_candidate.json"
+CATBOOST_METRICS_FILE = DATA_DIR / "processed" / "benchmark_catboost.json"
 
 
-def evaluate_tabular_features(df: pd.DataFrame, feature_cols: list) -> Tuple[Dict[str, float], Dict[str, float]]:
+def evaluate_single_model(
+    model_name: str,
+    model: Any,
+    X_train: pd.DataFrame,
+    y_train: pd.Series,
+    X_test: pd.DataFrame,
+    y_test: pd.Series,
+    feature_cols: list
+) -> Tuple[Dict[str, float], np.ndarray, Dict[str, float]]:
+    logger.info(f"Training {model_name} on {len(X_train)} samples with {len(feature_cols)} features...")
+    t0 = time.time()
+    model.fit(X_train, y_train)
+    train_time = time.time() - t0
+
+    test_probs = model.predict_proba(X_test)[:, 1]
+    test_preds = (test_probs >= 0.5).astype(int)
+
+    acc = accuracy_score(y_test, test_preds)
+    prec = precision_score(y_test, test_preds, zero_division=0)
+    rec = recall_score(y_test, test_preds, zero_division=0)
+    f1 = f1_score(y_test, test_preds, zero_division=0)
+    auc = roc_auc_score(y_test, test_probs)
+
+    # High Conviction (Threshold >= 0.55)
+    high_conv_mask = (test_probs >= 0.55)
+    high_conv_prec = precision_score(y_test[high_conv_mask], (test_probs[high_conv_mask] >= 0.5).astype(int), zero_division=0) if np.sum(high_conv_mask) > 0 else prec
+
+    # Top Decile (Top 10% highest conviction predictions)
+    top_decile_cutoff = np.percentile(test_probs, 90)
+    top_decile_mask = (test_probs >= top_decile_cutoff)
+    top_decile_prec = precision_score(y_test[top_decile_mask], (test_probs[top_decile_mask] >= 0.5).astype(int), zero_division=0)
+
+    metrics = {
+        "Accuracy": round(float(acc), 4),
+        "Precision": round(float(prec), 4),
+        "Recall": round(float(rec), 4),
+        "F1_Score": round(float(f1), 4),
+        "ROC_AUC": round(float(auc), 4),
+        "High_Conviction_Precision_55": round(float(high_conv_prec), 4),
+        "Top_Decile_Precision": round(float(top_decile_prec), 4),
+        "Train_Time_Sec": round(float(train_time), 2),
+        "Sample_Size_Test": int(len(X_test)),
+        "Feature_Count": int(len(feature_cols))
+    }
+
+    # Feature importances
+    feature_importance = {}
+    if hasattr(model, "feature_importances_"):
+        raw_imp = model.feature_importances_
+        feature_importance = {feature_cols[i]: round(float(raw_imp[i]), 5) for i in np.argsort(raw_imp)[::-1]}
+    elif hasattr(model, "get_feature_importance"):
+        raw_imp = model.get_feature_importance()
+        feature_importance = {feature_cols[i]: round(float(raw_imp[i]), 5) for i in np.argsort(raw_imp)[::-1]}
+
+    return metrics, test_probs, feature_importance
+
+
+def run_experiment_1() -> Dict[str, Any]:
+    if not PROCESSED_DATA_FILE.exists():
+        logger.error(f"Processed dataset not found at {PROCESSED_DATA_FILE}")
+        return {}
+
+    df = pd.read_csv(PROCESSED_DATA_FILE)
+    df["Date"] = pd.to_datetime(df["Date"])
+    df.sort_values(by=["Date", "Ticker"], inplace=True)
+
     valid_df = df.dropna(subset=[TARGET_COLUMN]).copy()
     valid_df.sort_values(by="Date", inplace=True)
 
-    # Fill any missing feature cols with median or 0.0
+    feature_cols = FEATURE_COLUMNS
     for c in feature_cols:
         if c not in valid_df.columns:
             valid_df[c] = 0.0
@@ -52,8 +120,8 @@ def evaluate_tabular_features(df: pd.DataFrame, feature_cols: list) -> Tuple[Dic
     X_test = test_df[feature_cols]
     y_test = test_df[TARGET_COLUMN].astype(int)
 
-    logger.info(f"Training HistGradientBoosting on {len(X_train)} samples with {len(feature_cols)} features...")
-    model = HistGradientBoostingClassifier(
+    # 1. Model A: HistGradientBoosting (Current Baseline)
+    gbdt_model = HistGradientBoostingClassifier(
         learning_rate=0.02,
         max_iter=150,
         max_depth=4,
@@ -61,103 +129,93 @@ def evaluate_tabular_features(df: pd.DataFrame, feature_cols: list) -> Tuple[Dic
         l2_regularization=3.0,
         random_state=42,
     )
-    model.fit(X_train, y_train)
+    gbdt_metrics, gbdt_probs, _ = evaluate_single_model(
+        "HistGradientBoosting", gbdt_model, X_train, y_train, X_test, y_test, feature_cols
+    )
 
-    test_probs = model.predict_proba(X_test)[:, 1]
-    test_preds = (test_probs >= 0.5).astype(int)
+    # 2. Model B: CatBoost (Candidate Experiment 1)
+    cat_model = CatBoostClassifier(
+        iterations=250,
+        learning_rate=0.03,
+        depth=5,
+        l2_leaf_reg=5.0,
+        random_seed=42,
+        verbose=False,
+    )
+    cat_metrics, cat_probs, cat_imp = evaluate_single_model(
+        "CatBoostClassifier", cat_model, X_train, y_train, X_test, y_test, feature_cols
+    )
 
-    acc = accuracy_score(y_test, test_preds)
-    prec = precision_score(y_test, test_preds, zero_division=0)
-    rec = recall_score(y_test, test_preds, zero_division=0)
-    f1 = f1_score(y_test, test_preds, zero_division=0)
-    auc = roc_auc_score(y_test, test_probs)
+    # 3. Model C: Blend Ensemble (50% HistGB + 50% CatBoost)
+    blend_probs = 0.5 * gbdt_probs + 0.5 * cat_probs
+    blend_preds = (blend_probs >= 0.5).astype(int)
+    blend_acc = accuracy_score(y_test, blend_preds)
+    blend_prec = precision_score(y_test, blend_preds, zero_division=0)
+    blend_rec = recall_score(y_test, blend_preds, zero_division=0)
+    blend_f1 = f1_score(y_test, blend_preds, zero_division=0)
+    blend_auc = roc_auc_score(y_test, blend_probs)
+    
+    top_decile_cutoff = np.percentile(blend_probs, 90)
+    top_decile_mask = (blend_probs >= top_decile_cutoff)
+    blend_top_decile = precision_score(y_test[top_decile_mask], (blend_probs[top_decile_mask] >= 0.5).astype(int), zero_division=0)
 
-    # High Conviction (Threshold >= 0.55)
-    high_conv_mask = (test_probs >= 0.55)
-    if np.sum(high_conv_mask) > 0:
-        high_conv_prec = precision_score(y_test[high_conv_mask], (test_probs[high_conv_mask] >= 0.5).astype(int), zero_division=0)
-    else:
-        high_conv_prec = prec
+    high_conv_mask = (blend_probs >= 0.55)
+    blend_high_conv = precision_score(y_test[high_conv_mask], (blend_probs[high_conv_mask] >= 0.5).astype(int), zero_division=0) if np.sum(high_conv_mask) > 0 else blend_prec
 
-    # Top Decile (Top 10% highest conviction predictions)
-    top_decile_cutoff = np.percentile(test_probs, 90)
-    top_decile_mask = (test_probs >= top_decile_cutoff)
-    top_decile_prec = precision_score(y_test[top_decile_mask], (test_probs[top_decile_mask] >= 0.5).astype(int), zero_division=0)
-
-    metrics = {
-        "Accuracy": round(float(acc), 4),
-        "Precision": round(float(prec), 4),
-        "Recall": round(float(rec), 4),
-        "F1_Score": round(float(f1), 4),
-        "ROC_AUC": round(float(auc), 4),
-        "High_Conviction_Precision_55": round(float(high_conv_prec), 4),
-        "Top_Decile_Precision": round(float(top_decile_prec), 4),
+    blend_metrics = {
+        "Accuracy": round(float(blend_acc), 4),
+        "Precision": round(float(blend_prec), 4),
+        "Recall": round(float(blend_rec), 4),
+        "F1_Score": round(float(blend_f1), 4),
+        "ROC_AUC": round(float(blend_auc), 4),
+        "High_Conviction_Precision_55": round(float(blend_high_conv), 4),
+        "Top_Decile_Precision": round(float(blend_top_decile), 4),
+        "Train_Time_Sec": round(gbdt_metrics["Train_Time_Sec"] + cat_metrics["Train_Time_Sec"], 2),
         "Sample_Size_Test": int(len(X_test)),
         "Feature_Count": int(len(feature_cols))
     }
 
-    # Calculate permutation-based feature importance
-    from sklearn.inspection import permutation_importance
-    perm_imp = permutation_importance(model, X_test, y_test, n_repeats=5, random_state=42, n_jobs=-1)
-    feature_importance = {}
-    for idx in np.argsort(perm_imp.importances_mean)[::-1]:
-        feature_importance[feature_cols[idx]] = round(float(perm_imp.importances_mean[idx]), 5)
+    # Save CatBoost metrics
+    CATBOOST_METRICS_FILE.parent.mkdir(parents=True, exist_ok=True)
+    with open(CATBOOST_METRICS_FILE, "w", encoding="utf-8") as f:
+        json.dump({
+            "gbdt": gbdt_metrics,
+            "catboost": cat_metrics,
+            "blend_ensemble": blend_metrics,
+            "catboost_feature_importance": cat_imp
+        }, f, indent=2)
 
-    return metrics, feature_importance
+    # Print Clean Comparative Report
+    print("\n" + "=" * 80)
+    print("EKSPERIMEN 1: HISTGRADIENTBOOSTING VS CATBOOST VS BLEND ENSEMBLE")
+    print("=" * 80)
+    print(f"{'Metric':<28} | {'HistGB (Base)':<14} | {'CatBoost (Cand)':<15} | {'Blend (50:50)':<13}")
+    print("-" * 80)
 
+    for k in ["Accuracy", "ROC_AUC", "Top_Decile_Precision", "High_Conviction_Precision_55", "Precision", "F1_Score", "Train_Time_Sec"]:
+        v_base = gbdt_metrics.get(k, 0.0)
+        v_cat = cat_metrics.get(k, 0.0)
+        v_blend = blend_metrics.get(k, 0.0)
+        
+        # Highlight best in row
+        best_val = max(v_base, v_cat, v_blend) if k != "Train_Time_Sec" else min(v_base, v_cat, v_blend)
+        star_cat = " *" if v_cat == best_val else ""
+        star_blend = " *" if v_blend == best_val else ""
+        
+        print(f"{k:<28} | {v_base:<14.4f} | {v_cat:<13.4f}{star_cat:<2} | {v_blend:<11.4f}{star_blend:<2}")
 
-def run_benchmark(save_as_candidate: bool = True) -> Dict[str, Any]:
-    if not PROCESSED_DATA_FILE.exists():
-        logger.error(f"Processed dataset not found at {PROCESSED_DATA_FILE}")
-        return {}
+    print("=" * 80)
+    print("Top 10 Most Important Features in CatBoost:")
+    for i, (feat, imp) in enumerate(list(cat_imp.items())[:10]):
+        print(f" {i+1:2d}. {feat:<28} : {imp:.2f}%")
+    print("=" * 80 + "\n")
 
-    df = pd.read_csv(PROCESSED_DATA_FILE)
-    df["Date"] = pd.to_datetime(df["Date"])
-    df.sort_values(by=["Date", "Ticker"], inplace=True)
-
-    metrics, importance = evaluate_tabular_features(df, FEATURE_COLUMNS)
-
-    target_file = CANDIDATE_METRICS_FILE if save_as_candidate else BASELINE_METRICS_FILE
-    target_file.parent.mkdir(parents=True, exist_ok=True)
-    with open(target_file, "w", encoding="utf-8") as f:
-        json.dump({"metrics": metrics, "feature_importance": importance}, f, indent=2)
-
-    logger.info(f"Metrics saved to {target_file}")
-
-    # If baseline exists, print comparison report
-    if BASELINE_METRICS_FILE.exists() and save_as_candidate:
-        with open(BASELINE_METRICS_FILE, "r", encoding="utf-8") as f:
-            base_data = json.load(f)
-            base_metrics = base_data.get("metrics", {})
-
-        print("\n" + "=" * 70)
-        print("QUANTITATIVE BENCHMARK: BASELINE (MAIN) VS CANDIDATE (RND)")
-        print("=" * 70)
-        print(f"{'Metric':<30} | {'Baseline':<12} | {'Candidate':<12} | {'Delta':<10} | {'Verdict'}")
-        print("-" * 70)
-
-        for k in ["Accuracy", "ROC_AUC", "Top_Decile_Precision", "High_Conviction_Precision_55", "Precision", "F1_Score"]:
-            b_val = base_metrics.get(k, 0.0)
-            c_val = metrics.get(k, 0.0)
-            delta = c_val - b_val
-            delta_str = f"{delta:+.4f}"
-            if delta > 0.002:
-                verdict = "[+] OUTPERFORMS"
-            elif delta < -0.002:
-                verdict = "[-] UNDERPERFORMS"
-            else:
-                verdict = "[=] PAR"
-            print(f"{k:<30} | {b_val:<12.4f} | {c_val:<12.4f} | {delta_str:<10} | {verdict}")
-
-        print("=" * 70)
-        print("Top 10 Most Influential Features in Candidate Model:")
-        for i, (feat, imp) in enumerate(list(importance.items())[:10]):
-            print(f" {i+1:2d}. {feat:<28} : {imp:+.5f}")
-        print("=" * 70 + "\n")
-
-    return metrics
+    return {
+        "gbdt": gbdt_metrics,
+        "catboost": cat_metrics,
+        "blend": blend_metrics
+    }
 
 
 if __name__ == "__main__":
-    is_base = "--baseline" in sys.argv
-    run_benchmark(save_as_candidate=not is_base)
+    run_experiment_1()
