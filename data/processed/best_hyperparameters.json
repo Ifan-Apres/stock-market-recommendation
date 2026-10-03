@@ -1,0 +1,20 @@
+{
+  "catboost_best_params": {
+    "depth": 3,
+    "learning_rate": 0.016403993535138904,
+    "l2_leaf_reg": 13.260289895074157,
+    "subsample": 0.8303345035229626,
+    "random_strength": 2.9782540222861593,
+    "iterations": 250
+  },
+  "catboost_cv_auc": 0.5264,
+  "histgb_best_params": {
+    "learning_rate": 0.02677113724214592,
+    "max_iter": 100,
+    "max_depth": 3,
+    "min_samples_leaf": 50,
+    "l2_regularization": 5.104629857953324
+  },
+  "histgb_cv_auc": 0.5233,
+  "tuning_time_sec": 76.18
+}
