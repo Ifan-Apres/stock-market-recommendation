@@ -39,7 +39,8 @@ Evaluasi model dilakukan secara ketat menggunakan *Out-of-Sample Test Split* (17
 | **F1-Score (Keseimbangan Presisi-Recall)** | 0.3076 | 0.3155 | **0.3316 🏆** | <span style="color:green">**+0.0240 (+7.8%)**</span> | Model lebih seimbang dan menangkap peluang saham naik (+2.4% recall) tanpa menambah *false positives*. |
 | **Waktu Pelatihan Komputasi (CPU)** | 0.85s | 0.96s | **3.15s** | *Super Cepat* | Sangat efisien dan aman dijalankan harian dalam batas waktu GitHub Actions. |
 
-> 📑 **Laporan Riset Lengkap:** Dokumentasi komparasi 4 eksperimen (termasuk tuning Optuna, Stacking Meta-Learner, dan pengujian BiLSTM) dapat dilihat pada dokumen resmi: [docs/RESEARCH_REPORT_RND_ML_UPGRADE.md](docs/RESEARCH_REPORT_RND_ML_UPGRADE.md).
+> 📑 **Laporan Riset Lengkap:** Dokumentasi komparasi 4 eksperimen (termasuk tuning Optuna, Stacking Meta-Learner, dan pengujian BiLSTM) dapat dilihat pada dokumen resmi: [docs/RESEARCH_REPORT_RND_ML_UPGRADE.md](docs/RESEARCH_REPORT_RND_ML_UPGRADE.md).  
+> 📘 **Panduan Lengkap Metodologi, Formula Perhitungan & Glosarium Istilah:** Pelajari detail seluruh rumus matematis, algoritma Machine Learning, data pipeline, dan kamus istilah kuantitatif di dokumen master: [docs/PANDUAN_LENGKAP_PERHITUNGAN_DAN_ALGORITMA.md](docs/PANDUAN_LENGKAP_PERHITUNGAN_DAN_ALGORITMA.md).
 
 ---
 
@@ -173,7 +174,8 @@ stock-market-recommendation/
 │       ├── latest_alpha_recommendations_dividend.csv  # Rekomendasi Dividend & Value
 │       └── latest_alpha_recommendations_favorites.csv # Rekomendasi Portofolio Pilihan
 ├── docs/
-│   └── RESEARCH_REPORT_RND_ML_UPGRADE.md      # Laporan resmi riset kuantitatif 4 eksperimen
+│   ├── RESEARCH_REPORT_RND_ML_UPGRADE.md              # Laporan resmi riset kuantitatif 4 eksperimen
+│   └── PANDUAN_LENGKAP_PERHITUNGAN_DAN_ALGORITMA.md   # Buku panduan master metodologi, rumus & glosarium
 ├── src/
 │   ├── __init__.py
 │   ├── auth.py                        # Sistem autentikasi PBKDF2, HMAC JWT, & Rate Limiter
