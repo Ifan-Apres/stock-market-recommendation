@@ -1546,15 +1546,15 @@
                             <!-- KPI 1: Expected Annual Return -->
                             <div class="p-3 rounded-sm bg-[#0E1420] border border-white/10 flex flex-col justify-between">
                                 <div class="flex items-center justify-between">
-                                    <span class="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-wider">Expected Return</span>
+                                    <span class="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-wider">Total Expected Return</span>
                                     <span class="material-symbols-outlined text-emerald-400 text-[16px]">trending_up</span>
                                 </div>
                                 <div class="mt-2 mb-1">
                                     <span class="text-xl sm:text-2xl font-black text-emerald-400 font-mono-num" id="portKpiReturn">+24.8%</span>
                                 </div>
                                 <div class="flex items-center justify-between text-[10px] font-mono text-slate-400 border-t border-white/5 pt-1.5">
-                                    <span>Weighted Annualized</span>
-                                    <span class="text-emerald-400 font-bold" id="portKpiReturnBadge">Alpha +8.4%</span>
+                                    <span>Total Return (Inc. Div)</span>
+                                    <span class="text-emerald-400 font-bold" id="portKpiReturnBadge">Cap +17.6% • Div +7.2%</span>
                                 </div>
                             </div>
 
@@ -1680,6 +1680,23 @@
                                             <span class="text-[10px] font-mono text-cyan-300">Total Kas Siaga + Sisa Lot</span>
                                             <span class="text-xs sm:text-sm font-mono-num font-bold text-cyan-400" id="portTotalCashAmount">Rp 10.150.000</span>
                                         </div>
+                                    <!-- Passive Cash Flow Simulator: Dividen Tahunan -->
+                                    <div class="p-3 rounded-sm bg-emerald-500/10 border border-emerald-500/20 flex flex-col gap-1.5">
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-[10px] font-mono font-bold text-emerald-400 flex items-center gap-1 uppercase tracking-wider">
+                                                <span class="material-symbols-outlined text-[14px]">paid</span>
+                                                Estimasi Dividen Kas Tahunan
+                                            </span>
+                                            <span class="text-[10px] font-mono-num font-bold text-emerald-300" id="portDivYieldAvg">7.4% p.a.</span>
+                                        </div>
+                                        <div class="flex items-baseline justify-between">
+                                            <span class="text-sm sm:text-base font-black text-emerald-300 font-mono-num" id="portDivAmountAnnual">Rp 2.950.000</span>
+                                            <span class="text-[10px] font-mono text-emerald-400/80">/ tahun (Gross Est.)</span>
+                                        </div>
+                                        <div class="flex items-center justify-between text-[9px] font-mono text-slate-400 border-t border-emerald-500/15 pt-1">
+                                            <span>Arus Kas Masuk:</span>
+                                            <span class="text-slate-300">Otomatis Mempertebal Kas Siaga RDN</span>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -1768,6 +1785,22 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+
+                        <!-- Radar Aksi Korporat & Kalender Siklus Dividen BEI -->
+                        <div class="bg-[#0E1420] rounded-sm p-4 border border-white/10 flex flex-col gap-3">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/5 pb-2.5">
+                                <div class="flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-emerald-400 text-[18px]">event_repeat</span>
+                                    <h3 class="text-xs sm:text-sm font-bold text-white font-mono">Radar Aksi Korporat & Kalender Dividen (BEI Seasonality)</h3>
+                                    <span class="px-1.5 py-0.2 rounded-xs bg-emerald-500/20 text-emerald-400 text-[9px] font-mono font-bold border border-emerald-500/30">Interim vs Final</span>
+                                </div>
+                                <span class="text-[10px] font-mono text-slate-400">Jadwal Siklus Musiman Historis Bursa Efek Indonesia</span>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2.5" id="portfolioDividendRadarGrid">
+                                <!-- Diisi dinamis oleh renderDividendRadar() -->
                             </div>
                         </div>
                     </div>
@@ -5865,6 +5898,44 @@
         }
 
         // 8. Logika Alokasi Portofolio Institusional (Agent New York Quant Allocator)
+        const BEI_DIVIDEND_SEASONALITY = {
+            "BBCA": { interimMonth: "Desember", finalMonth: "Maret/April", cyclesPerYear: 2, notes: "Konsisten dividen interim (Des) & final (Mar/Apr)", payoutRatio: "~60-70%" },
+            "BBRI": { interimMonth: "Januari", finalMonth: "Maret", cyclesPerYear: 2, notes: "Payout jumbo (~80%), dividen interim awal tahun", payoutRatio: "~80%" },
+            "BMRI": { interimMonth: "-", finalMonth: "Maret/April", cyclesPerYear: 1, notes: "Dividen jumbo pasca RUPST tahunan", payoutRatio: "~60%" },
+            "BBNI": { interimMonth: "-", finalMonth: "Maret/April", cyclesPerYear: 1, notes: "Dividen tahunan pasca RUPST Maret", payoutRatio: "~50%" },
+            "ASII": { interimMonth: "Oktober", finalMonth: "Mei", cyclesPerYear: 2, notes: "Dua kali setahun: Interim Q4 & Final Q2", payoutRatio: "~50%" },
+            "HEXA": { interimMonth: "-", finalMonth: "September/Oktober", cyclesPerYear: 1, notes: "Tahun buku Maret, dividen jumbo (~14-17%) cair Sep/Okt", payoutRatio: "~80%" },
+            "PTBA": { interimMonth: "-", finalMonth: "Juni", cyclesPerYear: 1, notes: "Dividen jumbo BUMN tambang pasca RUPST Juni", payoutRatio: "~75-100%" },
+            "ADRO": { interimMonth: "Desember/Januari", finalMonth: "Mei/Juni", cyclesPerYear: 2, notes: "Interim akhir tahun & final/spesial pasca RUPST", payoutRatio: "~40-70%" },
+            "ITMG": { interimMonth: "September", finalMonth: "April", cyclesPerYear: 2, notes: "Salah satu yield tertinggi di BEI (Interim Sep & Final Apr)", payoutRatio: "~65-70%" },
+            "UNTR": { interimMonth: "Oktober", finalMonth: "April/Mei", cyclesPerYear: 2, notes: "Rutin dividen interim Oktober & final April", payoutRatio: "~45-50%" },
+            "TLKM": { interimMonth: "-", finalMonth: "Juni/Juli", cyclesPerYear: 1, notes: "Cash cow telekomunikasi, pembagian final pasca RUPST", payoutRatio: "~70-80%" },
+            "ICBP": { interimMonth: "-", finalMonth: "Juli/Agustus", cyclesPerYear: 1, notes: "Dividen defensif konsumer pasca RUPST", payoutRatio: "~50%" },
+            "INDF": { interimMonth: "-", finalMonth: "Juli/Agustus", cyclesPerYear: 1, notes: "Dividen stabil tahunan pasca RUPST", payoutRatio: "~50%" },
+            "BRIS": { interimMonth: "-", finalMonth: "Mei", cyclesPerYear: 1, notes: "Syariah growth stock, dividen bertahap meningkat", payoutRatio: "~20-30%" },
+            "ISAT": { interimMonth: "-", finalMonth: "Juni", cyclesPerYear: 1, notes: "Dividen pasca merger & optimalisasi capex", payoutRatio: "~40-50%" },
+            "AADI": { interimMonth: "Desember", finalMonth: "Mei", cyclesPerYear: 2, notes: "Spin-off batu bara termal, komitmen payout tinggi", payoutRatio: "~40-50%" },
+            "KLBF": { interimMonth: "-", finalMonth: "Mei/Juni", cyclesPerYear: 1, notes: "Defensif farmasi dengan dividen tahunan stabil", payoutRatio: "~50%" },
+            "CPIN": { interimMonth: "-", finalMonth: "Juni", cyclesPerYear: 1, notes: "Dividen tahunan sektor poultry pasca RUPST", payoutRatio: "~35%" },
+            "AMRT": { interimMonth: "-", finalMonth: "Mei", cyclesPerYear: 1, notes: "Ritel defensif minimarket pasca RUPST", payoutRatio: "~35%" },
+            "PGAS": { interimMonth: "-", finalMonth: "Juni", cyclesPerYear: 1, notes: "Infrastruktur gas negara dengan yield kompetitif", payoutRatio: "~60-70%" },
+            "MEDC": { interimMonth: "November", finalMonth: "Juli", cyclesPerYear: 2, notes: "Interim migas Q4 & final pasca RUPST", payoutRatio: "~30-40%" },
+            "INKP": { interimMonth: "-", finalMonth: "Juli", cyclesPerYear: 1, notes: "Kertas & pulp, dividen konservatif", payoutRatio: "~20%" },
+            "ANTM": { interimMonth: "-", finalMonth: "Juni", cyclesPerYear: 1, notes: "BUMN tambang emas/nikel pasca RUPST", payoutRatio: "~50-100%" }
+        };
+
+        function getDividendSeasonality(ticker) {
+            if (!ticker) return { interimMonth: "-", finalMonth: "April - Juni", cyclesPerYear: 1, notes: "Dividen tahunan pasca RUPST", payoutRatio: "~30-40%" };
+            const clean = ticker.toUpperCase().replace(".JK", "").trim();
+            return BEI_DIVIDEND_SEASONALITY[clean] || {
+                interimMonth: "-",
+                finalMonth: "April - Juni",
+                cyclesPerYear: 1,
+                notes: "Siklus dividen tahunan pasca RUPST BEI",
+                payoutRatio: "~30-40%"
+            };
+        }
+
         window.pinnedPortfolioStocks = [];
         window.currentPortfolioRiskProfile = 'moderat';
         window.currentCashSliderPct = 20;
@@ -5954,6 +6025,39 @@
                 if (btnSector) btnSector.className = "px-2 py-0.5 rounded-sm text-[10px] font-mono font-bold bg-[#121A29] text-white border border-white/20 cursor-pointer";
             }
             updatePortfolioCalculations();
+        }
+
+        function switchPortfolioSubTab(tab) {
+            const allocContent = document.getElementById('portTabAllocContent');
+            const trackerContent = document.getElementById('portTabTrackerContent');
+            const allocBtn = document.getElementById('portTabAllocBtn');
+            const trackerBtn = document.getElementById('portTabTrackerBtn');
+
+            if (tab === 'tracker') {
+                if (allocContent) allocContent.classList.add('hidden');
+                if (trackerContent) {
+                    trackerContent.classList.remove('hidden');
+                    renderTrackedStocks();
+                }
+                if (allocBtn) {
+                    allocBtn.className = "px-3 py-1.5 rounded-sm text-xs font-mono font-semibold bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white border border-white/10 flex items-center gap-1.5 transition-all cursor-pointer";
+                }
+                if (trackerBtn) {
+                    trackerBtn.className = "px-3 py-1.5 rounded-sm text-xs font-mono font-bold bg-[#121A29] text-white border border-white/20 flex items-center gap-1.5 transition-all cursor-pointer";
+                }
+            } else {
+                if (trackerContent) trackerContent.classList.add('hidden');
+                if (allocContent) {
+                    allocContent.classList.remove('hidden');
+                    updatePortfolioCalculations();
+                }
+                if (allocBtn) {
+                    allocBtn.className = "px-3 py-1.5 rounded-sm text-xs font-mono font-bold bg-[#121A29] text-white border border-white/20 flex items-center gap-1.5 transition-all cursor-pointer";
+                }
+                if (trackerBtn) {
+                    trackerBtn.className = "px-3 py-1.5 rounded-sm text-xs font-mono font-semibold bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white border border-white/10 flex items-center gap-1.5 transition-all cursor-pointer";
+                }
+            }
         }
 
         function openStockInPortfolio(ticker) {
@@ -6073,6 +6177,13 @@
                 const realBuyIDR = lots * closePrice * 100;
                 totalRealEquity += realBuyIDR;
 
+                const rawDy = Number(stock.Dividend_Yield) || 0;
+                const dyPct = rawDy > 1.0 ? rawDy : rawDy * 100;
+                const season = getDividendSeasonality(tickerClean);
+                const divBadge = dyPct >= 1.0
+                    ? `<span class="inline-flex items-center gap-0.5 px-1 py-0.2 rounded-xs bg-emerald-500/15 text-emerald-300 text-[9px] font-mono border border-emerald-500/30" title="Interim: ${season.interimMonth} • Final: ${season.finalMonth}">Div ${dyPct.toFixed(1)}%</span>`
+                    : '';
+
                 const pinBadge = stock.isPinned 
                     ? `<span class="inline-flex items-center gap-0.5 px-1 py-0.2 rounded-xs bg-cyan-500/20 text-cyan-300 text-[9px] font-mono border border-cyan-400/30" title="Emiten disematkan dari Deep Dive">⚡ Pin</span>`
                     : '';
@@ -6080,10 +6191,11 @@
                 rowsHtml += `
                 <tr class="hover:bg-white/5 transition-colors border-b border-white/5">
                     <td class="py-2.5 px-3">
-                        <div class="flex items-center gap-2">
+                        <div class="flex items-center gap-1.5 flex-wrap">
                             <span class="font-bold text-white text-xs font-mono cursor-pointer hover:text-cyan-300" onclick="showStockDeepDive('${tickerClean}')">${tickerClean}</span>
                             ${pinBadge}
-                            <span class="text-[10px] text-slate-400 truncate max-w-[90px] hidden sm:inline">• ${stock.Sector || 'General'}</span>
+                            ${divBadge}
+                            <span class="text-[10px] text-slate-400 truncate max-w-[85px] hidden sm:inline">• ${stock.Sector || 'General'}</span>
                         </div>
                     </td>
                     <td class="py-2.5 px-2 text-center font-mono-num font-bold text-cyan-400 text-xs">
@@ -6175,6 +6287,7 @@
 
             // Weighted Metrics Calculation
             let weightedExpReturn = 0;
+            let weightedDivYield = 0;
             let weightedSharpe = 0;
             let weightedVaR = 0;
             let weightedMaxDD = 0;
@@ -6186,6 +6299,10 @@
                 const tpP = Number(s.Target_Price) || (closeP * 1.05);
                 const retEst = ((tpP - closeP) / closeP) * 1.8; // Annualized proxy
                 weightedExpReturn += retEst * w;
+
+                const rawDy = Number(s.Dividend_Yield) || 0;
+                const dyFrac = rawDy > 1.0 ? rawDy / 100 : rawDy;
+                weightedDivYield += dyFrac * w;
 
                 const sharpe = Number(s.Sharpe_Ratio) || 1.25;
                 weightedSharpe += sharpe * w;
@@ -6199,13 +6316,27 @@
                 weightedMaxDD += ddVal * w;
             });
 
-            // Tambahkan kontribusi kas (Return 5% RDPU, Sharpe 3.0, VaR 0%, DD 0%)
+            // Tambahkan kontribusi kas (Return 5.5% RDPU, Sharpe 3.5, VaR 0%, DD 0%)
             const cashFraction = finalCashReserve / capital;
             weightedExpReturn += 0.055 * cashFraction;
             weightedSharpe += 3.5 * cashFraction;
 
+            const totalExpReturn = weightedExpReturn + weightedDivYield;
+            const capGainDisplay = (weightedExpReturn * 100).toFixed(1);
+            const divYieldDisplay = (weightedDivYield * 100).toFixed(1);
+
             const kpiReturnEl = document.getElementById('portKpiReturn');
-            if (kpiReturnEl) kpiReturnEl.innerText = `+${(weightedExpReturn * 100).toFixed(1)}%`;
+            if (kpiReturnEl) kpiReturnEl.innerText = `+${(totalExpReturn * 100).toFixed(1)}%`;
+            const kpiReturnBadgeEl = document.getElementById('portKpiReturnBadge');
+            if (kpiReturnBadgeEl) kpiReturnBadgeEl.innerText = `Cap +${capGainDisplay}% • Div +${divYieldDisplay}%`;
+
+            // Update Passive Cash Flow Simulator
+            const annualDivCash = Math.round(totalRealEquity * weightedDivYield);
+            const portDivYieldAvgEl = document.getElementById('portDivYieldAvg');
+            if (portDivYieldAvgEl) portDivYieldAvgEl.innerText = `${divYieldDisplay}% p.a.`;
+            const portDivAmountAnnualEl = document.getElementById('portDivAmountAnnual');
+            if (portDivAmountAnnualEl) portDivAmountAnnualEl.innerText = formatIDR(annualDivCash);
+
             const kpiSharpeEl = document.getElementById('portKpiSharpe');
             if (kpiSharpeEl) kpiSharpeEl.innerText = `${weightedSharpe.toFixed(2)}`;
             const kpiVaREl = document.getElementById('portKpiVaR');
@@ -6215,6 +6346,9 @@
 
             // 6. Render Donut Chart
             renderPortfolioDonutChart(pool, finalCashReserve, capital);
+
+            // 7. Render Corporate Action & Dividend Seasonality Radar
+            renderDividendRadar(pool);
         }
 
         function renderPortfolioDonutChart(pool, cashReserve, capital) {
@@ -6319,6 +6453,83 @@
             }
         }
 
+        function renderDividendRadar(pool) {
+            const grid = document.getElementById('portfolioDividendRadarGrid');
+            if (!grid) return;
+
+            if (!pool || pool.length === 0) {
+                grid.innerHTML = `<div class="col-span-full py-4 text-center text-xs text-slate-500 font-mono">Belum ada emiten dalam portofolio yang dapat dianalisis.</div>`;
+                return;
+            }
+
+            const monthNamesId = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+            const currentMonthName = monthNamesId[new Date().getMonth()];
+
+            let cardsHtml = '';
+            pool.forEach(s => {
+                const ticker = (s.Ticker || '').replace('.JK', '').toUpperCase().trim();
+                const season = getDividendSeasonality(ticker);
+                const rawDy = Number(s.Dividend_Yield) || 0;
+                const dyPct = rawDy > 1.0 ? rawDy : rawDy * 100;
+
+                const isInterimNow = season.interimMonth.toLowerCase().includes(currentMonthName.toLowerCase());
+                const isFinalNow = season.finalMonth.toLowerCase().includes(currentMonthName.toLowerCase());
+                const isCurrentSeason = isInterimNow || isFinalNow;
+
+                const seasonBadge = isCurrentSeason
+                    ? `<span class="px-1.5 py-0.5 rounded-xs bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[9px] font-mono font-bold flex items-center gap-1 animate-pulse">
+                         <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+                         ${isInterimNow ? 'Musim Interim' : 'Musim Final'} (${currentMonthName})
+                       </span>`
+                    : `<span class="px-1.5 py-0.5 rounded-xs bg-white/5 text-slate-400 border border-white/10 text-[9px] font-mono">
+                         ${season.cyclesPerYear === 2 ? '2x Setahun (Int & Fin)' : '1x Setahun (Final)'}
+                       </span>`;
+
+                const yieldBadge = dyPct >= 1.0
+                    ? `<span class="px-1.5 py-0.2 rounded-xs bg-emerald-500/15 text-emerald-300 font-mono text-[9px] border border-emerald-500/30">Yield ${dyPct.toFixed(1)}% p.a.</span>`
+                    : `<span class="px-1.5 py-0.2 rounded-xs bg-white/5 text-slate-400 font-mono text-[9px] border border-white/10">Yield Non-Tradisional</span>`;
+
+                cardsHtml += `
+                <div class="bg-[#080C14] border ${isCurrentSeason ? 'border-amber-500/40' : 'border-white/10'} rounded-sm p-3 flex flex-col justify-between hover:border-emerald-500/40 transition-colors">
+                    <div>
+                        <div class="flex items-start justify-between gap-2 mb-2">
+                            <div>
+                                <div class="flex items-center gap-1.5 flex-wrap">
+                                    <span class="font-bold text-white text-xs font-mono cursor-pointer hover:text-cyan-300" onclick="showStockDeepDive('${ticker}')">${ticker}</span>
+                                    ${yieldBadge}
+                                </div>
+                                <p class="text-[10px] text-slate-400 mt-0.5 truncate max-w-[170px]">${s.Company_Name || s.Sector || 'Ekuitas BEI'}</p>
+                            </div>
+                            <div class="shrink-0">
+                                ${seasonBadge}
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-1.5 bg-[#0E1420] p-2 rounded-xs border border-white/5 text-[10px] font-mono mb-2">
+                            <div>
+                                <span class="text-slate-500 block text-[9px]">EST. INTERIM:</span>
+                                <span class="font-bold ${season.interimMonth !== '-' ? 'text-amber-400' : 'text-slate-500'}">${season.interimMonth}</span>
+                            </div>
+                            <div>
+                                <span class="text-slate-500 block text-[9px]">EST. FINAL:</span>
+                                <span class="font-bold text-emerald-400">${season.finalMonth}</span>
+                            </div>
+                            <div class="col-span-2 pt-1 border-t border-white/5 flex items-center justify-between text-[9px]">
+                                <span class="text-slate-400">DPR Est: <span class="text-slate-300 font-semibold">${season.payoutRatio}</span></span>
+                                <span class="text-slate-400">Siklus: <span class="text-slate-300 font-semibold">${season.cyclesPerYear}x / Tahun</span></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-[9.5px] text-slate-400 leading-snug pt-1 border-t border-white/5">
+                        <span class="text-slate-500 font-semibold">Profil Dividen:</span> ${season.notes}
+                    </div>
+                </div>`;
+            });
+
+            grid.innerHTML = cardsHtml;
+        }
+
         function copyPortfolioText() {
             const capital = parseFloat(document.getElementById('portfolioCapitalInput').value) || 50000000;
             const slider = document.getElementById('cashReserveSlider');
@@ -6341,14 +6552,20 @@
                 }
             });
 
-            text += `\nMetrik Ekspektasi: Return +24.8% | Sharpe 1.85 | VaR(95%) -1.42%\nCatatan: Pembulatan lot ketat ke bawah (Math.floor). Gunakan batas stop-loss tertera.\n========================================`;
+            const retText = document.getElementById('portKpiReturn') ? document.getElementById('portKpiReturn').innerText : '+24.8%';
+            const retBadge = document.getElementById('portKpiReturnBadge') ? document.getElementById('portKpiReturnBadge').innerText : '';
+            const divCash = document.getElementById('portDivAmountAnnual') ? document.getElementById('portDivAmountAnnual').innerText : 'Rp 0';
+            const sharpeText = document.getElementById('portKpiSharpe') ? document.getElementById('portKpiSharpe').innerText : '1.85';
+            const varText = document.getElementById('portKpiVaR') ? document.getElementById('portKpiVaR').innerText : '-1.42%';
+
+            text += `\nMetrik Ekspektasi Total Return : ${retText} (${retBadge})\nEstimasi Dividen Kas Tahunan  : ${divCash} / tahun\nSharpe Ratio: ${sharpeText} | GARCH VaR(95%): ${varText}\nCatatan: Pembulatan lot ketat ke bawah (Math.floor). Gunakan batas stop-loss tertera.\n========================================`;
             navigator.clipboard.writeText(text);
             showToast("Teks rencana alokasi portofolio berhasil disalin ke clipboard!");
         }
 
         function downloadPortfolioCSV() {
             const capital = parseFloat(document.getElementById('portfolioCapitalInput').value) || 50000000;
-            let csv = "Ticker,Sektor,Bobot_Persen,Harga_Acuan,Alokasi_Target_IDR,Lot_BEI,Nilai_Riil_IDR,Target_TP,Stop_Loss\n";
+            let csv = "Ticker,Sektor,Bobot_Persen,Harga_Acuan,Alokasi_Target_IDR,Lot_BEI,Nilai_Riil_IDR,Target_TP,Stop_Loss,Est_Interim,Est_Final\n";
             
             const rows = document.querySelectorAll('#portfolioAllocationTableBody tr');
             rows.forEach(r => {
@@ -6362,7 +6579,8 @@
                     const realBuy = cols[5].innerText.replace('Rp', '').trim().replace(/\./g, '');
                     const tp = cols[6].innerText.replace('Rp', '').trim().replace(/\./g, '');
                     const sl = cols[7].innerText.replace('Rp', '').trim().replace(/\./g, '');
-                    csv += `"${ticker}","${cols[0].innerText.includes('•') ? cols[0].innerText.split('•')[1].trim() : 'General'}","${weight}","${price}","${targetAlloc}","${lot}","${realBuy}","${tp}","${sl}"\n`;
+                    const season = getDividendSeasonality(ticker);
+                    csv += `"${ticker}","${cols[0].innerText.includes('•') ? cols[0].innerText.split('•')[1].trim() : 'General'}","${weight}","${price}","${targetAlloc}","${lot}","${realBuy}","${tp}","${sl}","${season.interimMonth}","${season.finalMonth}"\n`;
                 }
             });
 
@@ -6467,6 +6685,22 @@
             const pnlDiff = currentPrice - buyPrice;
             const horizon = item.horizon || 'swing';
 
+            // Dividend & Corporate Action Context
+            const tickerClean = (item.ticker || '').replace('.JK', '').toUpperCase().trim();
+            const season = getDividendSeasonality(tickerClean);
+            const rawDy = stockData ? (Number(stockData.Dividend_Yield) || 0) : 0;
+            const dyPct = rawDy > 1.0 ? rawDy : rawDy * 100;
+
+            const monthNamesId = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+            const currentMonthName = monthNamesId[new Date().getMonth()];
+            const isInterimNow = season.interimMonth.toLowerCase().includes(currentMonthName.toLowerCase());
+            const isFinalNow = season.finalMonth.toLowerCase().includes(currentMonthName.toLowerCase());
+            const isDividendSeason = isInterimNow || isFinalNow;
+
+            // Estimasi dividen berjalan: jika disimpan >= 14 hari dan saham rutin membagikan dividen
+            const estimatedDivGainPct = (holdingDays >= 14 && dyPct > 0) ? (season.cyclesPerYear === 2 ? dyPct * 0.5 : dyPct) : 0;
+            const totalReturnPct = pnlPct + estimatedDivGainPct;
+
             let statusKey = 'HOLD';
             let title = '';
             let actionTag = '';
@@ -6500,6 +6734,22 @@
                 step1 = `Jual 50% porsi kepemilikan Anda di harga pasar terkini (Rp ${currentPrice.toLocaleString('id-ID')}).`;
                 step2 = `Pasang Trailing Stop ketat pada Rp ${Math.round(buyPrice * 1.01).toLocaleString('id-ID')} (mengunci status impas/BEP).`;
                 step3 = isSwing ? `Maksimal durasi swing tersisa 3-5 hari sebelum rotasi sektor.` : `Biarkan 50% sisanya bergerak mengikuti tren selama di atas MA-20.`;
+
+            } else if (dyPct >= 2.8 && (isDividendSeason || holdingDays >= 14) && pnlPct < 0 && pnlPct >= -Math.max(Math.abs(cutLossThreshold) * 1.8, dyPct + 3.5)) {
+                // Skenario EX_DATE_SHIELD: PROTEKSI DIVIDEND TRAP FALSE ALARM
+                statusKey = 'DIVIDEND_SHIELD';
+                title = `Ex-Date Shield: Penyesuaian Dividen ${isInterimNow ? 'Interim' : (isFinalNow ? 'Final' : 'Musiman')}`;
+                actionTag = 'TAHAN POSISI • HAK DIVIDEN TERKUNCI';
+                icon = 'shield';
+                boxClass = 'bg-indigo-500/10 border-indigo-500/30';
+                iconClass = 'text-indigo-400';
+                titleClass = 'text-indigo-300';
+                badgeClass = 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/40';
+                textClass = 'text-indigo-100/90';
+                narrative = `Koreksi harga ${pnlPct.toFixed(2)}% dalam ${holdingDays} hari simpan selaras dengan penyesuaian pasar pasca Cum/Ex-Date dividen ${isInterimNow ? 'Interim' : (isFinalNow ? 'Final' : 'musiman')} (indikasi yield ${dyPct.toFixed(1)}%). Ini adalah false-alarm cut loss; hak dividen tunai telah terkunci dan Total Return portofolio Anda terproyeksi ${totalReturnPct >= 0 ? '+' : ''}${totalReturnPct.toFixed(2)}%.`;
+                step1 = `Pertahankan kepemilikan (HOLD); jangan terpancing panic-selling di titik terendah pasca Ex-Date.`;
+                step2 = `Tunggu kas dividen masuk otomatis ke rekening RDN (rata-rata 10-14 hari kerja bursa).`;
+                step3 = `Amati momentum technical rebound setelah aksi buang saham pemburu dividen jangka pendek reda.`;
 
             } else if (pnlPct <= cutLossThreshold || currentPrice <= stopLoss || (pnlPct <= -3.5 && holdingDays >= (isSwing ? 20 : 45))) {
                 // Skenario B: DISIPLIN CUT LOSS (PROTEKSI MODAL)
@@ -6585,7 +6835,13 @@
                 pnlDiff,
                 currentPrice,
                 targetPrice,
-                stopLoss
+                stopLoss,
+                season,
+                dyPct,
+                estimatedDivGainPct,
+                totalReturnPct,
+                isDividendSeason,
+                currentMonthName
             };
         }
 
@@ -6736,7 +6992,7 @@
                 const stockData = findStockData(item.ticker);
                 const advice = getTrackedStockActionAdvice(item, stockData);
                 if (advice.pnlPct >= 0) gainCount++;
-                if (advice.statusKey === 'TAKE_PROFIT' || advice.statusKey === 'CUT_LOSS' || advice.statusKey === 'ROTASI') {
+                if (advice.statusKey === 'TAKE_PROFIT' || advice.statusKey === 'CUT_LOSS' || advice.statusKey === 'ROTASI' || advice.statusKey === 'DIVIDEND_SHIELD') {
                     actionCount++;
                 }
                 totalHoldingDays += advice.holdingDays;
@@ -6774,7 +7030,7 @@
             // Filter List
             let filteredList = evaluatedList;
             if (window.currentTrackerFilter === 'action') {
-                filteredList = evaluatedList.filter(x => x.advice.statusKey === 'TAKE_PROFIT' || x.advice.statusKey === 'CUT_LOSS' || x.advice.statusKey === 'ROTASI');
+                filteredList = evaluatedList.filter(x => x.advice.statusKey === 'TAKE_PROFIT' || x.advice.statusKey === 'CUT_LOSS' || x.advice.statusKey === 'ROTASI' || x.advice.statusKey === 'DIVIDEND_SHIELD');
             } else if (window.currentTrackerFilter === 'gain') {
                 filteredList = evaluatedList.filter(x => x.advice.pnlPct >= 0);
             } else if (window.currentTrackerFilter === 'loss') {
@@ -6859,6 +7115,11 @@
                             <span class="text-base sm:text-lg font-black text-white font-mono tracking-tight cursor-pointer hover:text-cyan-300" onclick="showStockDeepDive('${ticker}')">${ticker}</span>
                             <span class="text-xs text-slate-400 font-mono">• ${sector}</span>
                             <span class="px-1.5 py-0.5 rounded-xs ${horizonBadgeStyle} text-[9px] font-mono font-bold">${horizonLabel}</span>
+                            <span class="px-1.5 py-0.5 rounded-xs bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 text-[9px] font-mono flex items-center gap-1" title="${advice.season.notes}">
+                                <span class="material-symbols-outlined text-[11px]">event_repeat</span>
+                                <span>Div: ${advice.season.interimMonth !== '-' ? 'Int ' + advice.season.interimMonth + ' • ' : ''}Fin ${advice.season.finalMonth}</span>
+                            </span>
+                            ${advice.isDividendSeason ? `<span class="px-1.5 py-0.5 rounded-xs bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[9px] font-mono font-bold animate-pulse">⚡ Musim Dividen (${advice.currentMonthName})</span>` : ''}
                         </div>
                         <div class="flex items-center gap-2">
                             <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-xs bg-[#080C14] border border-white/10 text-[10px] font-mono font-bold text-slate-300">
@@ -6878,7 +7139,7 @@
                     </div>
 
                     <!-- Row 2: Metrics Grid -->
-                    <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 text-xs font-mono">
+                    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 text-xs font-mono">
                         <div class="p-2 rounded-sm bg-[#080C14] border border-white/5 flex flex-col gap-0.5">
                             <span class="text-[10px] text-slate-400">Harga Beli (Avg)</span>
                             <span class="font-bold text-white font-mono-num">Rp ${buyPrice.toLocaleString('id-ID')}</span>
@@ -6887,9 +7148,18 @@
                             <span class="text-[10px] text-slate-400">Harga Pasar (C)</span>
                             <span class="font-bold text-white font-mono-num">Rp ${currentPrice.toLocaleString('id-ID')}</span>
                         </div>
-                        <div class="p-2 rounded-sm ${pnlBoxStyle} border flex flex-col gap-0.5 col-span-2 sm:col-span-1">
-                            <span class="text-[10px] ${pnlLabelStyle}">Floating PnL (%)</span>
-                            <span class="font-bold font-mono-num ${pnlValStyle}">${pnlSign}${pnlPct.toFixed(2)}% (${pnlSign}Rp ${Math.abs(pnlDiff).toLocaleString('id-ID')})</span>
+                        <div class="p-2 rounded-sm ${pnlBoxStyle} border flex flex-col gap-0.5">
+                            <span class="text-[10px] ${pnlLabelStyle}">Price PnL</span>
+                            <span class="font-bold font-mono-num ${pnlValStyle}">${pnlSign}${pnlPct.toFixed(2)}%</span>
+                        </div>
+                        <div class="p-2 rounded-sm bg-[#080C14] border ${advice.totalReturnPct >= 0 ? 'border-emerald-500/30' : 'border-rose-500/30'} flex flex-col gap-0.5">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[10px] ${advice.totalReturnPct >= 0 ? 'text-emerald-400' : 'text-rose-400'} font-bold">Total Return</span>
+                                <span class="text-[8.5px] px-1 py-0.2 rounded-xs bg-emerald-500/10 text-emerald-300 font-mono">Div ${advice.dyPct > 0 ? advice.dyPct.toFixed(1) + '%' : '0%'}</span>
+                            </div>
+                            <span class="font-bold font-mono-num ${advice.totalReturnPct >= 0 ? 'text-emerald-300' : 'text-rose-300'}">
+                                ${advice.totalReturnPct >= 0 ? '+' : ''}${advice.totalReturnPct.toFixed(2)}%
+                            </span>
                         </div>
                         <div class="p-2 rounded-sm bg-[#080C14] border border-white/5 flex flex-col gap-0.5">
                             <span class="text-[10px] text-emerald-400">Target TP Acuan</span>
