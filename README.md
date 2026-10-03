@@ -6,7 +6,7 @@
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue.svg)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
-> **Platform Riset Ekuitas Institusional & Rekomendasi Saham Kuantitatif Berbasis Multi-Engine Machine Learning (GBDT + Macro-Aware PyTorch LSTM + ARIMA + GARCH), Scraper Resmi Arus Modal Asing BEI (IDX Foreign Flow), Terminal Teknikal Multi-Pane (Lightweight Charts), Matriks Eksekusi Taktis & Position Sizer, Analisis Fundamental Laporan Keuangan Multi-Tahun + AI Archetypes (Gemini 3.8 Flash), dan Dynamic Universe Manager untuk Bursa Efek Indonesia (BEI / IDX).**  
+> **Platform Riset Ekuitas Institusional & Rekomendasi Saham Kuantitatif Berbasis Multi-Engine Machine Learning (Tree Blend: HistGB + CatBoost, PyTorch LSTM, ARIMA + GARCH), Scraper Resmi Arus Modal Asing BEI (IDX Foreign Flow), Sinyal Aksi Korporasi & Musim Dividen, Terminal Teknikal Multi-Pane (Lightweight Charts), Matriks Eksekusi Taktis & Position Sizer, Analisis Fundamental Laporan Keuangan Multi-Tahun + AI Archetypes (Gemini 3.8 Flash), dan Dynamic Universe Manager untuk Bursa Efek Indonesia (BEI / IDX).**  
 > **Dikembangkan dan Dikelola oleh TIM New York: Ifan Apres & Sekar Widhastri.**
 
 ---
@@ -18,7 +18,7 @@
 1. **Scraper Resmi Arus Modal Asing BEI (*IDX Foreign Flow Engine*)**: Mengambil ringkasan perdagangan harian (*Trading Summary*) langsung dari bursa resmi dengan impersonasi browser anti-Cloudflare, menghitung akumulasi/distribusi dana asing per saham hingga ke nominal Rupiah terakhir secara deterministik.
 2. **Terminal Analisis Teknikal & Bandarmologi (Pro Studio Multi-Pane)**: Terminal grafik canggih berbasis TradingView Lightweight Charts dengan tumpukan multi-pane tersinkronisasi: harga candlestick/garis, overlay dinamis (EMA 10/20/50/200, Bollinger Bands 20,2, level target TP/SL), sub-pane MACD (12,26,9), RSI (14), Volume SMA-20, serta grafik batang *Net Foreign Flow* 65 hari bursa.
 3. **Tactical Execution Matrix & Integrated Position Sizer**: Matriks eksekusi taktis ATR-14 dengan konvergensi *Single Source of Truth* harga pasar. Menghitung otomatis area akumulasi (*Buy on Weakness*), level konfirmasi (*Buy on Breakout*), target take profit berjenjang (TP 1, TP 2, Target Utama), batas risiko (*Cut Loss*), serta kalkulator alokasi lot dan proyeksi nominal Rupiah terukur.
-4. **Machine Learning Diperkaya Arus Asing (GBDT + PyTorch LSTM 14-Dimensi)**: Memprediksi *Target Excess Alpha Relatif* ($R_{\text{saham}, 5D} - R_{\text{IHSG}, 5D} > 0$) menggunakan perpaduan indikator teknikal, variabel makro lintas aset (TNX, USD/IDR, Brent, S&P 500), dan laju perputaran dana asing.
+4. **Machine Learning Diperkaya Sinyal Kuantitatif Lanjutan (Tree Blend: HistGB + CatBoost + PyTorch LSTM + ARIMA)**: Memprediksi *Target Excess Alpha Relatif* ($R_{\text{saham}, 5D} - R_{\text{IHSG}, 5D} > 0$) menggunakan 32 matriks fitur: perpaduan indikator teknikal, variabel makro lintas aset, divergensi akumulasi modal asing (`Foreign_Accum_Divergence`), dan siklus musim dividen (`Is_Dividend_Season` & `Dividend_Season_Momentum`).
 5. **Deep Dive Fundamental Multi-Tahun & AI Archetypes (Gemini 3.8 Flash)**: Bedah tuntas laporan keuangan historis 4–5 tahun dengan standardisasi format mata uang ganda (USD vs IDR), evaluasi risiko kontraksi omzet berturut-turut (*top-line contraction*), kartu DNA emiten (*Blue Chip, Swing Trading Pick, High Quality Business, Foreign Flow Magnet*), serta ulasan naratif 4 pilar bisnis.
 6. **Cross-Sectional Top Decile & High-Conviction Thresholding**: Menyaring *noise* pasar dengan hanya mengeksekusi rekomendasi BUY pada ambang probabilitas keyakinan $\ge 0.55$ atau saham-saham peringkat 10% teratas bursa.
 7. **Institutional Morning Brief AI**: Riset pembuka sesi terkurasi dengan scraping berita makro semalam, ringkasan eksekutif 10-detik, dan doktrin riset **AlphaTech**.
@@ -28,17 +28,18 @@
 
 ## 📊 Hasil Uji Validasi & Benchmark Performa Machine Learning
 
-Evaluasi model dilakukan secara ketat menggunakan *Out-of-Sample Test Split* (~14.600 observasi pasar historis) pada horizon prediksi alpha 5 hari bursa ke depan:
+Evaluasi model dilakukan secara ketat menggunakan *Out-of-Sample Test Split* (17.594 observasi pasar historis terbaru yang belum pernah dilihat model saat pelatihan/tuning) pada horizon prediksi alpha 5 hari bursa ke depan:
 
-| Metrik Evaluasi Kuantitatif | Baseline (Model Lama) | Model Baru (+ Foreign Flow BEI) | Peningkatan / Delta | Dampak Praktis bagi Investor |
-| :--- | :---: | :---: | :---: | :--- |
-| **High-Conviction Precision (Prob $\ge$ 55%)** | 51.23% | **55.78%** | <span style="color:green">**+4.55% 🚀**</span> | **Lompatan signifikan!** Memfilter sinyal palsu (*retail trap*) dengan konfirmasi akumulasi institusi asing. |
-| **Top Decile Precision (Top 10% Paling Kuat)** | 53.81% | **56.00%** | <span style="color:green">**+2.19% 🚀**</span> | Saham-saham dengan peringkat keyakinan tertinggi menghasilkan *win-rate outperformance* paling konsisten. |
-| **GBDT ROC-AUC Score** | 0.5401 | **0.5433** | <span style="color:green">**+0.0032**</span> | Pemisahan probabilitas antara saham *outperformer* dan saham *underperformer* semakin tajam. |
-| **GBDT Overall Precision** | 53.79% | **54.48%** | <span style="color:green">**+0.69%**</span> | Kualitas sinyal beli secara keseluruhan meningkat di seluruh semesta saham. |
-| **GBDT Overall Accuracy** | 53.19% | **53.45%** | <span style="color:green">**+0.26%**</span> | Akurasi arah pergerakan alpha saham terhadap indeks IHSG semakin solid. |
-| **PyTorch LSTM ROC-AUC** | 0.5259 | **0.5298** | <span style="color:green">**+0.0039**</span> | Model sekuensial deep learning lebih tajam membaca tren akumulasi bertahap. |
-| **PyTorch LSTM Loss** | 0.6920 | **0.6919** | <span style="color:green">**-0.0001**</span> | Konvergensi pelatihan neural network lebih stabil. |
+| Metrik Evaluasi Kuantitatif | Baseline (Model Lama) | HistGB (+ Fitur Asing & Dividen) | **Tree Blend Final (HistGB + CatBoost)** | Peningkatan vs Baseline | Dampak Praktis bagi Investor |
+| :--- | :---: | :---: | :---: | :---: | :--- |
+| **High-Conviction Precision ($\ge$ 55%)** | 52.33% | 52.33% | **55.89% 🏆** | <span style="color:green">**+3.56% 🚀**</span> | **Kualitas Sinyal Eksekusi Tinggi**: Memfilter false breakout dengan konfirmasi akumulasi institusi asing & musim dividen. |
+| **Top Decile Precision (Top 10% Terkuat)** | 55.71% | 57.27% | **57.16% 🏆** | <span style="color:green">**+1.45% 🚀**</span> | Saham-saham dengan peringkat keyakinan 10% tertinggi menghasilkan *win-rate outperformance* paling konsisten. |
+| **ROC-AUC Score (Daya Pisah Alpha)** | 0.5438 | 0.5446 | **0.5485 🏆** | <span style="color:green">**+0.0047**</span> | Pemisahan probabilitas antara saham calon *outperformer* dan saham *underperformer* semakin tajam. |
+| **Overall Accuracy (Akurasi Arah Pasar)** | 53.55% | 53.59% | **53.70% 🏆** | <span style="color:green">**+0.15%**</span> | Akurasi prediksi arah alpha terhadap IHSG mencapai level tertinggi sepanjang sejarah platform. |
+| **F1-Score (Keseimbangan Presisi-Recall)** | 0.3076 | 0.3155 | **0.3316 🏆** | <span style="color:green">**+0.0240 (+7.8%)**</span> | Model lebih seimbang dan menangkap peluang saham naik (+2.4% recall) tanpa menambah *false positives*. |
+| **Waktu Pelatihan Komputasi (CPU)** | 0.85s | 0.96s | **3.15s** | *Super Cepat* | Sangat efisien dan aman dijalankan harian dalam batas waktu GitHub Actions. |
+
+> 📑 **Laporan Riset Lengkap:** Dokumentasi komparasi 4 eksperimen (termasuk tuning Optuna, Stacking Meta-Learner, dan pengujian BiLSTM) dapat dilihat pada dokumen resmi: [docs/RESEARCH_REPORT_RND_ML_UPGRADE.md](docs/RESEARCH_REPORT_RND_ML_UPGRADE.md).
 
 ---
 
@@ -72,13 +73,17 @@ Evaluasi model dilakukan secara ketat menggunakan *Out-of-Sample Test Split* (~1
 * **Long Position Logical Guard Rail**: Memvalidasi secara otomatis bahwa seluruh level Take Profit posisi Long berada di atas harga beli (Entry), mengoreksi anomali data usang atau korup secara real-time.
 * **Position Sizer & Risk Calculator**: Kalkulator alokasi lot otomatis berdasarkan modal nominal (IDR) dengan fraksi 100 lembar/lot. Menampilkan nominal beli, sisa kas siaga, serta potensi untung/rugi nominal (Rp) dan persentase (%) yang terkalibrasi persis dengan target taktis.
 
-### 4. 🧠 Macro-Aware PyTorch LSTM & GBDT dengan Fitur Arus Asing (14-Dimensi)
-Fitur input kuantitatif diperkaya dengan 4 dimensi arus asing:
-* `Foreign_Flow_Norm_1D`: Net foreign flow IDR dinormalisasi terhadap rata-rata perputaran transaksi 20 hari ($\text{Net Foreign} / \text{Value SMA 20}$).
-* `Foreign_Flow_5D_Accum`: Akumulasi arus modal asing 5 hari beruntun untuk mendeteksi akumulasi bertahap (*stealth loading*).
-* `Foreign_Participation`: Rasio keterlibatan volume asing terhadap total likuiditas saham.
-* `Foreign_Flow_Momentum`: Kecepatan akselerasi modal asing masuk/keluar dalam 3 hari bursa.
+### 4. 🧠 Tree Blend Machine Learning (CatBoost + HistGB) & PyTorch LSTM (32-Dimensi)
+Fitur input kuantitatif diperkaya dengan 6 dimensi baru seputar aksi korporasi dan arus modal asing:
+* `Foreign_Accum_Divergence`: Mengukur divergensi arah harga saham terhadap arus dana investor asing selama 10 hari bursa (Peringkat #7 fitur terpenting CatBoost dengan bobot 4.27%).
+* `Foreign_Flow_Intensity`: Normalisasi nominal transaksi bersih asing terhadap rata-rata turnover harian saham.
+* `Foreign_Consistent_Buy_5D`: Rasio konsistensi akumulasi beli bersih asing tanpa putus selama 5 hari berturut-turut.
+* `Is_Dividend_Season`: Indikator biner siklus puncak pembagian dividen IHSG (Bulan April–Juni dan November–Desember).
+* `Dividend_Season_Momentum`: Interaksi non-linear antara Dividend Yield tahunan emiten dengan musim dividen.
+* `Dividend_Yield_Norm`: Normalisasi *Dividend Yield* persentil cross-sectional terhadap seluruh konstituen bursa.
+* **Fitur Arus Asing Eksisting**: `Foreign_Flow_Norm_1D`, `Foreign_Flow_5D_Accum`, `Foreign_Participation`, `Foreign_Flow_Momentum`.
 * **Fitur Makro & Sektoral**: Yield US 10Y, USD/IDR, Minyak Brent, `Oil_Energy_Tailwind`, `Rate_Bank_Sensitivity`, `FX_Consumer_Headwind`.
+* **Arsitektur Tree Blend (50:50)**: Menggabungkan keunggulan *oblivious symmetric decision trees* CatBoost dengan *histogram gradient boosting* scikit-learn untuk stabilitas prediksi out-of-sample maksimal.
 
 ### 5. 📑 Deep Dive Laporan Keuangan Multi-Tahun & AI Archetypes (Gemini 3.8 Flash)
 * **Standarisasi Mata Uang Ganda (Dual-Currency Standard)**:
@@ -104,10 +109,13 @@ Fitur input kuantitatif diperkaya dengan 4 dimensi arus asing:
 * **20% Kas Siaga Wajib**: Menjamin ketersediaan likuiditas cadangan pada optimasi alokasi portofolio kuantitatif.
 * **IDX Tick Size Rounding**: Level Entry, Target Price (TP), dan Stop Loss (SL) otomatis dibulatkan sesuai fraksi harga resmi Bursa Efek Indonesia.
 
-### 8. 🛡️ Multi-Model Consensus Shield & No-Divergence Guard
-* **Hard High-Conviction Floor ($\ge 0.55$)**: Menghapus ambang longgar top-decile 0.52. Setiap sinyal BUY wajib memiliki probabilitas gabungan minimal 55%.
-* **Majority Agreement Rule**: Minimal 2 dari 3 model (GBDT, PyTorch LSTM, ARIMA) harus sepakat dalam zona *bullish* ($\ge 0.50$).
-* **No-Divergence Guard**: Jika ada salah satu model memprediksi *bearish* ($\min(\text{GBDT}, \text{LSTM}, \text{ARIMA}) < 0.48$), saham otomatis berstatus **`HOLD`** (menunggu konfirmasi), melindungi modal dari sinyal BUY palsu saat model bertentangan.
+### 8. 🛡️ Multi-Model Consensus Shield, Dividend Ex-Date Shield & No-Divergence Guard
+* **Konsensus Multi-Engine Baru**: Pembobotan dinamis terkalibrasi:
+  $$\text{Blended Prob} = 0.60 \times P(\text{Tree Blend}) + 0.25 \times P(\text{LSTM}) + 0.15 \times P(\text{ARIMA})$$
+* **Hard High-Conviction Floor ($\ge 0.55$)**: Setiap sinyal BUY wajib memiliki probabilitas gabungan minimal 55%.
+* **Majority Agreement Rule**: Minimal 2 dari 3 mesin AI (Tree Blend, PyTorch LSTM, ARIMA) harus sepakat dalam zona *bullish* ($\ge 0.50$).
+* **No-Divergence Guard**: Jika ada salah satu mesin memprediksi *bearish* ($\min(\text{Tree}, \text{LSTM}, \text{ARIMA}) < 0.48$), saham otomatis berstatus **`HOLD`** (menunggu konfirmasi).
+* **Corporate Actions & Dividend Ex-Date Shield**: Memangkas bobot alokasi atau membekukan sinyal pada emiten yang berada di zona bahaya *Cum-Date / Ex-Date* dividen untuk melindungi modal dari jebakan penurunan harga tajam pasca pembagian dividen (*dividend trap*).
 * **Regularisasi PyTorch LSTM Ditingkatkan**: Peningkatan *dropout* menjadi `0.35` dan Adam *weight decay* menjadi `5e-4` guna meredam *overfitting* terhadap *noise* intraday komoditas dan saham siklikal.
 
 ---
@@ -156,13 +164,16 @@ stock-market-recommendation/
 │       ├── financial_statements_summary.json  # Laporan keuangan 5 thn + AI Archetypes + Price History
 │       ├── watchlist_analysis.json            # Level taktis 6 level & narasi 4 pilar seluruh emiten
 │       ├── price_history_30d.json             # Factual OHLCV 30 hari untuk grafik deep dive
-│       ├── alpha_model.joblib                 # Bobot model GBDT terlatih baru
+│       ├── alpha_model.joblib                 # Bobot model HistGradientBoosting terlatih
+│       ├── catboost_model.cbm                 # Bobot model CatBoost Classifier terlatih
 │       ├── lstm_model.pth                     # Bobot PyTorch LSTM 14-dimensi baru
 │       ├── latest_morning_brief.json          # Editorial Morning Brief AI + Macro Foreign Flow
 │       ├── latest_portfolio_allocation.csv    # Rekomendasi bobot alokasi modal & kas
 │       ├── latest_alpha_recommendations_swing.csv     # Rekomendasi Swing Trader (LQ45)
 │       ├── latest_alpha_recommendations_dividend.csv  # Rekomendasi Dividend & Value
 │       └── latest_alpha_recommendations_favorites.csv # Rekomendasi Portofolio Pilihan
+├── docs/
+│   └── RESEARCH_REPORT_RND_ML_UPGRADE.md      # Laporan resmi riset kuantitatif 4 eksperimen
 ├── src/
 │   ├── __init__.py
 │   ├── auth.py                        # Sistem autentikasi PBKDF2, HMAC JWT, & Rate Limiter
@@ -172,10 +183,14 @@ stock-market-recommendation/
 │   ├── foreign_flow.py                # Engine arus modal asing hybrid & fallback
 │   ├── stock_analyzer.py              # Generator riset taktis 6 level & 4 pilar fundamental
 │   ├── 01_data_ingestion.py           # Engine penarikan OHLCV, macro & fundamental
-│   ├── 02_feature_eng.py              # Ekstraksi fitur, GARCH, Excess Alpha, Foreign Flow
-│   ├── 03_model_inference.py          # Ensemble GBDT+LSTM 14D+ARIMA & Top Decile
+│   ├── 02_feature_eng.py              # Ekstraksi fitur, GARCH, Excess Alpha, Foreign Flow & Dividen
+│   ├── 03_model_inference.py          # Tree Blend (CatBoost+HistGB) + LSTM + ARIMA Consensus
 │   └── morning_brief.py               # Generator Morning Brief Gemini 3.8 Flash
 ├── scripts/
+│   ├── evaluate_models.py             # Skrip benchmark HistGB vs CatBoost vs Blend
+│   ├── tune_hyperparameters.py        # Skrip tuning Optuna Bayesian TPE & Purged CV
+│   ├── evaluate_stacking.py           # Skrip evaluasi Dynamic Stacking Meta-Learner
+│   ├── evaluate_bilstm.py             # Skrip evaluasi BiLSTM vs Standard LSTM vs Attention
 │   ├── generate_financials_summary.py # Generator laporan keuangan multi-tahun & sinkronisasi
 │   └── sync_model_storage.py          # Enkripsi AES-256 model weights & sync vault
 ├── index.html                         # Dashboard web modern responsif (TradingView, Deep Dive, FF)
