@@ -7380,35 +7380,81 @@
             const wibDate = new Date(wibString);
             const day = wibDate.getDay(); // 0: Minggu, 1: Senin, ..., 5: Jumat, 6: Sabtu
             const timeNum = wibDate.getHours() * 100 + wibDate.getMinutes();
+            const yyyy = wibDate.getFullYear();
+            const mm = String(wibDate.getMonth() + 1).padStart(2, '0');
+            const dd = String(wibDate.getDate()).padStart(2, '0');
+            const dateStr = `${yyyy}-${mm}-${dd}`;
 
             const pill = document.getElementById('marketPill');
             const dot = document.getElementById('marketDot');
             const text = document.getElementById('marketStatusText');
             if (!pill || !text) return;
 
-            // Hari Senin (1) s/d Jumat (5)
-            if (day >= 1 && day <= 5) {
-                if ((timeNum >= 900 && timeNum <= 1130) || (timeNum >= 1330 && timeNum <= 1545)) {
-                    // Pasar Buka: icon bulat warna hijau
-                    text.innerText = "Pasar Buka";
-                    pill.className = "flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800";
-                    if (dot) dot.className = "w-2 h-2 rounded-full bg-emerald-500 animate-pulse";
-                } else if (timeNum > 1130 && timeNum < 1330) {
-                    // Rehat Siang: icon bulat warna amber
-                    text.innerText = "Pasar Rehat";
-                    pill.className = "flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-800";
-                    if (dot) dot.className = "w-2 h-2 rounded-full bg-amber-500 animate-pulse";
+            // Daftar Libur Resmi Bursa Efek Indonesia 2026
+            const idxHolidays = [
+                "2026-01-01", "2026-01-16", "2026-02-17", "2026-03-20", "2026-03-21",
+                "2026-03-22", "2026-03-23", "2026-03-24", "2026-04-03", "2026-05-01",
+                "2026-05-14", "2026-05-27", "2026-05-31", "2026-06-01", "2026-06-16",
+                "2026-08-17", "2026-08-25", "2026-12-25"
+            ];
+
+            const setStatusOpen = (sessionName) => {
+                text.innerText = sessionName;
+                pill.className = "flex items-center gap-1.5 px-2.5 py-0.5 rounded-sm bg-emerald-950/60 border border-emerald-500/40 text-emerald-300 font-mono text-[11px] shadow-sm";
+                if (dot) dot.className = "w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0";
+            };
+
+            const setStatusBreak = () => {
+                text.innerText = "ISTIRAHAT BURSA";
+                pill.className = "flex items-center gap-1.5 px-2.5 py-0.5 rounded-sm bg-amber-950/60 border border-amber-500/40 text-amber-300 font-mono text-[11px] shadow-sm";
+                if (dot) dot.className = "w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse shrink-0";
+            };
+
+            const setStatusClosed = (label) => {
+                text.innerText = label;
+                pill.className = "flex items-center gap-1.5 px-2.5 py-0.5 rounded-sm bg-rose-950/60 border border-rose-500/40 text-rose-300 font-mono text-[11px] shadow-sm";
+                if (dot) dot.className = "w-1.5 h-1.5 rounded-full bg-rose-500 shrink-0";
+            };
+
+            // 1. Cek Hari Libur Resmi Bursa BEI
+            if (idxHolidays.includes(dateStr)) {
+                setStatusClosed("PASAR TUTUP (LIBUR BURSA)");
+                return;
+            }
+
+            // 2. Cek Akhir Pekan (Sabtu / Minggu)
+            if (day === 0 || day === 6) {
+                setStatusClosed("PASAR TUTUP (AKHIR PEKAN)");
+                return;
+            }
+
+            // 3. Hari Perdagangan Aktif: Senin s/d Kamis (day 1 - 4)
+            if (day >= 1 && day <= 4) {
+                if (timeNum >= 900 && timeNum < 1200) {
+                    setStatusOpen("PASAR BUKA (SESI 1)");
+                } else if (timeNum >= 1200 && timeNum < 1330) {
+                    setStatusBreak();
+                } else if (timeNum >= 1330 && timeNum < 1545) {
+                    setStatusOpen("PASAR BUKA (SESI 2)");
+                } else if (timeNum >= 1545 && timeNum <= 1600) {
+                    setStatusOpen("PRA-PENUTUPAN");
                 } else {
-                    // Di luar jam sesi bursa: icon bulat warna merah
-                    text.innerText = "Pasar Tutup";
-                    pill.className = "flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-rose-50 border border-rose-200 text-rose-800";
-                    if (dot) dot.className = "w-2 h-2 rounded-full bg-rose-500";
+                    setStatusClosed("PASAR TUTUP");
                 }
-            } else {
-                // Hari Sabtu & Minggu: icon bulat warna merah
-                text.innerText = "Pasar Tutup";
-                pill.className = "flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-rose-50 border border-rose-200 text-rose-800";
-                if (dot) dot.className = "w-2 h-2 rounded-full bg-rose-500";
+            } 
+            // 4. Hari Perdagangan Aktif: Jumat (day 5)
+            else if (day === 5) {
+                if (timeNum >= 900 && timeNum < 1130) {
+                    setStatusOpen("PASAR BUKA (SESI 1)");
+                } else if (timeNum >= 1130 && timeNum < 1400) {
+                    setStatusBreak();
+                } else if (timeNum >= 1400 && timeNum < 1545) {
+                    setStatusOpen("PASAR BUKA (SESI 2)");
+                } else if (timeNum >= 1545 && timeNum <= 1600) {
+                    setStatusOpen("PRA-PENUTUPAN");
+                } else {
+                    setStatusClosed("PASAR TUTUP");
+                }
             }
         }
 

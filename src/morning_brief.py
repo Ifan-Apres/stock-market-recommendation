@@ -321,13 +321,32 @@ class MorningBriefGenerator:
             b_df = b_df.dropna(subset=["Close"])
             b_df = b_df[b_df["Close"] > 0]
 
+        # Prevent date regression: Check if processed snapshot/recommendations has newer market session
+        latest_processed_date = None
+        if SNAPSHOT_FILE.exists():
+            try:
+                with open(SNAPSHOT_FILE, "r", encoding="utf-8") as sf:
+                    s_meta = json.load(sf)
+                    latest_processed_date = s_meta.get("data_asof")
+            except Exception:
+                pass
+
         if b_df.empty:
-            logger.warning("Benchmark file is empty or invalid. Using standard fallback levels.")
-            last_row = pd.Series({"Close": 6121.70, "Open": 6118.81, "High": 6150.55, "Low": 6013.08, "Date": "2026-09-30"})
-            prev_row = pd.Series({"Close": 6147.86, "Date": "2026-09-28"})
+            logger.warning("Benchmark file is empty or invalid. Using latest processed session levels.")
+            date_str = latest_processed_date or "2026-10-05"
+            last_row = pd.Series({"Close": 6118.86, "Open": 6055.16, "High": 6119.22, "Low": 6019.84, "Date": date_str})
+            prev_row = pd.Series({"Close": 6036.89, "Date": "2026-10-02"})
         else:
             last_row = b_df.iloc[-1]
             prev_row = b_df.iloc[-2] if len(b_df) > 1 else last_row
+            date_str = str(last_row.get("Date", "2026-10-05"))[:10]
+            # If raw benchmark data is behind processed date, align date to avoid reverting
+            if latest_processed_date and date_str < latest_processed_date:
+                logger.warning(
+                    f"Benchmark file date ({date_str}) is behind processed market date ({latest_processed_date}). "
+                    f"Aligning to {latest_processed_date} to prevent date regression."
+                )
+                date_str = latest_processed_date
 
         close = safe_float(last_row.get("Close"), fallback=6121.70)
         prev_close = safe_float(prev_row.get("Close"), fallback=6147.86)

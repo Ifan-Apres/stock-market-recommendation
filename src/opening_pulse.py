@@ -135,7 +135,17 @@ def run_opening_pulse(tickers: Optional[List[str]] = None) -> Dict[str, Any]:
         except Exception as ex:
             logger.debug(f"Error parsing ticker {ticker}: {ex}")
 
-    logger.info(f"Berhasil memproses {len(intraday_data)} emiten. Sesi Bursa: {latest_market_date}")
+    logger.info(f"Berhasil memproses {len(intraday_data)} emiten. Sesi Bursa Terakhir: {latest_market_date}")
+    today_wib_str = wib_now.strftime("%Y-%m-%d")
+    is_today_live_session = (latest_market_date == today_wib_str)
+
+    if is_today_live_session:
+        logger.info(f"Terverifikasi sesi intraday aktif hari ini: {latest_market_date}")
+    else:
+        logger.warning(
+            f"Data pasar yang diperoleh bertanggal {latest_market_date}, berbeda dari tanggal WIB hari ini ({today_wib_str}). "
+            f"Bursa sedang tutup atau libur. Menghindari penulisan status trading aktif palsu."
+        )
 
     # 2. Update CSV files (Swing, Dividend, Favorites, Main Recommendation)
     csv_targets = [
@@ -165,27 +175,32 @@ def run_opening_pulse(tickers: Optional[List[str]] = None) -> Dict[str, Any]:
                     df.at[idx, "Volume"] = data["volume"]
                     df.at[idx, "Return_1D"] = data["return_1d"]
 
-                    # Check Intraday Status
-                    tp = float(row.get("Target_Price", 0))
-                    sl = float(row.get("Stop_Loss", 0))
-                    entry = float(row.get("Entry_Price", 0))
-                    curr = data["close"]
+                    if is_today_live_session:
+                        # Check Intraday Status for active trading session
+                        tp = float(row.get("Target_Price", 0))
+                        sl = float(row.get("Stop_Loss", 0))
+                        entry = float(row.get("Entry_Price", 0))
+                        curr = data["close"]
 
-                    status = "DALAM PEMANTAUAN"
-                    if tp > 0 and (data["high"] >= tp or curr >= tp):
-                        status = "TARGET PROFIT TERCAPAI"
-                        triggers_count["tp_hit"] += 1
-                    elif sl > 0 and (data["low"] <= sl or curr <= sl):
-                        status = "STOP LOSS ALERT"
-                        triggers_count["sl_hit"] += 1
-                    elif entry > 0 and (abs(curr - entry) / entry <= 0.015 or (data["low"] <= entry <= data["high"])):
-                        status = "AREA BELI AKTIF"
-                        triggers_count["buy_zone"] += 1
+                        status = "DALAM PEMANTAUAN"
+                        if tp > 0 and (data["high"] >= tp or curr >= tp):
+                            status = "TARGET PROFIT TERCAPAI"
+                            triggers_count["tp_hit"] += 1
+                        elif sl > 0 and (data["low"] <= sl or curr <= sl):
+                            status = "STOP LOSS ALERT"
+                            triggers_count["sl_hit"] += 1
+                        elif entry > 0 and (abs(curr - entry) / entry <= 0.015 or (data["low"] <= entry <= data["high"])):
+                            status = "AREA BELI AKTIF"
+                            triggers_count["buy_zone"] += 1
+                        else:
+                            triggers_count["monitoring"] += 1
+
+                        df.at[idx, "Intraday_Status"] = status
+                        df.at[idx, "Intraday_Updated_At"] = "10:00 WIB"
                     else:
-                        triggers_count["monitoring"] += 1
-
-                    df.at[idx, "Intraday_Status"] = status
-                    df.at[idx, "Intraday_Updated_At"] = "10:00 WIB"
+                        # Pasar libur/tutup: pertahankan status aman tanpa trigger palsu
+                        df.at[idx, "Intraday_Status"] = "PASAR TUTUP - SESI TERAKHIR"
+                        df.at[idx, "Intraday_Updated_At"] = f"Penutupan {latest_market_date}"
 
             df.to_csv(file_path, index=False)
             logger.info(f"Updated {label} ({file_path.name}) with opening pulse data.")
@@ -281,8 +296,13 @@ def run_opening_pulse(tickers: Optional[List[str]] = None) -> Dict[str, Any]:
             with open(SNAPSHOT_FILE, "r", encoding="utf-8") as f:
                 snap = json.load(f)
             snap["pipeline_phase"] = "OPENING_PULSE_10_WIB"
-            snap["session_label"] = "Sesi Pagi (10:00 WIB) - Harga Pembukaan & Intraday Aktif"
+            snap["is_live_trading"] = is_today_live_session
+            if is_today_live_session:
+                snap["session_label"] = "Sesi Pagi (10:00 WIB) - Harga Pembukaan & Intraday Aktif"
+            else:
+                snap["session_label"] = f"Bursa Tutup (Menampilkan Penutupan Sesi {latest_market_date})"
             snap["last_updated"] = timestamp_str
+            snap["market_date"] = latest_market_date
             with open(SNAPSHOT_FILE, "w", encoding="utf-8") as f:
                 json.dump(snap, f, indent=2, ensure_ascii=False)
             logger.info("Updated snapshot.json metadata.")

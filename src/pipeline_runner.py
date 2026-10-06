@@ -92,6 +92,49 @@ def run_eod_settlement_phase():
     return {"status": "success", "elapsed_seconds": elapsed}
 
 
+# Hari Libur Resmi Bursa Efek Indonesia (BEI / IDX) Tahun 2026
+IDX_HOLIDAYS_2026 = {
+    "2026-01-01": "Tahun Baru Masehi 2026",
+    "2026-01-16": "Isra Mi'raj Nabi Muhammad SAW",
+    "2026-02-17": "Tahun Baru Imlek 2577 Kongzili",
+    "2026-03-20": "Hari Suci Nyepi (Tahun Baru Saka 1948)",
+    "2026-03-21": "Hari Raya Idul Fitri 1447 H",
+    "2026-03-22": "Hari Raya Idul Fitri 1447 H",
+    "2026-03-23": "Cuti Bersama Idul Fitri 1447 H",
+    "2026-03-24": "Cuti Bersama Idul Fitri 1447 H",
+    "2026-04-03": "Wafat Yesus Kristus (Jumat Agung)",
+    "2026-05-01": "Hari Buruh Internasional",
+    "2026-05-14": "Kenaikan Yesus Kristus",
+    "2026-05-27": "Hari Raya Idul Adha 1447 H",
+    "2026-05-31": "Hari Raya Waisak 2570 BE",
+    "2026-06-01": "Hari Lahir Pancasila",
+    "2026-06-16": "Tahun Baru Islam 1448 H",
+    "2026-08-17": "Hari Kemerdekaan RI Ke-81",
+    "2026-08-25": "Maulid Nabi Muhammad SAW",
+    "2026-12-25": "Hari Raya Natal",
+}
+
+
+def is_idx_market_day(wib_dt: datetime) -> tuple[bool, str]:
+    """
+    Memeriksa apakah tanggal saat ini merupakan hari aktif bursa BEI.
+    Mengembalikan (is_active, alasan).
+    """
+    # 1. Cek Akhir Pekan (Sabtu = 5, Minggu = 6)
+    if wib_dt.weekday() == 5:
+        return False, "Hari Sabtu (Bursa Tutup - Akhir Pekan)"
+    if wib_dt.weekday() == 6:
+        return False, "Hari Minggu (Bursa Tutup - Akhir Pekan)"
+
+    # 2. Cek Tanggal Merah / Libur Bursa Resmi BEI
+    date_str = wib_dt.strftime("%Y-%m-%d")
+    if date_str in IDX_HOLIDAYS_2026:
+        holiday_name = IDX_HOLIDAYS_2026[date_str]
+        return False, f"Hari Libur Bursa Resmi BEI: {holiday_name}"
+
+    return True, "Hari Kerja Bursa Aktif (Senin - Jumat)"
+
+
 def main():
     parser = argparse.ArgumentParser(description="AlphaTech Two-Phase Quantitative Execution Runner")
     parser.add_argument(
@@ -100,11 +143,33 @@ def main():
         default="auto",
         help="Mode eksekusi: 'opening_pulse' (10:00 WIB), 'eod_settlement' (17:15 WIB), atau 'auto' (deteksi waktu)",
     )
+    parser.add_argument(
+        "--force",
+        action="store_true",
+        default=False,
+        help="Paksa eksekusi pipeline meskipun hari libur bursa atau akhir pekan (bypass market day guard)",
+    )
     args = parser.parse_args()
 
     wib_now = get_current_wib_datetime()
     current_hour_wib = wib_now.hour
-    logger.info(f"Pipeline Runner diaktifkan. Mode input: {args.mode} | Waktu WIB: {wib_now.strftime('%Y-%m-%d %H:%M:%S')}")
+    date_str = wib_now.strftime("%Y-%m-%d")
+    logger.info(f"Pipeline Runner diaktifkan. Mode: {args.mode} | Waktu WIB: {wib_now.strftime('%Y-%m-%d %H:%M:%S')}")
+
+    # Pengecekan Hari Aktif Bursa
+    is_open, market_status_reason = is_idx_market_day(wib_now)
+    if not is_open:
+        if args.force:
+            logger.warning(f"MARKET GUARD BYPASSED (--force aktif): {market_status_reason}. Melanjutkan eksekusi atas permintaan paksa.")
+        else:
+            logger.info(f"==================================================================")
+            logger.info(f"  BURSA EFEK INDONESIA SEDANG TUTUP / LIBUR                      ")
+            logger.info(f"  Status: {market_status_reason}                                 ")
+            logger.info(f"  Tanggal: {date_str} (WIB)                                      ")
+            logger.info(f"  Aksi: Pipeline otomatis dilewati dengan aman (skip).           ")
+            logger.info(f"  Tip: Gunakan flag --force jika ingin mengeksekusi manual.      ")
+            logger.info(f"==================================================================")
+            return
 
     if args.mode == "opening_pulse":
         run_opening_pulse_phase()
