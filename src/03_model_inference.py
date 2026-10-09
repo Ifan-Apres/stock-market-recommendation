@@ -774,12 +774,29 @@ def export_snapshot_json(
     if "Date" in all_recs.columns:
         all_recs["Date"] = pd.to_datetime(all_recs["Date"]).dt.strftime("%Y-%m-%d")
 
+    asof_date = str(swing_df["Date"].iloc[0]) if not swing_df.empty else datetime.today().strftime("%Y-%m-%d")
+    now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    # Read existing snapshot to preserve intraday/brief metadata safely
+    existing_snap = {}
+    if SNAPSHOT_FILE.exists():
+        try:
+            with open(SNAPSHOT_FILE, "r", encoding="utf-8") as f:
+                existing_snap = json.load(f)
+        except Exception:
+            pass
+
     snapshot = {
         "status": "online",
-        "data_asof": str(swing_df["Date"].iloc[0]) if not swing_df.empty else datetime.today().strftime("%Y-%m-%d"),
-        "generated_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "data_asof": asof_date,
+        "market_date": asof_date,
+        "pipeline_phase": "EOD_SETTLEMENT_FINAL",
+        "session_label": f"Penutupan Sesi Bursa {asof_date} (EOD Settlement)",
+        "is_live_trading": False,
+        "generated_at": now_str,
+        "last_updated": now_str,
         "metrics": metrics,
-        "morning_brief": brief_data,
+        "morning_brief": brief_data or existing_snap.get("morning_brief"),
         "portfolio_allocation": clean_records(alloc_df),
         "recommendations_swing": clean_records(swing_df),
         "recommendations_dividend": clean_records(div_df),

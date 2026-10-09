@@ -90,8 +90,19 @@ def build_summary():
                 if full_df.empty:
                     continue
 
+                # Protective sanitization: Impute missing/NaN Close, Open, High, Low
+                if "Adj Close" in full_df.columns:
+                    full_df["Close"] = full_df["Close"].fillna(full_df["Adj Close"])
+                if "Open" in full_df.columns and "High" in full_df.columns and "Low" in full_df.columns:
+                    typical = (full_df["Open"] + full_df["High"] + full_df["Low"]) / 3.0
+                    full_df["Close"] = full_df["Close"].fillna(typical)
+                full_df["Close"] = full_df["Close"].ffill().bfill().fillna(0.0)
+                full_df["Open"] = full_df["Open"].fillna(full_df["Close"])
+                full_df["High"] = full_df["High"].fillna(full_df["Close"])
+                full_df["Low"] = full_df["Low"].fillna(full_df["Close"])
+
                 close_series = full_df["Close"]
-                vol_series = full_df["Volume"]
+                vol_series = full_df["Volume"].fillna(0)
 
                 # 1. EMAs & SMAs
                 ema10_series = close_series.ewm(span=10, adjust=False).mean()
@@ -133,11 +144,11 @@ def build_summary():
 
                 dates_formatted = [d.strftime("%d %b") for d in sorted_grp["Date"]]
                 full_dates = [d.strftime("%Y-%m-%d") for d in sorted_grp["Date"]]
-                opens = [round(float(o), 2) for o in sorted_grp["Open"]]
-                prices = [round(float(p), 2) for p in sorted_grp["Close"]]
-                highs = [round(float(h), 2) for h in sorted_grp["High"]]
-                lows = [round(float(l), 2) for l in sorted_grp["Low"]]
-                volumes = [int(v) if pd.notnull(v) else 0 for v in sorted_grp["Volume"]]
+                opens = [round(float(o), 2) if pd.notnull(o) and not np.isnan(o) else 0.0 for o in sorted_grp["Open"]]
+                prices = [round(float(p), 2) if pd.notnull(p) and not np.isnan(p) else (opens[i] if i < len(opens) else 0.0) for i, p in enumerate(sorted_grp["Close"])]
+                highs = [round(float(h), 2) if pd.notnull(h) and not np.isnan(h) else prices[i] for i, h in enumerate(sorted_grp["High"])]
+                lows = [round(float(l), 2) if pd.notnull(l) and not np.isnan(l) else prices[i] for i, l in enumerate(sorted_grp["Low"])]
+                volumes = [int(v) if pd.notnull(v) and not np.isnan(v) else 0 for v in sorted_grp["Volume"]]
 
                 # Indicators aligned with last 65 days
                 ema10 = [round(float(v), 2) for v in ema10_series.loc[idx]]

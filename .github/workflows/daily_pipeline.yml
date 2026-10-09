@@ -2,10 +2,10 @@ name: AlphaTech Automated Two-Phase Quantitative Pipeline
 
 on:
   schedule:
-    # Fase 1: 1 Jam Setelah Pasar Dibuka (10:10 WIB = 03:10 UTC, Senin - Jumat, menghindari peak 00-min congestion)
-    - cron: '10 3 * * 1-5'
-    # Fase 2: 1 Jam Setelah Pasar Ditutup (17:15 WIB = 10:15 UTC, Senin - Jumat)
-    - cron: '15 10 * * 1-5'
+    # Fase 1: Sesi Pagi Intraday (10:17 WIB = 03:17 UTC, Senin - Jumat, off-peak runner minute)
+    - cron: '17 3 * * 1-5'
+    # Fase 2: EOD Settlement Final (18:23 WIB = 11:23 UTC, Senin - Jumat, 2 jam buffer bursa tutup & kliring tuntas)
+    - cron: '23 11 * * 1-5'
   workflow_dispatch:
     inputs:
       pipeline_mode:
@@ -16,7 +16,7 @@ on:
         options:
           - auto
           - opening_pulse (10:00 WIB - Harga Open & Live Intraday)
-          - eod_settlement (17:15 WIB - EOD Settlement & Rekomendasi Penuh)
+          - eod_settlement (18:23 WIB - EOD Settlement & Rekomendasi Penuh)
 
 permissions:
   contents: write
@@ -51,14 +51,13 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           RAW_MODE="${{ github.event.inputs.pipeline_mode || '' }}"
-          SCHEDULE="${{ github.event.schedule || '' }}"
           MODE="auto"
-          if [[ "$RAW_MODE" == *"opening_pulse"* ]] || [[ "$SCHEDULE" == "10 3 * * 1-5" ]] || [[ "$SCHEDULE" == "0 3 * * 1-5" ]]; then
+          if [[ "$RAW_MODE" == *"opening_pulse"* ]]; then
             MODE="opening_pulse"
-          elif [[ "$RAW_MODE" == *"eod_settlement"* ]] || [[ "$SCHEDULE" == "15 10 * * 1-5" ]]; then
+          elif [[ "$RAW_MODE" == *"eod_settlement"* ]]; then
             MODE="eod_settlement"
           fi
-          echo "Executing pipeline in mode: $MODE (Trigger: RAW_MODE='$RAW_MODE', SCHEDULE='$SCHEDULE')"
+          echo "Executing pipeline in mode: $MODE (Trigger: RAW_MODE='$RAW_MODE', SCHEDULE='${{ github.event.schedule }}')"
           python -m src.pipeline_runner --mode=$MODE
 
       - name: Commit & Push Processed Alpha Recommendations & Market Data

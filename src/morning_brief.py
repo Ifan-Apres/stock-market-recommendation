@@ -282,7 +282,10 @@ class MorningBriefGenerator:
                 live_ihsg = live_ihsg.reset_index()
                 live_ihsg["Date"] = pd.to_datetime(live_ihsg["Date"])
 
-                # CRITICAL RESILIENCE FIX: Drop rows where Close is NaN or <= 0
+                # Impute Close with Adj Close before dropna
+                if "Close" in live_ihsg.columns and "Adj Close" in live_ihsg.columns:
+                    live_ihsg["Close"] = live_ihsg["Close"].fillna(live_ihsg["Adj Close"])
+                    live_ihsg["Adj Close"] = live_ihsg["Adj Close"].fillna(live_ihsg["Close"])
                 live_ihsg = live_ihsg.dropna(subset=["Close"])
                 live_ihsg = live_ihsg[live_ihsg["Close"] > 0]
 
@@ -318,6 +321,9 @@ class MorningBriefGenerator:
 
         # Clean b_df
         if not b_df.empty and "Close" in b_df.columns:
+            if "Adj Close" in b_df.columns:
+                b_df["Close"] = b_df["Close"].fillna(b_df["Adj Close"])
+                b_df["Adj Close"] = b_df["Adj Close"].fillna(b_df["Close"])
             b_df = b_df.dropna(subset=["Close"])
             b_df = b_df[b_df["Close"] > 0]
 
@@ -327,7 +333,7 @@ class MorningBriefGenerator:
             try:
                 with open(SNAPSHOT_FILE, "r", encoding="utf-8") as sf:
                     s_meta = json.load(sf)
-                    latest_processed_date = s_meta.get("data_asof")
+                    latest_processed_date = s_meta.get("data_asof") or s_meta.get("market_date")
             except Exception:
                 pass
 
@@ -352,7 +358,6 @@ class MorningBriefGenerator:
         prev_close = safe_float(prev_row.get("Close"), fallback=6147.86)
         chg_pct = round(((close - prev_close) / (prev_close + 1e-9)) * 100.0, 2)
         chg_point = round(close - prev_close, 2)
-        date_str = str(last_row.get("Date", "2026-09-30"))[:10]
 
         open_px = safe_float(last_row.get("Open"), fallback=close)
         high = safe_float(last_row.get("High"), fallback=close * 1.005)

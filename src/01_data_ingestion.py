@@ -97,8 +97,20 @@ class MarketDataIngestor:
                 if col not in combined_df.columns:
                     combined_df[col] = pd.NA
 
-            combined_df = combined_df[expected_cols]
+            combined_df = combined_df[expected_cols].copy()
             combined_df["Date"] = pd.to_datetime(combined_df["Date"])
+
+            # Robust Price Imputation: Jangan biarkan Close menjadi NaN jika ada Adj Close atau Open/High/Low
+            for c in ["Close", "Adj Close", "Open", "High", "Low"]:
+                combined_df[c] = pd.to_numeric(combined_df[c], errors="coerce")
+
+            combined_df["Close"] = combined_df["Close"].fillna(combined_df["Adj Close"])
+            combined_df["Adj Close"] = combined_df["Adj Close"].fillna(combined_df["Close"])
+            # Fallback bar transaksi unfinalized: jika Open/High/Low ada tapi Close belum rilis YF
+            typical_p = (combined_df["Open"] + combined_df["High"] + combined_df["Low"]) / 3.0
+            combined_df["Close"] = combined_df["Close"].fillna(typical_p)
+            combined_df["Adj Close"] = combined_df["Adj Close"].fillna(combined_df["Close"])
+
             combined_df.sort_values(by=["Ticker", "Date"], inplace=True)
             combined_df.reset_index(drop=True, inplace=True)
             logger.info(f"Market data ingestion complete. Total rows: {len(combined_df)}")
@@ -135,6 +147,17 @@ class MarketDataIngestor:
 
             df_bench = df_bench[expected_cols].copy()
             df_bench["Date"] = pd.to_datetime(df_bench["Date"])
+
+            # Robust Benchmark Imputation
+            for c in ["Close", "Adj Close", "Open", "High", "Low"]:
+                df_bench[c] = pd.to_numeric(df_bench[c], errors="coerce")
+
+            df_bench["Close"] = df_bench["Close"].fillna(df_bench["Adj Close"])
+            df_bench["Adj Close"] = df_bench["Adj Close"].fillna(df_bench["Close"])
+            bench_typical = (df_bench["Open"] + df_bench["High"] + df_bench["Low"]) / 3.0
+            df_bench["Close"] = df_bench["Close"].fillna(bench_typical)
+            df_bench["Adj Close"] = df_bench["Adj Close"].fillna(df_bench["Close"])
+
             df_bench["Benchmark_Return_1D"] = df_bench["Adj Close"].pct_change(1)
             df_bench.sort_values(by="Date", inplace=True)
             df_bench.reset_index(drop=True, inplace=True)

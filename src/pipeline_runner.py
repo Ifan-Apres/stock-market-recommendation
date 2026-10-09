@@ -171,19 +171,29 @@ def main():
             logger.info(f"==================================================================")
             return
 
+    # Anti-Queue-Lag Clock-Aware Guard:
+    # Jika mode diminta 'opening_pulse' tetapi jam riil WIB sudah >= 16:00 (bursa sudah tutup)
+    # atau sebelum 09:00 pagi, alihkan otomatis ke 'eod_settlement' untuk mencegah tabrakan data.
+    if args.mode == "opening_pulse" and (current_hour_wib >= 16 or current_hour_wib < 9):
+        logger.warning(
+            f"ANTI-QUEUE-LAG GUARD AKTIF: Waktu riil {wib_now.strftime('%H:%M:%S')} WIB terdeteksi di luar jam trading aktif. "
+            f"Permintaan 'opening_pulse' dialihkan otomatis ke 'eod_settlement' demi integritas data EOD."
+        )
+        args.mode = "eod_settlement"
+
     if args.mode == "opening_pulse":
         run_opening_pulse_phase()
     elif args.mode == "eod_settlement":
         run_eod_settlement_phase()
     else:
-        # Auto Mode: Deteksi berdasarkan jam bursa WIB
-        # Sesi pagi (09:00 - 13:59 WIB) -> Opening Pulse
-        # Sesi sore / malam (14:00 - 08:59 WIB) -> EOD Settlement
-        if 9 <= current_hour_wib < 14:
-            logger.info(f"Jam {current_hour_wib}:00 WIB terdeteksi dalam rentang Sesi Pagi (09:00 - 13:59 WIB).")
+        # Auto Mode: Deteksi cerdas berbasis jam bursa WIB
+        # Sesi perdagangan aktif (09:00 - 15:59 WIB) -> Opening Pulse & Intraday Monitoring
+        # Sesi pasca-penutupan & malam (>= 16:00 WIB atau < 09:00 WIB) -> Full EOD Settlement
+        if 9 <= current_hour_wib < 16:
+            logger.info(f"Jam {current_hour_wib}:00 WIB terdeteksi dalam rentang Sesi Perdagangan Aktif (09:00 - 15:59 WIB).")
             run_opening_pulse_phase()
         else:
-            logger.info(f"Jam {current_hour_wib}:00 WIB terdeteksi dalam rentang Penutupan/EOD (>= 14:00 WIB).")
+            logger.info(f"Jam {current_hour_wib}:00 WIB terdeteksi dalam rentang Pasca-Penutupan/EOD (>= 16:00 WIB).")
             run_eod_settlement_phase()
 
 

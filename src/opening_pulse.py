@@ -299,6 +299,7 @@ def run_opening_pulse(tickers: Optional[List[str]] = None) -> Dict[str, Any]:
             snap["is_live_trading"] = is_today_live_session
             if is_today_live_session:
                 snap["session_label"] = "Sesi Pagi (10:00 WIB) - Harga Pembukaan & Intraday Aktif"
+                snap["data_asof"] = latest_market_date
             else:
                 snap["session_label"] = f"Bursa Tutup (Menampilkan Penutupan Sesi {latest_market_date})"
             snap["last_updated"] = timestamp_str
@@ -308,6 +309,20 @@ def run_opening_pulse(tickers: Optional[List[str]] = None) -> Dict[str, Any]:
             logger.info("Updated snapshot.json metadata.")
         except Exception as e:
             logger.debug(f"Error updating snapshot: {e}")
+
+    # 6. Synchronize morning brief headline date if active trading session is live
+    if MORNING_BRIEF_FILE.exists() and is_today_live_session:
+        try:
+            with open(MORNING_BRIEF_FILE, "r", encoding="utf-8") as bf:
+                brief_data = json.load(bf)
+            if brief_data.get("date", "") < latest_market_date:
+                brief_data["date"] = latest_market_date
+                brief_data["headline"] = f"Analisis IHSG - {latest_market_date}"
+                with open(MORNING_BRIEF_FILE, "w", encoding="utf-8") as bf:
+                    json.dump(brief_data, bf, indent=2, ensure_ascii=False)
+                logger.info(f"Synchronized morning brief date to active session {latest_market_date}.")
+        except Exception as eb:
+            logger.debug(f"Error syncing morning brief date: {eb}")
 
     logger.info("==================================================================")
     logger.info(f"OPENING PULSE SELESAI: {len(intraday_data)} Emiten Diperbarui.")
