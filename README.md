@@ -117,7 +117,13 @@ Fitur input kuantitatif diperkaya dengan 6 dimensi baru seputar aksi korporasi d
 * **Majority Agreement Rule**: Minimal 2 dari 3 mesin AI (Tree Blend, PyTorch LSTM, ARIMA) harus sepakat dalam zona *bullish* ($\ge 0.50$).
 * **No-Divergence Guard**: Jika ada salah satu mesin memprediksi *bearish* ($\min(\text{Tree}, \text{LSTM}, \text{ARIMA}) < 0.48$), saham otomatis berstatus **`HOLD`** (menunggu konfirmasi).
 * **Corporate Actions & Dividend Ex-Date Shield**: Memangkas bobot alokasi atau membekukan sinyal pada emiten yang berada di zona bahaya *Cum-Date / Ex-Date* dividen untuk melindungi modal dari jebakan penurunan harga tajam pasca pembagian dividen (*dividend trap*).
-* **Regularisasi PyTorch LSTM Ditingkatkan**: Peningkatan *dropout* menjadi `0.35` dan Adam *weight decay* menjadi `5e-4` guna meredam *overfitting* terhadap *noise* intraday komoditas dan saham siklikal.
+### 9. ⚙️ Two-Phase Automated CI/CD Pipeline & Clock-Aware Execution Engine
+* **Otomasi Terjadwal 2-Fase Harian (GitHub Actions)**:
+  * **Fase 1: Opening Pulse (10:17 WIB / 03:17 UTC)**: Mengambil harga pembukaan (Open), volume awal sesi 1, dan mengevaluasi status intraday real-time (*Area Beli Aktif, TP Hit, SL Alert, Dalam Pemantauan*).
+  * **Fase 2: Final EOD Settlement (18:23 WIB / 11:23 UTC)**: Buffer 2 jam pasca-penutupan bursa (16:15 WIB) menjamin 100% kliring bursa KPEI/KSEI dan rekonsiliasi data Yahoo Finance tuntas. Menjalankan full ingestion 66 emiten, komputasi fitur teknikal & makro, multi-model AI consensus inference, kalkulasi arus modal asing, riset editorial Morning Brief Gemini, dan sinkronisasi laporan keuangan.
+* **Anti-Queue-Lag Clock-Aware Guard**: Logika cerdas pada runner yang memeriksa jam dinding riil WIB saat eksekusi. Jika antrean runner cloud tertunda hingga bursa telah tutup ($\ge$ 16:00 WIB), sistem otomatis mengalihkan mode ke EOD Settlement guna mengeliminasi tabrakan eksekusi dan mencegah regresi tanggal bursa.
+* **Robust Tiered Price Imputation**: Sanitasi protektif berjenjang $\text{Close} = \text{fillna}(\text{Adj Close}) \rightarrow \text{fillna}(\text{Typical Price})$ yang menjamin tidak ada candle harian bernilai `NaN` yang ter-drop secara tidak sengaja oleh filter volatilitas dan RSI.
+* **Kalender Hari Libur BEI 2026 Terintegrasi**: Menghentikan eksekusi pipeline secara aman pada akhir pekan dan tanggal merah resmi bursa tanpa membuang kuota komputasi cloud.
 
 ---
 
@@ -144,7 +150,7 @@ stock-market-recommendation/
 ├── .agents/rules/alphatech.md         # Kaidah doktrin sistem AI AlphaTech
 ├── .github/
 │   └── workflows/
-│       └── daily_pipeline.yml         # Otomasi GitHub Actions harian (17:00 & 05:00 WIB)
+│       └── daily_pipeline.yml         # Otomasi GitHub Actions 2-fase (10:17 & 18:23 WIB)
 ├── api/
 │   ├── index.py                       # Serverless handler untuk Vercel
 │   └── main.py                        # FastAPI REST API, security middleware, routing
@@ -178,6 +184,8 @@ stock-market-recommendation/
 │   └── PANDUAN_LENGKAP_PERHITUNGAN_DAN_ALGORITMA.md   # Buku panduan master metodologi, rumus & glosarium
 ├── src/
 │   ├── __init__.py
+│   ├── pipeline_runner.py             # Master runner 2-fase kuantitatif & clock-aware dispatcher
+│   ├── opening_pulse.py               # Engine fase 1 intraday tracking & trigger area beli
 │   ├── auth.py                        # Sistem autentikasi PBKDF2, HMAC JWT, & Rate Limiter
 │   ├── config.py                      # Konfigurasi semesta saham, sektor, & parameter
 │   ├── universe_manager.py            # Dynamic Universe Manager & Circuit Breaker
