@@ -1,78 +1,78 @@
 {
   "macro": {
     "date": "2026-10-12",
-    "ihsg_net_foreign_1d": -198610401071,
-    "ihsg_net_foreign_1d_formatted": "-Rp 198.6 M",
-    "ihsg_net_foreign_5d": -190172778876,
-    "ihsg_net_foreign_5d_formatted": "-Rp 190.2 M",
+    "ihsg_net_foreign_1d": -247285419063,
+    "ihsg_net_foreign_1d_formatted": "-Rp 247.3 M",
+    "ihsg_net_foreign_5d": -238847796868,
+    "ihsg_net_foreign_5d_formatted": "-Rp 238.8 M",
     "status": "Net Outflow",
     "sentiment": "Distribusi / Rotasi Keluar Asing",
-    "advances": 10,
+    "advances": 12,
     "declines": 51,
-    "unchanged": 5,
-    "market_breadth": "10 : 51",
+    "unchanged": 3,
+    "market_breadth": "12 : 51",
     "top_foreign_buy": [
       {
-        "ticker": "SMGR",
-        "net_1d": 1681046316,
-        "net_1d_formatted": "+Rp 1.7 M",
+        "ticker": "BBRI",
+        "net_1d": 4688256379,
+        "net_1d_formatted": "+Rp 4.7 M",
         "status": "Netral / Rotasi Normal"
       },
       {
-        "ticker": "ERAA",
-        "net_1d": 1215649238,
-        "net_1d_formatted": "+Rp 1.2 M",
+        "ticker": "SMGR",
+        "net_1d": 3162074035,
+        "net_1d_formatted": "+Rp 3.2 M",
+        "status": "Netral / Rotasi Normal"
+      },
+      {
+        "ticker": "INKP",
+        "net_1d": 2719456822,
+        "net_1d_formatted": "+Rp 2.7 M",
+        "status": "Netral / Rotasi Normal"
+      },
+      {
+        "ticker": "CPIN",
+        "net_1d": 2169312014,
+        "net_1d_formatted": "+Rp 2.2 M",
         "status": "Netral / Rotasi Normal"
       },
       {
         "ticker": "MEDC",
-        "net_1d": 1050699869,
-        "net_1d_formatted": "+Rp 1.1 M",
-        "status": "Netral / Rotasi Normal"
-      },
-      {
-        "ticker": "INDF",
-        "net_1d": 953216806,
-        "net_1d_formatted": "+Rp 953 Jt",
-        "status": "Netral / Rotasi Normal"
-      },
-      {
-        "ticker": "SMRA",
-        "net_1d": 871597597,
-        "net_1d_formatted": "+Rp 872 Jt",
+        "net_1d": 2077216505,
+        "net_1d_formatted": "+Rp 2.1 M",
         "status": "Netral / Rotasi Normal"
       }
     ],
     "top_foreign_sell": [
       {
         "ticker": "TPIA",
-        "net_1d": -56640360777,
-        "net_1d_formatted": "-Rp 56.6 M",
+        "net_1d": -57790564832,
+        "net_1d_formatted": "-Rp 57.8 M",
         "status": "Distribusi Besar Asing"
       },
       {
         "ticker": "BBCA",
-        "net_1d": -24576030511,
-        "net_1d_formatted": "-Rp 24.6 M",
+        "net_1d": -39742659886,
+        "net_1d_formatted": "-Rp 39.7 M",
         "status": "Distribusi Besar Asing"
       },
       {
-        "ticker": "BMRI",
-        "net_1d": -12726436634,
-        "net_1d_formatted": "-Rp 12.7 M",
+        "ticker": "ANTM",
+        "net_1d": -18763070134,
+        "net_1d_formatted": "-Rp 18.8 M",
         "status": "Outflow Asing"
       },
       {
-        "ticker": "AMMN",
-        "net_1d": -12712618286,
-        "net_1d_formatted": "-Rp 12.7 M",
-        "status": "Inflow Asing"
+        "ticker": "TLKM",
+        "net_1d": -18475075862,
+        "net_1d_formatted": "-Rp 18.5 M",
+        "status": "Netral / Rotasi Normal"
       },
       {
-        "ticker": "ISAT",
-        "net_1d": -11745374094,
-        "net_1d_formatted": "-Rp 11.7 M",
-        "status": "Outflow Asing"
+        "ticker": "GOTO",
+        "net_1d": -14054177739,
+        "net_1d_formatted": "-Rp 14.1 M",
+        "status": "Akumulasi Kuat Asing"
       }
     ],
     "data_source": "Order Flow Proxy Model (Fallback)",
@@ -83,14 +83,14 @@
     "AADI": {
       "ticker": "AADI",
       "foreign_participation_pct": 32.0,
-      "net_foreign_1d": -4605427182,
-      "net_foreign_1d_formatted": "-Rp 4.6 M",
-      "net_foreign_5d": -4749731526,
-      "net_foreign_5d_formatted": "-Rp 4.7 M",
-      "net_foreign_20d": -30528532525,
-      "net_foreign_20d_formatted": "-Rp 30.5 M",
-      "net_foreign_65d": 124932895101,
-      "net_foreign_65d_formatted": "+Rp 124.9 M",
+      "net_foreign_1d": -1884739119,
+      "net_foreign_1d_formatted": "-Rp 1.9 M",
+      "net_foreign_5d": -2029043463,
+      "net_foreign_5d_formatted": "-Rp 2.0 M",
+      "net_foreign_20d": -27807844462,
+      "net_foreign_20d_formatted": "-Rp 27.8 M",
+      "net_foreign_65d": 127653583164,
+      "net_foreign_65d_formatted": "+Rp 127.7 M",
       "status": "Neutral",
       "status_id": "Netral / Rotasi Normal",
       "badge_color": "slate",
@@ -293,7 +293,7 @@
         -287801369,
         -4074660372,
         755129552,
-        -4605427182
+        -1884739119
       ],
       "daily_prices": [
         8175,
@@ -360,21 +360,21 @@
         12100,
         11725,
         11800,
-        11425
+        11700
       ],
       "last_date": "2026-10-12"
     },
     "ACES": {
       "ticker": "ACES",
       "foreign_participation_pct": 28.0,
-      "net_foreign_1d": -744700506,
-      "net_foreign_1d_formatted": "-Rp 745 Jt",
-      "net_foreign_5d": -790506274,
-      "net_foreign_5d_formatted": "-Rp 791 Jt",
-      "net_foreign_20d": -2331223034,
-      "net_foreign_20d_formatted": "-Rp 2.3 M",
-      "net_foreign_65d": -1389685640,
-      "net_foreign_65d_formatted": "-Rp 1.4 M",
+      "net_foreign_1d": -1000390620,
+      "net_foreign_1d_formatted": "-Rp 1.0 M",
+      "net_foreign_5d": -1046196388,
+      "net_foreign_5d_formatted": "-Rp 1.0 M",
+      "net_foreign_20d": -2586913148,
+      "net_foreign_20d_formatted": "-Rp 2.6 M",
+      "net_foreign_65d": -1645375754,
+      "net_foreign_65d_formatted": "-Rp 1.6 M",
       "status": "Neutral",
       "status_id": "Netral / Rotasi Normal",
       "badge_color": "slate",
@@ -577,7 +577,7 @@
         0,
         103835324,
         -51276123,
-        -744700506
+        -1000390620
       ],
       "daily_prices": [
         342,
@@ -644,21 +644,21 @@
         324,
         328,
         326,
-        320
+        318
       ],
       "last_date": "2026-10-12"
     },
     "ADMR": {
       "ticker": "ADMR",
       "foreign_participation_pct": 22.0,
-      "net_foreign_1d": -994048232,
-      "net_foreign_1d_formatted": "-Rp 994 Jt",
-      "net_foreign_5d": 567148372,
-      "net_foreign_5d_formatted": "+Rp 567 Jt",
-      "net_foreign_20d": -8123519078,
-      "net_foreign_20d_formatted": "-Rp 8.1 M",
-      "net_foreign_65d": -298675079,
-      "net_foreign_65d_formatted": "-Rp 299 Jt",
+      "net_foreign_1d": -1047136026,
+      "net_foreign_1d_formatted": "-Rp 1.0 M",
+      "net_foreign_5d": 514060578,
+      "net_foreign_5d_formatted": "+Rp 514 Jt",
+      "net_foreign_20d": -8176606872,
+      "net_foreign_20d_formatted": "-Rp 8.2 M",
+      "net_foreign_65d": -351762873,
+      "net_foreign_65d_formatted": "-Rp 352 Jt",
       "status": "Neutral",
       "status_id": "Netral / Rotasi Normal",
       "badge_color": "slate",
@@ -861,7 +861,7 @@
         -249356570,
         125951839,
         488678784,
-        -994048232
+        -1047136026
       ],
       "daily_prices": [
         1450,
@@ -935,17 +935,17 @@
     "ADRO": {
       "ticker": "ADRO",
       "foreign_participation_pct": 38.0,
-      "net_foreign_1d": -3732297035,
-      "net_foreign_1d_formatted": "-Rp 3.7 M",
-      "net_foreign_5d": -3139079490,
-      "net_foreign_5d_formatted": "-Rp 3.1 M",
-      "net_foreign_20d": -24920008465,
-      "net_foreign_20d_formatted": "-Rp 24.9 M",
-      "net_foreign_65d": 27819435911,
-      "net_foreign_65d_formatted": "+Rp 27.8 M",
-      "status": "Neutral",
-      "status_id": "Netral / Rotasi Normal",
-      "badge_color": "slate",
+      "net_foreign_1d": -12711316814,
+      "net_foreign_1d_formatted": "-Rp 12.7 M",
+      "net_foreign_5d": -12118099269,
+      "net_foreign_5d_formatted": "-Rp 12.1 M",
+      "net_foreign_20d": -33899028244,
+      "net_foreign_20d_formatted": "-Rp 33.9 M",
+      "net_foreign_65d": 18840416132,
+      "net_foreign_65d_formatted": "+Rp 18.8 M",
+      "status": "Moderate Outflow",
+      "status_id": "Outflow Asing",
+      "badge_color": "rose",
       "dates": [
         "10 Jul",
         "13 Jul",
@@ -1145,7 +1145,7 @@
         0,
         -1987591370,
         1670835166,
-        -3732297035
+        -12711316814
       ],
       "daily_prices": [
         2390,
@@ -1212,21 +1212,21 @@
         2600,
         2550,
         2580,
-        2510
+        2490
       ],
       "last_date": "2026-10-12"
     },
     "AKRA": {
       "ticker": "AKRA",
       "foreign_participation_pct": 22.0,
-      "net_foreign_1d": -753181556,
-      "net_foreign_1d_formatted": "-Rp 753 Jt",
-      "net_foreign_5d": -850781812,
-      "net_foreign_5d_formatted": "-Rp 851 Jt",
-      "net_foreign_20d": -1615888385,
-      "net_foreign_20d_formatted": "-Rp 1.6 M",
-      "net_foreign_65d": 8340759662,
-      "net_foreign_65d_formatted": "+Rp 8.3 M",
+      "net_foreign_1d": -519439200,
+      "net_foreign_1d_formatted": "-Rp 519 Jt",
+      "net_foreign_5d": -617039456,
+      "net_foreign_5d_formatted": "-Rp 617 Jt",
+      "net_foreign_20d": -1382146029,
+      "net_foreign_20d_formatted": "-Rp 1.4 M",
+      "net_foreign_65d": 8574502018,
+      "net_foreign_65d_formatted": "+Rp 8.6 M",
       "status": "Neutral",
       "status_id": "Netral / Rotasi Normal",
       "badge_color": "slate",
@@ -1429,7 +1429,7 @@
         -203063980,
         -756428750,
         352220058,
-        -753181556
+        -519439200
       ],
       "daily_prices": [
         1320,
@@ -1496,21 +1496,21 @@
         1500,
         1450,
         1485,
-        1460
+        1470
       ],
       "last_date": "2026-10-12"
     },
     "AMMN": {
       "ticker": "AMMN",
       "foreign_participation_pct": 30.0,
-      "net_foreign_1d": -12712618286,
-      "net_foreign_1d_formatted": "-Rp 12.7 M",
-      "net_foreign_5d": 17579340972,
-      "net_foreign_5d_formatted": "+Rp 17.6 M",
-      "net_foreign_20d": -212126340074,
-      "net_foreign_20d_formatted": "-Rp 212.1 M",
-      "net_foreign_65d": 325584409221,
-      "net_foreign_65d_formatted": "+Rp 325.6 M",
+      "net_foreign_1d": -12041614694,
+      "net_foreign_1d_formatted": "-Rp 12.0 M",
+      "net_foreign_5d": 18250344564,
+      "net_foreign_5d_formatted": "+Rp 18.3 M",
+      "net_foreign_20d": -211455336482,
+      "net_foreign_20d_formatted": "-Rp 211.5 M",
+      "net_foreign_65d": 326255412813,
+      "net_foreign_65d_formatted": "+Rp 326.3 M",
       "status": "Moderate Inflow",
       "status_id": "Inflow Asing",
       "badge_color": "emerald",
@@ -1713,7 +1713,7 @@
         3630357855,
         -55951522967,
         20762866353,
-        -12712618286
+        -12041614694
       ],
       "daily_prices": [
         3510,
@@ -1780,20 +1780,20 @@
         4530,
         4240,
         4410,
-        4290
+        4300
       ],
       "last_date": "2026-10-12"
     },
     "AMRT": {
       "ticker": "AMRT",
       "foreign_participation_pct": 30.0,
-      "net_foreign_1d": -175473581,
-      "net_foreign_1d_formatted": "-Rp 175 Jt",
-      "net_foreign_5d": 7710205,
-      "net_foreign_5d_formatted": "+Rp 8 Jt",
-      "net_foreign_20d": -8072916578,
+      "net_foreign_1d": -188286083,
+      "net_foreign_1d_formatted": "-Rp 188 Jt",
+      "net_foreign_5d": -5102297,
+      "net_foreign_5d_formatted": "-Rp 5 Jt",
+      "net_foreign_20d": -8085729080,
       "net_foreign_20d_formatted": "-Rp 8.1 M",
-      "net_foreign_65d": -9418447480,
+      "net_foreign_65d": -9431259982,
       "net_foreign_65d_formatted": "-Rp 9.4 M",
       "status": "Neutral",
       "status_id": "Netral / Rotasi Normal",
@@ -1997,7 +1997,7 @@
         -1163396653,
         2079958546,
         -324827424,
-        -175473581
+        -188286083
       ],
       "daily_prices": [
         1400,
@@ -2071,17 +2071,17 @@
     "ANTM": {
       "ticker": "ANTM",
       "foreign_participation_pct": 22.0,
-      "net_foreign_1d": -7119179245,
-      "net_foreign_1d_formatted": "-Rp 7.1 M",
-      "net_foreign_5d": -8752652946,
-      "net_foreign_5d_formatted": "-Rp 8.8 M",
-      "net_foreign_20d": -477060425,
-      "net_foreign_20d_formatted": "-Rp 477 Jt",
-      "net_foreign_65d": 162414451244,
-      "net_foreign_65d_formatted": "+Rp 162.4 M",
-      "status": "Neutral",
-      "status_id": "Netral / Rotasi Normal",
-      "badge_color": "slate",
+      "net_foreign_1d": -18763070134,
+      "net_foreign_1d_formatted": "-Rp 18.8 M",
+      "net_foreign_5d": -20396543835,
+      "net_foreign_5d_formatted": "-Rp 20.4 M",
+      "net_foreign_20d": -12120951314,
+      "net_foreign_20d_formatted": "-Rp 12.1 M",
+      "net_foreign_65d": 150770560355,
+      "net_foreign_65d_formatted": "+Rp 150.8 M",
+      "status": "Moderate Outflow",
+      "status_id": "Outflow Asing",
+      "badge_color": "rose",
       "dates": [
         "10 Jul",
         "13 Jul",
@@ -2281,7 +2281,7 @@
         -1107391387,
         -6410747759,
         1868806500,
-        -7119179245
+        -18763070134
       ],
       "daily_prices": [
         2900,
@@ -2348,21 +2348,21 @@
         3230,
         3150,
         3180,
-        3100
+        3050
       ],
       "last_date": "2026-10-12"
     },
     "ASII": {
       "ticker": "ASII",
       "foreign_participation_pct": 45.0,
-      "net_foreign_1d": -1604945315,
-      "net_foreign_1d_formatted": "-Rp 1.6 M",
-      "net_foreign_5d": 8973299457,
-      "net_foreign_5d_formatted": "+Rp 9.0 M",
-      "net_foreign_20d": -41937314914,
-      "net_foreign_20d_formatted": "-Rp 41.9 M",
-      "net_foreign_65d": 45537597329,
-      "net_foreign_65d_formatted": "+Rp 45.5 M",
+      "net_foreign_1d": -2355833717,
+      "net_foreign_1d_formatted": "-Rp 2.4 M",
+      "net_foreign_5d": 8222411055,
+      "net_foreign_5d_formatted": "+Rp 8.2 M",
+      "net_foreign_20d": -42688203316,
+      "net_foreign_20d_formatted": "-Rp 42.7 M",
+      "net_foreign_65d": 44786708927,
+      "net_foreign_65d_formatted": "+Rp 44.8 M",
       "status": "Neutral",
       "status_id": "Netral / Rotasi Normal",
       "badge_color": "slate",
@@ -2565,7 +2565,7 @@
         -2473333151,
         2839676987,
         1699296272,
-        -1604945315
+        -2355833717
       ],
       "daily_prices": [
         4810,
@@ -2639,14 +2639,14 @@
     "ASSA": {
       "ticker": "ASSA",
       "foreign_participation_pct": 22.0,
-      "net_foreign_1d": -113511778,
-      "net_foreign_1d_formatted": "-Rp 114 Jt",
-      "net_foreign_5d": 155369216,
-      "net_foreign_5d_formatted": "+Rp 155 Jt",
-      "net_foreign_20d": -185393737,
-      "net_foreign_20d_formatted": "-Rp 185 Jt",
-      "net_foreign_65d": -623913898,
-      "net_foreign_65d_formatted": "-Rp 624 Jt",
+      "net_foreign_1d": -175213029,
+      "net_foreign_1d_formatted": "-Rp 175 Jt",
+      "net_foreign_5d": 93667965,
+      "net_foreign_5d_formatted": "+Rp 94 Jt",
+      "net_foreign_20d": -247094988,
+      "net_foreign_20d_formatted": "-Rp 247 Jt",
+      "net_foreign_65d": -685615149,
+      "net_foreign_65d_formatted": "-Rp 686 Jt",
       "status": "Neutral",
       "status_id": "Netral / Rotasi Normal",
       "badge_color": "slate",
@@ -2849,7 +2849,7 @@
         -126429727,
         300639813,
         94670908,
-        -113511778
+        -175213029
       ],
       "daily_prices": [
         585,
@@ -2916,21 +2916,21 @@
         570,
         585,
         595,
-        585
+        580
       ],
       "last_date": "2026-10-12"
     },
     "AUTO": {
       "ticker": "AUTO",
       "foreign_participation_pct": 22.0,
-      "net_foreign_1d": 84310339,
-      "net_foreign_1d_formatted": "+Rp 84 Jt",
-      "net_foreign_5d": -401939915,
-      "net_foreign_5d_formatted": "-Rp 402 Jt",
-      "net_foreign_20d": 576123156,
-      "net_foreign_20d_formatted": "+Rp 576 Jt",
-      "net_foreign_65d": 10947502972,
-      "net_foreign_65d_formatted": "+Rp 10.9 M",
+      "net_foreign_1d": 87961040,
+      "net_foreign_1d_formatted": "+Rp 88 Jt",
+      "net_foreign_5d": -398289214,
+      "net_foreign_5d_formatted": "-Rp 398 Jt",
+      "net_foreign_20d": 579773857,
+      "net_foreign_20d_formatted": "+Rp 580 Jt",
+      "net_foreign_65d": 10951153673,
+      "net_foreign_65d_formatted": "+Rp 11.0 M",
       "status": "Neutral",
       "status_id": "Netral / Rotasi Normal",
       "badge_color": "slate",
@@ -3133,7 +3133,7 @@
         116341257,
         -322172908,
         56086357,
-        84310339
+        87961040
       ],
       "daily_prices": [
         2430,
@@ -3207,14 +3207,14 @@
     "BBCA": {
       "ticker": "BBCA",
       "foreign_participation_pct": 55.0,
-      "net_foreign_1d": -24576030511,
-      "net_foreign_1d_formatted": "-Rp 24.6 M",
-      "net_foreign_5d": -109391354547,
-      "net_foreign_5d_formatted": "-Rp 109.4 M",
-      "net_foreign_20d": -281807077497,
-      "net_foreign_20d_formatted": "-Rp 281.8 M",
-      "net_foreign_65d": 49456712397,
-      "net_foreign_65d_formatted": "+Rp 49.5 M",
+      "net_foreign_1d": -39742659886,
+      "net_foreign_1d_formatted": "-Rp 39.7 M",
+      "net_foreign_5d": -124557983922,
+      "net_foreign_5d_formatted": "-Rp 124.6 M",
+      "net_foreign_20d": -296973706872,
+      "net_foreign_20d_formatted": "-Rp 297.0 M",
+      "net_foreign_65d": 34290083022,
+      "net_foreign_65d_formatted": "+Rp 34.3 M",
       "status": "Heavy Distribution",
       "status_id": "Distribusi Besar Asing",
       "badge_color": "rose",
@@ -3417,7 +3417,7 @@
         -33279936701,
         -23142334091,
         18113786969,
-        -24576030511
+        -39742659886
       ],
       "daily_prices": [
         6175,
@@ -3484,21 +3484,21 @@
         6050,
         6000,
         6050,
-        5975
+        5950
       ],
       "last_date": "2026-10-12"
     },
     "BBNI": {
       "ticker": "BBNI",
       "foreign_participation_pct": 42.0,
-      "net_foreign_1d": -1124995188,
-      "net_foreign_1d_formatted": "-Rp 1.1 M",
-      "net_foreign_5d": -4015468576,
-      "net_foreign_5d_formatted": "-Rp 4.0 M",
-      "net_foreign_20d": -55022000663,
-      "net_foreign_20d_formatted": "-Rp 55.0 M",
-      "net_foreign_65d": 111768367602,
-      "net_foreign_65d_formatted": "+Rp 111.8 M",
+      "net_foreign_1d": -3546708153,
+      "net_foreign_1d_formatted": "-Rp 3.5 M",
+      "net_foreign_5d": -6437181541,
+      "net_foreign_5d_formatted": "-Rp 6.4 M",
+      "net_foreign_20d": -57443713628,
+      "net_foreign_20d_formatted": "-Rp 57.4 M",
+      "net_foreign_65d": 109346654637,
+      "net_foreign_65d_formatted": "+Rp 109.3 M",
       "status": "Neutral",
       "status_id": "Netral / Rotasi Normal",
       "badge_color": "slate",
@@ -3701,7 +3701,7 @@
         -1048417450,
         -2986255656,
         1144199718,
-        -1124995188
+        -3546708153
       ],
       "daily_prices": [
         3420,
@@ -3768,24 +3768,24 @@
         3440,
         3410,
         3430,
-        3410
+        3380
       ],
       "last_date": "2026-10-12"
     },
     "BBRI": {
       "ticker": "BBRI",
       "foreign_participation_pct": 48.0,
-      "net_foreign_1d": 0,
-      "net_foreign_1d_formatted": "Rp 0",
-      "net_foreign_5d": -12794461464,
-      "net_foreign_5d_formatted": "-Rp 12.8 M",
-      "net_foreign_20d": -219857055842,
-      "net_foreign_20d_formatted": "-Rp 219.9 M",
-      "net_foreign_65d": 655596596116,
-      "net_foreign_65d_formatted": "+Rp 655.6 M",
-      "status": "Moderate Outflow",
-      "status_id": "Outflow Asing",
-      "badge_color": "rose",
+      "net_foreign_1d": 4688256379,
+      "net_foreign_1d_formatted": "+Rp 4.7 M",
+      "net_foreign_5d": -8106205085,
+      "net_foreign_5d_formatted": "-Rp 8.1 M",
+      "net_foreign_20d": -215168799463,
+      "net_foreign_20d_formatted": "-Rp 215.2 M",
+      "net_foreign_65d": 660284852495,
+      "net_foreign_65d_formatted": "+Rp 660.3 M",
+      "status": "Neutral",
+      "status_id": "Netral / Rotasi Normal",
+      "badge_color": "slate",
       "dates": [
         "10 Jul",
         "13 Jul",
@@ -3985,7 +3985,7 @@
         9664352983,
         -57645445070,
         40180699723,
-        0
+        4688256379
       ],
       "daily_prices": [
         2790,
@@ -4052,21 +4052,21 @@
         3140,
         3030,
         3100,
-        3100
+        3110
       ],
       "last_date": "2026-10-12"
     },
     "BBTN": {
       "ticker": "BBTN",
       "foreign_participation_pct": 20.0,
-      "net_foreign_1d": -197484199,
-      "net_foreign_1d_formatted": "-Rp 197 Jt",
-      "net_foreign_5d": -26036244,
-      "net_foreign_5d_formatted": "-Rp 26 Jt",
-      "net_foreign_20d": -2835592728,
-      "net_foreign_20d_formatted": "-Rp 2.8 M",
-      "net_foreign_65d": 814576872,
-      "net_foreign_65d_formatted": "+Rp 815 Jt",
+      "net_foreign_1d": -570852043,
+      "net_foreign_1d_formatted": "-Rp 571 Jt",
+      "net_foreign_5d": -399404088,
+      "net_foreign_5d_formatted": "-Rp 399 Jt",
+      "net_foreign_20d": -3208960572,
+      "net_foreign_20d_formatted": "-Rp 3.2 M",
+      "net_foreign_65d": 441209028,
+      "net_foreign_65d_formatted": "+Rp 441 Jt",
       "status": "Neutral",
       "status_id": "Netral / Rotasi Normal",
       "badge_color": "slate",
@@ -4269,7 +4269,7 @@
         -208381728,
         -100556359,
         0,
-        -197484199
+        -570852043
       ],
       "daily_prices": [
         1180,
@@ -4336,20 +4336,20 @@
         1065,
         1055,
         1055,
-        1045
+        1035
       ],
       "last_date": "2026-10-12"
     },
     "BIRD": {
       "ticker": "BIRD",
       "foreign_participation_pct": 22.0,
-      "net_foreign_1d": -1718724,
+      "net_foreign_1d": -1765598,
       "net_foreign_1d_formatted": "-Rp 2 Jt",
-      "net_foreign_5d": -386340,
-      "net_foreign_5d_formatted": "-Rp 386,340",
-      "net_foreign_20d": -60458895,
-      "net_foreign_20d_formatted": "-Rp 60 Jt",
-      "net_foreign_65d": -14842517,
+      "net_foreign_5d": -433214,
+      "net_foreign_5d_formatted": "-Rp 433,214",
+      "net_foreign_20d": -60505769,
+      "net_foreign_20d_formatted": "-Rp 61 Jt",
+      "net_foreign_65d": -14889391,
       "net_foreign_65d_formatted": "-Rp 15 Jt",
       "status": "Neutral",
       "status_id": "Netral / Rotasi Normal",
@@ -4553,7 +4553,7 @@
         -3586330,
         2026901,
         -2324001,
-        -1718724
+        -1765598
       ],
       "daily_prices": [
         1555,
@@ -4627,13 +4627,13 @@
     "BJBR": {
       "ticker": "BJBR",
       "foreign_participation_pct": 22.0,
-      "net_foreign_1d": -27308593,
-      "net_foreign_1d_formatted": "-Rp 27 Jt",
-      "net_foreign_5d": -39972625,
-      "net_foreign_5d_formatted": "-Rp 40 Jt",
-      "net_foreign_20d": -4796068650,
+      "net_foreign_1d": -61392490,
+      "net_foreign_1d_formatted": "-Rp 61 Jt",
+      "net_foreign_5d": -74056522,
+      "net_foreign_5d_formatted": "-Rp 74 Jt",
+      "net_foreign_20d": -4830152547,
       "net_foreign_20d_formatted": "-Rp 4.8 M",
-      "net_foreign_65d": -4712464107,
+      "net_foreign_65d": -4746548004,
       "net_foreign_65d_formatted": "-Rp 4.7 M",
       "status": "Neutral",
       "status_id": "Netral / Rotasi Normal",
@@ -4837,7 +4837,7 @@
         0,
         -12664032,
         0,
-        -27308593
+        -61392490
       ],
       "daily_prices": [
         770,
@@ -4904,21 +4904,21 @@
         760,
         755,
         755,
-        750
+        745
       ],
       "last_date": "2026-10-12"
     },
     "BJTM": {
       "ticker": "BJTM",
       "foreign_participation_pct": 22.0,
-      "net_foreign_1d": 0,
-      "net_foreign_1d_formatted": "Rp 0",
-      "net_foreign_5d": 5220046,
-      "net_foreign_5d_formatted": "+Rp 5 Jt",
-      "net_foreign_20d": -141358039,
-      "net_foreign_20d_formatted": "-Rp 141 Jt",
-      "net_foreign_65d": 24012318,
-      "net_foreign_65d_formatted": "+Rp 24 Jt",
+      "net_foreign_1d": -48080696,
+      "net_foreign_1d_formatted": "-Rp 48 Jt",
+      "net_foreign_5d": -42860650,
+      "net_foreign_5d_formatted": "-Rp 43 Jt",
+      "net_foreign_20d": -189438735,
+      "net_foreign_20d_formatted": "-Rp 189 Jt",
+      "net_foreign_65d": -24068378,
+      "net_foreign_65d_formatted": "-Rp 24 Jt",
       "status": "Neutral",
       "status_id": "Netral / Rotasi Normal",
       "badge_color": "slate",
@@ -5121,7 +5121,7 @@
         0,
         -18979501,
         8824904,
-        0
+        -48080696
       ],
       "daily_prices": [
         510,
@@ -5188,21 +5188,21 @@
         515,
         510,
         515,
-        515
+        510
       ],
       "last_date": "2026-10-12"
     },
     "BMRI": {
       "ticker": "BMRI",
       "foreign_participation_pct": 45.0,
-      "net_foreign_1d": -12726436634,
-      "net_foreign_1d_formatted": "-Rp 12.7 M",
-      "net_foreign_5d": -48523402290,
-      "net_foreign_5d_formatted": "-Rp 48.5 M",
-      "net_foreign_20d": -244822142758,
-      "net_foreign_20d_formatted": "-Rp 244.8 M",
-      "net_foreign_65d": -174833078178,
-      "net_foreign_65d_formatted": "-Rp 174.8 M",
+      "net_foreign_1d": -10938499340,
+      "net_foreign_1d_formatted": "-Rp 10.9 M",
+      "net_foreign_5d": -46735464996,
+      "net_foreign_5d_formatted": "-Rp 46.7 M",
+      "net_foreign_20d": -243034205464,
+      "net_foreign_20d_formatted": "-Rp 243.0 M",
+      "net_foreign_65d": -173045140884,
+      "net_foreign_65d_formatted": "-Rp 173.0 M",
       "status": "Moderate Outflow",
       "status_id": "Outflow Asing",
       "badge_color": "rose",
@@ -5405,7 +5405,7 @@
         0,
         -43084723171,
         7287757515,
-        -12726436634
+        -10938499340
       ],
       "daily_prices": [
         4080,
@@ -5472,21 +5472,21 @@
         4100,
         4000,
         4040,
-        4000
+        4010
       ],
       "last_date": "2026-10-12"
     },
     "BREN": {
       "ticker": "BREN",
       "foreign_participation_pct": 20.0,
-      "net_foreign_1d": -8652036120,
-      "net_foreign_1d_formatted": "-Rp 8.7 M",
-      "net_foreign_5d": -12386421398,
-      "net_foreign_5d_formatted": "-Rp 12.4 M",
-      "net_foreign_20d": -11882324100,
-      "net_foreign_20d_formatted": "-Rp 11.9 M",
-      "net_foreign_65d": 62688390421,
-      "net_foreign_65d_formatted": "+Rp 62.7 M",
+      "net_foreign_1d": -8899908290,
+      "net_foreign_1d_formatted": "-Rp 8.9 M",
+      "net_foreign_5d": -12634293568,
+      "net_foreign_5d_formatted": "-Rp 12.6 M",
+      "net_foreign_20d": -12130196270,
+      "net_foreign_20d_formatted": "-Rp 12.1 M",
+      "net_foreign_65d": 62440518251,
+      "net_foreign_65d_formatted": "+Rp 62.4 M",
       "status": "Moderate Outflow",
       "status_id": "Outflow Asing",
       "badge_color": "rose",
@@ -5689,7 +5689,7 @@
         -416859349,
         -3296591200,
         261757895,
-        -8652036120
+        -8899908290
       ],
       "daily_prices": [
         3170,
@@ -5756,21 +5756,21 @@
         2850,
         2660,
         2700,
-        2360
+        2390
       ],
       "last_date": "2026-10-12"
     },
     "BRIS": {
       "ticker": "BRIS",
       "foreign_participation_pct": 22.0,
-      "net_foreign_1d": -805458703,
-      "net_foreign_1d_formatted": "-Rp 805 Jt",
-      "net_foreign_5d": -4918125366,
-      "net_foreign_5d_formatted": "-Rp 4.9 M",
-      "net_foreign_20d": -22024298376,
-      "net_foreign_20d_formatted": "-Rp 22.0 M",
-      "net_foreign_65d": -8922721898,
-      "net_foreign_65d_formatted": "-Rp 8.9 M",
+      "net_foreign_1d": -1062437618,
+      "net_foreign_1d_formatted": "-Rp 1.1 M",
+      "net_foreign_5d": -5175104281,
+      "net_foreign_5d_formatted": "-Rp 5.2 M",
+      "net_foreign_20d": -22281277291,
+      "net_foreign_20d_formatted": "-Rp 22.3 M",
+      "net_foreign_65d": -9179700813,
+      "net_foreign_65d_formatted": "-Rp 9.2 M",
       "status": "Neutral",
       "status_id": "Netral / Rotasi Normal",
       "badge_color": "slate",
@@ -5973,7 +5973,7 @@
         -1877811390,
         -2604884040,
         614853021,
-        -805458703
+        -1062437618
       ],
       "daily_prices": [
         1730,
@@ -6040,21 +6040,21 @@
         1375,
         1335,
         1355,
-        1335
+        1330
       ],
       "last_date": "2026-10-12"
     },
     "BRPT": {
       "ticker": "BRPT",
       "foreign_participation_pct": 22.0,
-      "net_foreign_1d": -7251091738,
-      "net_foreign_1d_formatted": "-Rp 7.3 M",
-      "net_foreign_5d": -13884270769,
-      "net_foreign_5d_formatted": "-Rp 13.9 M",
-      "net_foreign_20d": -27347570145,
-      "net_foreign_20d_formatted": "-Rp 27.3 M",
-      "net_foreign_65d": 82829928789,
-      "net_foreign_65d_formatted": "+Rp 82.8 M",
+      "net_foreign_1d": -7037265443,
+      "net_foreign_1d_formatted": "-Rp 7.0 M",
+      "net_foreign_5d": -13670444474,
+      "net_foreign_5d_formatted": "-Rp 13.7 M",
+      "net_foreign_20d": -27133743850,
+      "net_foreign_20d_formatted": "-Rp 27.1 M",
+      "net_foreign_65d": 83043755084,
+      "net_foreign_65d_formatted": "+Rp 83.0 M",
       "status": "Moderate Outflow",
       "status_id": "Outflow Asing",
       "badge_color": "rose",
@@ -6257,7 +6257,7 @@
         -3535136818,
         -3529468754,
         745251497,
-        -7251091738
+        -7037265443
       ],
       "daily_prices": [
         1620,
@@ -6324,21 +6324,21 @@
         1430,
         1390,
         1405,
-        1340
+        1345
       ],
       "last_date": "2026-10-12"
     },
     "BSDE": {
       "ticker": "BSDE",
       "foreign_participation_pct": 22.0,
-      "net_foreign_1d": -307722563,
-      "net_foreign_1d_formatted": "-Rp 308 Jt",
-      "net_foreign_5d": -511856385,
-      "net_foreign_5d_formatted": "-Rp 512 Jt",
-      "net_foreign_20d": -14817460217,
-      "net_foreign_20d_formatted": "-Rp 14.8 M",
-      "net_foreign_65d": -2321356511,
-      "net_foreign_65d_formatted": "-Rp 2.3 M",
+      "net_foreign_1d": -620222931,
+      "net_foreign_1d_formatted": "-Rp 620 Jt",
+      "net_foreign_5d": -824356753,
+      "net_foreign_5d_formatted": "-Rp 824 Jt",
+      "net_foreign_20d": -15129960585,
+      "net_foreign_20d_formatted": "-Rp 15.1 M",
+      "net_foreign_65d": -2633856879,
+      "net_foreign_65d_formatted": "-Rp 2.6 M",
       "status": "Neutral",
       "status_id": "Netral / Rotasi Normal",
       "badge_color": "slate",
@@ -6541,7 +6541,7 @@
         -204133822,
         0,
         0,
-        -307722563
+        -620222931
       ],
       "daily_prices": [
         555,
@@ -6608,21 +6608,21 @@
         540,
         540,
         540,
-        535
+        530
       ],
       "last_date": "2026-10-12"
     },
     "BUKA": {
       "ticker": "BUKA",
       "foreign_participation_pct": 22.0,
-      "net_foreign_1d": 0,
-      "net_foreign_1d_formatted": "Rp 0",
-      "net_foreign_5d": -728276576,
-      "net_foreign_5d_formatted": "-Rp 728 Jt",
-      "net_foreign_20d": -1669510151,
-      "net_foreign_20d_formatted": "-Rp 1.7 M",
-      "net_foreign_65d": 7714569930,
-      "net_foreign_65d_formatted": "+Rp 7.7 M",
+      "net_foreign_1d": -560666532,
+      "net_foreign_1d_formatted": "-Rp 561 Jt",
+      "net_foreign_5d": -1288943108,
+      "net_foreign_5d_formatted": "-Rp 1.3 M",
+      "net_foreign_20d": -2230176683,
+      "net_foreign_20d_formatted": "-Rp 2.2 M",
+      "net_foreign_65d": 7153903398,
+      "net_foreign_65d_formatted": "+Rp 7.2 M",
       "status": "Neutral",
       "status_id": "Netral / Rotasi Normal",
       "badge_color": "slate",
@@ -6825,7 +6825,7 @@
         -653918549,
         0,
         0,
-        0
+        -560666532
       ],
       "daily_prices": [
         97,
@@ -6892,21 +6892,21 @@
         100,
         100,
         100,
-        100
+        99
       ],
       "last_date": "2026-10-12"
     },
     "CPIN": {
       "ticker": "CPIN",
       "foreign_participation_pct": 22.0,
-      "net_foreign_1d": 546293455,
-      "net_foreign_1d_formatted": "+Rp 546 Jt",
-      "net_foreign_5d": 1146749472,
-      "net_foreign_5d_formatted": "+Rp 1.1 M",
-      "net_foreign_20d": -5451855602,
-      "net_foreign_20d_formatted": "-Rp 5.5 M",
-      "net_foreign_65d": -11309614569,
-      "net_foreign_65d_formatted": "-Rp 11.3 M",
+      "net_foreign_1d": 2169312014,
+      "net_foreign_1d_formatted": "+Rp 2.2 M",
+      "net_foreign_5d": 2769768031,
+      "net_foreign_5d_formatted": "+Rp 2.8 M",
+      "net_foreign_20d": -3828837043,
+      "net_foreign_20d_formatted": "-Rp 3.8 M",
+      "net_foreign_65d": -9686596010,
+      "net_foreign_65d_formatted": "-Rp 9.7 M",
       "status": "Neutral",
       "status_id": "Netral / Rotasi Normal",
       "badge_color": "slate",
@@ -7109,7 +7109,7 @@
         -89897034,
         0,
         204757949,
-        546293455
+        2169312014
       ],
       "daily_prices": [
         3120,
@@ -7176,21 +7176,21 @@
         2930,
         2930,
         2960,
-        2990
+        3020
       ],
       "last_date": "2026-10-12"
     },
     "CTRA": {
       "ticker": "CTRA",
       "foreign_participation_pct": 22.0,
-      "net_foreign_1d": -62751740,
-      "net_foreign_1d_formatted": "-Rp 63 Jt",
-      "net_foreign_5d": 13162058,
-      "net_foreign_5d_formatted": "+Rp 13 Jt",
-      "net_foreign_20d": -2209131622,
+      "net_foreign_1d": -65910294,
+      "net_foreign_1d_formatted": "-Rp 66 Jt",
+      "net_foreign_5d": 10003504,
+      "net_foreign_5d_formatted": "+Rp 10 Jt",
+      "net_foreign_20d": -2212290176,
       "net_foreign_20d_formatted": "-Rp 2.2 M",
-      "net_foreign_65d": 315060952,
-      "net_foreign_65d_formatted": "+Rp 315 Jt",
+      "net_foreign_65d": 311902398,
+      "net_foreign_65d_formatted": "+Rp 312 Jt",
       "status": "Neutral",
       "status_id": "Netral / Rotasi Normal",
       "badge_color": "slate",
@@ -7393,7 +7393,7 @@
         24527876,
         -38558229,
         89944151,
-        -62751740
+        -65910294
       ],
       "daily_prices": [
         540,
@@ -7467,14 +7467,14 @@
     "EMTK": {
       "ticker": "EMTK",
       "foreign_participation_pct": 20.0,
-      "net_foreign_1d": -1001941620,
-      "net_foreign_1d_formatted": "-Rp 1.0 M",
-      "net_foreign_5d": -1510201498,
-      "net_foreign_5d_formatted": "-Rp 1.5 M",
-      "net_foreign_20d": -9318099393,
-      "net_foreign_20d_formatted": "-Rp 9.3 M",
-      "net_foreign_65d": -10234755411,
-      "net_foreign_65d_formatted": "-Rp 10.2 M",
+      "net_foreign_1d": -2346124477,
+      "net_foreign_1d_formatted": "-Rp 2.3 M",
+      "net_foreign_5d": -2854384355,
+      "net_foreign_5d_formatted": "-Rp 2.9 M",
+      "net_foreign_20d": -10662282250,
+      "net_foreign_20d_formatted": "-Rp 10.7 M",
+      "net_foreign_65d": -11578938268,
+      "net_foreign_65d_formatted": "-Rp 11.6 M",
       "status": "Neutral",
       "status_id": "Netral / Rotasi Normal",
       "badge_color": "slate",
@@ -7677,7 +7677,7 @@
         -312776745,
         -896638930,
         175419630,
-        -1001941620
+        -2346124477
       ],
       "daily_prices": [
         505,
@@ -7744,21 +7744,21 @@
         398,
         380,
         386,
-        372
+        366
       ],
       "last_date": "2026-10-12"
     },
     "ERAA": {
       "ticker": "ERAA",
       "foreign_participation_pct": 22.0,
-      "net_foreign_1d": 1215649238,
-      "net_foreign_1d_formatted": "+Rp 1.2 M",
-      "net_foreign_5d": -901237256,
-      "net_foreign_5d_formatted": "-Rp 901 Jt",
-      "net_foreign_20d": 15828586898,
-      "net_foreign_20d_formatted": "+Rp 15.8 M",
-      "net_foreign_65d": 119583792242,
-      "net_foreign_65d_formatted": "+Rp 119.6 M",
+      "net_foreign_1d": 1293143902,
+      "net_foreign_1d_formatted": "+Rp 1.3 M",
+      "net_foreign_5d": -823742592,
+      "net_foreign_5d_formatted": "-Rp 824 Jt",
+      "net_foreign_20d": 15906081562,
+      "net_foreign_20d_formatted": "+Rp 15.9 M",
+      "net_foreign_65d": 119661286906,
+      "net_foreign_65d_formatted": "+Rp 119.7 M",
       "status": "Neutral",
       "status_id": "Netral / Rotasi Normal",
       "badge_color": "slate",
@@ -7961,7 +7961,7 @@
         -2556569268,
         -1106556067,
         795926291,
-        1215649238
+        1293143902
       ],
       "daily_prices": [
         340,
@@ -8035,14 +8035,14 @@
     "EXCL": {
       "ticker": "EXCL",
       "foreign_participation_pct": 30.0,
-      "net_foreign_1d": -8730104955,
-      "net_foreign_1d_formatted": "-Rp 8.7 M",
-      "net_foreign_5d": -9100291679,
-      "net_foreign_5d_formatted": "-Rp 9.1 M",
-      "net_foreign_20d": -17053286326,
-      "net_foreign_20d_formatted": "-Rp 17.1 M",
-      "net_foreign_65d": -2174728003,
-      "net_foreign_65d_formatted": "-Rp 2.2 M",
+      "net_foreign_1d": -9221170530,
+      "net_foreign_1d_formatted": "-Rp 9.2 M",
+      "net_foreign_5d": -9591357254,
+      "net_foreign_5d_formatted": "-Rp 9.6 M",
+      "net_foreign_20d": -17544351901,
+      "net_foreign_20d_formatted": "-Rp 17.5 M",
+      "net_foreign_65d": -2665793578,
+      "net_foreign_65d_formatted": "-Rp 2.7 M",
       "status": "Neutral",
       "status_id": "Netral / Rotasi Normal",
       "badge_color": "slate",
@@ -8245,7 +8245,7 @@
         -867392228,
         0,
         0,
-        -8730104955
+        -9221170530
       ],
       "daily_prices": [
         2450,
@@ -8319,14 +8319,14 @@
     "GOTO": {
       "ticker": "GOTO",
       "foreign_participation_pct": 35.0,
-      "net_foreign_1d": -5022621046,
-      "net_foreign_1d_formatted": "-Rp 5.0 M",
-      "net_foreign_5d": 65860189253,
-      "net_foreign_5d_formatted": "+Rp 65.9 M",
-      "net_foreign_20d": 508069089849,
-      "net_foreign_20d_formatted": "+Rp 508.1 M",
-      "net_foreign_65d": 508069089849,
-      "net_foreign_65d_formatted": "+Rp 508.1 M",
+      "net_foreign_1d": -14054177739,
+      "net_foreign_1d_formatted": "-Rp 14.1 M",
+      "net_foreign_5d": 56828632560,
+      "net_foreign_5d_formatted": "+Rp 56.8 M",
+      "net_foreign_20d": 499037533156,
+      "net_foreign_20d_formatted": "+Rp 499.0 M",
+      "net_foreign_65d": 499037533156,
+      "net_foreign_65d_formatted": "+Rp 499.0 M",
       "status": "Strong Accumulation",
       "status_id": "Akumulasi Kuat Asing",
       "badge_color": "emerald",
@@ -8529,7 +8529,7 @@
         -32625927617,
         0,
         0,
-        -5022621046
+        -14054177739
       ],
       "daily_prices": [
         50,
@@ -8603,14 +8603,14 @@
     "HEAL": {
       "ticker": "HEAL",
       "foreign_participation_pct": 22.0,
-      "net_foreign_1d": 105573462,
-      "net_foreign_1d_formatted": "+Rp 106 Jt",
-      "net_foreign_5d": -159608221,
-      "net_foreign_5d_formatted": "-Rp 160 Jt",
-      "net_foreign_20d": -1716196752,
-      "net_foreign_20d_formatted": "-Rp 1.7 M",
-      "net_foreign_65d": -10623647928,
-      "net_foreign_65d_formatted": "-Rp 10.6 M",
+      "net_foreign_1d": 53712505,
+      "net_foreign_1d_formatted": "+Rp 54 Jt",
+      "net_foreign_5d": -211469178,
+      "net_foreign_5d_formatted": "-Rp 211 Jt",
+      "net_foreign_20d": -1768057709,
+      "net_foreign_20d_formatted": "-Rp 1.8 M",
+      "net_foreign_65d": -10675508885,
+      "net_foreign_65d_formatted": "-Rp 10.7 M",
       "status": "Neutral",
       "status_id": "Netral / Rotasi Normal",
       "badge_color": "slate",
@@ -8813,7 +8813,7 @@
         -109529705,
         0,
         0,
-        105573462
+        53712505
       ],
       "daily_prices": [
         905,
@@ -8880,20 +8880,20 @@
         600,
         600,
         600,
-        610
+        605
       ],
       "last_date": "2026-10-12"
     },
     "HEXA": {
       "ticker": "HEXA",
       "foreign_participation_pct": 22.0,
-      "net_foreign_1d": -35733150,
+      "net_foreign_1d": -36229444,
       "net_foreign_1d_formatted": "-Rp 36 Jt",
-      "net_foreign_5d": -37181053,
-      "net_foreign_5d_formatted": "-Rp 37 Jt",
-      "net_foreign_20d": -4322556236,
+      "net_foreign_5d": -37677347,
+      "net_foreign_5d_formatted": "-Rp 38 Jt",
+      "net_foreign_20d": -4323052530,
       "net_foreign_20d_formatted": "-Rp 4.3 M",
-      "net_foreign_65d": -4210159072,
+      "net_foreign_65d": -4210655366,
       "net_foreign_65d_formatted": "-Rp 4.2 M",
       "status": "Neutral",
       "status_id": "Netral / Rotasi Normal",
@@ -9097,7 +9097,7 @@
         6547494,
         -5571832,
         -2423565,
-        -35733150
+        -36229444
       ],
       "daily_prices": [
         4350,
@@ -9171,14 +9171,14 @@
     "HRUM": {
       "ticker": "HRUM",
       "foreign_participation_pct": 22.0,
-      "net_foreign_1d": -301741285,
-      "net_foreign_1d_formatted": "-Rp 302 Jt",
-      "net_foreign_5d": -157151948,
-      "net_foreign_5d_formatted": "-Rp 157 Jt",
-      "net_foreign_20d": -1477034767,
+      "net_foreign_1d": -329199226,
+      "net_foreign_1d_formatted": "-Rp 329 Jt",
+      "net_foreign_5d": -184609889,
+      "net_foreign_5d_formatted": "-Rp 185 Jt",
+      "net_foreign_20d": -1504492708,
       "net_foreign_20d_formatted": "-Rp 1.5 M",
-      "net_foreign_65d": 1077228125,
-      "net_foreign_65d_formatted": "+Rp 1.1 M",
+      "net_foreign_65d": 1049770184,
+      "net_foreign_65d_formatted": "+Rp 1.0 M",
       "status": "Neutral",
       "status_id": "Netral / Rotasi Normal",
       "badge_color": "slate",
@@ -9381,7 +9381,7 @@
         -36012657,
         -89548283,
         154592675,
-        -301741285
+        -329199226
       ],
       "daily_prices": [
         750,
@@ -9455,14 +9455,14 @@
     "ICBP": {
       "ticker": "ICBP",
       "foreign_participation_pct": 35.0,
-      "net_foreign_1d": 841031800,
-      "net_foreign_1d_formatted": "+Rp 841 Jt",
-      "net_foreign_5d": 2086277086,
-      "net_foreign_5d_formatted": "+Rp 2.1 M",
-      "net_foreign_20d": -5149798497,
-      "net_foreign_20d_formatted": "-Rp 5.1 M",
-      "net_foreign_65d": -559201868,
-      "net_foreign_65d_formatted": "-Rp 559 Jt",
+      "net_foreign_1d": 1204424029,
+      "net_foreign_1d_formatted": "+Rp 1.2 M",
+      "net_foreign_5d": 2449669315,
+      "net_foreign_5d_formatted": "+Rp 2.4 M",
+      "net_foreign_20d": -4786406268,
+      "net_foreign_20d_formatted": "-Rp 4.8 M",
+      "net_foreign_65d": -195809639,
+      "net_foreign_65d_formatted": "-Rp 196 Jt",
       "status": "Neutral",
       "status_id": "Netral / Rotasi Normal",
       "badge_color": "slate",
@@ -9665,7 +9665,7 @@
         -60473413,
         0,
         1471213699,
-        841031800
+        1204424029
       ],
       "daily_prices": [
         6650,
@@ -9732,21 +9732,21 @@
         6775,
         6775,
         6950,
-        7025
+        7050
       ],
       "last_date": "2026-10-12"
     },
     "INCO": {
       "ticker": "INCO",
       "foreign_participation_pct": 35.0,
-      "net_foreign_1d": -5338874139,
-      "net_foreign_1d_formatted": "-Rp 5.3 M",
-      "net_foreign_5d": -5774646656,
-      "net_foreign_5d_formatted": "-Rp 5.8 M",
-      "net_foreign_20d": -12122533189,
-      "net_foreign_20d_formatted": "-Rp 12.1 M",
-      "net_foreign_65d": 228400116,
-      "net_foreign_65d_formatted": "+Rp 228 Jt",
+      "net_foreign_1d": -6128495115,
+      "net_foreign_1d_formatted": "-Rp 6.1 M",
+      "net_foreign_5d": -6564267632,
+      "net_foreign_5d_formatted": "-Rp 6.6 M",
+      "net_foreign_20d": -12912154165,
+      "net_foreign_20d_formatted": "-Rp 12.9 M",
+      "net_foreign_65d": -561220860,
+      "net_foreign_65d_formatted": "-Rp 561 Jt",
       "status": "Neutral",
       "status_id": "Netral / Rotasi Normal",
       "badge_color": "slate",
@@ -9949,7 +9949,7 @@
         -1415223031,
         0,
         467489072,
-        -5338874139
+        -6128495115
       ],
       "daily_prices": [
         4690,
@@ -10016,21 +10016,21 @@
         4260,
         4260,
         4270,
-        4120
+        4110
       ],
       "last_date": "2026-10-12"
     },
     "INDF": {
       "ticker": "INDF",
       "foreign_participation_pct": 32.0,
-      "net_foreign_1d": 953216806,
-      "net_foreign_1d_formatted": "+Rp 953 Jt",
-      "net_foreign_5d": 1237440272,
-      "net_foreign_5d_formatted": "+Rp 1.2 M",
-      "net_foreign_20d": -5495258624,
-      "net_foreign_20d_formatted": "-Rp 5.5 M",
-      "net_foreign_65d": 11827648290,
-      "net_foreign_65d_formatted": "+Rp 11.8 M",
+      "net_foreign_1d": -797596317,
+      "net_foreign_1d_formatted": "-Rp 798 Jt",
+      "net_foreign_5d": -513372851,
+      "net_foreign_5d_formatted": "-Rp 513 Jt",
+      "net_foreign_20d": -7246071747,
+      "net_foreign_20d_formatted": "-Rp 7.2 M",
+      "net_foreign_65d": 10076835167,
+      "net_foreign_65d_formatted": "+Rp 10.1 M",
       "status": "Neutral",
       "status_id": "Netral / Rotasi Normal",
       "badge_color": "slate",
@@ -10233,7 +10233,7 @@
         686680292,
         -640038043,
         237581217,
-        953216806
+        -797596317
       ],
       "daily_prices": [
         6775,
@@ -10300,21 +10300,21 @@
         6950,
         6900,
         6950,
-        7050
+        6900
       ],
       "last_date": "2026-10-12"
     },
     "INDY": {
       "ticker": "INDY",
       "foreign_participation_pct": 22.0,
-      "net_foreign_1d": -2874757328,
-      "net_foreign_1d_formatted": "-Rp 2.9 M",
-      "net_foreign_5d": 2967065732,
-      "net_foreign_5d_formatted": "+Rp 3.0 M",
-      "net_foreign_20d": 7492523847,
-      "net_foreign_20d_formatted": "+Rp 7.5 M",
-      "net_foreign_65d": 80245227115,
-      "net_foreign_65d_formatted": "+Rp 80.2 M",
+      "net_foreign_1d": -5447611365,
+      "net_foreign_1d_formatted": "-Rp 5.4 M",
+      "net_foreign_5d": 394211695,
+      "net_foreign_5d_formatted": "+Rp 394 Jt",
+      "net_foreign_20d": 4919669810,
+      "net_foreign_20d_formatted": "+Rp 4.9 M",
+      "net_foreign_65d": 77672373078,
+      "net_foreign_65d_formatted": "+Rp 77.7 M",
       "status": "Neutral",
       "status_id": "Netral / Rotasi Normal",
       "badge_color": "slate",
@@ -10517,7 +10517,7 @@
         482061285,
         -1831825346,
         3734331194,
-        -2874757328
+        -5447611365
       ],
       "daily_prices": [
         2010,
@@ -10584,21 +10584,21 @@
         2730,
         2630,
         2790,
-        2650
+        2610
       ],
       "last_date": "2026-10-12"
     },
     "INKP": {
       "ticker": "INKP",
       "foreign_participation_pct": 22.0,
-      "net_foreign_1d": -1053555408,
-      "net_foreign_1d_formatted": "-Rp 1.1 M",
-      "net_foreign_5d": -192745251,
-      "net_foreign_5d_formatted": "-Rp 193 Jt",
-      "net_foreign_20d": -4851655540,
-      "net_foreign_20d_formatted": "-Rp 4.9 M",
-      "net_foreign_65d": 11941906724,
-      "net_foreign_65d_formatted": "+Rp 11.9 M",
+      "net_foreign_1d": 2719456822,
+      "net_foreign_1d_formatted": "+Rp 2.7 M",
+      "net_foreign_5d": 3580266979,
+      "net_foreign_5d_formatted": "+Rp 3.6 M",
+      "net_foreign_20d": -1078643310,
+      "net_foreign_20d_formatted": "-Rp 1.1 M",
+      "net_foreign_65d": 15714918954,
+      "net_foreign_65d_formatted": "+Rp 15.7 M",
       "status": "Neutral",
       "status_id": "Netral / Rotasi Normal",
       "badge_color": "slate",
@@ -10801,7 +10801,7 @@
         -281610614,
         -241639260,
         134110629,
-        -1053555408
+        2719456822
       ],
       "daily_prices": [
         7325,
@@ -10868,21 +10868,21 @@
         8275,
         8200,
         8275,
-        8000
+        8675
       ],
       "last_date": "2026-10-12"
     },
     "ISAT": {
       "ticker": "ISAT",
       "foreign_participation_pct": 35.0,
-      "net_foreign_1d": -11745374094,
-      "net_foreign_1d_formatted": "-Rp 11.7 M",
-      "net_foreign_5d": -20982921367,
-      "net_foreign_5d_formatted": "-Rp 21.0 M",
-      "net_foreign_20d": -12145097732,
-      "net_foreign_20d_formatted": "-Rp 12.1 M",
-      "net_foreign_65d": 167276073739,
-      "net_foreign_65d_formatted": "+Rp 167.3 M",
+      "net_foreign_1d": -10806666863,
+      "net_foreign_1d_formatted": "-Rp 10.8 M",
+      "net_foreign_5d": -20044214136,
+      "net_foreign_5d_formatted": "-Rp 20.0 M",
+      "net_foreign_20d": -11206390501,
+      "net_foreign_20d_formatted": "-Rp 11.2 M",
+      "net_foreign_65d": 168214780970,
+      "net_foreign_65d_formatted": "+Rp 168.2 M",
       "status": "Moderate Outflow",
       "status_id": "Outflow Asing",
       "badge_color": "rose",
@@ -11085,7 +11085,7 @@
         0,
         -7935108432,
         -1302438841,
-        -11745374094
+        -10806666863
       ],
       "daily_prices": [
         1820,
@@ -11152,21 +11152,21 @@
         2220,
         2140,
         2120,
-        2040
+        2050
       ],
       "last_date": "2026-10-12"
     },
     "ITMG": {
       "ticker": "ITMG",
       "foreign_participation_pct": 32.0,
-      "net_foreign_1d": 0,
-      "net_foreign_1d_formatted": "Rp 0",
-      "net_foreign_5d": -67246101,
-      "net_foreign_5d_formatted": "-Rp 67 Jt",
-      "net_foreign_20d": -3808500125,
-      "net_foreign_20d_formatted": "-Rp 3.8 M",
-      "net_foreign_65d": 7624429941,
-      "net_foreign_65d_formatted": "+Rp 7.6 M",
+      "net_foreign_1d": 1439947117,
+      "net_foreign_1d_formatted": "+Rp 1.4 M",
+      "net_foreign_5d": 1372701016,
+      "net_foreign_5d_formatted": "+Rp 1.4 M",
+      "net_foreign_20d": -2368553008,
+      "net_foreign_20d_formatted": "-Rp 2.4 M",
+      "net_foreign_65d": 9064377058,
+      "net_foreign_65d_formatted": "+Rp 9.1 M",
       "status": "Neutral",
       "status_id": "Netral / Rotasi Normal",
       "badge_color": "slate",
@@ -11369,7 +11369,7 @@
         -510299356,
         -1262629770,
         206302507,
-        0
+        1439947117
       ],
       "daily_prices": [
         23300,
@@ -11436,21 +11436,21 @@
         25925,
         25325,
         25375,
-        25375
+        25725
       ],
       "last_date": "2026-10-12"
     },
     "KLBF": {
       "ticker": "KLBF",
       "foreign_participation_pct": 32.0,
-      "net_foreign_1d": -1409839200,
-      "net_foreign_1d_formatted": "-Rp 1.4 M",
-      "net_foreign_5d": 3968609576,
-      "net_foreign_5d_formatted": "+Rp 4.0 M",
-      "net_foreign_20d": 11443475814,
-      "net_foreign_20d_formatted": "+Rp 11.4 M",
-      "net_foreign_65d": 57972356207,
-      "net_foreign_65d_formatted": "+Rp 58.0 M",
+      "net_foreign_1d": -2081953834,
+      "net_foreign_1d_formatted": "-Rp 2.1 M",
+      "net_foreign_5d": 3296494942,
+      "net_foreign_5d_formatted": "+Rp 3.3 M",
+      "net_foreign_20d": 10771361180,
+      "net_foreign_20d_formatted": "+Rp 10.8 M",
+      "net_foreign_65d": 57300241573,
+      "net_foreign_65d_formatted": "+Rp 57.3 M",
       "status": "Neutral",
       "status_id": "Netral / Rotasi Normal",
       "badge_color": "slate",
@@ -11653,7 +11653,7 @@
         0,
         3470612185,
         1374926183,
-        -1409839200
+        -2081953834
       ],
       "daily_prices": [
         725,
@@ -11720,21 +11720,21 @@
         755,
         775,
         785,
-        770
+        765
       ],
       "last_date": "2026-10-12"
     },
     "MAPI": {
       "ticker": "MAPI",
       "foreign_participation_pct": 22.0,
-      "net_foreign_1d": -428512718,
-      "net_foreign_1d_formatted": "-Rp 429 Jt",
-      "net_foreign_5d": 6000547946,
-      "net_foreign_5d_formatted": "+Rp 6.0 M",
-      "net_foreign_20d": 10943472605,
-      "net_foreign_20d_formatted": "+Rp 10.9 M",
-      "net_foreign_65d": -2254244928,
-      "net_foreign_65d_formatted": "-Rp 2.3 M",
+      "net_foreign_1d": -2222089466,
+      "net_foreign_1d_formatted": "-Rp 2.2 M",
+      "net_foreign_5d": 4206971198,
+      "net_foreign_5d_formatted": "+Rp 4.2 M",
+      "net_foreign_20d": 9149895857,
+      "net_foreign_20d_formatted": "+Rp 9.1 M",
+      "net_foreign_65d": -4047821676,
+      "net_foreign_65d_formatted": "-Rp 4.0 M",
       "status": "Neutral",
       "status_id": "Netral / Rotasi Normal",
       "badge_color": "slate",
@@ -11937,7 +11937,7 @@
         0,
         0,
         0,
-        -428512718
+        -2222089466
       ],
       "daily_prices": [
         1535,
@@ -12004,21 +12004,21 @@
         1550,
         1550,
         1550,
-        1475
+        1445
       ],
       "last_date": "2026-10-12"
     },
     "MBMA": {
       "ticker": "MBMA",
       "foreign_participation_pct": 25.0,
-      "net_foreign_1d": -1651094430,
-      "net_foreign_1d_formatted": "-Rp 1.7 M",
-      "net_foreign_5d": -2290671708,
-      "net_foreign_5d_formatted": "-Rp 2.3 M",
-      "net_foreign_20d": 3769887056,
-      "net_foreign_20d_formatted": "+Rp 3.8 M",
-      "net_foreign_65d": 54542139612,
-      "net_foreign_65d_formatted": "+Rp 54.5 M",
+      "net_foreign_1d": -2009152627,
+      "net_foreign_1d_formatted": "-Rp 2.0 M",
+      "net_foreign_5d": -2648729905,
+      "net_foreign_5d_formatted": "-Rp 2.6 M",
+      "net_foreign_20d": 3411828859,
+      "net_foreign_20d_formatted": "+Rp 3.4 M",
+      "net_foreign_65d": 54184081415,
+      "net_foreign_65d_formatted": "+Rp 54.2 M",
       "status": "Neutral",
       "status_id": "Netral / Rotasi Normal",
       "badge_color": "slate",
@@ -12221,7 +12221,7 @@
         -1207970252,
         -767465496,
         0,
-        -1651094430
+        -2009152627
       ],
       "daily_prices": [
         494,
@@ -12288,21 +12288,21 @@
         482,
         474,
         474,
-        462
+        460
       ],
       "last_date": "2026-10-12"
     },
     "MDKA": {
       "ticker": "MDKA",
       "foreign_participation_pct": 30.0,
-      "net_foreign_1d": -3733035429,
+      "net_foreign_1d": -3658957875,
       "net_foreign_1d_formatted": "-Rp 3.7 M",
-      "net_foreign_5d": -3109943006,
-      "net_foreign_5d_formatted": "-Rp 3.1 M",
-      "net_foreign_20d": 47748635631,
-      "net_foreign_20d_formatted": "+Rp 47.7 M",
-      "net_foreign_65d": 142445452954,
-      "net_foreign_65d_formatted": "+Rp 142.4 M",
+      "net_foreign_5d": -3035865452,
+      "net_foreign_5d_formatted": "-Rp 3.0 M",
+      "net_foreign_20d": 47822713185,
+      "net_foreign_20d_formatted": "+Rp 47.8 M",
+      "net_foreign_65d": 142519530508,
+      "net_foreign_65d_formatted": "+Rp 142.5 M",
       "status": "Neutral",
       "status_id": "Netral / Rotasi Normal",
       "badge_color": "slate",
@@ -12505,7 +12505,7 @@
         -1168376061,
         -1017643477,
         1254549628,
-        -3733035429
+        -3658957875
       ],
       "daily_prices": [
         2570,
@@ -12572,21 +12572,21 @@
         2920,
         2890,
         2940,
-        2860
+        2870
       ],
       "last_date": "2026-10-12"
     },
     "MEDC": {
       "ticker": "MEDC",
       "foreign_participation_pct": 28.0,
-      "net_foreign_1d": 1050699869,
-      "net_foreign_1d_formatted": "+Rp 1.1 M",
-      "net_foreign_5d": 2070054908,
-      "net_foreign_5d_formatted": "+Rp 2.1 M",
-      "net_foreign_20d": -22606417809,
-      "net_foreign_20d_formatted": "-Rp 22.6 M",
-      "net_foreign_65d": 52697991733,
-      "net_foreign_65d_formatted": "+Rp 52.7 M",
+      "net_foreign_1d": 2077216505,
+      "net_foreign_1d_formatted": "+Rp 2.1 M",
+      "net_foreign_5d": 3096571544,
+      "net_foreign_5d_formatted": "+Rp 3.1 M",
+      "net_foreign_20d": -21579901173,
+      "net_foreign_20d_formatted": "-Rp 21.6 M",
+      "net_foreign_65d": 53724508369,
+      "net_foreign_65d_formatted": "+Rp 53.7 M",
       "status": "Neutral",
       "status_id": "Netral / Rotasi Normal",
       "badge_color": "slate",
@@ -12789,7 +12789,7 @@
         1176334775,
         -1467390671,
         -650845697,
-        1050699869
+        2077216505
       ],
       "daily_prices": [
         1175,
@@ -12856,20 +12856,20 @@
         1460,
         1445,
         1430,
-        1445
+        1455
       ],
       "last_date": "2026-10-12"
     },
     "MIKA": {
       "ticker": "MIKA",
       "foreign_participation_pct": 22.0,
-      "net_foreign_1d": -26978753,
-      "net_foreign_1d_formatted": "-Rp 27 Jt",
-      "net_foreign_5d": 13906557,
-      "net_foreign_5d_formatted": "+Rp 14 Jt",
-      "net_foreign_20d": -1152449535,
+      "net_foreign_1d": -36963106,
+      "net_foreign_1d_formatted": "-Rp 37 Jt",
+      "net_foreign_5d": 3922204,
+      "net_foreign_5d_formatted": "+Rp 4 Jt",
+      "net_foreign_20d": -1162433888,
       "net_foreign_20d_formatted": "-Rp 1.2 M",
-      "net_foreign_65d": 1398334470,
+      "net_foreign_65d": 1388350117,
       "net_foreign_65d_formatted": "+Rp 1.4 M",
       "status": "Neutral",
       "status_id": "Netral / Rotasi Normal",
@@ -13073,7 +13073,7 @@
         -1377000,
         46255151,
         0,
-        -26978753
+        -36963106
       ],
       "daily_prices": [
         1705,
@@ -13147,14 +13147,14 @@
     "MPMX": {
       "ticker": "MPMX",
       "foreign_participation_pct": 22.0,
-      "net_foreign_1d": -79241691,
-      "net_foreign_1d_formatted": "-Rp 79 Jt",
-      "net_foreign_5d": -40325160,
-      "net_foreign_5d_formatted": "-Rp 40 Jt",
-      "net_foreign_20d": -58625103,
-      "net_foreign_20d_formatted": "-Rp 59 Jt",
-      "net_foreign_65d": 187681747,
-      "net_foreign_65d_formatted": "+Rp 188 Jt",
+      "net_foreign_1d": -53338028,
+      "net_foreign_1d_formatted": "-Rp 53 Jt",
+      "net_foreign_5d": -14421497,
+      "net_foreign_5d_formatted": "-Rp 14 Jt",
+      "net_foreign_20d": -32721440,
+      "net_foreign_20d_formatted": "-Rp 33 Jt",
+      "net_foreign_65d": 213585410,
+      "net_foreign_65d_formatted": "+Rp 214 Jt",
       "status": "Neutral",
       "status_id": "Netral / Rotasi Normal",
       "badge_color": "slate",
@@ -13357,7 +13357,7 @@
         0,
         0,
         19256579,
-        -79241691
+        -53338028
       ],
       "daily_prices": [
         985,
@@ -13424,20 +13424,20 @@
         1025,
         1025,
         1030,
-        1015
+        1020
       ],
       "last_date": "2026-10-12"
     },
     "MYOR": {
       "ticker": "MYOR",
       "foreign_participation_pct": 25.0,
-      "net_foreign_1d": 0,
-      "net_foreign_1d_formatted": "Rp 0",
-      "net_foreign_5d": -527651641,
-      "net_foreign_5d_formatted": "-Rp 528 Jt",
-      "net_foreign_20d": -3868704710,
+      "net_foreign_1d": -66205561,
+      "net_foreign_1d_formatted": "-Rp 66 Jt",
+      "net_foreign_5d": -593857202,
+      "net_foreign_5d_formatted": "-Rp 594 Jt",
+      "net_foreign_20d": -3934910271,
       "net_foreign_20d_formatted": "-Rp 3.9 M",
-      "net_foreign_65d": -12379588149,
+      "net_foreign_65d": -12445793710,
       "net_foreign_65d_formatted": "-Rp 12.4 M",
       "status": "Neutral",
       "status_id": "Netral / Rotasi Normal",
@@ -13641,7 +13641,7 @@
         -834592360,
         33822365,
         0,
-        0
+        -66205561
       ],
       "daily_prices": [
         1715,
@@ -13708,20 +13708,20 @@
         1370,
         1375,
         1375,
-        1375
+        1370
       ],
       "last_date": "2026-10-12"
     },
     "NRCA": {
       "ticker": "NRCA",
       "foreign_participation_pct": 22.0,
-      "net_foreign_1d": -75921956,
-      "net_foreign_1d_formatted": "-Rp 76 Jt",
-      "net_foreign_5d": 81631526,
-      "net_foreign_5d_formatted": "+Rp 82 Jt",
-      "net_foreign_20d": 1659390512,
+      "net_foreign_1d": -78721321,
+      "net_foreign_1d_formatted": "-Rp 79 Jt",
+      "net_foreign_5d": 78832161,
+      "net_foreign_5d_formatted": "+Rp 79 Jt",
+      "net_foreign_20d": 1656591147,
       "net_foreign_20d_formatted": "+Rp 1.7 M",
-      "net_foreign_65d": 6495405592,
+      "net_foreign_65d": 6492606227,
       "net_foreign_65d_formatted": "+Rp 6.5 M",
       "status": "Neutral",
       "status_id": "Netral / Rotasi Normal",
@@ -13925,7 +13925,7 @@
         -95927526,
         -85526100,
         0,
-        -75921956
+        -78721321
       ],
       "daily_prices": [
         454,
@@ -13999,14 +13999,14 @@
     "PGAS": {
       "ticker": "PGAS",
       "foreign_participation_pct": 28.0,
-      "net_foreign_1d": -792641210,
-      "net_foreign_1d_formatted": "-Rp 793 Jt",
-      "net_foreign_5d": -842273963,
-      "net_foreign_5d_formatted": "-Rp 842 Jt",
-      "net_foreign_20d": -13465003380,
-      "net_foreign_20d_formatted": "-Rp 13.5 M",
-      "net_foreign_65d": -5657383275,
-      "net_foreign_65d_formatted": "-Rp 5.7 M",
+      "net_foreign_1d": 0,
+      "net_foreign_1d_formatted": "Rp 0",
+      "net_foreign_5d": -49632753,
+      "net_foreign_5d_formatted": "-Rp 50 Jt",
+      "net_foreign_20d": -12672362170,
+      "net_foreign_20d_formatted": "-Rp 12.7 M",
+      "net_foreign_65d": -4864742065,
+      "net_foreign_65d_formatted": "-Rp 4.9 M",
       "status": "Neutral",
       "status_id": "Netral / Rotasi Normal",
       "badge_color": "slate",
@@ -14209,7 +14209,7 @@
         0,
         593415279,
         -942519083,
-        -792641210
+        0
       ],
       "daily_prices": [
         1465,
@@ -14276,21 +14276,21 @@
         1420,
         1440,
         1420,
-        1395
+        1420
       ],
       "last_date": "2026-10-12"
     },
     "PGEO": {
       "ticker": "PGEO",
       "foreign_participation_pct": 22.0,
-      "net_foreign_1d": -246731062,
-      "net_foreign_1d_formatted": "-Rp 247 Jt",
-      "net_foreign_5d": 106188244,
-      "net_foreign_5d_formatted": "+Rp 106 Jt",
-      "net_foreign_20d": 285430008,
-      "net_foreign_20d_formatted": "+Rp 285 Jt",
-      "net_foreign_65d": 13648473885,
-      "net_foreign_65d_formatted": "+Rp 13.6 M",
+      "net_foreign_1d": -90899083,
+      "net_foreign_1d_formatted": "-Rp 91 Jt",
+      "net_foreign_5d": 262020223,
+      "net_foreign_5d_formatted": "+Rp 262 Jt",
+      "net_foreign_20d": 441261987,
+      "net_foreign_20d_formatted": "+Rp 441 Jt",
+      "net_foreign_65d": 13804305864,
+      "net_foreign_65d_formatted": "+Rp 13.8 M",
       "status": "Neutral",
       "status_id": "Netral / Rotasi Normal",
       "badge_color": "slate",
@@ -14493,7 +14493,7 @@
         139076091,
         -205924215,
         -22204108,
-        -246731062
+        -90899083
       ],
       "daily_prices": [
         1005,
@@ -14560,21 +14560,21 @@
         1010,
         995,
         990,
-        975
+        985
       ],
       "last_date": "2026-10-12"
     },
     "POWR": {
       "ticker": "POWR",
       "foreign_participation_pct": 22.0,
-      "net_foreign_1d": -32742695,
-      "net_foreign_1d_formatted": "-Rp 33 Jt",
-      "net_foreign_5d": -115191789,
-      "net_foreign_5d_formatted": "-Rp 115 Jt",
-      "net_foreign_20d": -879580863,
-      "net_foreign_20d_formatted": "-Rp 880 Jt",
-      "net_foreign_65d": 13057735188,
-      "net_foreign_65d_formatted": "+Rp 13.1 M",
+      "net_foreign_1d": -65777492,
+      "net_foreign_1d_formatted": "-Rp 66 Jt",
+      "net_foreign_5d": -148226586,
+      "net_foreign_5d_formatted": "-Rp 148 Jt",
+      "net_foreign_20d": -912615660,
+      "net_foreign_20d_formatted": "-Rp 913 Jt",
+      "net_foreign_65d": 13024700391,
+      "net_foreign_65d_formatted": "+Rp 13.0 M",
       "status": "Neutral",
       "status_id": "Netral / Rotasi Normal",
       "badge_color": "slate",
@@ -14777,7 +14777,7 @@
         13510542,
         0,
         -64059111,
-        -32742695
+        -65777492
       ],
       "daily_prices": [
         715,
@@ -14844,21 +14844,21 @@
         970,
         970,
         955,
-        950
+        945
       ],
       "last_date": "2026-10-12"
     },
     "PTBA": {
       "ticker": "PTBA",
       "foreign_participation_pct": 25.0,
-      "net_foreign_1d": -2807853682,
-      "net_foreign_1d_formatted": "-Rp 2.8 M",
-      "net_foreign_5d": 12368693505,
-      "net_foreign_5d_formatted": "+Rp 12.4 M",
-      "net_foreign_20d": 39907940975,
-      "net_foreign_20d_formatted": "+Rp 39.9 M",
-      "net_foreign_65d": 161189020393,
-      "net_foreign_65d_formatted": "+Rp 161.2 M",
+      "net_foreign_1d": -3094602438,
+      "net_foreign_1d_formatted": "-Rp 3.1 M",
+      "net_foreign_5d": 12081944749,
+      "net_foreign_5d_formatted": "+Rp 12.1 M",
+      "net_foreign_20d": 39621192219,
+      "net_foreign_20d_formatted": "+Rp 39.6 M",
+      "net_foreign_65d": 160902271637,
+      "net_foreign_65d_formatted": "+Rp 160.9 M",
       "status": "Moderate Inflow",
       "status_id": "Inflow Asing",
       "badge_color": "emerald",
@@ -15061,7 +15061,7 @@
         -1279712735,
         -2601626405,
         -1186423306,
-        -2807853682
+        -3094602438
       ],
       "daily_prices": [
         2380,
@@ -15135,13 +15135,13 @@
     "PWON": {
       "ticker": "PWON",
       "foreign_participation_pct": 22.0,
-      "net_foreign_1d": 85400355,
-      "net_foreign_1d_formatted": "+Rp 85 Jt",
-      "net_foreign_5d": 807414959,
-      "net_foreign_5d_formatted": "+Rp 807 Jt",
-      "net_foreign_20d": 8901983,
-      "net_foreign_20d_formatted": "+Rp 9 Jt",
-      "net_foreign_65d": 5504241742,
+      "net_foreign_1d": 93944979,
+      "net_foreign_1d_formatted": "+Rp 94 Jt",
+      "net_foreign_5d": 815959583,
+      "net_foreign_5d_formatted": "+Rp 816 Jt",
+      "net_foreign_20d": 17446607,
+      "net_foreign_20d_formatted": "+Rp 17 Jt",
+      "net_foreign_65d": 5512786366,
       "net_foreign_65d_formatted": "+Rp 5.5 M",
       "status": "Neutral",
       "status_id": "Netral / Rotasi Normal",
@@ -15345,7 +15345,7 @@
         173503827,
         -103333316,
         48963509,
-        85400355
+        93944979
       ],
       "daily_prices": [
         256,
@@ -15419,13 +15419,13 @@
     "SIDO": {
       "ticker": "SIDO",
       "foreign_participation_pct": 22.0,
-      "net_foreign_1d": -97010212,
-      "net_foreign_1d_formatted": "-Rp 97 Jt",
-      "net_foreign_5d": -39476257,
-      "net_foreign_5d_formatted": "-Rp 39 Jt",
-      "net_foreign_20d": 190428839,
-      "net_foreign_20d_formatted": "+Rp 190 Jt",
-      "net_foreign_65d": -2327999138,
+      "net_foreign_1d": -56614875,
+      "net_foreign_1d_formatted": "-Rp 57 Jt",
+      "net_foreign_5d": 919080,
+      "net_foreign_5d_formatted": "+Rp 919,080",
+      "net_foreign_20d": 230824176,
+      "net_foreign_20d_formatted": "+Rp 231 Jt",
+      "net_foreign_65d": -2287603801,
       "net_foreign_65d_formatted": "-Rp 2.3 M",
       "status": "Neutral",
       "status_id": "Netral / Rotasi Normal",
@@ -15629,7 +15629,7 @@
         0,
         -18443517,
         30090111,
-        -97010212
+        -56614875
       ],
       "daily_prices": [
         380,
@@ -15696,20 +15696,20 @@
         354,
         352,
         354,
-        350
+        352
       ],
       "last_date": "2026-10-12"
     },
     "SILO": {
       "ticker": "SILO",
       "foreign_participation_pct": 22.0,
-      "net_foreign_1d": -5452102,
+      "net_foreign_1d": -5463622,
       "net_foreign_1d_formatted": "-Rp 5 Jt",
-      "net_foreign_5d": -89971677,
+      "net_foreign_5d": -89983197,
       "net_foreign_5d_formatted": "-Rp 90 Jt",
-      "net_foreign_20d": -8702106,
+      "net_foreign_20d": -8713626,
       "net_foreign_20d_formatted": "-Rp 9 Jt",
-      "net_foreign_65d": 327538139,
+      "net_foreign_65d": 327526619,
       "net_foreign_65d_formatted": "+Rp 328 Jt",
       "status": "Neutral",
       "status_id": "Netral / Rotasi Normal",
@@ -15913,7 +15913,7 @@
         17466406,
         -15370001,
         0,
-        -5452102
+        -5463622
       ],
       "daily_prices": [
         2160,
@@ -15987,14 +15987,14 @@
     "SMDR": {
       "ticker": "SMDR",
       "foreign_participation_pct": 22.0,
-      "net_foreign_1d": -394128824,
-      "net_foreign_1d_formatted": "-Rp 394 Jt",
-      "net_foreign_5d": 4418212143,
-      "net_foreign_5d_formatted": "+Rp 4.4 M",
-      "net_foreign_20d": 4870029972,
-      "net_foreign_20d_formatted": "+Rp 4.9 M",
-      "net_foreign_65d": 15821359806,
-      "net_foreign_65d_formatted": "+Rp 15.8 M",
+      "net_foreign_1d": -540171288,
+      "net_foreign_1d_formatted": "-Rp 540 Jt",
+      "net_foreign_5d": 4272169679,
+      "net_foreign_5d_formatted": "+Rp 4.3 M",
+      "net_foreign_20d": 4723987508,
+      "net_foreign_20d_formatted": "+Rp 4.7 M",
+      "net_foreign_65d": 15675317342,
+      "net_foreign_65d_formatted": "+Rp 15.7 M",
       "status": "Neutral",
       "status_id": "Netral / Rotasi Normal",
       "badge_color": "slate",
@@ -16197,7 +16197,7 @@
         -816618279,
         -200391065,
         164565237,
-        -394128824
+        -540171288
       ],
       "daily_prices": [
         274,
@@ -16264,21 +16264,21 @@
         414,
         410,
         416,
-        408
+        406
       ],
       "last_date": "2026-10-12"
     },
     "SMGR": {
       "ticker": "SMGR",
       "foreign_participation_pct": 22.0,
-      "net_foreign_1d": 1681046316,
-      "net_foreign_1d_formatted": "+Rp 1.7 M",
-      "net_foreign_5d": 2732939930,
-      "net_foreign_5d_formatted": "+Rp 2.7 M",
-      "net_foreign_20d": -4434221788,
-      "net_foreign_20d_formatted": "-Rp 4.4 M",
-      "net_foreign_65d": 33938597319,
-      "net_foreign_65d_formatted": "+Rp 33.9 M",
+      "net_foreign_1d": 3162074035,
+      "net_foreign_1d_formatted": "+Rp 3.2 M",
+      "net_foreign_5d": 4213967649,
+      "net_foreign_5d_formatted": "+Rp 4.2 M",
+      "net_foreign_20d": -2953194069,
+      "net_foreign_20d_formatted": "-Rp 3.0 M",
+      "net_foreign_65d": 35419625038,
+      "net_foreign_65d_formatted": "+Rp 35.4 M",
       "status": "Neutral",
       "status_id": "Netral / Rotasi Normal",
       "badge_color": "slate",
@@ -16481,7 +16481,7 @@
         63924927,
         456984320,
         161242120,
-        1681046316
+        3162074035
       ],
       "daily_prices": [
         1415,
@@ -16548,21 +16548,21 @@
         1545,
         1570,
         1580,
-        1620
+        1640
       ],
       "last_date": "2026-10-12"
     },
     "SMRA": {
       "ticker": "SMRA",
       "foreign_participation_pct": 22.0,
-      "net_foreign_1d": 871597597,
-      "net_foreign_1d_formatted": "+Rp 872 Jt",
-      "net_foreign_5d": 818897849,
-      "net_foreign_5d_formatted": "+Rp 819 Jt",
-      "net_foreign_20d": -14140880329,
-      "net_foreign_20d_formatted": "-Rp 14.1 M",
-      "net_foreign_65d": -11915158521,
-      "net_foreign_65d_formatted": "-Rp 11.9 M",
+      "net_foreign_1d": 669157738,
+      "net_foreign_1d_formatted": "+Rp 669 Jt",
+      "net_foreign_5d": 616457990,
+      "net_foreign_5d_formatted": "+Rp 616 Jt",
+      "net_foreign_20d": -14343320188,
+      "net_foreign_20d_formatted": "-Rp 14.3 M",
+      "net_foreign_65d": -12117598380,
+      "net_foreign_65d_formatted": "-Rp 12.1 M",
       "status": "Neutral",
       "status_id": "Netral / Rotasi Normal",
       "badge_color": "slate",
@@ -16765,7 +16765,7 @@
         -98570769,
         0,
         45871021,
-        871597597
+        669157738
       ],
       "daily_prices": [
         282,
@@ -16832,21 +16832,21 @@
         236,
         236,
         238,
-        246
+        244
       ],
       "last_date": "2026-10-12"
     },
     "SMSM": {
       "ticker": "SMSM",
       "foreign_participation_pct": 22.0,
-      "net_foreign_1d": -14806065,
-      "net_foreign_1d_formatted": "-Rp 15 Jt",
-      "net_foreign_5d": -13627926,
-      "net_foreign_5d_formatted": "-Rp 14 Jt",
-      "net_foreign_20d": -285876158,
-      "net_foreign_20d_formatted": "-Rp 286 Jt",
-      "net_foreign_65d": -476636222,
-      "net_foreign_65d_formatted": "-Rp 477 Jt",
+      "net_foreign_1d": 0,
+      "net_foreign_1d_formatted": "Rp 0",
+      "net_foreign_5d": 1178139,
+      "net_foreign_5d_formatted": "+Rp 1 Jt",
+      "net_foreign_20d": -271070093,
+      "net_foreign_20d_formatted": "-Rp 271 Jt",
+      "net_foreign_65d": -461830157,
+      "net_foreign_65d_formatted": "-Rp 462 Jt",
       "status": "Neutral",
       "status_id": "Netral / Rotasi Normal",
       "badge_color": "slate",
@@ -17049,7 +17049,7 @@
         15765818,
         -48479081,
         9782919,
-        -14806065
+        0
       ],
       "daily_prices": [
         1710,
@@ -17116,21 +17116,21 @@
         1705,
         1685,
         1690,
-        1685
+        1690
       ],
       "last_date": "2026-10-12"
     },
     "TBIG": {
       "ticker": "TBIG",
       "foreign_participation_pct": 22.0,
-      "net_foreign_1d": -7766417,
-      "net_foreign_1d_formatted": "-Rp 8 Jt",
-      "net_foreign_5d": -11861863,
-      "net_foreign_5d_formatted": "-Rp 12 Jt",
-      "net_foreign_20d": 12022715,
-      "net_foreign_20d_formatted": "+Rp 12 Jt",
-      "net_foreign_65d": 645539006,
-      "net_foreign_65d_formatted": "+Rp 646 Jt",
+      "net_foreign_1d": -11508998,
+      "net_foreign_1d_formatted": "-Rp 12 Jt",
+      "net_foreign_5d": -15604444,
+      "net_foreign_5d_formatted": "-Rp 16 Jt",
+      "net_foreign_20d": 8280134,
+      "net_foreign_20d_formatted": "+Rp 8 Jt",
+      "net_foreign_65d": 641796425,
+      "net_foreign_65d_formatted": "+Rp 642 Jt",
       "status": "Neutral",
       "status_id": "Netral / Rotasi Normal",
       "badge_color": "slate",
@@ -17333,7 +17333,7 @@
         -622341,
         -3473105,
         0,
-        -7766417
+        -11508998
       ],
       "daily_prices": [
         1420,
@@ -17400,24 +17400,24 @@
         1425,
         1400,
         1400,
-        1375
+        1365
       ],
       "last_date": "2026-10-12"
     },
     "TLKM": {
       "ticker": "TLKM",
       "foreign_participation_pct": 42.0,
-      "net_foreign_1d": -10351080229,
-      "net_foreign_1d_formatted": "-Rp 10.4 M",
-      "net_foreign_5d": 13919379216,
-      "net_foreign_5d_formatted": "+Rp 13.9 M",
-      "net_foreign_20d": -192404756968,
-      "net_foreign_20d_formatted": "-Rp 192.4 M",
-      "net_foreign_65d": -58541413457,
-      "net_foreign_65d_formatted": "-Rp 58.5 M",
-      "status": "Moderate Inflow",
-      "status_id": "Inflow Asing",
-      "badge_color": "emerald",
+      "net_foreign_1d": -18475075862,
+      "net_foreign_1d_formatted": "-Rp 18.5 M",
+      "net_foreign_5d": 5795383583,
+      "net_foreign_5d_formatted": "+Rp 5.8 M",
+      "net_foreign_20d": -200528752601,
+      "net_foreign_20d_formatted": "-Rp 200.5 M",
+      "net_foreign_65d": -66665409090,
+      "net_foreign_65d_formatted": "-Rp 66.7 M",
+      "status": "Neutral",
+      "status_id": "Netral / Rotasi Normal",
+      "badge_color": "slate",
       "dates": [
         "10 Jul",
         "13 Jul",
@@ -17617,7 +17617,7 @@
         16596796512,
         -19500035045,
         32268887904,
-        -10351080229
+        -18475075862
       ],
       "daily_prices": [
         2480,
@@ -17684,24 +17684,24 @@
         2310,
         2260,
         2320,
-        2290
+        2280
       ],
       "last_date": "2026-10-12"
     },
     "TOWR": {
       "ticker": "TOWR",
       "foreign_participation_pct": 25.0,
-      "net_foreign_1d": -1222779291,
-      "net_foreign_1d_formatted": "-Rp 1.2 M",
-      "net_foreign_5d": 9148014438,
-      "net_foreign_5d_formatted": "+Rp 9.1 M",
-      "net_foreign_20d": 1444428397,
-      "net_foreign_20d_formatted": "+Rp 1.4 M",
-      "net_foreign_65d": 26177407002,
-      "net_foreign_65d_formatted": "+Rp 26.2 M",
-      "status": "Neutral",
-      "status_id": "Netral / Rotasi Normal",
-      "badge_color": "slate",
+      "net_foreign_1d": 0,
+      "net_foreign_1d_formatted": "Rp 0",
+      "net_foreign_5d": 10370793729,
+      "net_foreign_5d_formatted": "+Rp 10.4 M",
+      "net_foreign_20d": 2667207688,
+      "net_foreign_20d_formatted": "+Rp 2.7 M",
+      "net_foreign_65d": 27400186293,
+      "net_foreign_65d_formatted": "+Rp 27.4 M",
+      "status": "Moderate Inflow",
+      "status_id": "Inflow Asing",
+      "badge_color": "emerald",
       "dates": [
         "10 Jul",
         "13 Jul",
@@ -17901,7 +17901,7 @@
         1125565234,
         -816558177,
         7466219440,
-        -1222779291
+        0
       ],
       "daily_prices": [
         372,
@@ -17968,21 +17968,21 @@
         440,
         434,
         458,
-        452
+        458
       ],
       "last_date": "2026-10-12"
     },
     "TPIA": {
       "ticker": "TPIA",
       "foreign_participation_pct": 22.0,
-      "net_foreign_1d": -56640360777,
-      "net_foreign_1d_formatted": "-Rp 56.6 M",
-      "net_foreign_5d": -63241977112,
-      "net_foreign_5d_formatted": "-Rp 63.2 M",
-      "net_foreign_20d": -80744150601,
-      "net_foreign_20d_formatted": "-Rp 80.7 M",
-      "net_foreign_65d": 243522320053,
-      "net_foreign_65d_formatted": "+Rp 243.5 M",
+      "net_foreign_1d": -57790564832,
+      "net_foreign_1d_formatted": "-Rp 57.8 M",
+      "net_foreign_5d": -64392181167,
+      "net_foreign_5d_formatted": "-Rp 64.4 M",
+      "net_foreign_20d": -81894354656,
+      "net_foreign_20d_formatted": "-Rp 81.9 M",
+      "net_foreign_65d": 242372115998,
+      "net_foreign_65d_formatted": "+Rp 242.4 M",
       "status": "Heavy Distribution",
       "status_id": "Distribusi Besar Asing",
       "badge_color": "rose",
@@ -18185,7 +18185,7 @@
         -4287461992,
         -9415715220,
         444052705,
-        -56640360777
+        -57790564832
       ],
       "daily_prices": [
         1805,
@@ -18252,21 +18252,21 @@
         1725,
         1670,
         1675,
-        1510
+        1505
       ],
       "last_date": "2026-10-12"
     },
     "UNTR": {
       "ticker": "UNTR",
       "foreign_participation_pct": 38.0,
-      "net_foreign_1d": -1306476631,
-      "net_foreign_1d_formatted": "-Rp 1.3 M",
-      "net_foreign_5d": -12759170164,
-      "net_foreign_5d_formatted": "-Rp 12.8 M",
-      "net_foreign_20d": 2183044067,
-      "net_foreign_20d_formatted": "+Rp 2.2 M",
-      "net_foreign_65d": 42269497389,
-      "net_foreign_65d_formatted": "+Rp 42.3 M",
+      "net_foreign_1d": -3250825149,
+      "net_foreign_1d_formatted": "-Rp 3.3 M",
+      "net_foreign_5d": -14703518682,
+      "net_foreign_5d_formatted": "-Rp 14.7 M",
+      "net_foreign_20d": 238695549,
+      "net_foreign_20d_formatted": "+Rp 239 Jt",
+      "net_foreign_65d": 40325148871,
+      "net_foreign_65d_formatted": "+Rp 40.3 M",
       "status": "Moderate Outflow",
       "status_id": "Outflow Asing",
       "badge_color": "rose",
@@ -18469,7 +18469,7 @@
         -5226022913,
         -10533910858,
         1441654300,
-        -1306476631
+        -3250825149
       ],
       "daily_prices": [
         24500,
@@ -18536,21 +18536,21 @@
         25350,
         24350,
         24800,
-        24450
+        24350
       ],
       "last_date": "2026-10-12"
     },
     "UNVR": {
       "ticker": "UNVR",
       "foreign_participation_pct": 38.0,
-      "net_foreign_1d": -327646480,
-      "net_foreign_1d_formatted": "-Rp 328 Jt",
-      "net_foreign_5d": 643856025,
-      "net_foreign_5d_formatted": "+Rp 644 Jt",
-      "net_foreign_20d": -1666794406,
+      "net_foreign_1d": -344460845,
+      "net_foreign_1d_formatted": "-Rp 344 Jt",
+      "net_foreign_5d": 627041660,
+      "net_foreign_5d_formatted": "+Rp 627 Jt",
+      "net_foreign_20d": -1683608771,
       "net_foreign_20d_formatted": "-Rp 1.7 M",
-      "net_foreign_65d": -3445731618,
-      "net_foreign_65d_formatted": "-Rp 3.4 M",
+      "net_foreign_65d": -3462545983,
+      "net_foreign_65d_formatted": "-Rp 3.5 M",
       "status": "Neutral",
       "status_id": "Netral / Rotasi Normal",
       "badge_color": "slate",
@@ -18753,7 +18753,7 @@
         -104089549,
         -128630036,
         353355820,
-        -327646480
+        -344460845
       ],
       "daily_prices": [
         1730,
