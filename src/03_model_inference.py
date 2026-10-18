@@ -666,7 +666,12 @@ class QuantitativeAlphaModel:
         ranked_df.to_csv(FAVORITES_RECOMMENDATION_FILE, index=False)
         return ranked_df
 
-    def optimize_portfolio_allocation(self, df: pd.DataFrame, capital_idr: float = 50000000.0) -> pd.DataFrame:
+    def optimize_portfolio_allocation(
+        self,
+        df: pd.DataFrame,
+        capital_idr: float = 50000000.0,
+        save_output: bool = True,
+    ) -> pd.DataFrame:
         """
         Optimal Portfolio Weighting Algorithm (Sharpe-Weighted Convex Capped Weights with Cash Reserve).
         Guarantees:
@@ -693,12 +698,19 @@ class QuantitativeAlphaModel:
                 & (latest_df["Recommendation"] != "SELL ON STRENGTH")
                 & (latest_df["Sharpe_Ratio"].fillna(0.0) > 0.0)
             ].copy()
-            div_candidates = div_candidates.sort_values(
-                by=["Sharpe_Ratio", "Dividend_Yield"], ascending=[False, False]
-            )
-            needed = 4 - len(tactical_buys)
-            supplement = div_candidates.head(needed)
-            buy_candidates = pd.concat([tactical_buys, supplement], ignore_index=True)
+            if not div_candidates.empty:
+                if "Dividend_Yield" not in div_candidates.columns:
+                    div_candidates["Dividend_Yield"] = 0.0
+                else:
+                    div_candidates["Dividend_Yield"] = div_candidates["Dividend_Yield"].fillna(0.0)
+                div_candidates = div_candidates.sort_values(
+                    by=["Sharpe_Ratio", "Dividend_Yield"], ascending=[False, False]
+                )
+                needed = 4 - len(tactical_buys)
+                supplement = div_candidates.head(needed)
+                buy_candidates = pd.concat([tactical_buys, supplement], ignore_index=True)
+            else:
+                buy_candidates = tactical_buys.copy()
         else:
             buy_candidates = tactical_buys.copy()
 
@@ -718,9 +730,10 @@ class QuantitativeAlphaModel:
                 "Bullish_Probability": 0.50,
             }]
             alloc_df = pd.DataFrame(allocation_records)
-            PORTFOLIO_ALLOCATION_FILE.parent.mkdir(parents=True, exist_ok=True)
-            alloc_df.to_csv(PORTFOLIO_ALLOCATION_FILE, index=False)
-            logger.info(f"Portfolio allocation (100% Cash Reserve) saved to {PORTFOLIO_ALLOCATION_FILE}")
+            if save_output:
+                PORTFOLIO_ALLOCATION_FILE.parent.mkdir(parents=True, exist_ok=True)
+                alloc_df.to_csv(PORTFOLIO_ALLOCATION_FILE, index=False)
+                logger.info(f"Portfolio allocation (100% Cash Reserve) saved to {PORTFOLIO_ALLOCATION_FILE}")
             return alloc_df
 
         # Sort top candidates by probability and Sharpe ratio (max 5)
@@ -794,9 +807,10 @@ class QuantitativeAlphaModel:
         })
 
         alloc_df = pd.DataFrame(allocation_records)
-        PORTFOLIO_ALLOCATION_FILE.parent.mkdir(parents=True, exist_ok=True)
-        alloc_df.to_csv(PORTFOLIO_ALLOCATION_FILE, index=False)
-        logger.info(f"Portfolio allocation saved to {PORTFOLIO_ALLOCATION_FILE}")
+        if save_output:
+            PORTFOLIO_ALLOCATION_FILE.parent.mkdir(parents=True, exist_ok=True)
+            alloc_df.to_csv(PORTFOLIO_ALLOCATION_FILE, index=False)
+            logger.info(f"Portfolio allocation saved to {PORTFOLIO_ALLOCATION_FILE}")
         return alloc_df
 
 

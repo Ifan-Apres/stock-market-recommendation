@@ -536,9 +536,19 @@ class QuantitativeFeatureEngineer:
             feature_df["Market_Cap"] = feature_df["Market_Cap"].astype(float).fillna(1e9)
             feature_df["Log_Market_Cap"] = np.log(feature_df["Market_Cap"] + 1e-9)
             raw_dy = feature_df.get("Dividend_Yield", pd.Series(0.0, index=feature_df.index)).fillna(0.0)
+            feature_df["Dividend_Yield"] = raw_dy
             feature_df["Dividend_Yield_Norm"] = np.clip(raw_dy / (15.0 if raw_dy.max() > 1.0 else 0.15), 0.0, 2.0).fillna(0.0)
+            if "PB_Ratio" in feature_df.columns:
+                feature_df["PB_Ratio"] = feature_df["PB_Ratio"].astype(float).fillna(1.0)
+            if "Profit_Margin" in feature_df.columns:
+                feature_df["Profit_Margin"] = feature_df["Profit_Margin"].astype(float).fillna(0.0)
         else:
+            feature_df["Dividend_Yield"] = 0.0
             feature_df["Dividend_Yield_Norm"] = 0.0
+            feature_df["Market_Cap"] = 1e9
+            feature_df["Log_Market_Cap"] = np.log(1e9)
+            feature_df["PB_Ratio"] = 1.0
+            feature_df["Profit_Margin"] = 0.0
 
         clean_df = feature_df.dropna(subset=["SMA_200", "RSI_14"]).copy()
         clean_df.reset_index(drop=True, inplace=True)
