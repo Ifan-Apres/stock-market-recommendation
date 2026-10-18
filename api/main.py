@@ -910,9 +910,31 @@ def analyze_emiten_with_gemini(
             "analysis": precomputed_analysis,
         }
 
+    # 2b. Extract market context & domestic headlines
+    market_ctx = {}
+    if SNAPSHOT_FILE.exists():
+        try:
+            with open(SNAPSHOT_FILE, "r", encoding="utf-8") as sf:
+                market_ctx = json.load(sf)
+        except Exception:
+            pass
+    elif MORNING_BRIEF_FILE.exists():
+        try:
+            with open(MORNING_BRIEF_FILE, "r", encoding="utf-8") as mbf:
+                market_ctx = json.load(mbf)
+        except Exception:
+            pass
+
+    ihsg_str = f"IHSG: {market_ctx.get('ihsg_close', 'N/A')} ({market_ctx.get('ihsg_change_pct', 0.0):+.2f}%)" if market_ctx.get('ihsg_close') else "IHSG: N/A"
+    usd_str = f"Kurs USD/IDR: {market_ctx.get('usd_idr', 'N/A')}" if market_ctx.get('usd_idr') else ""
+    dom_news_bullets = market_ctx.get("domestic_macro_headlines", [])[:3]
+    dom_str = "; ".join(dom_news_bullets) if dom_news_bullets else "Sentimen pasar domestik stabil"
+
     # 3. Call Google Gemini 3.8 Flash with Institutional AlphaTech Prompt
     context_str = (
         f"Emiten: {clean_ticker} (IDX)\n"
+        f"Kondisi Pasar Domestik: {ihsg_str}, {usd_str}\n"
+        f"Headlines Berita Terkini Bursa Domestik: {dom_str}\n"
         f"Harga Terakhir: Rp {quant_row.get('Close', 'N/A')}\n"
         f"Rekomendasi Teknikal: {quant_row.get('Recommendation', 'BUY ON WEAKNESS')}\n"
         f"Area Beli: Rp {quant_row.get('Entry_Price', 'N/A')}, Target TP: Rp {quant_row.get('Target_Price', 'N/A')}, Stop Loss: Rp {quant_row.get('Stop_Loss', 'N/A')}\n"
@@ -929,8 +951,8 @@ def analyze_emiten_with_gemini(
         f"{context_str}\n\n"
         f"Berikan analisis tajam, elegan, dan objektif dalam format JSON murni (tanpa pembungkus markdown ```json) dengan persis 3 kunci string:\n"
         f"1. \"health_evaluation\": Ulas apakah kinerja keuangan 4–5 tahun terakhir sehat atau berisiko, konsistensi laba bersih, beban utang (DER), serta WAJIB mengevaluasi tren Pertumbuhan Pendapatan YoY. Jika mendeteksi pertumbuhan pendapatan yang negatif berturut-turut (kontraksi omzet), berikan konteks peringatan risiko objektif terhadap top-line dan jangan menyimpulkan emiten bertumbuh impresif secara buta.\n"
-        f"2. \"investor_fit\": Jelaskan apakah saham ini tergolong Blue Chip / Big Cap aman, fundamental kokoh untuk dividen/investasi panjang, atau sangat prima bagi swing trader aktif berdasarkan sinyal teknikal saat ini.\n"
-        f"3. \"verdict\": Kesimpulan eksekutif mengenai rencana tindakan, level entry, target profit, dan proteksi stop loss.\n"
+        f"2. \"investor_fit\": Jelaskan apakah saham ini tergolong Blue Chip / Big Cap aman, fundamental kokoh untuk dividen/investasi panjang, atau sangat prima bagi swing trader aktif berdasarkan sinyal teknikal saat ini. Pertimbangkan konteks makro domestik dan sentimen pasar terkini.\n"
+        f"3. \"verdict\": Kesimpulan eksekutif mengenai rencana tindakan, level entry, target profit, dan proteksi stop loss dengan mempertimbangkan beta saham terhadap sentimen bursa saat ini.\n"
         f"Gunakan Bahasa Indonesia profesional standar institusi sekuritas kelas atas. Jangan gunakan kata 'dan' berulang, hindari tanda bintang tebal (**)."
     )
 

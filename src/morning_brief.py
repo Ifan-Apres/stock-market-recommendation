@@ -501,8 +501,19 @@ class MorningBriefGenerator:
         snapshot["foreign_buy"] = top_buys
         snapshot["foreign_sell"] = top_sells
 
-        # 4. Scrape real-time macro news
+        # 4. Scrape real-time macro & domestic Indonesian market news
         snapshot["news"] = self.collect_macro_news()
+        try:
+            from src.domestic_news_scraper import fetch_domestic_market_news
+            dom_news = fetch_domestic_market_news(limit=8)
+            snapshot["domestic_news"] = dom_news.get("formatted_bullets", [])
+            snapshot["domestic_macro_headlines"] = dom_news.get("macro_headlines", [])
+            snapshot["domestic_corporate_headlines"] = dom_news.get("corporate_headlines", [])
+        except Exception as e_dom:
+            logger.warning(f"Could not fetch domestic market news: {e_dom}")
+            snapshot["domestic_news"] = []
+            snapshot["domestic_macro_headlines"] = []
+            snapshot["domestic_corporate_headlines"] = []
 
         # Collect foreign flow data
         foreign_summary_file = PROCESSED_DATA_DIR / "foreign_flow_summary.json"
@@ -567,6 +578,21 @@ class MorningBriefGenerator:
         abs_point = abs(chg_point)
         abs_pct = abs(chg_pct)
 
+        # Domestic sentiment headlines
+        domestic_bullets = snapshot.get("domestic_news", [])
+        if domestic_bullets:
+            top_headlines = "; ".join(snapshot.get("domestic_macro_headlines", [])[:2] or [b.replace("• ", "") for b in domestic_bullets[:2]])
+            domestic_sentiment_narrative = (
+                f"Dari panggung domestik, fokus pelaku pasar modal terarah pada sentimen terkini: {top_headlines}. "
+                f"Nilai tukar Rupiah berada pada kisaran {usd_idr} (JISDOR {jisdor}), sementara imbal hasil obligasi acuan SBN 10 tahun berada di level {sbn_yield}. "
+                f"Kondisi likuiditas domestik dan respon pasar terhadap arah kebijakan suku bunga Bank Indonesia menjadi jangkar penentu stabilitas saham-saham perbankan buku IV dan emiten big caps.\n\n"
+            )
+        else:
+            domestic_sentiment_narrative = (
+                f"Dari domestik, pergerakan nilai tukar Rupiah masih menjadi perhatian setelah berada di sekitar {usd_idr}, sementara JISDOR di {jisdor}. "
+                f"Yield SBN 10 tahun juga berada di level {sbn_yield}, sehingga tekanan likuiditas terhadap saham-saham big caps dan perbankan masih perlu dicermati secara disiplin.\n\n"
+            )
+
         brief_content = (
             f"Analisis IHSG - {date_str}\n\n"
             f"Pergerakan IHSG\n"
@@ -580,11 +606,9 @@ class MorningBriefGenerator:
             f"Untuk perdagangan hari ini, IHSG diperkirakan bergerak fluktuatif dengan kecenderungan melemah terbatas pada kisaran {s2_str}–{r2_str}, "
             f"meskipun peluang technical rebound tetap terbuka. Wall Street kembali terkoreksi tipis dengan Dow Jones {dow_chg}, S&P 500 {sp_chg}, dan Nasdaq {nasdaq_chg}, "
             f"sementara yield US Treasury 10 tahun sempat mencapai {ust_yield}. "
-            f"Namun, komentar Presiden The Fed New York John Williams yang menyatakan tidak ada urgensi untuk segera menaikkan suku bunga kembali menurunkan probabilitas kenaikan Fed Rate Oktober. "
-            f"Pasar hari ini akan mencermati rilis data inflasi PCE AS.\n\n"
-            f"Tekanan dari energi sedikit mereda setelah Brent berada di kisaran {brent_oil}, seiring tanda-tanda pemulihan ekspor minyak internasional. "
-            f"Dari domestik, Rupiah masih menjadi perhatian setelah ditutup sekitar {usd_idr}, sementara JISDOR berada di sekitar {jisdor}. "
-            f"Yield SBN 10 tahun juga kembali berada di sekitar {sbn_yield}, sehingga tekanan terhadap saham-saham big caps dan perbankan masih perlu dicermati.\n\n"
+            f"Pasar global masih mengantisipasi arah suku bunga The Fed dan rilis indikator inflasi AS.\n\n"
+            f"Tekanan dari energi sedikit mereda setelah Brent berada di kisaran {brent_oil}, seiring dinamika pasokan minyak internasional. "
+            f"{domestic_sentiment_narrative}"
             f"Net Foreign Buy\n"
             f"{foreign_buy_lines}\n\n"
             f"Net Foreign Sell\n"
@@ -604,21 +628,21 @@ class MorningBriefGenerator:
             f"Sebaliknya, breakdown di bawah {s2_str} akan memperburuk struktur jangka pendek dan membuka risiko koreksi menuju {format_idr_num(s2_int - 50)}.\n\n"
             f"Untuk perdagangan hari ini, strategi lebih tepat selective buy on weakness dengan menunggu konfirmasi reversal, "
             f"terutama apabila IHSG kembali menguji {format_idr_num(s2_int + 50)}–{s1_str} tetapi mampu membentuk rejection positif. "
-            f"Penurunan harga minyak dan meredanya ekspektasi kenaikan suku bunga The Fed menjadi faktor penahan tekanan, "
-            f"tetapi UST 10Y di level {ust_yield}, Rupiah sekitar {usd_idr}, SBN 10Y naik ke {sbn_yield}, serta foreign outflow yang masih berlangsung membuat rebound kemungkinan tetap volatil. "
+            f"Penurunan harga minyak dan dinamika pasar obligasi menjadi faktor penahan tekanan, "
+            f"tetapi UST 10Y di level {ust_yield}, Rupiah sekitar {usd_idr}, SBN 10Y di {sbn_yield}, serta foreign outflow yang masih berlangsung membuat rebound kemungkinan tetap volatil. "
             f"Dengan demikian, bias utama masih sideways-bearish dengan peluang technical rebound, dan konfirmasi pemulihan baru lebih kuat apabila IHSG mampu kembali melewati {r1_str}–{r2_str}."
         )
 
         return {
             "sp500_badge": "Sikap Waspada Wall Street",
-            "sp500_desc": f"Wall Street terkoreksi tipis (S&P 500 {sp_chg}, Dow Jones {dow_chg}) mencerminkan sikap wait-and-see terhadap rilis data PCE inflasi AS dan yield US Treasury {ust_yield}.",
-            "brent_badge": "Minyak Bertahan di Atas US$100",
-            "brent_desc": f"Minyak mentah Brent berada di kisaran {brent_oil}. Tanda-tanda pemulihan pasokan meredakan ketegangan, namun tetap menjadi perhatian bagi beban subsidi energi domestik.",
-            "usd_idr_badge": "Volatilitas Nilai Tukar",
-            "usd_idr_desc": f"Kurs Rupiah berada pada kisaran {usd_idr} dengan yield SBN 10Y naik ke {sbn_yield}, menuntut kewaspadaan terhadap likuiditas pasar modal dan sektor perbankan.",
+            "sp500_desc": f"Wall Street bergerak moderat (S&P 500 {sp_chg}, Dow Jones {dow_chg}) mencerminkan sikap wait-and-see terhadap arah suku bunga The Fed dan yield US Treasury {ust_yield}.",
+            "brent_badge": "Dinamika Komoditas Energi",
+            "brent_desc": f"Minyak mentah Brent berada di kisaran {brent_oil}, menjadi variabel penentu bagi neraca dagang migas dan biaya subsidi energi domestik.",
+            "usd_idr_badge": "Stabilitas Rupiah & SBN",
+            "usd_idr_desc": f"Kurs Rupiah berada pada kisaran {usd_idr} dengan yield SBN 10Y di level {sbn_yield}, menuntut kewaspadaan terhadap likuiditas pasar modal dan sektor perbankan.",
             "key_takeaways": [
                 f"🎯 Arah Indeks: IHSG menguji rentang support {snapshot['ihsg_support']} hingga resistance {snapshot['ihsg_resistance']} di sekitar level psikologis {s2_str}.",
-                f"🌐 Katalis Global: Pergerakan bursa Wall Street ({sp_chg}) dan yield US Treasury 10Y ({ust_yield}) menjadi faktor penekan sentimen global.",
+                f"🌐 Katalis Global: Pergerakan bursa Wall Street ({sp_chg}) dan yield US Treasury 10Y ({ust_yield}) menjadi faktor penentu appetite aset berisiko.",
                 f"⚠️ Risiko Makro: Fluktuasi kurs Rupiah ({usd_idr}) dan yield SBN ({sbn_yield}) masih memicu arus keluar dana asing (foreign outflow).",
                 "💼 Panduan Taktis: Disiplin alokasi kas dan strategi Selective Buy on Weakness pada saham likuid yang membentuk bullish rejection di area support."
             ],
@@ -639,6 +663,7 @@ class MorningBriefGenerator:
         date_str = snapshot.get("date", "30 September 2026")
         title = f"Analisis IHSG - {date_str}"
         news_dict = snapshot.get("news", {})
+        domestic_bullets_text = "\n".join(snapshot.get("domestic_news", [])) or "• Stabilitas nilai tukar Rupiah dan arah kebijakan moneter Bank Indonesia (Bank Indonesia & BEI)"
 
         # Try Gemini API if key is available
         parsed_data = None
@@ -655,7 +680,7 @@ Pergerakan IHSG
 [Ulasan narasi komprehensif mengenai penutupan IHSG perdagangan sebelumnya: open, high, low, close, poin dan persentase naik/turun, nilai transaksi (Turnover Rupiah), volume transaksi (lembar dan lot saham), frekuensi transaksi, perbandingan saham menguat, melemah, dan stagnan, serta net foreign buy/sell di pasar reguler.
 Lalu proyeksi perdagangan hari ini: rentang pergerakan support-resisten, katalis bursa Wall Street (Dow Jones, S&P 500, Nasdaq), yield US Treasury 10 tahun, komentar pejabat The Fed / probabilitas suku bunga Fed Rate, data inflasi AS (PCE/CPI).
 Katalis komoditas energi (Minyak Brent).
-Katalis domestik: Nilai tukar Rupiah (spot USD/IDR dan JISDOR), yield obligasi SBN 10 tahun, serta implikasinya terhadap saham-saham big caps dan perbankan.]
+Katalis & Sentimen Domestik Indonesia: Nilai tukar Rupiah (spot USD/IDR dan JISDOR), yield obligasi SBN 10 tahun, serta WAJIB menganalisis sentimen pasar modal Indonesia terkini dari berita finansial domestik hari ini (arah kebijakan Bank Indonesia, stabilitas moneter, sentimen regulasi OJK/BEI, dan aksi korporasi emiten lokal) serta implikasinya terhadap saham-saham big caps dan perbankan.]
 
 Net Foreign Buy
 1. [Ticker] - [Nominal/Rp]
@@ -697,6 +722,9 @@ DATA FAKTA PASAR HARI INI:
 - Yield SBN 10Y: {snapshot['sbn_10y_yield']}
 - Pivot Levels: Support {snapshot['ihsg_support']} | Resistance {snapshot['ihsg_resistance']} | S1 {snapshot['ihsg_s1']} | S2 {snapshot['ihsg_s2']} | R1 {snapshot['ihsg_r1']} | R2 {snapshot['ihsg_r2']}
 
+BERITA & SENTIMEN PASAR DOMESTIK INDONESIA TERKINI:
+{domestic_bullets_text}
+
 Top Net Foreign Buy:
 {json.dumps(snapshot.get('foreign_buy', []), ensure_ascii=False)}
 
@@ -716,11 +744,11 @@ Kembalikan respon HANYA dalam format JSON valid (tanpa teks pembuka atau markdow
   "brent_badge": "Label status minyak Brent 2-4 kata",
   "brent_desc": "Analisis harga minyak Brent dan pengaruhnya (1-2 kalimat)",
   "usd_idr_badge": "Label status kurs Rupiah 2-4 kata",
-  "usd_idr_desc": "Analisis kurs Rupiah dan yield SBN (1-2 kalimat)",
+  "usd_idr_desc": "Analisis kurs Rupiah, yield SBN, dan sentimen domestik (1-2 kalimat)",
   "key_takeaways": [
     "🎯 Arah Indeks: Ringkasan proyeksi pergerakan IHSG",
-    "🌐 Katalis Global: Ringkasan pengaruh Wall Street dan yield US Treasury",
-    "⚠️ Risiko Makro: Ringkasan risiko nilai tukar dan komoditas",
+    "🌐 Katalis Global: Ringkasan pengaruh Wall Street dan komoditas",
+    "⚠️ Risiko Makro: Ringkasan risiko nilai tukar, suku bunga BI, dan likuiditas domestik",
     "💼 Panduan Taktis: Rekomendasi aksi alokasi portofolio"
   ],
   "brief_content": "Teks lengkap laporan Analisis IHSG sesuai struktur wajib di atas (tanpa tanda asterisk tebal ganda ** berlebihan)."
@@ -819,6 +847,8 @@ Kembalikan respon HANYA dalam format JSON valid (tanpa teks pembuka atau markdow
             "foreign_sell": snapshot.get("foreign_sell", []),
             "sectors_gaining": snapshot.get("sectors_gaining", []),
             "sectors_declining": snapshot.get("sectors_declining", []),
+            "domestic_news": snapshot.get("domestic_news", []),
+            "domestic_macro_headlines": snapshot.get("domestic_macro_headlines", []),
             "snapshot": snapshot,
         }
 

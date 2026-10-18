@@ -26,8 +26,10 @@ from src.config import (  # type: ignore # pyrefly: ignore [missing-import]
     FOREIGN_FLOW_FILE,
     FUNDAMENTAL_DATA_FILE,
     LOG_FORMAT,
+    MORNING_BRIEF_FILE,
     PRICE_HISTORY_FILE,
     PROCESSED_DATA_FILE,
+    SNAPSHOT_FILE,
     SWING_TICKERS,
     WATCHLIST_ANALYSIS_FILE,
 )
@@ -153,6 +155,22 @@ class StockWatchlistAnalyzer:
         self.price_history = self._load_price_history()
         self.foreign_summary = self._load_foreign_summary()
         self.financials_summary = self._load_financials_summary()
+        self.market_context = self._load_market_context()
+
+    def _load_market_context(self) -> Dict[str, Any]:
+        if SNAPSHOT_FILE.exists():
+            try:
+                with open(SNAPSHOT_FILE, "r", encoding="utf-8") as f:
+                    return json.load(f)
+            except Exception as e:
+                logger.debug(f"Could not read snapshot for market context: {e}")
+        if MORNING_BRIEF_FILE.exists():
+            try:
+                with open(MORNING_BRIEF_FILE, "r", encoding="utf-8") as f:
+                    return json.load(f)
+            except Exception as e:
+                logger.debug(f"Could not read morning brief for market context: {e}")
+        return {}
 
     def _load_fundamental_data(self) -> pd.DataFrame:
         if FUNDAMENTAL_DATA_FILE.exists():
@@ -560,6 +578,7 @@ class StockWatchlistAnalyzer:
         last_candle: Dict[str, float],
         net_foreign_5d: float,
         net_foreign_5d_formatted: str,
+        sector: str = "General",
     ) -> str:
         """
         Dynamically crafts an institutional-grade Indonesian technical analysis narrative
@@ -729,7 +748,45 @@ class StockWatchlistAnalyzer:
             f"{rsi_desc}, {macd_desc}. {ff_desc}, tetapi skenario {skenario_name} akan kehilangan validitas apabila harga close di bawah Rp {fmt_idr(cut_loss)}."
         )
 
-        return f"{par1}\n\n{par2}"
+        # 3. Market Beta & Domestic Macro Context Bridge
+        ihsg_pct = self.market_context.get("ihsg_change_pct", 0.0)
+        ihsg_close = self.market_context.get("ihsg_close", 0.0)
+        usd_idr = self.market_context.get("usd_idr", "")
+        brent_oil = self.market_context.get("brent_oil", "")
+        domestic_headlines = self.market_context.get("domestic_macro_headlines", [])
+
+        # Sectoral transmission logic
+        sec_lower = sector.lower()
+        if any(w in sec_lower for w in ["energy", "coal", "oil", "gas", "minyak", "tambang", "basic"]):
+            catalyst_note = f"Sensitivitas terhadap pergerakan komoditas acuan global ({brent_oil if brent_oil else 'energi/logam'}) dan sentimen hilirisasi domestik menjadi faktor katalis eksternal utama."
+        elif any(w in sec_lower for w in ["bank", "finan"]):
+            catalyst_note = "Sebagai emiten berkapitalisasi besar di sektor keuangan, pergerakan saham sangat sensitif terhadap transmisi suku bunga Bank Indonesia (BI Rate), ekspektasi likuiditas perbankan, dan stabilitas imbal hasil SBN."
+        elif any(w in sec_lower for w in ["consumer", "retail", "fmcg"]):
+            catalyst_note = f"Dinamika kurs rupiah ({usd_idr if usd_idr else 'USD/IDR'}) dan daya beli domestik menjadi transmisi fundamental krusial bagi biaya bahan baku impor maupun stabilitas margin operasional."
+        elif any(w in sec_lower for w in ["tech", "telecom", "digital"]):
+            catalyst_note = "Sentimen sektor teknologi dan infrastruktur digital bursa domestik dipengaruhi oleh rotasi likuiditas risk-on/risk-off global serta tren efisiensi belanja modal (capex)."
+        elif any(w in sec_lower for w in ["property", "real"]):
+            catalyst_note = "Arah kebijakan suku bunga KPR dan insentif fiskal properti pemerintah menjadi katalis penentu laju marketing sales dan perputaran kas pengembang."
+        else:
+            catalyst_note = f"Sentimen bursa domestik dan stabilitas nilai tukar Rupiah ({usd_idr if usd_idr else 'USD/IDR'}) membingkai trajektori pergerakan saham ini dalam jangka pendek."
+
+        matched_headline = ""
+        for h in domestic_headlines:
+            if ticker in h or any(w in h.lower() for w in [ticker.lower(), sector.lower()]):
+                matched_headline = f" Dari lantai bursa, sentimen terkini mencatat: '{h}'."
+                break
+        if not matched_headline and domestic_headlines:
+            matched_headline = f" Pelaku pasar juga mencermati perkembangan makro domestik terkini: '{domestic_headlines[0]}'."
+
+        ihsg_desc = f"IHSG tercatat berada di level {fmt_dec(ihsg_close, 1)} ({'+' if ihsg_pct >= 0 else ''}{fmt_dec(ihsg_pct, 2)}%)" if ihsg_close > 0 else "kondisi bursa domestik"
+
+        par3 = (
+            f"Dalam konteks makro dan sektoral ({sector}), saham ini bergerak di tengah {ihsg_desc}. "
+            f"{catalyst_note}{matched_headline} "
+            f"Pelaku pasar disarankan tetap disiplin pada level risiko yang terukur serta mengantisipasi volatilitas arus dana institusi."
+        )
+
+        return f"{par1}\n\n{par2}\n\n{par3}"
 
     def _generate_fundamental_sections(
         self,
@@ -867,6 +924,7 @@ class StockWatchlistAnalyzer:
             last_candle=last_candle,
             net_foreign_5d=net_foreign_5d,
             net_foreign_5d_formatted=net_foreign_5d_formatted,
+            sector=sector,
         )
 
         levels = {
