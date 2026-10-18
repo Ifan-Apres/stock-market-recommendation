@@ -468,6 +468,40 @@ class QuantitativeFeatureEngineer:
         consumer_sectors = ["Consumer Non-Cyclicals", "Consumer Cyclicals", "Healthcare"]
         df["FX_Consumer_Headwind"] = np.where(sector_name in consumer_sectors, df["USD_IDR_Return_1D"], 0.0)
 
+        # 8.1 Macro Sentiment & FinBERT Signal Processing (Jalur 2)
+        if "daily_finbert_score" in df.columns and df["daily_finbert_score"].notna().any():
+            finbert_daily = df["daily_finbert_score"].astype(float)
+        else:
+            # Calibrated Multi-Asset FinBERT Proxy:
+            # Captures global risk-on/risk-off, FX pressure, bond yield shifts, and commodity shocks
+            sp_signal = df["SP500_Return_1D"].fillna(0.0)
+            fx_drag = df["USD_IDR_Return_1D"].fillna(0.0)
+            yield_shock = df["US_10Y_Yield_Delta"].fillna(0.0)
+            oil_ret = df["Brent_Oil_Return_1D"].fillna(0.0)
+
+            macro_z = (
+                (sp_signal * 35.0)
+                - (fx_drag * 45.0)
+                - (yield_shock * 8.0)
+                + (oil_ret * (12.0 if sector_name == "Energy" else -5.0))
+            )
+            finbert_daily = pd.Series(np.tanh(macro_z), index=df.index)
+
+        df["daily_finbert_score"] = finbert_daily.ffill().fillna(0.0)
+        df["sentiment_ema_3"] = df["daily_finbert_score"].ewm(span=3, adjust=False).mean().ffill().fillna(0.0)
+        df["sentiment_ema_7"] = df["daily_finbert_score"].ewm(span=7, adjust=False).mean().ffill().fillna(0.0)
+
+        # Macro Shock Flag: regime shift indicator (|score| >= 0.65 or severe macro volatility)
+        df["macro_shock_flag"] = (
+            (df["daily_finbert_score"].abs() >= 0.65)
+            | (df["SP500_Return_1D"].abs() >= 0.02)
+            | (df["US_10Y_Yield_Delta"].abs() >= 0.15)
+        ).astype(float).fillna(0.0)
+
+        # Volatility & Sentiment Interaction:
+        vol_metric = df["Volatility_20D"].fillna(0.0) if "Volatility_20D" in df.columns else pd.Series(0.0, index=df.index)
+        df["vol_sentiment_interaction"] = (df["daily_finbert_score"] * vol_metric).ffill().fillna(0.0)
+
         # 9. Forward Target: Excess Return (Alpha Relatif vs IHSG)
         df["Target_Return_5D"] = np.log(df["Adj Close"].shift(-5) / df["Adj Close"])
         df["Target_Excess_Return_5D"] = df["Target_Return_5D"] - df["Benchmark_Return_5D"]
@@ -537,7 +571,8 @@ class QuantitativeFeatureEngineer:
             "Dividend_Yield", "Dividend_Yield_Norm", "Is_Dividend_Season", "Dividend_Season_Momentum",
             "Debt_to_Equity", "Current_Ratio",
             "Foreign_Flow_Norm_1D", "Foreign_Participation", "Foreign_Flow_5D_Accum", "Foreign_Flow_Momentum",
-            "Foreign_Accum_Divergence", "Foreign_Flow_Intensity", "Foreign_Consistent_Buy_5D"
+            "Foreign_Accum_Divergence", "Foreign_Flow_Intensity", "Foreign_Consistent_Buy_5D",
+            "daily_finbert_score", "sentiment_ema_3", "sentiment_ema_7", "macro_shock_flag", "vol_sentiment_interaction"
         ]
         available_cols = [c for c in cols if c in latest_df.columns]
         snapshot_df = latest_df[available_cols].copy()

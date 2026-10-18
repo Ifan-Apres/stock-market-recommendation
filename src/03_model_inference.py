@@ -83,6 +83,11 @@ FEATURE_COLUMNS = [
     "Foreign_Accum_Divergence",
     "Foreign_Flow_Intensity",
     "Foreign_Consistent_Buy_5D",
+    "daily_finbert_score",
+    "sentiment_ema_3",
+    "sentiment_ema_7",
+    "macro_shock_flag",
+    "vol_sentiment_interaction",
 ]
 
 LSTM_FEATURE_COLS = [
@@ -102,6 +107,9 @@ LSTM_FEATURE_COLS = [
     "Foreign_Flow_5D_Accum",
     "Foreign_Accum_Divergence",
     "Is_Dividend_Season",
+    "daily_finbert_score",
+    "sentiment_ema_3",
+    "vol_sentiment_interaction",
 ]
 TARGET_COLUMN = "Target_Class_5D"
 MODEL_PATH = DATA_DIR / "processed" / "alpha_model.joblib"
