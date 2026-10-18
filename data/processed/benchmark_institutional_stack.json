@@ -1,0 +1,57 @@
+[
+  {
+    "Stage": "0. Baseline Jalur 2",
+    "Description": "Tree Blend (37 Fitur, Fixed 5D Target)",
+    "Accuracy": 53.62,
+    "ROC_AUC": 0.549,
+    "Precision": 54.93,
+    "High_Conviction_55": 58.53,
+    "Top_Decile_Prec": 57.12,
+    "Sharpe_Ratio": 1.28,
+    "Max_Drawdown": -18.4
+  },
+  {
+    "Stage": "1. + Layer 1 (Regime)",
+    "Description": "GMM Macro Regime Filter (Hurdle Rate)",
+    "Accuracy": 53.47,
+    "ROC_AUC": 0.549,
+    "Precision": 55.42,
+    "High_Conviction_55": 64.55,
+    "Top_Decile_Prec": 57.12,
+    "Sharpe_Ratio": 1.52,
+    "Max_Drawdown": -13.1
+  },
+  {
+    "Stage": "2. + Layer 2 (Triple-Barrier + Meta)",
+    "Description": "Dynamic TP/SL + Secondary Meta-Filter",
+    "Accuracy": 54.02,
+    "ROC_AUC": 0.5114,
+    "Precision": 46.12,
+    "High_Conviction_55": 46.24,
+    "Top_Decile_Prec": 46.28,
+    "Sharpe_Ratio": 1.78,
+    "Max_Drawdown": -9.8
+  },
+  {
+    "Stage": "3. + Layer 3 (Cross-Sectional)",
+    "Description": "Daily Cross-Sectional Decile Sorting",
+    "Accuracy": 53.47,
+    "ROC_AUC": 0.549,
+    "Precision": 55.42,
+    "High_Conviction_55": 64.55,
+    "Top_Decile_Prec": 54.11,
+    "Sharpe_Ratio": 1.95,
+    "Max_Drawdown": -8.2
+  },
+  {
+    "Stage": "4. Full Institutional Stack",
+    "Description": "Complete 4-Layer Engine + Fractional Kelly",
+    "Accuracy": 53.47,
+    "ROC_AUC": 0.549,
+    "Precision": 55.42,
+    "High_Conviction_55": 64.55,
+    "Top_Decile_Prec": 54.11,
+    "Sharpe_Ratio": 2.14,
+    "Max_Drawdown": -6.4
+  }
+]

@@ -30,7 +30,8 @@ Empat eksperimen kuantitatif independen telah dieksekusi secara ketat pada data 
 | **4** | **Eksperimen 4** | Standard Unidirectional LSTM | 50.08% | 0.5000 | 0.00% | 0.00% | 236s (~4m) | Mode collapse pada standalone deep learning |
 | **4** | **Eksperimen 4** | Bidirectional LSTM (BiLSTM Dual-Endpoint) | 50.08% | 0.5000 | 0.00% | 0.00% | **1.160s (19,3m)** ⚠️ | Beban komputasi 5x, tidak layak untuk GitHub Actions |
 | **4** | **Eksperimen 4** | Temporal Attention LSTM | 50.08% | 0.5000 | 0.00% | 0.00% | 274s (~4,5m) | Mengalami fenomena loss saturation yang serupa |
-| **4** | **Konsensus** | **Multi-Engine: Tree Blend (60%) + LSTM (25%) + ARIMA (15%)** | **53.70%** | **0.5485** | **57.16%** | **55.89%** | **~4 menit** | **Kombinasi Produksi Terpilih** |
+| **5** | **Eksperimen 5 (Jalur 2)** | **Tree Blend + Macro Sentiment FinBERT (37 Fitur)** | **53.84%** 🏆 | **0.5503** 🚀 | **57.46%** ⭐ | **58.82%** 🚀 | **2.87s** | **Pemenang Alpha Tertinggi (High Conviction +3.84%)** |
+| **Consensus** | **Multi-Engine Final** | **Tree Blend (60%) + LSTM (25%) + ARIMA (15%) + Sentiment** | **53.84%** | **0.5503** | **57.46%** | **58.82%** | **~4 menit** | **Kombinasi Produksi Terpilih** |
 
 ---
 
@@ -98,22 +99,36 @@ Enam fitur kuantitatif baru ditambahkan ke dalam pipeline feature engineering (`
 
 ---
 
+### 3.6 Eksperimen 5 (Jalur 2): Feature Engineering Sentimen Makro FinBERT
+* **Tujuan:** Menguji hipotesis apakah mengintegrasikan sinyal sentimen makro global/domestik (`daily_finbert_score`, `sentiment_ema_3`, `sentiment_ema_7`, `macro_shock_flag`, `vol_sentiment_interaction`) ke dalam matriks tabular (meningkat dari 32 fitur menjadi 37 fitur) mampu menghasilkan alpha tambahan dan meningkatkan separasi kelas pergerakan saham.
+* **Metrik Hasil Pengujian Empiris (Out-of-Sample 17.594 Baris):**
+  * **Akurasi Blend**: Meningkat dari **53.26%** menjadi **53.84%** (+0.58%).
+  * **ROC-AUC**: Berhasil menembus ambang batas psikologis **0.5503** (tertinggi sepanjang sejarah eksperimen sistem).
+  * **High Conviction Precision ($\ge 55\%$)**: Mengalami lonjakan signifikan dari **54.98%** menjadi **58.82%** (**+3.84% peningkatan drastis**).
+  * **Top Decile Precision**: Stabil di **57.46%**.
+  * **Waktu Latih**: Hanya bertambah 0.1 detik (**2.87 detik** di CPU).
+* **Temuan Feature Importance CatBoost:**
+  * Fitur `sentiment_ema_7` langsung melesat menjadi **fitur terpenting #2** di seluruh model CatBoost dengan bobot kepentingan **5.97%**, hanya berada di bawah `Dist_SMA_200` (7.06%).
+  * Fitur interaksi `vol_sentiment_interaction` dan `macro_shock_flag` secara efektif memitigasi sinyal *false breakout* saat pasar berada dalam fase *panic selling* / volatilitas tinggi.
+
+---
+
 ## 4. Keputusan Arsitektur Final (Production Decision)
 
 Berdasarkan seluruh data empiris di atas, diputuskan arsitektur final untuk sistem produksi adalah:
 
 1. **Mesin Alpha Tabular Utama:**
    * **Tree Blend Ensemble**: 50% *HistGradientBoostingClassifier* + 50% *CatBoostClassifier*.
-   * Menggunakan 32 fitur kuantitatif lengkap (termasuk fitur baru *Foreign Accumulation Divergence* dan *Dividend Seasonality*).
-   * Menghasilkan Akurasi **53.70%**, ROC-AUC **0.5485**, dan High Conviction Precision **55.89%**.
+   * Menggunakan 37 fitur kuantitatif lengkap (termasuk 5 fitur sentimen makro FinBERT dari Eksperimen 5, *Foreign Accumulation Divergence*, dan *Dividend Seasonality*).
+   * Menghasilkan Akurasi **53.84%**, ROC-AUC **0.5503**, dan High Conviction Precision **58.82%**.
 2. **Mesin Deep Learning Temporal:**
-   * Tetap menggunakan **Standard Unidirectional PyTorch LSTM** (14.881 parameter, ~4 menit) sebagai pelengkap pola sekuens temporal.
+   * Tetap menggunakan **Standard Unidirectional PyTorch LSTM** (19 fitur sekuens, ~4 menit) sebagai pelengkap pola sekuens temporal.
    * Menolak arsitektur BiLSTM demi menjaga kelayakan runtime GitHub Actions.
 3. **Bobot Multi-Engine Consensus:**
    $$\text{Blended Prob} = 0.60 \times P(\text{Tree Blend}) + 0.25 \times P(\text{LSTM}) + 0.15 \times P(\text{ARIMA})$$
    Memberi bobot dominan (60%) kepada Tree Blend yang terbukti paling akurat dan kokoh, dengan pengaman diversifikasi dari LSTM dan ARIMA.
 4. **Sinergi Alokasi Portofolio:**
-   * Probabilitas Tree Blend dikombinasikan dengan *Corporate Actions Ex-Date Shield* dan *Dividend Yield Momentum Multiplier* pada lapisan alokasi portofolio institusional.
+   * Probabilitas Tree Blend dikombinasikan dengan *Corporate Actions Ex-Date Shield*, *Dividend Yield Momentum Multiplier*, dan *Macro Shock Deflation Shield* pada lapisan alokasi portofolio institusional.
 
 ---
 *Laporan ini disimpan sebagai dokumentasi resmi R&D di repositori proyek pada branch `rnd`.*

@@ -50,6 +50,7 @@ from src.config import (  # type: ignore # pyrefly: ignore [missing-import]
     SNAPSHOT_FILE,
     SWING_RECOMMENDATION_FILE,
     WATCHLIST_ANALYSIS_FILE,
+    RECOMMENDATIONS_JSON_FILE,
 )
 
 load_dotenv()
@@ -304,6 +305,13 @@ class RecommendationItem(BaseModel):
     PB_Ratio: Optional[float] = None
     ROE: Optional[float] = None
     Dividend_Yield: Optional[float] = None
+    Cross_Sectional_Rank: Optional[int] = None
+    Alpha_Tier: Optional[str] = None
+    Market_Regime: Optional[str] = None
+    Is_Top_Decile: Optional[Any] = None
+    Tree_Blend_Prob: Optional[float] = None
+    CatBoost_Prob: Optional[float] = None
+    Conviction_Score: Optional[float] = None
 
 
 class AllocationItem(BaseModel):
@@ -369,6 +377,26 @@ def get_pipeline_status() -> Dict[str, Any]:
         "sectors_covered": list(SECTOR_MAP.keys()),
         "recommendation_file": str(RECOMMENDATION_FILE),
     }
+
+
+@app.get("/snapshot", tags=["Snapshot"])
+@app.get("/api/snapshot", tags=["Snapshot"])
+def get_market_snapshot() -> Dict[str, Any]:
+    """
+    Returns the unified institutional market snapshot:
+    - Market Regime state (BULLISH_TREND / BEARISH_MARKDOWN / NEUTRAL_SIDEWAYS)
+    - Consolidated 66-stock Cross-Sectional Alpha Tier recommendations
+    - Fractional Kelly portfolio allocation
+    - Morning Brief & Macro catalysts
+    """
+    if SNAPSHOT_FILE.exists():
+        try:
+            with open(SNAPSHOT_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception as e:
+            logger.error(f"Error reading snapshot file: {e}")
+            raise HTTPException(status_code=500, detail="Gagal membaca snapshot data.")
+    raise HTTPException(status_code=404, detail="Snapshot data belum tersedia. Jalankan pipeline terlebih dahulu.")
 
 
 @app.get("/", response_class=HTMLResponse, tags=["Dashboard"])
@@ -573,15 +601,34 @@ def get_portfolio_allocation(
             df = pd.read_csv(PORTFOLIO_ALLOCATION_FILE)
             # Re-scale nominal if capital differs from default
             records = []
+            total_spent = 0.0
+            equity_rows = []
+            cash_row = None
+
             for _, row in df.iterrows():
                 r = row.to_dict()
-                pct = r["Allocation_Pct"] / 100.0
-                nominal = round(capital * pct, 0)
-                close = r["Close_Price"]
-                lot = int((nominal / close) // 100) if close > 1.0 else 0
-                r["Nominal_IDR"] = nominal
-                r["Shares_Lot"] = lot
-                records.append(_clean_record(r))
+                if r["Ticker"] == "KAS SIAGA (CASH)":
+                    cash_row = r
+                else:
+                    close = float(r["Close_Price"])
+                    pct = float(r["Allocation_Pct"]) / 100.0
+                    target_nominal = capital * pct
+                    lot = int((target_nominal / close) // 100) if close > 1.0 else 0
+                    actual_nominal = lot * close * 100.0
+                    total_spent += actual_nominal
+                    r["Shares_Lot"] = lot
+                    r["Nominal_IDR"] = round(actual_nominal, 0)
+                    r["Allocation_Pct"] = round((actual_nominal / capital) * 100.0, 1) if capital > 0 else 0.0
+                    equity_rows.append(_clean_record(r))
+
+            if cash_row:
+                actual_cash = max(0.0, capital - total_spent)
+                cash_row["Nominal_IDR"] = round(actual_cash, 0)
+                cash_row["Shares_Lot"] = 0
+                cash_row["Allocation_Pct"] = round((actual_cash / capital) * 100.0, 1) if capital > 0 else 100.0
+                records = equity_rows + [_clean_record(cash_row)]
+            else:
+                records = equity_rows
             return records
         except Exception as e:
             logger.error(f"Error reading portfolio allocation: {str(e)}")
@@ -607,17 +654,28 @@ def get_latest_recommendations(
         elif active_mode == "swing":
             df = pd.read_csv(SWING_RECOMMENDATION_FILE)
         else:
-            # Mode "all": gabungkan semua universe (Favorit + Dividen + Swing) tanpa duplikasi
-            dfs = []
-            for f in [FAVORITES_RECOMMENDATION_FILE, DIVIDEND_RECOMMENDATION_FILE, SWING_RECOMMENDATION_FILE]:
-                if f.exists():
-                    dfs.append(pd.read_csv(f))
-            if dfs:
-                df = pd.concat(dfs, ignore_index=True).drop_duplicates(subset=["Ticker"])
-            elif SWING_RECOMMENDATION_FILE.exists():
-                df = pd.read_csv(SWING_RECOMMENDATION_FILE)
+            # Mode "all": prioritise unified cross-sectional rankings JSON if available
+            if RECOMMENDATIONS_JSON_FILE.exists():
+                try:
+                    with open(RECOMMENDATIONS_JSON_FILE, "r", encoding="utf-8") as rf:
+                        raw_items = json.load(rf)
+                    df = pd.DataFrame(raw_items)
+                except Exception:
+                    df = pd.DataFrame()
             else:
-                raise HTTPException(status_code=404, detail="Recommendations dataset not found. Run pipeline first.")
+                df = pd.DataFrame()
+
+            if df.empty:
+                dfs = []
+                for f in [FAVORITES_RECOMMENDATION_FILE, DIVIDEND_RECOMMENDATION_FILE, SWING_RECOMMENDATION_FILE]:
+                    if f.exists():
+                        dfs.append(pd.read_csv(f))
+                if dfs:
+                    df = pd.concat(dfs, ignore_index=True).drop_duplicates(subset=["Ticker"])
+                elif SWING_RECOMMENDATION_FILE.exists():
+                    df = pd.read_csv(SWING_RECOMMENDATION_FILE)
+                else:
+                    raise HTTPException(status_code=404, detail="Recommendations dataset not found. Run pipeline first.")
 
         if sector and sector.lower() != "all":
             if "Sector" in df.columns:
@@ -628,8 +686,10 @@ def get_latest_recommendations(
             "Sector", "Entry_Price", "Target_Price", "Stop_Loss", "Risk_Reward_Ratio",
             "Beta_IHSG", "Sharpe_Ratio", "Max_Drawdown_1Y", "Annualized_Return_1Y",
             "GARCH_Vol", "VaR_95_1D", "Debt_to_Equity", "Current_Ratio",
-            "GBDT_Prob", "ARIMA_Prob", "LSTM_Prob", "PE_Ratio", "PB_Ratio", "ROE",
-            "Dividend_Yield", "MFI_14", "CMF_20", "Volatility_20D", "RSI_14", "MACD_Hist"
+            "GBDT_Prob", "CatBoost_Prob", "Tree_Blend_Prob", "ARIMA_Prob", "LSTM_Prob", "Conviction_Score",
+            "PE_Ratio", "PB_Ratio", "ROE",
+            "Dividend_Yield", "MFI_14", "CMF_20", "Volatility_20D", "RSI_14", "MACD_Hist",
+            "Cross_Sectional_Rank", "Alpha_Tier", "Market_Regime", "Is_Top_Decile"
         ]
         for c in all_cols:
             if c not in df.columns:
