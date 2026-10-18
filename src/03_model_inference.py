@@ -19,6 +19,7 @@ import pandas as pd  # type: ignore # pyrefly: ignore [missing-import]
 from sklearn.ensemble import HistGradientBoostingClassifier  # type: ignore # pyrefly: ignore [missing-import]
 from catboost import CatBoostClassifier  # type: ignore # pyrefly: ignore [missing-import]
 from sklearn.metrics import accuracy_score, precision_score, roc_auc_score  # type: ignore # pyrefly: ignore [missing-import]
+from sklearn.mixture import GaussianMixture  # type: ignore # pyrefly: ignore [missing-import]
 from statsmodels.tsa.arima.model import ARIMA  # type: ignore # pyrefly: ignore [missing-import]
 import torch  # type: ignore # pyrefly: ignore [missing-import]
 import torch.nn as nn  # type: ignore # pyrefly: ignore [missing-import]
@@ -342,6 +343,9 @@ class QuantitativeAlphaModel:
         self.lstm_trainer = PyTorchLSTMTrainer()
         self.arima_predictor = ARIMAPredictor()
         self.ticker_to_sector = {t: sector for sector, tickers in SECTOR_MAP.items() for t in tickers}
+        self.regime_model = GaussianMixture(n_components=3, covariance_type="full", random_state=42)
+        self.current_market_regime: str = "NEUTRAL_SIDEWAYS"
+        self.bear_regime_state: int = 1
         self._cached_latest_rows: Optional[pd.DataFrame] = None
 
     def load_processed_data(self) -> pd.DataFrame:
@@ -369,6 +373,26 @@ class QuantitativeAlphaModel:
         logger.info("Fitting Tree Blend Ensemble (HistGB + CatBoost) with Macro & Corporate Context...")
         self.gbdt_model.fit(X_train, y_train)
         self.catboost_model.fit(X_train, y_train)
+
+        # Layer 1: Gaussian Mixture Model (Market Regime Classification)
+        regime_features = ["IHSG_Return_1D", "Volatility_20D", "USD_IDR_Return_1D", "US_10Y_Yield_Delta", "daily_finbert_score"]
+        available_reg_cols = [c for c in regime_features if c in train_df.columns]
+        if len(available_reg_cols) == len(regime_features):
+            logger.info("Fitting 3-State Gaussian Mixture Market Regime Model...")
+            X_reg_train = train_df[regime_features].ffill().fillna(0.0)
+            self.regime_model.fit(X_reg_train)
+            ihsg_idx = regime_features.index("IHSG_Return_1D")
+            self.bear_regime_state = int(np.argmin(self.regime_model.means_[:, ihsg_idx]))
+
+            latest_macro = df[regime_features].iloc[-1:].ffill().fillna(0.0)
+            current_state = int(self.regime_model.predict(latest_macro)[0])
+            if current_state == self.bear_regime_state:
+                self.current_market_regime = "BEARISH_MARKDOWN"
+            elif latest_macro["IHSG_Return_1D"].values[0] > 0.002:
+                self.current_market_regime = "BULLISH_TREND"
+            else:
+                self.current_market_regime = "NEUTRAL_SIDEWAYS"
+            logger.info(f"Current detected market regime: {self.current_market_regime} (State {current_state})")
 
         gbdt_probs = self.gbdt_model.predict_proba(X_test)[:, 1]
         cat_probs = self.catboost_model.predict_proba(X_test)[:, 1]
@@ -470,17 +494,30 @@ class QuantitativeAlphaModel:
         if not pre_records:
             return pd.DataFrame()
 
-        # Cross-Sectional Ranking: Top Decile (top 10% highest conviction picks across active universe)
-        all_probs = [r["Bullish_Probability"] for r in pre_records]
-        top_decile_cutoff = float(np.percentile(all_probs, 90)) if len(all_probs) >= 10 else 0.55
+        # Layer 3: Cross-Sectional Ranking across active universe (1 to N)
+        pre_records.sort(key=lambda r: r["Bullish_Probability"], reverse=True)
+        total_tickers = len(pre_records)
+        top_decile_count = max(5, int(total_tickers * 0.10))
 
         latest_records = []
-        for latest_row in pre_records:
+        for rank_idx, latest_row in enumerate(pre_records, start=1):
             grp = latest_row.pop("_grp")
             ticker = latest_row["Ticker"]
             blended_prob = latest_row["Bullish_Probability"]
-            is_top_decile = bool(blended_prob >= top_decile_cutoff)
+            is_top_decile = bool(rank_idx <= top_decile_count)
+            latest_row["Cross_Sectional_Rank"] = rank_idx
             latest_row["Is_Top_Decile"] = is_top_decile
+            latest_row["Market_Regime"] = self.current_market_regime
+
+            # Assign Alpha Tier for transparent institutional categorisation
+            if rank_idx <= top_decile_count:
+                latest_row["Alpha_Tier"] = "Tier 1: Top Decile (Alpha Outperformer)"
+            elif rank_idx <= int(total_tickers * 0.40):
+                latest_row["Alpha_Tier"] = "Tier 2: Upper Mid (Strong Beta / Accumulation)"
+            elif rank_idx <= int(total_tickers * 0.75):
+                latest_row["Alpha_Tier"] = "Tier 3: Neutral (Market Performer)"
+            else:
+                latest_row["Alpha_Tier"] = "Tier 4: Bottom Decile (Underperformer / Avoid)"
 
             # Calculate 14-day Average True Range (ATR)
             high_low = grp["High"] - grp["Low"]
@@ -498,8 +535,8 @@ class QuantitativeAlphaModel:
             res1 = float(latest_row.get("Resistance_1", close * 1.03) or (close * 1.03))
             sup1 = float(latest_row.get("Support_1", close * 0.97) or (close * 0.97))
 
-            # Multi-Model Consensus Shield & High-Conviction Ambang Eksekusi
-            # 1. Hard threshold: blended_prob must be >= 0.55 (no loose 0.52 floor)
+            # Multi-Model Consensus Shield & Layer 1 Regime-Adaptive Hurdle Rate
+            # 1. Hard threshold: stricter (0.58) in BEARISH_MARKDOWN regime to prevent buying bull traps, 0.55 otherwise
             # 2. Majority model consensus: at least 2 out of 3 models must be bullish (>= 0.50)
             # 3. Model divergence guard: no individual model should be bearish (< 0.48)
             tree_p = float(latest_row.get("Tree_Blend_Prob", latest_row.get("GBDT_Prob", 0.50)))
@@ -510,8 +547,10 @@ class QuantitativeAlphaModel:
             min_model_prob = min(tree_p, lstm_p, arima_p)
             has_model_divergence = (min_model_prob < 0.48)
 
+            min_hurdle = 0.58 if self.current_market_regime == "BEARISH_MARKDOWN" else 0.55
+
             is_buy_eligible = (
-                blended_prob >= 0.55
+                blended_prob >= min_hurdle
                 and models_bullish_count >= 2
                 and not has_model_divergence
             )
@@ -572,7 +611,8 @@ class QuantitativeAlphaModel:
             "Beta_IHSG", "Sharpe_Ratio", "Max_Drawdown_1Y", "Annualized_Return_1Y",
             "Debt_to_Equity", "Current_Ratio", "RSI_14", "MACD_Hist", "MFI_14", "CMF_20",
             "Volatility_20D", "PE_Ratio", "PB_Ratio", "ROE", "Dividend_Yield",
-            "GARCH_Vol", "VaR_95_1D", "VaR_99_1D", "ES_95_1D", "Sector"
+            "GARCH_Vol", "VaR_95_1D", "VaR_99_1D", "ES_95_1D", "Sector",
+            "Cross_Sectional_Rank", "Alpha_Tier", "Market_Regime", "Is_Top_Decile"
         ]
         for c in all_expected_cols:
             if c not in latest_df.columns:
@@ -688,13 +728,27 @@ class QuantitativeAlphaModel:
             by=["Bullish_Probability", "Sharpe_Ratio"], ascending=[False, False]
         ).head(5)
 
+        # Layer 4: Fractional Half-Kelly Criterion Allocator
+        kelly_scores = []
+        for _, row in buy_candidates.iterrows():
+            p = float(row.get("Bullish_Probability", 0.55))
+            q = 1.0 - p
+            rr = float(row.get("Risk_Reward_Ratio", 2.0))
+            b = max(rr, 1.0)
+            raw_kelly = max(0.05, 0.5 * ((p * b - q) / b))
+            if self.current_market_regime == "BEARISH_MARKDOWN":
+                raw_kelly *= 0.75  # Cash defense haircut during bursa selloffs
+            kelly_scores.append(raw_kelly)
+
+        kelly_arr = np.array(kelly_scores)
         sharpe_raw = buy_candidates["Sharpe_Ratio"].fillna(0.1).to_numpy()
         sharpe_safe = np.maximum(sharpe_raw, 0.05)
         garch_vol = buy_candidates["GARCH_Vol"].fillna(0.25).to_numpy()
 
-        # Score = Sharpe / (Volatility + 0.05)
-        raw_scores = sharpe_safe / (garch_vol + 0.05)
-        weights = capped_weights(raw_scores, cap=0.25, budget=0.80)
+        # Composite score: Kelly * (Sharpe / (Volatility + 0.05))
+        raw_scores = kelly_arr * (sharpe_safe / (garch_vol + 0.05))
+        equity_budget = 0.65 if self.current_market_regime == "BEARISH_MARKDOWN" else 0.80
+        weights = capped_weights(raw_scores, cap=0.25, budget=equity_budget)
 
         total_equity_spent = 0.0
         allocation_records = []
@@ -786,6 +840,7 @@ def export_snapshot_json(
         "status": "online",
         "data_asof": str(swing_df["Date"].iloc[0]) if not swing_df.empty else datetime.today().strftime("%Y-%m-%d"),
         "generated_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "market_regime": str(all_recs["Market_Regime"].iloc[0]) if "Market_Regime" in all_recs.columns and not all_recs.empty else "NEUTRAL_SIDEWAYS",
         "metrics": metrics,
         "morning_brief": brief_data,
         "portfolio_allocation": clean_records(alloc_df),
